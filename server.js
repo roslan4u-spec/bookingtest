@@ -264,12 +264,13 @@ app.patch('/api/bookings/:ref/status', async (req, res) => {
 
 // Serve page routes
 const fs = require('fs');
-app.get('/', (req, res) => { res.setHeader('Content-Type', 'text/html'); res.send(fs.readFileSync(__dirname + '/index.html')); });
-app.get('/rooms', (req, res) => { res.setHeader('Content-Type', 'text/html'); res.send(fs.readFileSync(__dirname + '/rooms.html')); });
-app.get('/admin', (req, res) => { res.setHeader('Content-Type', 'text/html'); res.send(fs.readFileSync(__dirname + '/admin.html')); });
+app.get('/', (req, res) => { res.setHeader('Content-Type', 'text/html'); res.send(fs.readFileSync(path.join(__dirname, 'index.html'))); });
+app.get('/rooms', (req, res) => { res.setHeader('Content-Type', 'text/html'); res.send(fs.readFileSync(path.join(__dirname, 'rooms.html'))); });
+app.get('/admin', (req, res) => { res.setHeader('Content-Type', 'text/html'); res.send(fs.readFileSync(path.join(__dirname, 'admin.html'))); });
 
 // Serve all other static assets (css, js, images) AFTER explicit routes
-app.use(express.static(__dirname));
+app.use(express.static(path.join(__dirname)));
+
 
 
 // ──────────────────────────────────────────────
