@@ -257,32 +257,34 @@ app.patch('/api/bookings/:ref/status', async (req, res) => {
         if (updateRes.rowCount === 0) return res.status(404).json({ error: 'Tempahan tidak dijumpai.' });
         res.json({ success: true, message: \`Status dikemaskini kepada: \${status}\` });
     } catch (err) {
+        res.json({ success: true, message: `Status dikemaskini kepada: ${status}` });
+    } catch (err) {
         res.status(500).json({ error: err.message });
     }
 });
 
 
-// Serve page routes
-const fs = require('fs');
-app.get('/', (req, res) => { res.setHeader('Content-Type', 'text/html'); res.send(fs.readFileSync(path.join(__dirname, 'index.html'))); });
-app.get('/rooms', (req, res) => { res.setHeader('Content-Type', 'text/html'); res.send(fs.readFileSync(path.join(__dirname, 'rooms.html'))); });
-app.get('/admin', (req, res) => { res.setHeader('Content-Type', 'text/html'); res.send(fs.readFileSync(path.join(__dirname, 'admin.html'))); });
-
-// Serve all other static assets (css, js, images) AFTER explicit routes
-app.use(express.static(path.join(__dirname)));
-
-
-
 // ──────────────────────────────────────────────
-// EXPORT FOR VERCEL OR START SERVER LOCALLY
+// Serve page routes (HANYA UNTUK LOCALHOST)
+// Di Vercel, HTML & CSS disajikan secara automatik oleh Vercel Edge Network
 // ──────────────────────────────────────────────
-if (process.env.NODE_ENV !== 'production') {
+if (process.env.NODE_ENV !== 'production' && !process.env.VERCEL) {
+    const fs = require('fs');
+    const rootDir = path.join(__dirname, '..');
+    
+    app.get('/', (req, res) => { res.setHeader('Content-Type', 'text/html'); res.send(fs.readFileSync(path.join(rootDir, 'index.html'))); });
+    app.get('/rooms', (req, res) => { res.setHeader('Content-Type', 'text/html'); res.send(fs.readFileSync(path.join(rootDir, 'rooms.html'))); });
+    app.get('/admin', (req, res) => { res.setHeader('Content-Type', 'text/html'); res.send(fs.readFileSync(path.join(rootDir, 'admin.html'))); });
+    
+    // Serve all other static assets (css, js, images)
+    app.use(express.static(rootDir));
+
     app.listen(PORT, () => {
-        console.log(\`\\n🌿 TERB Server berjalan di: http://localhost:\${PORT}/\`);
-        console.log(\`📋 Halaman Tempahan  : http://localhost:\${PORT}/rooms\`);
-        console.log(\`🔧 Panel Admin       : http://localhost:\${PORT}/admin\`);
-        console.log(\`📡 API Bilik         : http://localhost:\${PORT}/api/rooms\`);
-        console.log(\`📡 API Tempahan      : http://localhost:\${PORT}/api/bookings\\n\`);
+        console.log(`\n🌿 TERB Server berjalan di: http://localhost:${PORT}/`);
+        console.log(`📋 Halaman Tempahan  : http://localhost:${PORT}/rooms`);
+        console.log(`🔧 Panel Admin       : http://localhost:${PORT}/admin`);
+        console.log(`📡 API Bilik         : http://localhost:${PORT}/api/rooms`);
+        console.log(`📡 API Tempahan      : http://localhost:${PORT}/api/bookings\n`);
     });
 }
 
