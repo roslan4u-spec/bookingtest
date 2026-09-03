@@ -255,8 +255,6 @@ app.patch('/api/bookings/:ref/status', async (req, res) => {
             [status, req.params.ref]
         );
         if (updateRes.rowCount === 0) return res.status(404).json({ error: 'Tempahan tidak dijumpai.' });
-        res.json({ success: true, message: \`Status dikemaskini kepada: \${status}\` });
-    } catch (err) {
         res.json({ success: true, message: `Status dikemaskini kepada: ${status}` });
     } catch (err) {
         res.status(500).json({ error: err.message });
