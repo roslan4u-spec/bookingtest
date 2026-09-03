@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Activities & Direction – TERB</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased flex flex-col min-h-screen">
+
+    <!-- Top Announcement Bar -->
+    <div class="bg-emerald-900 text-emerald-100 text-xs sm:text-sm py-2 px-4 shadow-inner flex justify-between items-center max-w-full overflow-hidden">
+        <div class="container mx-auto flex justify-between items-center">
+            <span class="hidden md:inline" data-i18n="announcement_welcome">
+                <i class="fa-solid fa-tree text-emerald-400 mr-2"></i>Selamat Datang ke TERB – Hutan Lipur Berkelah, Pahang
+            </span>
+            <div class="flex items-center space-x-4 mx-auto md:mx-0">
+                <!-- Language Switcher Toggle -->
+                <div class="flex items-center bg-emerald-950/70 rounded-lg p-1 border border-emerald-700/60 shadow-sm">
+                    <span class="text-xs text-emerald-300 mr-2 ml-1 hidden sm:inline"><i class="fa-solid fa-globe"></i> Language:</span>
+                    <button id="lang-bm" class="lang-btn px-2.5 py-1 text-xs font-bold rounded-md transition bg-amber-400 text-emerald-950 shadow-sm">BM</button>
+                    <button id="lang-en" class="lang-btn px-2.5 py-1 text-xs font-bold rounded-md transition text-emerald-200 hover:text-white hover:bg-emerald-800">EN</button>
+                </div>
+
+                <a href="https://wa.me/60194489296" target="_blank" class="hover:text-amber-300 transition flex items-center gap-1.5 font-bold">
+                    <i class="fa-brands fa-whatsapp text-emerald-400 text-base"></i> <span data-i18n="top_contact">019-4489296</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation Header -->
+    <header class="bg-white shadow-md sticky top-0 z-50 transition-all">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Brand Logo / Title -->
+                <a href="index.html" class="flex items-center gap-3">
+                    <div class="w-12 h-12 rounded-full bg-emerald-800 flex items-center justify-center text-amber-400 text-xl font-bold shadow-md">
+                        <i class="fa-solid fa-mountain-sun"></i>
+                    </div>
+                    <div>
+                        <span class="block text-xl font-extrabold text-emerald-950 tracking-wider">TERB</span>
+                        <span class="block text-xs font-semibold text-emerald-600 uppercase tracking-widest" data-i18n="brand_subtitle">Hutan Lipur Berkelah</span>
+                    </div>
+                </a>
+
+                <!-- Desktop Navigation Links -->
+                <nav class="hidden lg:flex space-x-1 xl:space-x-2 font-medium text-sm">
+                    <a href="#" class="px-3 py-2 text-slate-700 hover:text-emerald-700 hover:bg-emerald-50 rounded-lg transition" data-i18n="nav_home">HOME</a>
+                    <a href="#direction" class="px-3 py-2 text-slate-700 hover:text-emerald-700 hover:bg-emerald-50 rounded-lg transition flex items-center gap-1">
+                        <i class="fa-solid fa-location-dot text-emerald-600"></i> <span data-i18n="nav_direction">DIRECTION</span>
+                    </a>
+                    <a href="/rooms" class="px-3 py-2 text-slate-700 hover:text-emerald-700 hover:bg-emerald-50 rounded-lg transition" data-i18n="nav_rooms">BILIK &amp; CHALET</a>
+                    <a href="#activities-tabs" class="px-3 py-2 text-emerald-800 bg-emerald-100/70 font-semibold rounded-lg shadow-sm border border-emerald-200" data-i18n="nav_activities">ACTIVITIES</a>
+                    <a href="#prohibited-rules" class="px-3 py-2 text-slate-700 hover:text-emerald-700 hover:bg-emerald-50 rounded-lg transition" data-i18n="nav_terms">TERMS & CONDITIONS</a>
+                    <a href="#contact" class="px-3 py-2 text-slate-700 hover:text-emerald-700 hover:bg-emerald-50 rounded-lg transition" data-i18n="nav_contact">CONTACT US</a>
+                </nav>
+
+                <!-- Mobile Menu Button -->
+                <button id="mobile-menu-btn" class="lg:hidden p-2 text-slate-700 hover:text-emerald-800 focus:outline-none" aria-label="Toggle Menu">
+                    <i class="fa-solid fa-bars text-2xl"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Drawer Menu -->
+        <div id="mobile-menu" class="hidden lg:hidden bg-white border-t border-slate-100 px-4 pt-2 pb-6 space-y-1 shadow-lg">
+            <a href="#" class="block px-3 py-2 text-slate-700 hover:bg-emerald-50 hover:text-emerald-800 rounded-md" data-i18n="nav_home">HOME</a>
+            <a href="#direction" class="block px-3 py-2 text-slate-700 hover:bg-emerald-50 hover:text-emerald-800 rounded-md" data-i18n="nav_direction">DIRECTION</a>
+            <a href="/rooms" class="block px-3 py-2 text-slate-700 hover:bg-emerald-50 hover:text-emerald-800 rounded-md" data-i18n="nav_rooms">BILIK &amp; CHALET</a>
+            <a href="#activities-tabs" class="block px-3 py-2 font-bold text-emerald-800 bg-emerald-50 rounded-md" data-i18n="nav_activities">ACTIVITIES</a>
+            <a href="#prohibited-rules" class="block px-3 py-2 text-slate-700 hover:bg-emerald-50 hover:text-emerald-800 rounded-md" data-i18n="nav_terms">TERMS & CONDITIONS</a>
+            <a href="#contact" class="block px-3 py-2 text-slate-700 hover:bg-emerald-50 hover:text-emerald-800 rounded-md" data-i18n="nav_contact">CONTACT US</a>
+        </div>
+    </header>
+
+    <!-- Hero Banner -->
+    <section class="relative bg-emerald-900 text-white py-16 lg:py-24 overflow-hidden">
+        <div class="absolute inset-0 bg-cover bg-center opacity-30" style="background-image: url('https://images.unsplash.com/photo-1432405972618-c60b0225b8f9?auto=format&fit=crop&w=1600&q=80');"></div>
+        <div class="absolute inset-0 bg-gradient-to-r from-emerald-950/90 via-emerald-900/80 to-transparent"></div>
+        
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="max-w-3xl">
+                <span class="inline-block px-3 py-1 bg-amber-400/20 text-amber-300 rounded-full text-xs font-semibold uppercase tracking-wider mb-4 border border-amber-400/30">
+                    <i class="fa-solid fa-map-pin mr-1"></i> <span data-i18n="hero_badge">Hutan Lipur Berkelah, Pahang</span>
+                </span>
+                <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white mb-4" data-i18n="hero_title">
+                    TERB ACTIVITIES & DIRECTION
+                </h1>
+                <p class="text-lg sm:text-xl text-emerald-100 mb-6 font-light leading-relaxed" data-i18n="hero_desc">
+                    Terokai keindahan semula jadi Air Terjun 7 Tingkat di Hutan Lipur Berkelah, Pahang. Nikmati perkelahan, mandi sungai, BBQ, dan aktiviti riadah air yang terbaik!
+                </p>
+                <div class="flex flex-wrap gap-4">
+                    <a href="#direction" class="bg-amber-500 hover:bg-amber-600 text-emerald-950 font-bold px-6 py-3 rounded-lg shadow-lg hover:shadow-xl transition flex items-center gap-2">
+                        <i class="fa-solid fa-route"></i> <span data-i18n="hero_btn_direction">Direction Ke Hutan Lipur Berkelah</span>
+                    </a>
+                    <a href="#activities-tabs" class="bg-white/10 hover:bg-white/20 text-white font-medium px-6 py-3 rounded-lg backdrop-blur-sm transition flex items-center gap-2 border border-white/20">
+                        <i class="fa-solid fa-compass"></i> <span data-i18n="hero_btn_activities">Terokai Aktiviti</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content Area -->
+    <main class="flex-grow container mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        
+        <!-- Direction Section (Hutan Lipur Berkelah, Pahang) -->
+        <section id="direction" class="scroll-mt-24 mb-16">
+            <div class="bg-white rounded-3xl shadow-xl overflow-hidden border border-slate-200">
+                <!-- Header Banner for Direction -->
+                <div class="bg-gradient-to-r from-emerald-900 to-emerald-800 text-white p-6 sm:p-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+                    <div>
+                        <span class="bg-amber-400 text-emerald-950 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider mb-2 inline-block" data-i18n="dir_badge">
+                            Panduan Lokasi & Perjalanan
+                        </span>
+                        <h2 class="text-3xl sm:text-4xl font-extrabold text-white" data-i18n="dir_title">
+                            Direction ke Hutan Lipur Berkelah, Pahang
+                        </h2>
+                        <p class="text-emerald-100 text-sm sm:text-base mt-2 max-w-2xl" data-i18n="dir_desc">
+                            Hutan Lipur Berkelah terletak di daerah Maran/Gambang, Pahang. Terkenal dengan keindahan air terjun 7 tingkat dan air sungai yang sejuk serta jernih.
+                        </p>
+                    </div>
+                    <!-- Navigation App Buttons -->
+                    <div class="flex flex-wrap gap-3 shrink-0">
+                        <a href="https://maps.google.com/?q=Hutan+Lipur+Berkelah+Pahang" target="_blank" class="bg-white text-emerald-900 hover:bg-emerald-50 font-extrabold px-5 py-3 rounded-xl shadow transition flex items-center gap-2 text-sm">
+                            <i class="fa-solid fa-map-location-dot text-emerald-600 text-lg"></i> Google Maps
+                        </a>
+                        <a href="https://waze.com/ul?q=Hutan%20Lipur%20Berkelah%20Pahang" target="_blank" class="bg-cyan-500 hover:bg-cyan-600 text-white font-extrabold px-5 py-3 rounded-xl shadow transition flex items-center gap-2 text-sm">
+                            <i class="fa-solid fa-diamond-turn-right text-lg"></i> Waze Navigation
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Content Grid: Route Guides & Google Maps Embed -->
+                <div class="p-6 sm:p-8 lg:p-10 grid grid-cols-1 lg:grid-cols-12 gap-8">
+                    <!-- Route Step-by-Step Instructions -->
+                    <div class="lg:col-span-6 space-y-6">
+                        <h3 class="text-xl font-bold text-slate-900 flex items-center gap-2 border-b pb-3" data-i18n="dir_routes_header">
+                            <i class="fa-solid fa-car-side text-emerald-600"></i> Panduan Laluan Utama
+                        </h3>
+
+                        <!-- Route 1: From KL -->
+                        <div class="bg-slate-50 border border-slate-200 rounded-2xl p-5 hover:border-emerald-300 transition">
+                            <div class="flex items-center gap-3 mb-2">
+                                <span class="w-8 h-8 rounded-full bg-emerald-800 text-amber-300 font-bold flex items-center justify-center text-sm shrink-0">1</span>
+                                <h4 class="font-bold text-slate-900 text-lg" data-i18n="dir_route1_title">Dari Kuala Lumpur / Pantai Barat (LPT1)</h4>
+                            </div>
+                            <ol class="list-decimal list-inside text-sm text-slate-600 space-y-2 ml-2 leading-relaxed" data-i18n="dir_route1_steps">
+                                <li>Guna **Lebuhraya Pantai Timur (LPT1)** menghala ke Kuantan.</li>
+                                <li>Ambil **Susur Keluar Sri Jaya / Gambang** (Exit 825 atau Exit 827).</li>
+                                <li>Sertai **Jalan Maran-Kuantan (Laluan 2)** dan ikuti papan tanda keselamatan menghala ke Hutan Lipur Berkelah.</li>
+                                <li>Belok ke simpang jalan berturap Hutan Lipur Berkelah sehingga tiba di tapak letak kenderaan & pintu masuk.</li>
+                            </ol>
+                        </div>
+
+                        <!-- Route 2: From Kuantan -->
+                        <div class="bg-slate-50 border border-slate-200 rounded-2xl p-5 hover:border-emerald-300 transition">
+                            <div class="flex items-center gap-3 mb-2">
+                                <span class="w-8 h-8 rounded-full bg-emerald-800 text-amber-300 font-bold flex items-center justify-center text-sm shrink-0">2</span>
+                                <h4 class="font-bold text-slate-900 text-lg" data-i18n="dir_route2_title">Dari Bandar Kuantan / Gambang</h4>
+                            </div>
+                            <ol class="list-decimal list-inside text-sm text-slate-600 space-y-2 ml-2 leading-relaxed" data-i18n="dir_route2_steps">
+                                <li>Guna **Jalan Kuantan - Maran (Laluan 2)** menghala ke arah Gambang / Sri Jaya.</li>
+                                <li>Pandu melepasi Pusat Asasi UIA Gambang / Simpang Gambang.</li>
+                                <li>Belok kanan di papan tanda rasmi **Hutan Lipur Berkelah** dan teruskan hingga ke tempat pelepasan.</li>
+                            </ol>
+                        </div>
+
+                        <!-- Quick Info Cards -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+                            <div class="bg-emerald-50 rounded-xl p-4 border border-emerald-100 flex items-start gap-3">
+                                <i class="fa-solid fa-square-parking text-emerald-600 text-xl mt-1"></i>
+                                <div>
+                                    <h5 class="font-bold text-emerald-950 text-sm" data-i18n="dir_parking_title">Kemudahan Tempat Letak Kereta</h5>
+                                    <p class="text-xs text-slate-600 mt-0.5" data-i18n="dir_parking_desc">Disediakan di pintu masuk utama Hutan Lipur Berkelah.</p>
+                                </div>
+                            </div>
+                            <div class="bg-amber-50 rounded-xl p-4 border border-amber-100 flex items-start gap-3">
+                                <i class="fa-solid fa-phone text-amber-600 text-xl mt-1"></i>
+                                <div>
+                                    <h5 class="font-bold text-amber-950 text-sm" data-i18n="dir_contact_title">Pertanyaan Bantuan Lokasi</h5>
+                                    <p class="text-xs text-slate-600 mt-0.5"><span data-i18n="dir_contact_sub">WhatsApp / Hubungi:</span> <strong class="text-emerald-800">019-4489296</strong></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Interactive Google Maps Iframe -->
+                    <div class="lg:col-span-6 flex flex-col">
+                        <h3 class="text-xl font-bold text-slate-900 flex items-center gap-2 border-b pb-3 mb-4" data-i18n="dir_map_header">
+                            <i class="fa-solid fa-map-location text-emerald-600"></i> Peta Interaktif Google Maps
+                        </h3>
+                        <div class="flex-grow w-full min-h-[350px] lg:min-h-[420px] rounded-2xl overflow-hidden shadow-md border border-slate-200 relative">
+                            <iframe 
+                                class="w-full h-full min-h-[350px]" 
+                                src="https://maps.google.com/maps?q=Hutan+Lipur+Berkelah+Pahang&t=&z=13&ie=UTF8&iwloc=&output=embed" 
+                                frameborder="0" 
+                                scrolling="no" 
+                                marginheight="0" 
+                                marginwidth="0"
+                                title="Hutan Lipur Berkelah Pahang Map">
+                            </iframe>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Activity Interactive Tabs Header -->
+        <section id="activities-tabs" class="scroll-mt-24 mb-12">
+            <div class="text-center max-w-2xl mx-auto mb-8">
+                <h2 class="text-3xl font-extrabold text-emerald-950 tracking-tight mb-2" data-i18n="act_heading">Aktiviti Menarik Untuk Anda</h2>
+                <p class="text-slate-600" data-i18n="act_subheading">Pilih aktiviti di bawah untuk melihat maklumat lanjut dan panduan keselamatan di TERB Hutan Lipur Berkelah.</p>
+            </div>
+
+            <!-- Tab Buttons -->
+            <div class="flex flex-wrap justify-center gap-2 sm:gap-4 border-b border-slate-200 pb-4">
+                <button class="tab-btn active px-5 py-3 rounded-xl font-bold text-sm sm:text-base flex items-center gap-2.5 transition shadow-sm" data-tab="barbeque">
+                    <i class="fa-solid fa-fire-burner text-amber-500"></i> <span data-i18n="tab_bbq">Barbeque</span>
+                </button>
+                <button class="tab-btn px-5 py-3 rounded-xl font-bold text-sm sm:text-base flex items-center gap-2.5 transition text-slate-600 hover:bg-emerald-50" data-tab="picnic">
+                    <i class="fa-solid fa-umbrella-beach text-emerald-600"></i> <span data-i18n="tab_picnic">Picnic</span>
+                </button>
+                <button class="tab-btn px-5 py-3 rounded-xl font-bold text-sm sm:text-base flex items-center gap-2.5 transition text-slate-600 hover:bg-emerald-50" data-tab="rubber-tube">
+                    <i class="fa-solid fa-life-ring text-cyan-600"></i> <span data-i18n="tab_rubber_tube">Rubber Tube Rafting</span>
+                </button>
+                <button class="tab-btn px-5 py-3 rounded-xl font-bold text-sm sm:text-base flex items-center gap-2.5 transition text-slate-600 hover:bg-emerald-50" data-tab="swimming">
+                    <i class="fa-solid fa-person-swimming text-blue-600"></i> <span data-i18n="tab_swimming">Swimming</span>
+                </button>
+            </div>
+
+            <!-- Tab Contents Container -->
+            <div class="mt-8">
+                <!-- Barbeque Tab Content -->
+                <div id="tab-barbeque" class="tab-content block">
+                    <div class="bg-white rounded-2xl shadow-xl overflow-hidden border border-slate-100 grid grid-cols-1 lg:grid-cols-12">
+                        <div class="lg:col-span-6 relative h-64 lg:h-auto">
+                            <img src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=1000&q=80" alt="Barbeque TERB" class="w-full h-full object-cover">
+                            <div class="absolute top-4 left-4 bg-emerald-900/90 backdrop-blur-md text-white text-xs font-bold px-3 py-1.5 rounded-full" data-i18n="bbq_tag">
+                                Popular Activity
+                            </div>
+                        </div>
+                        <div class="lg:col-span-6 p-6 sm:p-8 lg:p-10 flex flex-col justify-between">
+                            <div>
+                                <div class="flex items-center gap-3 text-amber-600 font-semibold text-sm mb-2 uppercase tracking-wider" data-i18n="bbq_sub">
+                                    <i class="fa-solid fa-fire"></i> Sesi BBQ Tepi Sungai Berkelah
+                                </div>
+                                <h3 class="text-2xl sm:text-3xl font-extrabold text-slate-900 mb-4" data-i18n="bbq_title">Barbeque</h3>
+                                <p class="text-slate-600 mb-6 leading-relaxed" data-i18n="bbq_desc">
+                                    Nikmati hidangan panggang panas di tepi sungai Hutan Lipur Berkelah yang jernih dan nyaman. Tapak BBQ disediakan untuk kemudahan anda sekeluarga.
+                                </p>
+                                <div class="bg-amber-50 border-l-4 border-amber-400 p-4 rounded-r-lg mb-6 text-slate-700 text-sm">
+                                    <p class="font-bold text-amber-900 mb-1"><i class="fa-solid fa-circle-info"></i> <span data-i18n="bbq_notes_header">Nota Penting BBQ:</span></p>
+                                    <ul class="list-disc list-inside space-y-1 text-slate-600" data-i18n="bbq_notes_list">
+                                        <li>Tetamu digalakkan membawa arang, jaring panggang, dan peralatan sendiri.</li>
+                                        <li>Pastikan kawasan BBQ dibersihkan selepas digunakan.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="flex flex-wrap gap-3">
+                                <a href="https://wa.me/60194489296?text=Halo%20TERB,%20saya%20ingin%20bertanya%20mengenai%20tapak%20BBQ%20di%20Hutan%20Lipur%20Berkelah" target="_blank" class="bg-emerald-700 hover:bg-emerald-800 text-white font-bold px-5 py-2.5 rounded-lg shadow transition flex items-center gap-2">
+                                    <i class="fa-brands fa-whatsapp"></i> <span data-i18n="btn_book_bbq">Tempah / Tanya Tapak BBQ</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Picnic Tab Content -->
+                <div id="tab-picnic" class="tab-content hidden">
+                    <div class="bg-white rounded-2xl shadow-xl overflow-hidden border border-slate-100 grid grid-cols-1 lg:grid-cols-12">
+                        <div class="lg:col-span-6 relative h-64 lg:h-auto">
+                            <img src="https://images.unsplash.com/photo-1526772662000-3f88f10405ff?auto=format&fit=crop&w=1000&q=80" alt="Picnic TERB" class="w-full h-full object-cover">
+                            <div class="absolute top-4 left-4 bg-emerald-900/90 backdrop-blur-md text-white text-xs font-bold px-3 py-1.5 rounded-full" data-i18n="picnic_tag">
+                                Family Favorite
+                            </div>
+                        </div>
+                        <div class="lg:col-span-6 p-6 sm:p-8 lg:p-10 flex flex-col justify-between">
+                            <div>
+                                <div class="flex items-center gap-3 text-emerald-600 font-semibold text-sm mb-2 uppercase tracking-wider" data-i18n="picnic_sub">
+                                    <i class="fa-solid fa-tree"></i> Perkelahan & Gazebo
+                                </div>
+                                <h3 class="text-2xl sm:text-3xl font-extrabold text-slate-900 mb-4" data-i18n="picnic_title">Picnic</h3>
+                                <p class="text-slate-600 mb-6 leading-relaxed" data-i18n="picnic_desc">
+                                    Sesuai untuk perkelahan harian (day trip) bersama keluarga di bawah pepohonan rimba Hutan Lipur Berkelah yang redup dan menyegarkan.
+                                </p>
+                                <div class="bg-emerald-50 border-l-4 border-emerald-500 p-4 rounded-r-lg mb-6 text-slate-700 text-sm">
+                                    <p class="font-bold text-emerald-900 mb-1"><i class="fa-solid fa-circle-info"></i> <span data-i18n="picnic_notes_header">Panduan Perkelahan:</span></p>
+                                    <ul class="list-disc list-inside space-y-1 text-slate-600" data-i18n="picnic_notes_list">
+                                        <li>Gazebo / Pondok perkelahan boleh disewa tertakluk kekosongan.</li>
+                                        <li>Hormati ketenteraman pengunjung lain dengan mengelakkan peralatan muzik yang bising.</li>
+                                        <li>Sila bawa beg sampah sendiri dan buang sampah di tempat yang disediakan.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="flex flex-wrap gap-3">
+                                <a href="https://wa.me/60194489296?text=Halo%20TERB,%20saya%20ingin%20bertanya%20sewaan%20tapak%20picnic" target="_blank" class="bg-emerald-700 hover:bg-emerald-800 text-white font-bold px-5 py-2.5 rounded-lg shadow transition flex items-center gap-2">
+                                    <i class="fa-brands fa-whatsapp"></i> <span data-i18n="btn_book_picnic">Pertanyaan Sewaan Gazebo</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Rubber Tube Rafting Tab Content -->
+                <div id="tab-rubber-tube" class="tab-content hidden">
+                    <div class="bg-white rounded-2xl shadow-xl overflow-hidden border border-slate-100 grid grid-cols-1 lg:grid-cols-12">
+                        <div class="lg:col-span-6 relative h-64 lg:h-auto">
+                            <img src="https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=1000&q=80" alt="Rubber Tube Rafting" class="w-full h-full object-cover">
+                            <div class="absolute top-4 left-4 bg-cyan-900/90 backdrop-blur-md text-white text-xs font-bold px-3 py-1.5 rounded-full" data-i18n="tube_tag">
+                                Water Adventure
+                            </div>
+                        </div>
+                        <div class="lg:col-span-6 p-6 sm:p-8 lg:p-10 flex flex-col justify-between">
+                            <div>
+                                <div class="flex items-center gap-3 text-cyan-600 font-semibold text-sm mb-2 uppercase tracking-wider" data-i18n="tube_sub">
+                                    <i class="fa-solid fa-water-ladders"></i> Pelampung Tube Sungai
+                                </div>
+                                <h3 class="text-2xl sm:text-3xl font-extrabold text-slate-900 mb-4" data-i18n="tube_title">Rubber Tube Rafting</h3>
+                                <p class="text-slate-600 mb-6 leading-relaxed" data-i18n="tube_desc">
+                                    Aktiviti popular berhanyut santai mengikut arus Sungai Berkelah menggunakan pelampung getah. Aktiviti yang amat menyeronokkan untuk kanak-kanak mahupun orang dewasa!
+                                </p>
+                                <div class="bg-cyan-50 border-l-4 border-cyan-500 p-4 rounded-r-lg mb-6 text-slate-700 text-sm">
+                                    <p class="font-bold text-cyan-900 mb-1"><i class="fa-solid fa-shield-cat"></i> <span data-i18n="tube_notes_header">Info Sewaan & Keselamatan:</span></p>
+                                    <ul class="list-disc list-inside space-y-1 text-slate-600" data-i18n="tube_notes_list">
+                                        <li>Pelampung tube boleh disewa terus di pejabat pendaftaran.</li>
+                                        <li>Kanak-kanak wajib dipantau oleh ibu bapa / penjaga sepanjang masa.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="flex flex-wrap gap-3">
+                                <a href="https://wa.me/60194489296?text=Halo%20TERB,%20saya%20ingin%20bertanya%20sewa%20rubber%20tube" target="_blank" class="bg-cyan-700 hover:bg-cyan-800 text-white font-bold px-5 py-2.5 rounded-lg shadow transition flex items-center gap-2">
+                                    <i class="fa-brands fa-whatsapp"></i> <span data-i18n="btn_book_tube">Tanya Sewaan Rubber Tube</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Swimming Tab Content -->
+                <div id="tab-swimming" class="tab-content hidden">
+                    <div class="bg-white rounded-2xl shadow-xl overflow-hidden border border-slate-100 grid grid-cols-1 lg:grid-cols-12">
+                        <div class="lg:col-span-6 relative h-64 lg:h-auto">
+                            <img src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=1000&q=80" alt="River Swimming" class="w-full h-full object-cover">
+                            <div class="absolute top-4 left-4 bg-blue-900/90 backdrop-blur-md text-white text-xs font-bold px-3 py-1.5 rounded-full" data-i18n="swim_tag">
+                                Refreshing River
+                            </div>
+                        </div>
+                        <div class="lg:col-span-6 p-6 sm:p-8 lg:p-10 flex flex-col justify-between">
+                            <div>
+                                <div class="flex items-center gap-3 text-blue-600 font-semibold text-sm mb-2 uppercase tracking-wider" data-i18n="swim_sub">
+                                    <i class="fa-solid fa-person-swimming"></i> Mandi-Manda Air Terjun Berkelah
+                                </div>
+                                <h3 class="text-2xl sm:text-3xl font-extrabold text-slate-900 mb-4" data-i18n="swim_title">Swimming</h3>
+                                <p class="text-slate-600 mb-6 leading-relaxed" data-i18n="swim_desc">
+                                    Berenang dan mandi-manda di air terjun bukit 7 tingkat yang begitu jernih, sejuk dan menyegarkan di Hutan Lipur Berkelah, Pahang.
+                                </p>
+                                <div class="bg-blue-50 border-l-4 border-blue-500 p-4 rounded-r-lg mb-6 text-slate-700 text-sm">
+                                    <p class="font-bold text-blue-900 mb-1"><i class="fa-solid fa-triangle-exclamation"></i> <span data-i18n="swim_notes_header">Panduan Mandi Sungai:</span></p>
+                                    <ul class="list-disc list-inside space-y-1 text-slate-600" data-i18n="swim_notes_list">
+                                        <li>Air sungai adalah semula jadi, sila perhatikan arus air terutama jika hujan di hulu.</li>
+                                        <li>Pakaian mandi yang bersesuaian dan sopan amat digalakkan.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="flex flex-wrap gap-3">
+                                <a href="https://wa.me/60194489296?text=Halo%20TERB,%20saya%20ingin%20bertanya%20pakej%20mandi%20sungai" target="_blank" class="bg-blue-700 hover:bg-blue-800 text-white font-bold px-5 py-2.5 rounded-lg shadow transition flex items-center gap-2">
+                                    <i class="fa-brands fa-whatsapp"></i> <span data-i18n="btn_contact">Hubungi Kami</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Prohibited Activities and Rules Section -->
+        <section id="prohibited-rules" class="scroll-mt-24 mb-16">
+            <div class="bg-rose-900 text-white rounded-3xl p-6 sm:p-10 lg:p-12 shadow-2xl relative overflow-hidden border border-rose-800">
+                <!-- Background decorative shapes -->
+                <div class="absolute -top-24 -right-24 w-72 h-72 bg-rose-800/40 rounded-full blur-3xl pointer-events-none"></div>
+                <div class="absolute -bottom-24 -left-24 w-72 h-72 bg-amber-500/20 rounded-full blur-3xl pointer-events-none"></div>
+
+                <div class="relative z-10">
+                    <div class="flex items-center gap-3 text-amber-300 font-bold uppercase tracking-wider mb-2 text-sm sm:text-base" data-i18n="rules_badge">
+                        <i class="fa-solid fa-triangle-exclamation text-xl"></i> PERATURAN & SYARAT PREMIS
+                    </div>
+                    <h2 class="text-3xl sm:text-4xl font-extrabold text-white mb-6" data-i18n="rules_title">
+                        Prohibited Activities and Items
+                    </h2>
+                    
+                    <p class="text-rose-100 mb-8 max-w-3xl leading-relaxed" data-i18n="rules_desc">
+                        Demi menjaga ketenteraman, kebersihan, dan keselamatan semua pengunjung di TERB Hutan Lipur Berkelah, aktiviti dan barang-barang berikut adalah **DILARANG SAMA SEKALI**:
+                    </p>
+
+                    <!-- Grid of Prohibited Rules -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
+                        <div class="bg-rose-950/70 border border-rose-700/60 rounded-xl p-4 flex items-start gap-3.5 backdrop-blur-sm">
+                            <i class="fa-solid fa-ban text-rose-400 text-lg mt-0.5"></i>
+                            <div>
+                                <h4 class="font-bold text-white text-sm uppercase">Car / Motorcycle Groups</h4>
+                                <p class="text-xs text-rose-200 mt-0.5" data-i18n="rule_1">Kelab kenderaan / konvoi berkumpulan tanpa kelulusan.</p>
+                            </div>
+                        </div>
+
+                        <div class="bg-rose-950/70 border border-rose-700/60 rounded-xl p-4 flex items-start gap-3.5 backdrop-blur-sm">
+                            <i class="fa-solid fa-users-slash text-rose-400 text-lg mt-0.5"></i>
+                            <div>
+                                <h4 class="font-bold text-white text-sm uppercase">Exceeding Capacity</h4>
+                                <p class="text-xs text-rose-200 mt-0.5" data-i18n="rule_2">Melebihi had kapasiti yang dibenarkan setiap unit.</p>
+                            </div>
+                        </div>
+
+                        <div class="bg-rose-950/70 border border-rose-700/60 rounded-xl p-4 flex items-start gap-3.5 backdrop-blur-sm">
+                            <i class="fa-solid fa-utensils text-rose-400 text-lg mt-0.5"></i>
+                            <div>
+                                <h4 class="font-bold text-white text-sm uppercase">Outside Catering</h4>
+                                <p class="text-xs text-rose-200 mt-0.5" data-i18n="rule_3">Makanan luar atau perkhidmatan katering tanpa izin.</p>
+                            </div>
+                        </div>
+
+                        <div class="bg-rose-950/70 border border-rose-700/60 rounded-xl p-4 flex items-start gap-3.5 backdrop-blur-sm">
+                            <i class="fa-solid fa-plug-circle-xmark text-rose-400 text-lg mt-0.5"></i>
+                            <div>
+                                <h4 class="font-bold text-white text-sm uppercase">Cooking & Extension Plugs</h4>
+                                <p class="text-xs text-rose-200 mt-0.5" data-i18n="rule_4">Memasak secara berbahaya atau guna penyambung wayar elektrik.</p>
+                            </div>
+                        </div>
+
+                        <div class="bg-rose-950/70 border border-rose-700/60 rounded-xl p-4 flex items-start gap-3.5 backdrop-blur-sm">
+                            <i class="fa-solid fa-dog text-rose-400 text-lg mt-0.5"></i>
+                            <div>
+                                <h4 class="font-bold text-white text-sm uppercase">Pets Allowed: NO</h4>
+                                <p class="text-xs text-rose-200 mt-0.5" data-i18n="rule_5">Haiwan peliharaan tidak dibenarkan di kawasan premis.</p>
+                            </div>
+                        </div>
+
+                        <div class="bg-rose-950/70 border border-rose-700/60 rounded-xl p-4 flex items-start gap-3.5 backdrop-blur-sm">
+                            <i class="fa-solid fa-wine-bottle text-rose-400 text-lg mt-0.5"></i>
+                            <div>
+                                <h4 class="font-bold text-white text-sm uppercase">Alcohol & Non-Halal Food</h4>
+                                <p class="text-xs text-rose-200 mt-0.5" data-i18n="rule_6">Minuman keras dan makanan tidak halal adalah dilarang.</p>
+                            </div>
+                        </div>
+
+                        <div class="bg-rose-950/70 border border-rose-700/60 rounded-xl p-4 flex items-start gap-3.5 backdrop-blur-sm">
+                            <i class="fa-solid fa-microphone-lines-slash text-rose-400 text-lg mt-0.5"></i>
+                            <div>
+                                <h4 class="font-bold text-white text-sm uppercase">Karaoke & Sound Systems</h4>
+                                <p class="text-xs text-rose-200 mt-0.5" data-i18n="rule_7">Karaoke, mini mic, pembesar suara mudah alih & bunyi bising.</p>
+                            </div>
+                        </div>
+
+                        <div class="bg-rose-950/70 border border-rose-700/60 rounded-xl p-4 flex items-start gap-3.5 backdrop-blur-sm lg:col-span-2">
+                            <i class="fa-solid fa-flag-checkered text-rose-400 text-lg mt-0.5"></i>
+                            <div>
+                                <h4 class="font-bold text-white text-sm uppercase">Telematch / Sukaneka</h4>
+                                <p class="text-xs text-rose-200 mt-0.5" data-i18n="rule_8">Dilarang kecuali di kawasan PADANG terpilih dengan tempahan khas.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Fine / Penalty Notice Box -->
+                    <div class="bg-amber-400 text-slate-950 rounded-2xl p-5 sm:p-6 shadow-lg border-2 border-amber-300 flex flex-col sm:flex-row items-center justify-between gap-4">
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-full bg-rose-900 text-amber-300 flex items-center justify-center text-xl shrink-0 font-bold">
+                                RM
+                            </div>
+                            <div>
+                                <h3 class="font-extrabold text-lg text-slate-900" data-i18n="penalty_title">AMARAN DENDA RM500</h3>
+                                <p class="text-sm text-slate-800 leading-snug" data-i18n="penalty_desc">
+                                    Sebarang aktiviti tanpa kebenaran pihak TERB adalah DILARANG SAMA SEKALI. Denda **RM500** akan dikenakan bagi sebarang pelanggaran peraturan.
+                                </p>
+                            </div>
+                        </div>
+                        <a href="https://wa.me/60194489296?text=Halo%20TERB,%20saya%20ingin%20bertanya%20mengenai%20syarat%20dan%20peraturan" target="_blank" class="shrink-0 bg-emerald-900 hover:bg-emerald-950 text-white font-bold px-5 py-3 rounded-xl shadow transition text-sm flex items-center gap-2">
+                            <i class="fa-brands fa-whatsapp text-emerald-400"></i> <span data-i18n="btn_more_info">Pertanyaan Lanjut</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- WhatsApp & Reservation Quick Contact Banner -->
+        <section id="contact" class="scroll-mt-24 bg-emerald-800 rounded-3xl p-8 sm:p-10 text-white shadow-xl text-center relative overflow-hidden">
+            <div class="max-w-2xl mx-auto">
+                <i class="fa-brands fa-whatsapp text-5xl text-emerald-300 mb-4 inline-block animate-bounce"></i>
+                <h3 class="text-2xl sm:text-3xl font-extrabold mb-3" data-i18n="contact_title">Sebarang Pertanyaan & Tempahan</h3>
+                <p class="text-emerald-100 mb-6 text-sm sm:text-base" data-i18n="contact_desc">
+                    Sila WhatsApp atau hubungi kami secara terus untuk sebarang pertanyaan aktiviti & tempahan di TERB.
+                </p>
+                <div class="flex flex-wrap justify-center gap-4">
+                    <a href="https://wa.me/60194489296" target="_blank" class="bg-emerald-400 hover:bg-emerald-300 text-emerald-950 font-extrabold px-8 py-4 rounded-xl shadow-lg transition flex items-center gap-3 text-lg">
+                        <i class="fa-brands fa-whatsapp text-2xl"></i> <span data-i18n="contact_button">Hubungi / WhatsApp: 019-4489296</span>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-950 text-slate-400 py-12 border-t border-slate-800 mt-12">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+                <!-- Col 1: About -->
+                <div class="md:col-span-2">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-10 h-10 rounded-full bg-emerald-800 flex items-center justify-center text-amber-400 text-lg font-bold">
+                            <i class="fa-solid fa-mountain-sun"></i>
+                        </div>
+                        <span class="text-xl font-extrabold text-white tracking-wider">TERB</span>
+                    </div>
+                    <p class="text-sm text-slate-400 leading-relaxed mb-4 max-w-md" data-i18n="footer_about">
+                        Destinasi riadah & perkelahan air terjun terkemuka di Hutan Lipur Berkelah, Mukim Luit, Pahang.
+                    </p>
+                    <div class="flex space-x-3 text-lg">
+                        <a href="#" target="_blank" class="w-9 h-9 rounded-full bg-slate-800 hover:bg-emerald-700 text-slate-300 hover:text-white flex items-center justify-center transition" aria-label="Facebook">
+                            <i class="fa-brands fa-facebook-f"></i>
+                        </a>
+                        <a href="#" target="_blank" class="w-9 h-9 rounded-full bg-slate-800 hover:bg-emerald-700 text-slate-300 hover:text-white flex items-center justify-center transition" aria-label="Wikitravel RSS">
+                            <i class="fa-solid fa-rss"></i>
+                        </a>
+                        <a href="#" target="_blank" class="w-9 h-9 rounded-full bg-slate-800 hover:bg-emerald-700 text-slate-300 hover:text-white flex items-center justify-center transition" aria-label="Blogger">
+                            <i class="fa-brands fa-blogger-b"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Col 2: Navigation -->
+                <div>
+                    <h4 class="text-white font-bold mb-4 uppercase text-xs tracking-widest border-b border-slate-800 pb-2" data-i18n="footer_nav_header">Pautan Pantas</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="#" class="hover:text-emerald-400 transition" data-i18n="nav_home">Home</a></li>
+                        <li><a href="#direction" class="hover:text-emerald-400 transition" data-i18n="nav_direction">Direction Hutan Lipur Berkelah</a></li>
+                        <li><a href="#activities-tabs" class="hover:text-emerald-400 transition" data-i18n="nav_activities">Activities</a></li>
+                        <li><a href="#prohibited-rules" class="hover:text-emerald-400 transition" data-i18n="nav_terms">Terms & Conditions</a></li>
+                        <li><a href="#contact" class="hover:text-emerald-400 transition" data-i18n="nav_contact">Contact Us</a></li>
+                    </ul>
+                </div>
+
+                <!-- Col 3: Contact Info -->
+                <div>
+                    <h4 class="text-white font-bold mb-4 uppercase text-xs tracking-widest border-b border-slate-800 pb-2" data-i18n="footer_contact_header">Hubungi Kami</h4>
+                    <ul class="space-y-2.5 text-sm">
+                        <li class="flex items-start gap-2.5">
+                            <i class="fa-solid fa-location-dot text-emerald-400 mt-1"></i>
+                            <span data-i18n="footer_address">Hutan Lipur Berkelah, Mukim Luit, Pahang, Malaysia</span>
+                        </li>
+                        <li class="flex items-center gap-2.5">
+                            <i class="fa-brands fa-whatsapp text-emerald-400"></i>
+                            <span>019-4489296</span>
+                        </li>
+                        <li class="flex items-center gap-2.5">
+                            <i class="fa-solid fa-globe text-emerald-400"></i>
+                            <span>TERB - Hutan Lipur Berkelah</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="border-t border-slate-900 pt-6 flex flex-col sm:flex-row justify-between items-center text-xs text-slate-500">
+                <p>&copy; 2026 TERB. All rights reserved.</p>
+                <a href="#top" class="mt-2 sm:mt-0 hover:text-emerald-400 transition flex items-center gap-1">
+                    <i class="fa-solid fa-arrow-up"></i> <span data-i18n="back_to_top">Kembali ke atas</span>
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Floating Action Button for WhatsApp -->
+    <a href="https://wa.me/60194489296" target="_blank" class="fixed bottom-6 right-6 z-50 bg-emerald-500 hover:bg-emerald-600 text-white w-14 h-14 rounded-full flex items-center justify-center text-2xl shadow-2xl transition hover:scale-110 border-2 border-white" aria-label="WhatsApp Us">
+        <i class="fa-brands fa-whatsapp"></i>
+    </a>
+
+    <script src="script.js"></script>
+</body>
+</html>

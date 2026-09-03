@@ -1,0 +1,50 @@
+/* Custom Styles for TERB Activities Website */
+
+html {
+    scroll-behavior: smooth;
+}
+
+/* Active state for Tab Buttons */
+.tab-btn.active {
+    background-color: #065f46; /* emerald-800 */
+    color: #ffffff;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.tab-btn.active i {
+    color: #fbbf24; /* amber-400 */
+}
+
+/* Fade animation for tab contents */
+.tab-content {
+    animation: fadeIn 0.35s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(6px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f5f9;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #059669;
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #047857;
+}

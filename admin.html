@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel Admin – Tempahan TERB</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        tbody tr:hover { background: #f8fafc; }
+        .badge { display: inline-flex; align-items: center; padding: 2px 10px; border-radius: 9999px; font-size: 0.72rem; font-weight: 700; }
+    </style>
+</head>
+<body class="bg-slate-100 text-slate-800 font-sans antialiased min-h-screen">
+
+<!-- Header -->
+<div class="bg-emerald-900 text-white px-6 py-4 flex justify-between items-center shadow-lg">
+    <div class="flex items-center gap-3">
+        <div class="w-9 h-9 rounded-full bg-amber-400/20 border border-amber-400/40 flex items-center justify-center text-amber-300 font-bold">
+            <i class="fa-solid fa-lock-open text-sm"></i>
+        </div>
+        <div>
+            <h1 class="font-extrabold text-lg leading-tight">Panel Admin TERB</h1>
+            <p class="text-emerald-300 text-xs">Pengurusan Tempahan Bilik & Chalet</p>
+        </div>
+    </div>
+    <div class="flex items-center gap-3">
+        <a href="/rooms" target="_blank" class="bg-white/10 hover:bg-white/20 text-white text-sm font-semibold px-4 py-2 rounded-lg transition flex items-center gap-2">
+            <i class="fa-solid fa-external-link-alt"></i> Halaman Tempahan
+        </a>
+        <a href="/" class="bg-amber-500 hover:bg-amber-600 text-emerald-950 text-sm font-bold px-4 py-2 rounded-lg transition flex items-center gap-2">
+            <i class="fa-solid fa-house"></i> Laman Utama
+        </a>
+    </div>
+</div>
+
+<div class="max-w-7xl mx-auto px-4 py-8">
+
+    <!-- Stats Cards -->
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8" id="stats-cards">
+        <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-100">
+            <div class="flex items-center justify-between mb-3">
+                <span class="text-slate-500 text-sm">Jumlah Tempahan</span>
+                <div class="w-9 h-9 rounded-xl bg-emerald-100 flex items-center justify-center text-emerald-600"><i class="fa-solid fa-calendar-check"></i></div>
+            </div>
+            <p class="text-3xl font-extrabold text-slate-900" id="stat-total">–</p>
+        </div>
+        <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-100">
+            <div class="flex items-center justify-between mb-3">
+                <span class="text-slate-500 text-sm">Menunggu Pengesahan</span>
+                <div class="w-9 h-9 rounded-xl bg-amber-100 flex items-center justify-center text-amber-600"><i class="fa-solid fa-clock"></i></div>
+            </div>
+            <p class="text-3xl font-extrabold text-amber-700" id="stat-pending">–</p>
+        </div>
+        <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-100">
+            <div class="flex items-center justify-between mb-3">
+                <span class="text-slate-500 text-sm">Disahkan</span>
+                <div class="w-9 h-9 rounded-xl bg-blue-100 flex items-center justify-center text-blue-600"><i class="fa-solid fa-circle-check"></i></div>
+            </div>
+            <p class="text-3xl font-extrabold text-blue-700" id="stat-confirmed">–</p>
+        </div>
+        <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-100">
+            <div class="flex items-center justify-between mb-3">
+                <span class="text-slate-500 text-sm">Jumlah Hasil (RM)</span>
+                <div class="w-9 h-9 rounded-xl bg-emerald-100 flex items-center justify-center text-emerald-600"><i class="fa-solid fa-wallet"></i></div>
+            </div>
+            <p class="text-3xl font-extrabold text-emerald-700" id="stat-revenue">–</p>
+        </div>
+    </div>
+
+    <!-- Booking Table -->
+    <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
+        <div class="px-6 py-4 border-b border-slate-100 flex flex-wrap items-center justify-between gap-3">
+            <div>
+                <h2 class="font-bold text-slate-900 text-lg">Senarai Semua Tempahan</h2>
+                <p class="text-slate-400 text-sm" id="booking-count-label">Memuatkan...</p>
+            </div>
+            <div class="flex items-center gap-3">
+                <select id="filter-status" class="border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                    <option value="">Semua Status</option>
+                    <option value="Menunggu Pengesahan">Menunggu Pengesahan</option>
+                    <option value="Disahkan">Disahkan</option>
+                    <option value="Dibatalkan">Dibatalkan</option>
+                </select>
+                <button id="btn-refresh" onclick="loadBookings()" class="bg-emerald-50 hover:bg-emerald-100 text-emerald-800 font-semibold px-4 py-2 text-sm rounded-lg transition flex items-center gap-2">
+                    <i class="fa-solid fa-arrows-rotate"></i> Muat Semula
+                </button>
+                <button id="btn-export" class="bg-slate-800 hover:bg-slate-900 text-white font-semibold px-4 py-2 text-sm rounded-lg transition flex items-center gap-2">
+                    <i class="fa-solid fa-download"></i> Eksport CSV
+                </button>
+            </div>
+        </div>
+
+        <!-- Search Bar -->
+        <div class="px-6 py-3 border-b border-slate-100 bg-slate-50">
+            <div class="relative max-w-sm">
+                <i class="fa-solid fa-search absolute left-3 top-3 text-slate-400 text-sm"></i>
+                <input type="text" id="search-input" placeholder="Cari nama, telefon, rujukan..." class="w-full pl-9 pr-4 py-2 text-sm border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500">
+            </div>
+        </div>
+
+        <div class="overflow-x-auto">
+            <table class="w-full text-sm">
+                <thead>
+                    <tr class="bg-slate-50 text-slate-500 text-xs uppercase tracking-wider">
+                        <th class="px-4 py-3 text-left font-semibold">Rujukan</th>
+                        <th class="px-4 py-3 text-left font-semibold">Bilik</th>
+                        <th class="px-4 py-3 text-left font-semibold">Tetamu</th>
+                        <th class="px-4 py-3 text-left font-semibold">Tarikh Masuk</th>
+                        <th class="px-4 py-3 text-left font-semibold">Tarikh Keluar</th>
+                        <th class="px-4 py-3 text-center font-semibold">Malam</th>
+                        <th class="px-4 py-3 text-right font-semibold">Jumlah (RM)</th>
+                        <th class="px-4 py-3 text-center font-semibold">Status</th>
+                        <th class="px-4 py-3 text-center font-semibold">Tindakan</th>
+                    </tr>
+                </thead>
+                <tbody id="bookings-tbody" class="divide-y divide-slate-100">
+                    <tr>
+                        <td colspan="9" class="px-4 py-10 text-center text-slate-400">
+                            <i class="fa-solid fa-spinner fa-spin text-2xl mb-2 block"></i> Memuatkan data...
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="px-6 py-4 border-t border-slate-100 text-xs text-slate-400 text-right" id="table-footer"></div>
+    </div>
+</div>
+
+<!-- Detail Modal -->
+<div id="detail-modal" class="fixed inset-0 bg-slate-900/60 z-50 hidden flex items-center justify-center p-4" style="backdrop-filter:blur(3px)">
+    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg">
+        <div class="flex justify-between items-center px-6 py-4 border-b border-slate-100">
+            <h3 class="font-bold text-slate-900">Butiran Tempahan</h3>
+            <button onclick="document.getElementById('detail-modal').classList.add('hidden')" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center">
+                <i class="fa-solid fa-xmark text-sm"></i>
+            </button>
+        </div>
+        <div id="detail-content" class="px-6 py-5 space-y-3 text-sm"></div>
+        <div id="detail-actions" class="px-6 pb-5 flex gap-3"></div>
+    </div>
+</div>
+
+<script>
+let allBookings = [];
+
+async function loadBookings() {
+    document.getElementById('booking-count-label').textContent = 'Memuatkan...';
+    try {
+        const res = await fetch('/api/admin/bookings');
+        allBookings = await res.json();
+        updateStats(allBookings);
+        renderTable(allBookings);
+    } catch(e) {
+        document.getElementById('bookings-tbody').innerHTML = `<tr><td colspan="9" class="text-center py-8 text-rose-500">Gagal memuatkan data.</td></tr>`;
+    }
+}
+
+function updateStats(bookings) {
+    document.getElementById('stat-total').textContent = bookings.length;
+    document.getElementById('stat-pending').textContent = bookings.filter(b => b.status === 'Menunggu Pengesahan').length;
+    document.getElementById('stat-confirmed').textContent = bookings.filter(b => b.status === 'Disahkan').length;
+    const revenue = bookings.filter(b => b.status !== 'Dibatalkan').reduce((sum, b) => sum + b.total_price, 0);
+    document.getElementById('stat-revenue').textContent = revenue.toFixed(2);
+}
+
+function statusBadge(status) {
+    const styles = {
+        'Menunggu Pengesahan': 'bg-amber-100 text-amber-800',
+        'Disahkan': 'bg-emerald-100 text-emerald-800',
+        'Dibatalkan': 'bg-rose-100 text-rose-700'
+    };
+    return `<span class="badge ${styles[status] || 'bg-slate-100 text-slate-600'}">${status}</span>`;
+}
+
+function renderTable(bookings) {
+    const tbody = document.getElementById('bookings-tbody');
+    document.getElementById('booking-count-label').textContent = `${bookings.length} rekod tempahan`;
+    document.getElementById('table-footer').textContent = `Jumlah: ${bookings.length} rekod | Terakhir dikemas kini: ${new Date().toLocaleTimeString('ms-MY')}`;
+    if (!bookings.length) {
+        tbody.innerHTML = `<tr><td colspan="9" class="text-center py-12 text-slate-400"><i class="fa-solid fa-inbox text-3xl mb-2 block"></i>Tiada rekod tempahan.</td></tr>`;
+        return;
+    }
+    tbody.innerHTML = bookings.map(b => `
+        <tr class="hover:bg-slate-50 cursor-pointer" onclick="showDetail('${b.booking_ref}')">
+            <td class="px-4 py-3 font-mono text-xs text-emerald-700 font-bold">${b.booking_ref}</td>
+            <td class="px-4 py-3 font-semibold text-slate-800">${b.room_name}</td>
+            <td class="px-4 py-3">
+                <p class="font-semibold">${b.guest_name}</p>
+                <p class="text-slate-400 text-xs">${b.guest_phone} · ${b.num_guests} orang</p>
+            </td>
+            <td class="px-4 py-3 text-slate-700">${b.checkin_date}</td>
+            <td class="px-4 py-3 text-slate-700">${b.checkout_date}</td>
+            <td class="px-4 py-3 text-center text-slate-600">${b.num_nights}</td>
+            <td class="px-4 py-3 text-right font-bold text-emerald-800">RM${parseFloat(b.total_price).toFixed(2)}</td>
+            <td class="px-4 py-3 text-center">${statusBadge(b.status)}</td>
+            <td class="px-4 py-3 text-center">
+                <div class="flex justify-center gap-2">
+                    <a href="https://wa.me/${b.guest_phone.replace(/[^0-9]/g,'').replace(/^0/,'60')}?text=Salam%20${encodeURIComponent(b.guest_name)},%20tempahan%20anda%20*${b.booking_ref}*%20telah%20kami%20terima.%20Status%20semasa:%20${encodeURIComponent(b.status)}." 
+                       target="_blank" onclick="event.stopPropagation()"
+                       class="w-7 h-7 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-700 flex items-center justify-center text-xs" title="WhatsApp Tetamu">
+                        <i class="fa-brands fa-whatsapp"></i>
+                    </a>
+                    ${b.status !== 'Dibatalkan' ? `
+                    <button onclick="event.stopPropagation();updateStatus('${b.booking_ref}','Disahkan')"
+                        class="w-7 h-7 rounded-lg bg-blue-50 hover:bg-blue-100 text-blue-700 flex items-center justify-center text-xs" title="Sahkan">
+                        <i class="fa-solid fa-check"></i>
+                    </button>
+                    <button onclick="event.stopPropagation();cancelBooking('${b.booking_ref}')"
+                        class="w-7 h-7 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-700 flex items-center justify-center text-xs" title="Batal">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>` : ''}
+                </div>
+            </td>
+        </tr>
+    `).join('');
+}
+
+function showDetail(ref) {
+    const b = allBookings.find(x => x.booking_ref === ref);
+    if (!b) return;
+    document.getElementById('detail-content').innerHTML = `
+        <div class="bg-emerald-50 rounded-xl p-3 border border-emerald-100 text-center mb-2">
+            <p class="text-xs text-slate-500">Rujukan Tempahan</p>
+            <p class="text-lg font-extrabold text-emerald-800">${b.booking_ref}</p>
+            <div class="mt-1">${statusBadge(b.status)}</div>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+            <div class="bg-slate-50 rounded-lg p-3"><p class="text-xs text-slate-400 mb-0.5">Bilik / Chalet</p><p class="font-bold">${b.room_name}</p></div>
+            <div class="bg-slate-50 rounded-lg p-3"><p class="text-xs text-slate-400 mb-0.5">Bilangan Tetamu</p><p class="font-bold">${b.num_guests} orang</p></div>
+            <div class="bg-slate-50 rounded-lg p-3"><p class="text-xs text-slate-400 mb-0.5">Nama</p><p class="font-bold">${b.guest_name}</p></div>
+            <div class="bg-slate-50 rounded-lg p-3"><p class="text-xs text-slate-400 mb-0.5">No. Telefon</p><p class="font-bold">${b.guest_phone}</p></div>
+            <div class="bg-slate-50 rounded-lg p-3"><p class="text-xs text-slate-400 mb-0.5">No. IC</p><p class="font-bold">${b.guest_ic || '–'}</p></div>
+            <div class="bg-slate-50 rounded-lg p-3"><p class="text-xs text-slate-400 mb-0.5">Emel</p><p class="font-bold">${b.guest_email || '–'}</p></div>
+            <div class="bg-slate-50 rounded-lg p-3"><p class="text-xs text-slate-400 mb-0.5">Tarikh Masuk</p><p class="font-bold">${b.checkin_date}</p></div>
+            <div class="bg-slate-50 rounded-lg p-3"><p class="text-xs text-slate-400 mb-0.5">Tarikh Keluar</p><p class="font-bold">${b.checkout_date}</p></div>
+            <div class="bg-slate-50 rounded-lg p-3"><p class="text-xs text-slate-400 mb-0.5">Jumlah Malam</p><p class="font-bold">${b.num_nights} malam</p></div>
+            <div class="bg-emerald-50 rounded-lg p-3 border border-emerald-100"><p class="text-xs text-slate-400 mb-0.5">Jumlah Bayaran</p><p class="font-extrabold text-emerald-800 text-base">RM${parseFloat(b.total_price).toFixed(2)}</p></div>
+        </div>
+        ${b.special_request ? `<div class="bg-slate-50 rounded-lg p-3 mt-1"><p class="text-xs text-slate-400 mb-0.5">Permintaan Khas</p><p class="text-slate-700">${b.special_request}</p></div>` : ''}
+        <p class="text-xs text-slate-400 text-right mt-2">Diterima: ${b.created_at}</p>
+    `;
+    document.getElementById('detail-actions').innerHTML = `
+        <a href="https://wa.me/${b.guest_phone.replace(/[^0-9]/g,'').replace(/^0/,'60')}?text=Salam%20${encodeURIComponent(b.guest_name)},%20tempahan%20anda%20*${b.booking_ref}*%20telah%20disahkan.%20Selamat%20datang%20ke%20TERB%20Hutan%20Lipur%20Berkelah!" 
+            target="_blank" class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 rounded-xl transition flex items-center justify-center gap-2 text-sm">
+            <i class="fa-brands fa-whatsapp"></i> Hubungi Tetamu
+        </a>
+        ${b.status !== 'Disahkan' ? `<button onclick="updateStatus('${b.booking_ref}','Disahkan')" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2.5 rounded-xl transition text-sm"><i class="fa-solid fa-check mr-1"></i> Sahkan</button>` : ''}
+        ${b.status !== 'Dibatalkan' ? `<button onclick="cancelBooking('${b.booking_ref}')" class="flex-1 border border-rose-200 hover:bg-rose-50 text-rose-700 font-bold py-2.5 rounded-xl transition text-sm"><i class="fa-solid fa-xmark mr-1"></i> Batalkan</button>` : ''}
+    `;
+    document.getElementById('detail-modal').classList.remove('hidden');
+}
+
+async function cancelBooking(ref) {
+    if (!confirm(`Batalkan tempahan ${ref}?`)) return;
+    await fetch(`/api/bookings/${ref}/cancel`, { method: 'PATCH' });
+    document.getElementById('detail-modal').classList.add('hidden');
+    loadBookings();
+}
+
+async function updateStatus(ref, status) {
+    await fetch(`/api/bookings/${ref}/status`, { method: 'PATCH', headers: {'Content-Type':'application/json'}, body: JSON.stringify({ status }) });
+    document.getElementById('detail-modal').classList.add('hidden');
+    loadBookings();
+}
+
+// Filter & Search
+document.getElementById('filter-status').addEventListener('change', function() {
+    const v = this.value;
+    const q = document.getElementById('search-input').value.toLowerCase();
+    renderTable(allBookings.filter(b => (!v || b.status === v) && (!q || b.guest_name.toLowerCase().includes(q) || b.guest_phone.includes(q) || b.booking_ref.toLowerCase().includes(q))));
+});
+document.getElementById('search-input').addEventListener('input', function() {
+    const q = this.value.toLowerCase();
+    const v = document.getElementById('filter-status').value;
+    renderTable(allBookings.filter(b => (!v || b.status === v) && (!q || b.guest_name.toLowerCase().includes(q) || b.guest_phone.includes(q) || b.booking_ref.toLowerCase().includes(q))));
+});
+
+// Export CSV
+document.getElementById('btn-export').addEventListener('click', () => {
+    const header = ['Rujukan','Bilik','Nama','Telefon','IC','Emel','Tarikh Masuk','Tarikh Keluar','Malam','Tetamu','Jumlah RM','Status','Permintaan Khas','Diterima'];
+    const rows = allBookings.map(b => [b.booking_ref, b.room_name, b.guest_name, b.guest_phone, b.guest_ic, b.guest_email, b.checkin_date, b.checkout_date, b.num_nights, b.num_guests, b.total_price, b.status, b.special_request, b.created_at]);
+    const csv = [header, ...rows].map(r => r.map(c => `"${String(c||'').replace(/"/g,'""')}"`).join(',')).join('\n');
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = `TERB_Tempahan_${new Date().toISOString().slice(0,10)}.csv`;
+    a.click();
+});
+
+loadBookings();
+setInterval(loadBookings, 60000); // Auto-refresh setiap 1 minit
+</script>
+</body>
+</html>

@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bilik & Chalet – TERB Hutan Lipur Berkelah</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .room-card { transition: transform 0.2s ease, box-shadow 0.2s ease; }
+        .room-card:hover { transform: translateY(-4px); box-shadow: 0 20px 40px rgba(0,0,0,0.12); }
+        .room-card.selected { ring: 3px; ring-color: #059669; }
+        .flatpickr-day.unavailable { background: #fee2e2 !important; color: #dc2626 !important; text-decoration: line-through; cursor: not-allowed !important; }
+        .flatpickr-day.unavailable:hover { background: #fca5a5 !important; }
+        #booking-modal { backdrop-filter: blur(4px); }
+        .status-badge { display: inline-flex; align-items: center; gap: 4px; padding: 2px 10px; border-radius: 9999px; font-size: 0.75rem; font-weight: 700; }
+        .step-indicator.active { background: #065f46; color: white; }
+        .step-indicator { background: #e5e7eb; color: #6b7280; transition: all 0.3s; }
+        .step-connector.active { background: #059669; }
+        .step-connector { background: #e5e7eb; transition: all 0.3s; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased">
+
+<!-- Top Bar -->
+<div class="bg-emerald-900 text-emerald-100 text-xs py-2 px-4 flex justify-between items-center">
+    <span class="hidden md:inline"><i class="fa-solid fa-tree text-emerald-400 mr-2"></i>TERB – Hutan Lipur Berkelah, Pahang</span>
+    <a href="https://wa.me/60194489296" target="_blank" class="hover:text-amber-300 transition flex items-center gap-1.5 font-bold ml-auto">
+        <i class="fa-brands fa-whatsapp text-emerald-400"></i> 019-4489296
+    </a>
+</div>
+
+<!-- Navigation -->
+<header class="bg-white shadow-md sticky top-0 z-40">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center h-20">
+            <a href="/" class="flex items-center gap-3">
+                <div class="w-12 h-12 rounded-full bg-emerald-800 flex items-center justify-center text-amber-400 text-xl font-bold shadow-md">
+                    <i class="fa-solid fa-mountain-sun"></i>
+                </div>
+                <div>
+                    <span class="block text-xl font-extrabold text-emerald-950 tracking-wider">TERB</span>
+                    <span class="block text-xs font-semibold text-emerald-600 uppercase tracking-widest">Hutan Lipur Berkelah</span>
+                </div>
+            </a>
+            <nav class="hidden lg:flex space-x-1 font-medium text-sm">
+                <a href="/" class="px-3 py-2 text-slate-700 hover:text-emerald-700 hover:bg-emerald-50 rounded-lg transition">UTAMA</a>
+                <a href="/#direction" class="px-3 py-2 text-slate-700 hover:text-emerald-700 hover:bg-emerald-50 rounded-lg transition">PANDUAN JALAN</a>
+                <a href="/rooms" class="px-3 py-2 text-emerald-800 bg-emerald-100/70 font-bold rounded-lg shadow-sm border border-emerald-200">BILIK & CHALET</a>
+                <a href="/#activities-tabs" class="px-3 py-2 text-slate-700 hover:text-emerald-700 hover:bg-emerald-50 rounded-lg transition">AKTIVITI</a>
+                <a href="/#prohibited-rules" class="px-3 py-2 text-slate-700 hover:text-emerald-700 hover:bg-emerald-50 rounded-lg transition">TERMA & SYARAT</a>
+                <a href="/#contact" class="px-3 py-2 text-slate-700 hover:text-emerald-700 hover:bg-emerald-50 rounded-lg transition">HUBUNGI KAMI</a>
+            </nav>
+            <button id="mobile-menu-btn" class="lg:hidden p-2 text-slate-700">
+                <i class="fa-solid fa-bars text-2xl"></i>
+            </button>
+        </div>
+    </div>
+    <div id="mobile-menu" class="hidden lg:hidden bg-white border-t border-slate-100 px-4 py-4 space-y-1 shadow-lg">
+        <a href="/" class="block px-3 py-2 text-slate-700 hover:bg-emerald-50 rounded-md">UTAMA</a>
+        <a href="/rooms" class="block px-3 py-2 font-bold text-emerald-800 bg-emerald-50 rounded-md">BILIK & CHALET</a>
+        <a href="/#activities-tabs" class="block px-3 py-2 text-slate-700 hover:bg-emerald-50 rounded-md">AKTIVITI</a>
+        <a href="/#contact" class="block px-3 py-2 text-slate-700 hover:bg-emerald-50 rounded-md">HUBUNGI KAMI</a>
+    </div>
+</header>
+
+<!-- Hero -->
+<section class="relative bg-emerald-900 text-white py-14 overflow-hidden">
+    <div class="absolute inset-0 opacity-25 bg-cover bg-center" style="background-image:url('https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=1600&q=80')"></div>
+    <div class="absolute inset-0 bg-gradient-to-r from-emerald-950/90 via-emerald-900/80 to-transparent"></div>
+    <div class="container mx-auto px-4 relative z-10">
+        <span class="inline-block px-3 py-1 bg-amber-400/20 text-amber-300 rounded-full text-xs font-semibold uppercase tracking-wider mb-4 border border-amber-400/30">
+            <i class="fa-solid fa-bed mr-1"></i> Penginapan di Tengah Hutan
+        </span>
+        <h1 class="text-4xl sm:text-5xl font-extrabold mb-3">Bilik & Chalet TERB</h1>
+        <p class="text-emerald-100 text-lg max-w-2xl leading-relaxed mb-6">
+            Pilih penginapan terbaik di tepi sungai, lereng bukit, atau di dalam rimba Hutan Lipur Berkelah. Tempah sekarang untuk pengalaman yang tidak terlupakan!
+        </p>
+        <a href="#room-list" class="bg-amber-500 hover:bg-amber-600 text-emerald-950 font-bold px-6 py-3 rounded-lg shadow-lg transition flex items-center gap-2 inline-flex">
+            <i class="fa-solid fa-magnifying-glass"></i> Lihat Ketersediaan Bilik
+        </a>
+    </div>
+</section>
+
+<!-- Quick Check Availability Bar -->
+<div class="bg-white shadow-md border-b border-slate-200 sticky top-20 z-30">
+    <div class="container mx-auto px-4 py-3 flex flex-wrap items-center gap-3">
+        <div class="flex items-center gap-2 text-emerald-800 font-bold text-sm">
+            <i class="fa-solid fa-calendar-check text-emerald-600"></i>
+            <span>Semak Tarikh:</span>
+        </div>
+        <input type="text" id="filter-checkin" placeholder="Tarikh Masuk" class="border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 cursor-pointer" readonly>
+        <span class="text-slate-400">→</span>
+        <input type="text" id="filter-checkout" placeholder="Tarikh Keluar" class="border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 cursor-pointer" readonly>
+        <button id="btn-check-avail" class="bg-emerald-700 hover:bg-emerald-800 text-white font-bold px-4 py-2 rounded-lg text-sm transition flex items-center gap-2">
+            <i class="fa-solid fa-search"></i> Semak
+        </button>
+        <button id="btn-clear-filter" class="text-slate-500 hover:text-slate-700 text-sm underline hidden">Kosongkan</button>
+        <div id="avail-msg" class="text-sm font-semibold hidden"></div>
+    </div>
+</div>
+
+<!-- Room Listing -->
+<main class="container mx-auto px-4 sm:px-6 lg:px-8 py-10" id="room-list">
+
+    <!-- Filter Bar -->
+    <div class="flex flex-wrap items-center justify-between gap-4 mb-8">
+        <div>
+            <h2 class="text-2xl font-extrabold text-emerald-950">Semua Bilik & Chalet</h2>
+            <p class="text-slate-500 text-sm mt-1" id="room-count">Memuatkan senarai bilik...</p>
+        </div>
+        <div class="flex items-center gap-2">
+            <label class="text-sm text-slate-600 font-medium">Jenis:</label>
+            <select id="filter-type" class="border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                <option value="">Semua</option>
+                <option value="Chalet">Chalet</option>
+                <option value="Dorm">Dorm</option>
+                <option value="Pondok">Pondok</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- Room Cards Grid -->
+    <div id="rooms-grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 mb-12">
+        <div class="col-span-full flex justify-center py-12">
+            <div class="text-center text-slate-400">
+                <i class="fa-solid fa-spinner fa-spin text-3xl mb-3"></i>
+                <p>Memuatkan bilik & chalet...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- My Booking Lookup -->
+    <div class="bg-emerald-50 rounded-2xl p-6 border border-emerald-100 max-w-lg mx-auto text-center">
+        <i class="fa-solid fa-receipt text-emerald-600 text-3xl mb-3"></i>
+        <h3 class="font-bold text-emerald-900 text-lg mb-2">Semak Status Tempahan</h3>
+        <p class="text-slate-600 text-sm mb-4">Masukkan nombor rujukan tempahan anda untuk menyemak status.</p>
+        <div class="flex gap-2">
+            <input type="text" id="lookup-ref" placeholder="Contoh: TERB-20260903-1234" class="flex-1 border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 uppercase">
+            <button id="btn-lookup" class="bg-emerald-700 hover:bg-emerald-800 text-white font-bold px-4 py-2 rounded-lg text-sm transition">
+                <i class="fa-solid fa-search"></i> Cari
+            </button>
+        </div>
+        <div id="lookup-result" class="mt-4 hidden"></div>
+    </div>
+</main>
+
+<!-- ─────────────────────────────────────────── -->
+<!-- BOOKING MODAL -->
+<!-- ─────────────────────────────────────────── -->
+<div id="booking-modal" class="fixed inset-0 bg-slate-900/70 z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+        
+        <!-- Modal Header -->
+        <div class="bg-gradient-to-r from-emerald-900 to-emerald-800 text-white px-6 py-5 rounded-t-3xl flex justify-between items-center">
+            <div>
+                <h2 class="text-xl font-extrabold">Borang Tempahan</h2>
+                <p id="modal-room-name" class="text-emerald-200 text-sm mt-0.5"></p>
+            </div>
+            <button id="close-modal" class="w-9 h-9 rounded-full bg-white/20 hover:bg-white/30 flex items-center justify-center transition">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+        </div>
+
+        <!-- Step Indicator -->
+        <div class="px-6 py-4 border-b border-slate-100 flex items-center gap-2">
+            <div class="step-indicator active w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold" id="step1-ind">1</div>
+            <div class="step-connector active h-1 flex-1 rounded" id="step1-conn"></div>
+            <div class="step-indicator w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold" id="step2-ind">2</div>
+            <div class="step-connector h-1 flex-1 rounded" id="step2-conn"></div>
+            <div class="step-indicator w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold" id="step3-ind">3</div>
+        </div>
+
+        <!-- Form Body -->
+        <form id="booking-form" class="px-6 py-6 space-y-6">
+            <input type="hidden" id="f-room-id">
+            <input type="hidden" id="f-room-name">
+            <input type="hidden" id="f-price-per-night">
+
+            <!-- STEP 1: Tarikh -->
+            <div id="step-1">
+                <h3 class="text-base font-bold text-slate-800 mb-4 flex items-center gap-2">
+                    <i class="fa-solid fa-calendar-days text-emerald-600"></i> Langkah 1: Pilih Tarikh Menginap
+                </h3>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 mb-1">
+                            Tarikh Daftar Masuk <span class="text-rose-500">*</span>
+                        </label>
+                        <input type="text" id="f-checkin" placeholder="Pilih tarikh masuk" class="w-full border border-slate-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 cursor-pointer" readonly required>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 mb-1">
+                            Tarikh Daftar Keluar <span class="text-rose-500">*</span>
+                        </label>
+                        <input type="text" id="f-checkout" placeholder="Pilih tarikh keluar" class="w-full border border-slate-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 cursor-pointer" readonly required>
+                    </div>
+                </div>
+
+                <!-- Summary Box -->
+                <div id="date-summary" class="mt-4 bg-emerald-50 rounded-xl p-4 border border-emerald-100 hidden">
+                    <div class="flex justify-between items-center text-sm text-slate-700">
+                        <span><i class="fa-solid fa-moon text-emerald-600 mr-1"></i> <span id="summary-nights">0</span> malam</span>
+                        <span class="font-bold text-emerald-900 text-base">Jumlah: RM<span id="summary-total">0</span></span>
+                    </div>
+                </div>
+
+                <div class="mt-4 bg-slate-50 rounded-xl p-4 text-xs text-slate-500 border border-slate-200">
+                    <i class="fa-solid fa-circle-info text-slate-400 mr-1"></i>
+                    Tarikh yang berwarna merah menunjukkan tempoh yang <strong>telah ditempah</strong> dan tidak tersedia.
+                </div>
+
+                <div class="mt-6 flex justify-end">
+                    <button type="button" id="btn-step1-next" class="bg-emerald-700 hover:bg-emerald-800 text-white font-bold px-6 py-2.5 rounded-xl transition flex items-center gap-2 disabled:opacity-50" disabled>
+                        Seterusnya <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- STEP 2: Maklumat Tetamu -->
+            <div id="step-2" class="hidden">
+                <h3 class="text-base font-bold text-slate-800 mb-4 flex items-center gap-2">
+                    <i class="fa-solid fa-user text-emerald-600"></i> Langkah 2: Maklumat Tetamu
+                </h3>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div class="sm:col-span-2">
+                        <label class="block text-sm font-semibold text-slate-700 mb-1">
+                            Nama Penuh <span class="text-rose-500">*</span>
+                        </label>
+                        <input type="text" id="f-name" placeholder="Nama seperti dalam IC" class="w-full border border-slate-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500" required>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 mb-1">
+                            No. Telefon / WhatsApp <span class="text-rose-500">*</span>
+                        </label>
+                        <div class="relative">
+                            <span class="absolute left-3 top-3 text-slate-400 text-sm"><i class="fa-brands fa-whatsapp text-emerald-500"></i></span>
+                            <input type="tel" id="f-phone" placeholder="01X-XXXXXXXX" class="w-full border border-slate-300 rounded-xl pl-9 pr-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500" required>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 mb-1">No. IC (Pilihan)</label>
+                        <input type="text" id="f-ic" placeholder="XXXXXX-XX-XXXX" class="w-full border border-slate-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 mb-1">Emel (Pilihan)</label>
+                        <input type="email" id="f-email" placeholder="contoh@email.com" class="w-full border border-slate-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 mb-1">
+                            Bilangan Tetamu <span class="text-rose-500">*</span>
+                        </label>
+                        <div class="flex items-center gap-3 border border-slate-300 rounded-xl px-4 py-2">
+                            <button type="button" id="btn-guests-minus" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center font-bold text-slate-700 transition">−</button>
+                            <span id="guests-count" class="flex-1 text-center font-bold text-lg">1</span>
+                            <button type="button" id="btn-guests-plus" class="w-8 h-8 rounded-full bg-emerald-100 hover:bg-emerald-200 flex items-center justify-center font-bold text-emerald-700 transition">+</button>
+                        </div>
+                        <p id="capacity-hint" class="text-xs text-slate-400 mt-1"></p>
+                    </div>
+                    <div class="sm:col-span-2">
+                        <label class="block text-sm font-semibold text-slate-700 mb-1">Permintaan Khas (Pilihan)</label>
+                        <textarea id="f-special" rows="2" placeholder="Contoh: keperluan tilam bayi, akses OKU, dsb." class="w-full border border-slate-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 resize-none"></textarea>
+                    </div>
+                </div>
+                <div class="mt-6 flex justify-between">
+                    <button type="button" id="btn-step2-back" class="text-slate-600 hover:text-slate-800 font-semibold px-5 py-2.5 rounded-xl border border-slate-200 hover:bg-slate-50 transition flex items-center gap-2">
+                        <i class="fa-solid fa-arrow-left"></i> Kembali
+                    </button>
+                    <button type="button" id="btn-step2-next" class="bg-emerald-700 hover:bg-emerald-800 text-white font-bold px-6 py-2.5 rounded-xl transition flex items-center gap-2">
+                        Semak Tempahan <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- STEP 3: Semak & Sahkan -->
+            <div id="step-3" class="hidden">
+                <h3 class="text-base font-bold text-slate-800 mb-4 flex items-center gap-2">
+                    <i class="fa-solid fa-clipboard-check text-emerald-600"></i> Langkah 3: Semak & Sahkan Tempahan
+                </h3>
+                <div class="bg-slate-50 rounded-2xl p-5 border border-slate-200 space-y-3 mb-5">
+                    <div class="grid grid-cols-2 gap-3 text-sm">
+                        <div>
+                            <span class="text-slate-500 block text-xs mb-0.5">Bilik / Chalet</span>
+                            <span class="font-bold text-slate-900" id="review-room"></span>
+                        </div>
+                        <div>
+                            <span class="text-slate-500 block text-xs mb-0.5">Bilangan Tetamu</span>
+                            <span class="font-bold text-slate-900" id="review-guests"></span>
+                        </div>
+                        <div>
+                            <span class="text-slate-500 block text-xs mb-0.5">Tarikh Masuk</span>
+                            <span class="font-bold text-slate-900" id="review-checkin"></span>
+                        </div>
+                        <div>
+                            <span class="text-slate-500 block text-xs mb-0.5">Tarikh Keluar</span>
+                            <span class="font-bold text-slate-900" id="review-checkout"></span>
+                        </div>
+                        <div>
+                            <span class="text-slate-500 block text-xs mb-0.5">Nama Tetamu</span>
+                            <span class="font-bold text-slate-900" id="review-name"></span>
+                        </div>
+                        <div>
+                            <span class="text-slate-500 block text-xs mb-0.5">No. Telefon</span>
+                            <span class="font-bold text-slate-900" id="review-phone"></span>
+                        </div>
+                    </div>
+                    <hr class="border-slate-200">
+                    <div class="flex justify-between items-center">
+                        <div class="text-slate-600 text-sm">
+                            <span id="review-nights"></span> malam × RM<span id="review-price-per-night"></span>
+                        </div>
+                        <div class="text-emerald-900 font-extrabold text-xl">RM<span id="review-total"></span></div>
+                    </div>
+                </div>
+
+                <div class="bg-amber-50 border border-amber-200 rounded-xl p-4 text-sm text-amber-900 mb-5">
+                    <i class="fa-solid fa-circle-info text-amber-500 mr-2"></i>
+                    Tempahan ini <strong>memerlukan pengesahan</strong> daripada pihak TERB. Kami akan menghubungi anda melalui WhatsApp dalam masa <strong>24 jam</strong>.
+                </div>
+
+                <div id="form-error" class="hidden bg-rose-50 border border-rose-200 rounded-xl p-4 text-sm text-rose-800 mb-4">
+                    <i class="fa-solid fa-triangle-exclamation text-rose-500 mr-2"></i>
+                    <span id="form-error-msg"></span>
+                </div>
+
+                <div class="flex justify-between">
+                    <button type="button" id="btn-step3-back" class="text-slate-600 hover:text-slate-800 font-semibold px-5 py-2.5 rounded-xl border border-slate-200 hover:bg-slate-50 transition flex items-center gap-2">
+                        <i class="fa-solid fa-arrow-left"></i> Kembali
+                    </button>
+                    <button type="submit" id="btn-submit" class="bg-emerald-700 hover:bg-emerald-800 text-white font-bold px-8 py-2.5 rounded-xl transition flex items-center gap-2">
+                        <i class="fa-solid fa-check"></i> Sahkan Tempahan
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- SUCCESS MODAL -->
+<div id="success-modal" class="fixed inset-0 bg-slate-900/70 z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl shadow-2xl w-full max-w-md p-8 text-center">
+        <div class="w-20 h-20 rounded-full bg-emerald-100 flex items-center justify-center mx-auto mb-5">
+            <i class="fa-solid fa-circle-check text-4xl text-emerald-600"></i>
+        </div>
+        <h2 class="text-2xl font-extrabold text-slate-900 mb-2">Tempahan Berjaya!</h2>
+        <p class="text-slate-500 mb-6 text-sm">Terima kasih atas tempahan anda. Kami akan menghubungi anda melalui WhatsApp untuk pengesahan.</p>
+
+        <div class="bg-emerald-50 rounded-2xl p-4 border border-emerald-100 mb-6">
+            <p class="text-xs text-slate-500 mb-1">Nombor Rujukan Tempahan</p>
+            <p class="text-2xl font-extrabold text-emerald-800 tracking-wider" id="success-ref"></p>
+        </div>
+
+        <div class="text-left space-y-2 text-sm bg-slate-50 rounded-xl p-4 border border-slate-100 mb-6">
+            <div class="flex justify-between"><span class="text-slate-500">Bilik:</span><span class="font-semibold" id="success-room"></span></div>
+            <div class="flex justify-between"><span class="text-slate-500">Tarikh Masuk:</span><span class="font-semibold" id="success-checkin"></span></div>
+            <div class="flex justify-between"><span class="text-slate-500">Tarikh Keluar:</span><span class="font-semibold" id="success-checkout"></span></div>
+            <div class="flex justify-between"><span class="text-slate-500">Jumlah Malam:</span><span class="font-semibold" id="success-nights"></span></div>
+            <hr class="border-slate-200">
+            <div class="flex justify-between text-base font-bold"><span class="text-slate-700">Jumlah Bayaran:</span><span class="text-emerald-800">RM<span id="success-total"></span></span></div>
+        </div>
+
+        <div class="flex gap-3">
+            <a id="btn-wa-confirm" href="#" target="_blank" class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-xl transition flex items-center justify-center gap-2">
+                <i class="fa-brands fa-whatsapp text-xl"></i> Hubungi via WhatsApp
+            </a>
+            <button onclick="document.getElementById('success-modal').classList.add('hidden');location.reload();" class="flex-1 border border-slate-200 hover:bg-slate-50 text-slate-700 font-bold py-3 rounded-xl transition">
+                Kembali
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Footer -->
+<footer class="bg-slate-950 text-slate-400 py-8 mt-12 border-t border-slate-800">
+    <div class="container mx-auto px-4 text-center text-sm">
+        <p class="mb-2"><span class="text-white font-bold">TERB</span> – Hutan Lipur Berkelah, Mukim Luit, Pahang</p>
+        <p>WhatsApp: <a href="https://wa.me/60194489296" class="text-emerald-400 hover:text-emerald-300">019-4489296</a></p>
+        <p class="mt-3 text-xs text-slate-600">&copy; 2026 TERB. All rights reserved.</p>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script>
+const API = '';
+
+let allRooms = [];
+let selectedRoom = null;
+let guestCount = 1;
+let checkinFp, checkoutFp, filterCheckinFp, filterCheckoutFp;
+let filterDates = { checkin: null, checkout: null };
+
+// ──── LOAD ROOMS ────
+async function loadRooms(typeFilter = '') {
+    const grid = document.getElementById('rooms-grid');
+    try {
+        const res = await fetch(`${API}/api/rooms`);
+        allRooms = await res.json();
+        let filtered = allRooms;
+        if (typeFilter) filtered = allRooms.filter(r => r.type === typeFilter);
+        document.getElementById('room-count').textContent = `${filtered.length} bilik / chalet tersedia`;
+        renderRooms(filtered);
+    } catch (e) {
+        grid.innerHTML = `<div class="col-span-full text-center py-12 text-rose-500"><i class="fa-solid fa-triangle-exclamation mr-2"></i>Gagal memuatkan senarai bilik.</div>`;
+    }
+}
+
+function renderRooms(rooms) {
+    const grid = document.getElementById('rooms-grid');
+    if (!rooms.length) {
+        grid.innerHTML = `<div class="col-span-full text-center py-12 text-slate-400"><i class="fa-solid fa-bed text-4xl mb-3 block"></i>Tiada bilik yang sepadan.</div>`;
+        return;
+    }
+    grid.innerHTML = rooms.map(r => `
+        <div class="room-card bg-white rounded-2xl shadow-lg overflow-hidden border border-slate-100 flex flex-col">
+            <div class="relative h-52 overflow-hidden">
+                <img src="${r.image_url}" alt="${r.name}" class="w-full h-full object-cover">
+                <span class="absolute top-3 left-3 bg-emerald-900/90 text-white text-xs font-bold px-3 py-1 rounded-full">${r.type}</span>
+                <span class="absolute top-3 right-3 bg-amber-400 text-emerald-950 text-xs font-extrabold px-3 py-1 rounded-full">
+                    RM${r.price_per_night}<span class="font-normal">/malam</span>
+                </span>
+            </div>
+            <div class="p-5 flex flex-col flex-grow">
+                <h3 class="text-lg font-extrabold text-slate-900 mb-1">${r.name}</h3>
+                <p class="text-slate-500 text-sm mb-3 flex-grow">${r.description}</p>
+                <div class="flex items-center gap-2 text-xs text-emerald-700 bg-emerald-50 rounded-lg px-3 py-2 mb-4 border border-emerald-100">
+                    <i class="fa-solid fa-users"></i>
+                    <span>Sehingga <strong>${r.capacity} orang</strong></span>
+                </div>
+                <div class="mb-4">
+                    <p class="text-xs text-slate-500 font-semibold mb-1.5">Kemudahan:</p>
+                    <div class="flex flex-wrap gap-1.5">
+                        ${r.facilities.split(', ').slice(0,4).map(f => `<span class="bg-slate-100 text-slate-600 text-xs px-2 py-0.5 rounded-full">${f}</span>`).join('')}
+                        ${r.facilities.split(', ').length > 4 ? `<span class="bg-slate-100 text-slate-500 text-xs px-2 py-0.5 rounded-full">+${r.facilities.split(', ').length - 4} lagi</span>` : ''}
+                    </div>
+                </div>
+                <button onclick="openBooking(${r.id})" class="w-full bg-emerald-700 hover:bg-emerald-800 text-white font-bold py-3 rounded-xl transition flex items-center justify-center gap-2 mt-auto">
+                    <i class="fa-solid fa-calendar-plus"></i> Tempah Sekarang
+                </button>
+            </div>
+        </div>
+    `).join('');
+}
+
+// ──── FILTER TYPE ────
+document.getElementById('filter-type').addEventListener('change', function() {
+    loadRooms(this.value);
+});
+
+// ──── FILTER DATE BAR ────
+filterCheckinFp = flatpickr('#filter-checkin', {
+    dateFormat: 'Y-m-d', minDate: 'today', locale: { firstDayOfWeek: 1 },
+    onChange: (sel) => { filterDates.checkin = sel[0] ? flatpickr.formatDate(sel[0], 'Y-m-d') : null; filterCheckoutFp.set('minDate', sel[0] || 'today'); }
+});
+filterCheckoutFp = flatpickr('#filter-checkout', {
+    dateFormat: 'Y-m-d', minDate: 'today', locale: { firstDayOfWeek: 1 },
+    onChange: (sel) => { filterDates.checkout = sel[0] ? flatpickr.formatDate(sel[0], 'Y-m-d') : null; }
+});
+
+document.getElementById('btn-check-avail').addEventListener('click', async () => {
+    if (!filterDates.checkin || !filterDates.checkout) {
+        showAvailMsg('Sila pilih kedua-dua tarikh masuk dan keluar.', 'error'); return;
+    }
+    showAvailMsg('Menyemak ketersediaan...', 'info');
+    document.getElementById('btn-clear-filter').classList.remove('hidden');
+    await loadRoomsWithAvailability(filterDates.checkin, filterDates.checkout);
+});
+
+document.getElementById('btn-clear-filter').addEventListener('click', () => {
+    filterCheckinFp.clear(); filterCheckoutFp.clear();
+    filterDates = { checkin: null, checkout: null };
+    document.getElementById('btn-clear-filter').classList.add('hidden');
+    document.getElementById('avail-msg').classList.add('hidden');
+    loadRooms(document.getElementById('filter-type').value);
+});
+
+async function loadRoomsWithAvailability(checkin, checkout) {
+    const typeFilter = document.getElementById('filter-type').value;
+    let rooms = typeFilter ? allRooms.filter(r => r.type === typeFilter) : [...allRooms];
+    // Check each room
+    const checks = await Promise.all(rooms.map(async r => {
+        const res = await fetch(`${API}/api/rooms/${r.id}/booked-dates`);
+        const bookings = await res.json();
+        const isConflict = bookings.some(b => !(b.checkout_date <= checkin || b.checkin_date >= checkout));
+        return { ...r, available: !isConflict };
+    }));
+    const avail = checks.filter(r => r.available).length;
+    showAvailMsg(`${avail} daripada ${checks.length} bilik tersedia untuk tarikh yang dipilih.`, avail > 0 ? 'success' : 'error');
+    renderRoomsWithAvailability(checks);
+}
+
+function renderRoomsWithAvailability(rooms) {
+    const grid = document.getElementById('rooms-grid');
+    grid.innerHTML = rooms.map(r => `
+        <div class="room-card bg-white rounded-2xl shadow-lg overflow-hidden border ${r.available ? 'border-slate-100' : 'border-rose-200 opacity-70'} flex flex-col">
+            <div class="relative h-52 overflow-hidden">
+                <img src="${r.image_url}" alt="${r.name}" class="w-full h-full object-cover">
+                <span class="absolute top-3 left-3 ${r.available ? 'bg-emerald-600' : 'bg-rose-600'} text-white text-xs font-bold px-3 py-1 rounded-full">
+                    <i class="fa-solid ${r.available ? 'fa-circle-check' : 'fa-circle-xmark'} mr-1"></i>${r.available ? 'Tersedia' : 'Ditempah'}
+                </span>
+                <span class="absolute top-3 right-3 bg-amber-400 text-emerald-950 text-xs font-extrabold px-3 py-1 rounded-full">
+                    RM${r.price_per_night}<span class="font-normal">/malam</span>
+                </span>
+            </div>
+            <div class="p-5 flex flex-col flex-grow">
+                <h3 class="text-lg font-extrabold text-slate-900 mb-1">${r.name}</h3>
+                <p class="text-slate-500 text-sm mb-3 flex-grow">${r.description}</p>
+                <div class="flex items-center gap-2 text-xs text-emerald-700 bg-emerald-50 rounded-lg px-3 py-2 mb-4 border border-emerald-100">
+                    <i class="fa-solid fa-users"></i>
+                    <span>Sehingga <strong>${r.capacity} orang</strong></span>
+                </div>
+                <button onclick="${r.available ? `openBooking(${r.id})` : ''}" 
+                    class="w-full ${r.available ? 'bg-emerald-700 hover:bg-emerald-800 cursor-pointer' : 'bg-slate-300 cursor-not-allowed'} text-white font-bold py-3 rounded-xl transition flex items-center justify-center gap-2 mt-auto"
+                    ${!r.available ? 'disabled' : ''}>
+                    <i class="fa-solid ${r.available ? 'fa-calendar-plus' : 'fa-calendar-xmark'}"></i>
+                    ${r.available ? 'Tempah Sekarang' : 'Tidak Tersedia'}
+                </button>
+            </div>
+        </div>
+    `).join('');
+}
+
+function showAvailMsg(msg, type) {
+    const el = document.getElementById('avail-msg');
+    el.classList.remove('hidden', 'text-emerald-700', 'text-rose-600', 'text-slate-500');
+    el.classList.add(type === 'success' ? 'text-emerald-700' : type === 'error' ? 'text-rose-600' : 'text-slate-500');
+    el.textContent = msg;
+    el.classList.remove('hidden');
+}
+
+// ──── OPEN BOOKING MODAL ────
+async function openBooking(roomId) {
+    selectedRoom = allRooms.find(r => r.id === roomId);
+    if (!selectedRoom) return;
+    guestCount = 1;
+    document.getElementById('guests-count').textContent = 1;
+    document.getElementById('f-room-id').value = selectedRoom.id;
+    document.getElementById('f-room-name').value = selectedRoom.name;
+    document.getElementById('f-price-per-night').value = selectedRoom.price_per_night;
+    document.getElementById('modal-room-name').textContent = `${selectedRoom.name} – RM${selectedRoom.price_per_night}/malam`;
+    document.getElementById('capacity-hint').textContent = `Kapasiti maksimum: ${selectedRoom.capacity} orang`;
+
+    // Get booked dates
+    const res = await fetch(`${API}/api/rooms/${roomId}/booked-dates`);
+    const bookedRanges = await res.json();
+
+    // Disable booked date ranges in flatpickr
+    const disabledRanges = bookedRanges.map(b => ({ from: b.checkin_date, to: b.checkout_date }));
+
+    if (checkinFp) checkinFp.destroy();
+    if (checkoutFp) checkoutFp.destroy();
+
+    checkinFp = flatpickr('#f-checkin', {
+        dateFormat: 'Y-m-d', minDate: 'today', disable: disabledRanges,
+        locale: { firstDayOfWeek: 1 },
+        onDayCreate: (dObj, dStr, fp, dayElem) => {
+            const d = flatpickr.formatDate(dayElem.dateObj, 'Y-m-d');
+            if (disabledRanges.some(r => d >= r.from && d < r.to)) dayElem.classList.add('unavailable');
+        },
+        onChange: (sel) => {
+            if (sel[0]) checkoutFp.set('minDate', new Date(sel[0].getTime() + 86400000));
+            updateDateSummary();
+        }
+    });
+
+    checkoutFp = flatpickr('#f-checkout', {
+        dateFormat: 'Y-m-d', minDate: 'today', disable: disabledRanges,
+        locale: { firstDayOfWeek: 1 },
+        onDayCreate: (dObj, dStr, fp, dayElem) => {
+            const d = flatpickr.formatDate(dayElem.dateObj, 'Y-m-d');
+            if (disabledRanges.some(r => d > r.from && d <= r.to)) dayElem.classList.add('unavailable');
+        },
+        onChange: () => updateDateSummary()
+    });
+
+    // Reset form & steps
+    document.getElementById('booking-form').reset();
+    document.getElementById('f-checkin').value = '';
+    document.getElementById('f-checkout').value = '';
+    document.getElementById('date-summary').classList.add('hidden');
+    document.getElementById('btn-step1-next').disabled = true;
+    showStep(1);
+    document.getElementById('form-error').classList.add('hidden');
+    document.getElementById('booking-modal').classList.remove('hidden');
+}
+
+function updateDateSummary() {
+    const cin = document.getElementById('f-checkin').value;
+    const cout = document.getElementById('f-checkout').value;
+    if (cin && cout) {
+        const nights = Math.ceil((new Date(cout) - new Date(cin)) / 86400000);
+        const total = nights * parseFloat(document.getElementById('f-price-per-night').value);
+        document.getElementById('summary-nights').textContent = nights;
+        document.getElementById('summary-total').textContent = total.toFixed(2);
+        document.getElementById('date-summary').classList.remove('hidden');
+        document.getElementById('btn-step1-next').disabled = false;
+    } else {
+        document.getElementById('date-summary').classList.add('hidden');
+        document.getElementById('btn-step1-next').disabled = true;
+    }
+}
+
+// ──── STEP NAVIGATION ────
+function showStep(step) {
+    [1, 2, 3].forEach(s => {
+        document.getElementById(`step-${s}`).classList.add('hidden');
+        document.getElementById(`step${s}-ind`).classList.remove('active');
+        if (s < 3) document.getElementById(`step${s}-conn`).classList.remove('active');
+    });
+    document.getElementById(`step-${step}`).classList.remove('hidden');
+    for (let s = 1; s <= step; s++) {
+        document.getElementById(`step${s}-ind`).classList.add('active');
+        if (s < step) document.getElementById(`step${s}-conn`).classList.add('active');
+    }
+}
+
+document.getElementById('btn-step1-next').addEventListener('click', () => {
+    if (!document.getElementById('f-checkin').value || !document.getElementById('f-checkout').value) return;
+    showStep(2);
+});
+
+document.getElementById('btn-step2-back').addEventListener('click', () => showStep(1));
+
+document.getElementById('btn-step2-next').addEventListener('click', () => {
+    const name = document.getElementById('f-name').value.trim();
+    const phone = document.getElementById('f-phone').value.trim();
+    if (!name || !phone) { alert('Sila lengkapkan Nama Penuh dan No. Telefon.'); return; }
+
+    const cin = document.getElementById('f-checkin').value;
+    const cout = document.getElementById('f-checkout').value;
+    const nights = Math.ceil((new Date(cout) - new Date(cin)) / 86400000);
+    const total = nights * parseFloat(document.getElementById('f-price-per-night').value);
+
+    document.getElementById('review-room').textContent = selectedRoom.name;
+    document.getElementById('review-guests').textContent = `${guestCount} orang`;
+    document.getElementById('review-checkin').textContent = cin;
+    document.getElementById('review-checkout').textContent = cout;
+    document.getElementById('review-name').textContent = name;
+    document.getElementById('review-phone').textContent = phone;
+    document.getElementById('review-nights').textContent = nights;
+    document.getElementById('review-price-per-night').textContent = selectedRoom.price_per_night;
+    document.getElementById('review-total').textContent = total.toFixed(2);
+
+    showStep(3);
+});
+
+document.getElementById('btn-step3-back').addEventListener('click', () => showStep(2));
+
+// ──── GUEST COUNT ────
+document.getElementById('btn-guests-plus').addEventListener('click', () => {
+    if (selectedRoom && guestCount < selectedRoom.capacity) {
+        guestCount++;
+        document.getElementById('guests-count').textContent = guestCount;
+    }
+});
+document.getElementById('btn-guests-minus').addEventListener('click', () => {
+    if (guestCount > 1) {
+        guestCount--;
+        document.getElementById('guests-count').textContent = guestCount;
+    }
+});
+
+// ──── SUBMIT BOOKING ────
+document.getElementById('booking-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const btn = document.getElementById('btn-submit');
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Menghantar...';
+    document.getElementById('form-error').classList.add('hidden');
+
+    const body = {
+        room_id: parseInt(document.getElementById('f-room-id').value),
+        guest_name: document.getElementById('f-name').value.trim(),
+        guest_phone: document.getElementById('f-phone').value.trim(),
+        guest_email: document.getElementById('f-email').value.trim(),
+        guest_ic: document.getElementById('f-ic').value.trim(),
+        num_guests: guestCount,
+        checkin_date: document.getElementById('f-checkin').value,
+        checkout_date: document.getElementById('f-checkout').value,
+        special_request: document.getElementById('f-special').value.trim()
+    };
+
+    try {
+        const res = await fetch(`${API}/api/bookings`, {
+            method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body)
+        });
+        const data = await res.json();
+        if (!res.ok) {
+            document.getElementById('form-error-msg').textContent = data.error || 'Ralat berlaku.';
+            document.getElementById('form-error').classList.remove('hidden');
+        } else {
+            // Show success
+            document.getElementById('booking-modal').classList.add('hidden');
+            document.getElementById('success-ref').textContent = data.booking.booking_ref;
+            document.getElementById('success-room').textContent = data.booking.room_name;
+            document.getElementById('success-checkin').textContent = data.booking.checkin_date;
+            document.getElementById('success-checkout').textContent = data.booking.checkout_date;
+            document.getElementById('success-nights').textContent = `${data.booking.num_nights} malam`;
+            document.getElementById('success-total').textContent = parseFloat(data.booking.total_price).toFixed(2);
+            const waMsg = `Salam TERB, saya telah membuat tempahan dengan rujukan *${data.booking.booking_ref}*%0aBilik: ${data.booking.room_name}%0aTarikh Masuk: ${data.booking.checkin_date}%0aTarikh Keluar: ${data.booking.checkout_date}%0aJumlah: RM${parseFloat(data.booking.total_price).toFixed(2)}%0aSila sahkan tempahan saya. Terima kasih.`;
+            document.getElementById('btn-wa-confirm').href = `https://wa.me/60194489296?text=${waMsg}`;
+            document.getElementById('success-modal').classList.remove('hidden');
+        }
+    } catch (err) {
+        document.getElementById('form-error-msg').textContent = 'Ralat sambungan. Sila cuba lagi.';
+        document.getElementById('form-error').classList.remove('hidden');
+    }
+
+    btn.disabled = false;
+    btn.innerHTML = '<i class="fa-solid fa-check"></i> Sahkan Tempahan';
+});
+
+// ──── CLOSE MODAL ────
+document.getElementById('close-modal').addEventListener('click', () => {
+    document.getElementById('booking-modal').classList.add('hidden');
+});
+document.getElementById('booking-modal').addEventListener('click', function(e) {
+    if (e.target === this) this.classList.add('hidden');
+});
+
+// ──── BOOKING LOOKUP ────
+document.getElementById('btn-lookup').addEventListener('click', async () => {
+    const ref = document.getElementById('lookup-ref').value.trim().toUpperCase();
+    if (!ref) return;
+    const div = document.getElementById('lookup-result');
+    div.classList.remove('hidden');
+    div.innerHTML = `<div class="text-slate-400 text-sm"><i class="fa-solid fa-spinner fa-spin mr-1"></i> Mencari...</div>`;
+    try {
+        const res = await fetch(`${API}/api/bookings/${ref}`);
+        if (!res.ok) {
+            div.innerHTML = `<div class="bg-rose-50 border border-rose-200 rounded-xl p-3 text-rose-700 text-sm"><i class="fa-solid fa-circle-xmark mr-2"></i>Tempahan tidak dijumpai untuk rujukan <strong>${ref}</strong>.</div>`;
+        } else {
+            const b = await res.json();
+            const statusColor = b.status === 'Menunggu Pengesahan' ? 'bg-amber-100 text-amber-800' : b.status === 'Disahkan' ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800';
+            div.innerHTML = `
+                <div class="bg-white border border-slate-200 rounded-xl p-4 text-sm shadow-sm text-left">
+                    <div class="flex justify-between items-start mb-3">
+                        <div>
+                            <p class="font-extrabold text-slate-900">${b.booking_ref}</p>
+                            <p class="text-slate-500 text-xs">${b.room_name}</p>
+                        </div>
+                        <span class="status-badge ${statusColor}">${b.status}</span>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2 text-xs text-slate-600">
+                        <div><span class="text-slate-400">Nama:</span> ${b.guest_name}</div>
+                        <div><span class="text-slate-400">Tetamu:</span> ${b.num_guests} orang</div>
+                        <div><span class="text-slate-400">Masuk:</span> ${b.checkin_date}</div>
+                        <div><span class="text-slate-400">Keluar:</span> ${b.checkout_date}</div>
+                        <div class="col-span-2 font-bold text-emerald-800">Jumlah: RM${parseFloat(b.total_price).toFixed(2)}</div>
+                    </div>
+                </div>`;
+        }
+    } catch { div.innerHTML = `<div class="text-rose-500 text-sm">Ralat sambungan.</div>`; }
+});
+
+document.getElementById('lookup-ref').addEventListener('keydown', (e) => { if (e.key === 'Enter') document.getElementById('btn-lookup').click(); });
+
+// Mobile menu
+document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+    document.getElementById('mobile-menu').classList.toggle('hidden');
+});
+
+// Init
+loadRooms();
+</script>
+</body>
+</html>
