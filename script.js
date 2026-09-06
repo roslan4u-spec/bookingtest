@@ -7,6 +7,12 @@ const translations = {
         brand_subtitle: 'Hutan Lipur Berkelah',
         nav_home: 'UTAMA',
         nav_direction: 'PANDUAN JALAN',
+        nav_tarikan: 'TARIKAN',
+        tarikan_sungai: 'Sungai',
+        tarikan_khemah: 'Berkhemah',
+        tarikan_kelah: 'Berkelah',
+        tarikan_flora: 'Flora',
+        tarikan_air_terjun: 'Air Terjun',
         nav_rooms: 'BILIK & CHALET',
         nav_activities: 'AKTIVITI',
         nav_terms: 'TERMA & SYARAT',
@@ -92,6 +98,12 @@ const translations = {
         brand_subtitle: 'Berkelah Forest Reserve',
         nav_home: 'HOME',
         nav_direction: 'DIRECTION',
+        nav_tarikan: 'ATTRACTIONS',
+        tarikan_sungai: 'River',
+        tarikan_khemah: 'Camping',
+        tarikan_kelah: 'Picnic',
+        tarikan_flora: 'Flora',
+        tarikan_air_terjun: 'Waterfall',
         nav_rooms: 'ROOMS',
         nav_activities: 'ACTIVITIES',
         nav_terms: 'TERMS & CONDITIONS',
@@ -252,13 +264,24 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Mobile menu drawer toggle
+    // Mobile Menu Toggle
     const mobileMenuBtn = document.getElementById('mobile-menu-btn');
     const mobileMenu = document.getElementById('mobile-menu');
-
     if (mobileMenuBtn && mobileMenu) {
         mobileMenuBtn.addEventListener('click', () => {
             mobileMenu.classList.toggle('hidden');
+        });
+    }
+
+    // Mobile Tarikan Dropdown Toggle
+    const mobileTarikanBtn = document.getElementById('mobile-tarikan-btn');
+    const mobileTarikanMenu = document.getElementById('mobile-tarikan-menu');
+    const mobileTarikanIcon = document.getElementById('mobile-tarikan-icon');
+    if (mobileTarikanBtn && mobileTarikanMenu && mobileTarikanIcon) {
+        mobileTarikanBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            mobileTarikanMenu.classList.toggle('hidden');
+            mobileTarikanIcon.classList.toggle('rotate-180');
         });
     }
 });

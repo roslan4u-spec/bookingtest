@@ -52,6 +52,23 @@
                     <a href="#direction" class="px-3 py-2 text-slate-700 hover:text-emerald-700 hover:bg-emerald-50 rounded-lg transition flex items-center gap-1">
                         <i class="fa-solid fa-location-dot text-emerald-600"></i> <span data-i18n="nav_direction">DIRECTION</span>
                     </a>
+                    
+                    <!-- Dropdown Tarikan -->
+                    <div class="relative group">
+                        <button class="px-3 py-2 text-slate-700 hover:text-emerald-700 hover:bg-emerald-50 rounded-lg transition flex items-center gap-1 focus:outline-none h-full">
+                            <span data-i18n="nav_tarikan">TARIKAN</span> <i class="fa-solid fa-chevron-down text-[10px]"></i>
+                        </button>
+                        <!-- Dropdown menu -->
+                        <div class="absolute left-0 mt-2 w-48 bg-white rounded-xl shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform origin-top-left border border-slate-100 z-50">
+                            <div class="py-2">
+                                <a href="#activities-tabs" class="block px-4 py-2.5 text-sm text-slate-700 hover:bg-emerald-50 hover:text-emerald-700 transition" data-i18n="tarikan_sungai">Sungai</a>
+                                <a href="#activities-tabs" class="block px-4 py-2.5 text-sm text-slate-700 hover:bg-emerald-50 hover:text-emerald-700 transition" data-i18n="tarikan_khemah">Berkhemah</a>
+                                <a href="#activities-tabs" class="block px-4 py-2.5 text-sm text-slate-700 hover:bg-emerald-50 hover:text-emerald-700 transition" data-i18n="tarikan_kelah">Berkelah</a>
+                                <a href="#activities-tabs" class="block px-4 py-2.5 text-sm text-slate-700 hover:bg-emerald-50 hover:text-emerald-700 transition" data-i18n="tarikan_flora">Flora</a>
+                                <a href="#activities-tabs" class="block px-4 py-2.5 text-sm text-slate-700 hover:bg-emerald-50 hover:text-emerald-700 transition" data-i18n="tarikan_air_terjun">Air Terjun</a>
+                            </div>
+                        </div>
+                    </div>
                     <a href="/rooms" class="px-3 py-2 text-slate-700 hover:text-emerald-700 hover:bg-emerald-50 rounded-lg transition" data-i18n="nav_rooms">BILIK &amp; CHALET</a>
                     <a href="#activities-tabs" class="px-3 py-2 text-emerald-800 bg-emerald-100/70 font-semibold rounded-lg shadow-sm border border-emerald-200" data-i18n="nav_activities">ACTIVITIES</a>
                     <a href="#prohibited-rules" class="px-3 py-2 text-slate-700 hover:text-emerald-700 hover:bg-emerald-50 rounded-lg transition" data-i18n="nav_terms">TERMS & CONDITIONS</a>
@@ -69,6 +86,18 @@
         <div id="mobile-menu" class="hidden lg:hidden bg-white border-t border-slate-100 px-4 pt-2 pb-6 space-y-1 shadow-lg">
             <a href="#" class="block px-3 py-2 text-slate-700 hover:bg-emerald-50 hover:text-emerald-800 rounded-md" data-i18n="nav_home">HOME</a>
             <a href="#direction" class="block px-3 py-2 text-slate-700 hover:bg-emerald-50 hover:text-emerald-800 rounded-md" data-i18n="nav_direction">DIRECTION</a>
+            <div class="space-y-1">
+                <button id="mobile-tarikan-btn" class="w-full text-left px-3 py-2 text-slate-700 hover:bg-emerald-50 hover:text-emerald-800 rounded-md flex justify-between items-center focus:outline-none">
+                    <span data-i18n="nav_tarikan">TARIKAN</span> <i class="fa-solid fa-chevron-down text-xs transition-transform" id="mobile-tarikan-icon"></i>
+                </button>
+                <div id="mobile-tarikan-menu" class="hidden pl-6 pr-3 py-1 space-y-1 border-l-2 border-emerald-100 ml-3">
+                    <a href="#activities-tabs" class="block px-3 py-2 text-sm text-slate-600 hover:text-emerald-800 rounded-md" data-i18n="tarikan_sungai">Sungai</a>
+                    <a href="#activities-tabs" class="block px-3 py-2 text-sm text-slate-600 hover:text-emerald-800 rounded-md" data-i18n="tarikan_khemah">Berkhemah</a>
+                    <a href="#activities-tabs" class="block px-3 py-2 text-sm text-slate-600 hover:text-emerald-800 rounded-md" data-i18n="tarikan_kelah">Berkelah</a>
+                    <a href="#activities-tabs" class="block px-3 py-2 text-sm text-slate-600 hover:text-emerald-800 rounded-md" data-i18n="tarikan_flora">Flora</a>
+                    <a href="#activities-tabs" class="block px-3 py-2 text-sm text-slate-600 hover:text-emerald-800 rounded-md" data-i18n="tarikan_air_terjun">Air Terjun</a>
+                </div>
+            </div>
             <a href="/rooms" class="block px-3 py-2 text-slate-700 hover:bg-emerald-50 hover:text-emerald-800 rounded-md" data-i18n="nav_rooms">BILIK &amp; CHALET</a>
             <a href="#activities-tabs" class="block px-3 py-2 font-bold text-emerald-800 bg-emerald-50 rounded-md" data-i18n="nav_activities">ACTIVITIES</a>
             <a href="#prohibited-rules" class="block px-3 py-2 text-slate-700 hover:bg-emerald-50 hover:text-emerald-800 rounded-md" data-i18n="nav_terms">TERMS & CONDITIONS</a>
