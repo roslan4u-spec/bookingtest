@@ -238,174 +238,147 @@
             </div>
         </section>
 
-        <!-- Activity Interactive Tabs Header -->
-        <section id="activities-tabs" class="scroll-mt-24 mb-12">
-            <div class="text-center max-w-2xl mx-auto mb-8">
-                <h2 class="text-3xl font-extrabold text-emerald-950 tracking-tight mb-2" data-i18n="act_heading">Aktiviti Menarik Untuk Anda</h2>
-                <p class="text-slate-600" data-i18n="act_subheading">Pilih aktiviti di bawah untuk melihat maklumat lanjut dan panduan keselamatan di TERB Hutan Lipur Berkelah.</p>
+                <!-- Tarikan & Maklumat Rasmi TERB -->
+        <section id="activities-tabs" class="scroll-mt-24 mb-16">
+            <div class="text-center max-w-3xl mx-auto mb-10">
+                <span class="inline-block px-3 py-1 bg-emerald-100 text-emerald-800 rounded-full text-xs font-bold uppercase tracking-wider mb-3">Taman Eko Rimba Berkelah</span>
+                <h2 class="text-3xl sm:text-4xl font-extrabold text-emerald-950 tracking-tight mb-4">Maklumat & Tarikan Utama</h2>
+                <p class="text-slate-600 text-lg">Maklumat rasmi Jabatan Perhutanan Negeri Pahang untuk Hutan Lipur Berkelah.</p>
             </div>
 
-            <!-- Tab Buttons -->
+            <!-- Info Cards (Lokasi, Hutan, Kemudahan) -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+                <!-- Lokasi -->
+                <div class="bg-white rounded-2xl p-6 shadow-lg border border-slate-100 flex flex-col items-center text-center">
+                    <div class="w-14 h-14 bg-amber-100 text-amber-600 rounded-full flex items-center justify-center text-2xl mb-4">
+                        <i class="fa-solid fa-map-location-dot"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-800 mb-3">Lokasi</h3>
+                    <p class="text-slate-600 leading-relaxed text-sm">
+                        Kompartmen 363, Hutan Simpan Berkelah. Keluasan pembangunan lebih kurang 5 hektar. Kedudukan kira-kira 45 km dari Kuantan atau 4.8 km daripada jalan utama Kuantan-Maran.
+                    </p>
+                </div>
+                <!-- Jenis Hutan -->
+                <div class="bg-white rounded-2xl p-6 shadow-lg border border-slate-100 flex flex-col items-center text-center">
+                    <div class="w-14 h-14 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center text-2xl mb-4">
+                        <i class="fa-solid fa-tree"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-800 mb-3">Jenis Hutan</h3>
+                    <p class="text-slate-600 leading-relaxed text-sm">
+                        Kawasan ini diklasifikasikan sebagai <strong>Hutan Dipterokarp Bukit</strong> yang kaya dengan pelbagai spesies flora semula jadi.
+                    </p>
+                </div>
+                <!-- Kemudahan -->
+                <div class="bg-white rounded-2xl p-6 shadow-lg border border-slate-100 flex flex-col items-center text-center">
+                    <div class="w-14 h-14 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center text-2xl mb-4">
+                        <i class="fa-solid fa-restroom"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-800 mb-3">Kemudahan</h3>
+                    <div class="flex flex-wrap justify-center gap-2 mt-2">
+                        <span class="px-3 py-1 bg-slate-100 text-slate-700 rounded-md text-xs font-semibold">Pondok Rehat</span>
+                        <span class="px-3 py-1 bg-slate-100 text-slate-700 rounded-md text-xs font-semibold">Parkir</span>
+                        <span class="px-3 py-1 bg-slate-100 text-slate-700 rounded-md text-xs font-semibold">Tandas</span>
+                        <span class="px-3 py-1 bg-slate-100 text-slate-700 rounded-md text-xs font-semibold">Surau</span>
+                        <span class="px-3 py-1 bg-slate-100 text-slate-700 rounded-md text-xs font-semibold">Tempat Memasak</span>
+                        <span class="px-3 py-1 bg-slate-100 text-slate-700 rounded-md text-xs font-semibold">Bilik Persalinan</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab Buttons for Tarikan -->
             <div class="flex flex-wrap justify-center gap-2 sm:gap-4 border-b border-slate-200 pb-4">
-                <button class="tab-btn active px-5 py-3 rounded-xl font-bold text-sm sm:text-base flex items-center gap-2.5 transition shadow-sm" data-tab="barbeque">
-                    <i class="fa-solid fa-fire-burner text-amber-500"></i> <span data-i18n="tab_bbq">Barbeque</span>
+                <button class="tab-btn active px-5 py-3 rounded-xl font-bold text-sm sm:text-base flex items-center gap-2.5 transition shadow-sm" data-tab="sungai">
+                    <i class="fa-solid fa-water text-cyan-500"></i> <span data-i18n="tarikan_sungai">Sungai</span>
                 </button>
-                <button class="tab-btn px-5 py-3 rounded-xl font-bold text-sm sm:text-base flex items-center gap-2.5 transition text-slate-600 hover:bg-emerald-50" data-tab="picnic">
-                    <i class="fa-solid fa-umbrella-beach text-emerald-600"></i> <span data-i18n="tab_picnic">Picnic</span>
+                <button class="tab-btn px-5 py-3 rounded-xl font-bold text-sm sm:text-base flex items-center gap-2.5 transition text-slate-600 hover:bg-emerald-50" data-tab="khemah">
+                    <i class="fa-solid fa-campground text-amber-600"></i> <span data-i18n="tarikan_khemah">Berkhemah</span>
                 </button>
-                <button class="tab-btn px-5 py-3 rounded-xl font-bold text-sm sm:text-base flex items-center gap-2.5 transition text-slate-600 hover:bg-emerald-50" data-tab="rubber-tube">
-                    <i class="fa-solid fa-life-ring text-cyan-600"></i> <span data-i18n="tab_rubber_tube">Rubber Tube Rafting</span>
+                <button class="tab-btn px-5 py-3 rounded-xl font-bold text-sm sm:text-base flex items-center gap-2.5 transition text-slate-600 hover:bg-emerald-50" data-tab="kelah">
+                    <i class="fa-solid fa-basket-shopping text-emerald-600"></i> <span data-i18n="tarikan_kelah">Berkelah</span>
                 </button>
-                <button class="tab-btn px-5 py-3 rounded-xl font-bold text-sm sm:text-base flex items-center gap-2.5 transition text-slate-600 hover:bg-emerald-50" data-tab="swimming">
-                    <i class="fa-solid fa-person-swimming text-blue-600"></i> <span data-i18n="tab_swimming">Swimming</span>
+                <button class="tab-btn px-5 py-3 rounded-xl font-bold text-sm sm:text-base flex items-center gap-2.5 transition text-slate-600 hover:bg-emerald-50" data-tab="flora">
+                    <i class="fa-solid fa-leaf text-lime-600"></i> <span data-i18n="tarikan_flora">Flora</span>
+                </button>
+                <button class="tab-btn px-5 py-3 rounded-xl font-bold text-sm sm:text-base flex items-center gap-2.5 transition text-slate-600 hover:bg-emerald-50" data-tab="air-terjun">
+                    <i class="fa-solid fa-water-ladder text-blue-500"></i> <span data-i18n="tarikan_air_terjun">Air Terjun</span>
                 </button>
             </div>
 
             <!-- Tab Contents Container -->
             <div class="mt-8">
-                <!-- Barbeque Tab Content -->
-                <div id="tab-barbeque" class="tab-content block">
-                    <div class="bg-white rounded-2xl shadow-xl overflow-hidden border border-slate-100 grid grid-cols-1 lg:grid-cols-12">
-                        <div class="lg:col-span-6 relative h-64 lg:h-auto">
-                            <img src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=1000&q=80" alt="Barbeque TERB" class="w-full h-full object-cover">
-                            <div class="absolute top-4 left-4 bg-emerald-900/90 backdrop-blur-md text-white text-xs font-bold px-3 py-1.5 rounded-full" data-i18n="bbq_tag">
-                                Popular Activity
-                            </div>
-                        </div>
-                        <div class="lg:col-span-6 p-6 sm:p-8 lg:p-10 flex flex-col justify-between">
-                            <div>
-                                <div class="flex items-center gap-3 text-amber-600 font-semibold text-sm mb-2 uppercase tracking-wider" data-i18n="bbq_sub">
-                                    <i class="fa-solid fa-fire"></i> Sesi BBQ Tepi Sungai Berkelah
-                                </div>
-                                <h3 class="text-2xl sm:text-3xl font-extrabold text-slate-900 mb-4" data-i18n="bbq_title">Barbeque</h3>
-                                <p class="text-slate-600 mb-6 leading-relaxed" data-i18n="bbq_desc">
-                                    Nikmati hidangan panggang panas di tepi sungai Hutan Lipur Berkelah yang jernih dan nyaman. Tapak BBQ disediakan untuk kemudahan anda sekeluarga.
-                                </p>
-                                <div class="bg-amber-50 border-l-4 border-amber-400 p-4 rounded-r-lg mb-6 text-slate-700 text-sm">
-                                    <p class="font-bold text-amber-900 mb-1"><i class="fa-solid fa-circle-info"></i> <span data-i18n="bbq_notes_header">Nota Penting BBQ:</span></p>
-                                    <ul class="list-disc list-inside space-y-1 text-slate-600" data-i18n="bbq_notes_list">
-                                        <li>Tetamu digalakkan membawa arang, jaring panggang, dan peralatan sendiri.</li>
-                                        <li>Pastikan kawasan BBQ dibersihkan selepas digunakan.</li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="flex flex-wrap gap-3">
-                                <a href="https://wa.me/60194489296?text=Halo%20TERB,%20saya%20ingin%20bertanya%20mengenai%20tapak%20BBQ%20di%20Hutan%20Lipur%20Berkelah" target="_blank" class="bg-emerald-700 hover:bg-emerald-800 text-white font-bold px-5 py-2.5 rounded-lg shadow transition flex items-center gap-2">
-                                    <i class="fa-brands fa-whatsapp"></i> <span data-i18n="btn_book_bbq">Tempah / Tanya Tapak BBQ</span>
-                                </a>
-                            </div>
+                <!-- Tab: Sungai -->
+                <div id="sungai" class="tab-content active transition-opacity duration-500 opacity-100">
+                    <div class="bg-white rounded-3xl shadow-xl border border-slate-100 overflow-hidden">
+                        <div class="p-8 sm:p-10 text-center max-w-3xl mx-auto">
+                            <i class="fa-solid fa-water text-5xl text-cyan-500 mb-6"></i>
+                            <h3 class="text-3xl font-extrabold text-slate-900 mb-4">Sungai Jernih</h3>
+                            <p class="text-slate-600 leading-relaxed text-lg mb-6">
+                                Mempunyai sungai dan kolam semula jadi yang amat jernih, sejuk, serta menyegarkan. Sesuai untuk bermandi-manda dan menyejukkan badan.
+                            </p>
+                            <a href="https://wa.me/60194489296" target="_blank" class="inline-flex bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-6 py-3 rounded-lg transition gap-2 items-center">
+                                <i class="fa-brands fa-whatsapp"></i> Pertanyaan
+                            </a>
                         </div>
                     </div>
                 </div>
 
-                <!-- Picnic Tab Content -->
-                <div id="tab-picnic" class="tab-content hidden">
-                    <div class="bg-white rounded-2xl shadow-xl overflow-hidden border border-slate-100 grid grid-cols-1 lg:grid-cols-12">
-                        <div class="lg:col-span-6 relative h-64 lg:h-auto">
-                            <img src="https://images.unsplash.com/photo-1526772662000-3f88f10405ff?auto=format&fit=crop&w=1000&q=80" alt="Picnic TERB" class="w-full h-full object-cover">
-                            <div class="absolute top-4 left-4 bg-emerald-900/90 backdrop-blur-md text-white text-xs font-bold px-3 py-1.5 rounded-full" data-i18n="picnic_tag">
-                                Family Favorite
-                            </div>
-                        </div>
-                        <div class="lg:col-span-6 p-6 sm:p-8 lg:p-10 flex flex-col justify-between">
-                            <div>
-                                <div class="flex items-center gap-3 text-emerald-600 font-semibold text-sm mb-2 uppercase tracking-wider" data-i18n="picnic_sub">
-                                    <i class="fa-solid fa-tree"></i> Perkelahan & Gazebo
-                                </div>
-                                <h3 class="text-2xl sm:text-3xl font-extrabold text-slate-900 mb-4" data-i18n="picnic_title">Picnic</h3>
-                                <p class="text-slate-600 mb-6 leading-relaxed" data-i18n="picnic_desc">
-                                    Sesuai untuk perkelahan harian (day trip) bersama keluarga di bawah pepohonan rimba Hutan Lipur Berkelah yang redup dan menyegarkan.
-                                </p>
-                                <div class="bg-emerald-50 border-l-4 border-emerald-500 p-4 rounded-r-lg mb-6 text-slate-700 text-sm">
-                                    <p class="font-bold text-emerald-900 mb-1"><i class="fa-solid fa-circle-info"></i> <span data-i18n="picnic_notes_header">Panduan Perkelahan:</span></p>
-                                    <ul class="list-disc list-inside space-y-1 text-slate-600" data-i18n="picnic_notes_list">
-                                        <li>Gazebo / Pondok perkelahan boleh disewa tertakluk kekosongan.</li>
-                                        <li>Hormati ketenteraman pengunjung lain dengan mengelakkan peralatan muzik yang bising.</li>
-                                        <li>Sila bawa beg sampah sendiri dan buang sampah di tempat yang disediakan.</li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="flex flex-wrap gap-3">
-                                <a href="https://wa.me/60194489296?text=Halo%20TERB,%20saya%20ingin%20bertanya%20sewaan%20tapak%20picnic" target="_blank" class="bg-emerald-700 hover:bg-emerald-800 text-white font-bold px-5 py-2.5 rounded-lg shadow transition flex items-center gap-2">
-                                    <i class="fa-brands fa-whatsapp"></i> <span data-i18n="btn_book_picnic">Pertanyaan Sewaan Gazebo</span>
-                                </a>
-                            </div>
+                <!-- Tab: Berkhemah -->
+                <div id="khemah" class="tab-content hidden opacity-0 transition-opacity duration-500">
+                    <div class="bg-white rounded-3xl shadow-xl border border-slate-100 overflow-hidden">
+                        <div class="p-8 sm:p-10 text-center max-w-3xl mx-auto">
+                            <i class="fa-solid fa-campground text-5xl text-amber-600 mb-6"></i>
+                            <h3 class="text-3xl font-extrabold text-slate-900 mb-4">Aktiviti Berkhemah</h3>
+                            <p class="text-slate-600 leading-relaxed text-lg mb-6">
+                                Nikmati pengalaman berkhemah di dalam Hutan Dipterokarp Bukit. Suasana yang bersih, tenang, dan nyaman menjadikan ia tapak perkhemahan yang ideal.
+                            </p>
+                            <a href="https://wa.me/60194489296" target="_blank" class="inline-flex bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-6 py-3 rounded-lg transition gap-2 items-center">
+                                <i class="fa-brands fa-whatsapp"></i> Tempah Tapak
+                            </a>
                         </div>
                     </div>
                 </div>
 
-                <!-- Rubber Tube Rafting Tab Content -->
-                <div id="tab-rubber-tube" class="tab-content hidden">
-                    <div class="bg-white rounded-2xl shadow-xl overflow-hidden border border-slate-100 grid grid-cols-1 lg:grid-cols-12">
-                        <div class="lg:col-span-6 relative h-64 lg:h-auto">
-                            <img src="https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=1000&q=80" alt="Rubber Tube Rafting" class="w-full h-full object-cover">
-                            <div class="absolute top-4 left-4 bg-cyan-900/90 backdrop-blur-md text-white text-xs font-bold px-3 py-1.5 rounded-full" data-i18n="tube_tag">
-                                Water Adventure
-                            </div>
-                        </div>
-                        <div class="lg:col-span-6 p-6 sm:p-8 lg:p-10 flex flex-col justify-between">
-                            <div>
-                                <div class="flex items-center gap-3 text-cyan-600 font-semibold text-sm mb-2 uppercase tracking-wider" data-i18n="tube_sub">
-                                    <i class="fa-solid fa-water-ladders"></i> Pelampung Tube Sungai
-                                </div>
-                                <h3 class="text-2xl sm:text-3xl font-extrabold text-slate-900 mb-4" data-i18n="tube_title">Rubber Tube Rafting</h3>
-                                <p class="text-slate-600 mb-6 leading-relaxed" data-i18n="tube_desc">
-                                    Aktiviti popular berhanyut santai mengikut arus Sungai Berkelah menggunakan pelampung getah. Aktiviti yang amat menyeronokkan untuk kanak-kanak mahupun orang dewasa!
-                                </p>
-                                <div class="bg-cyan-50 border-l-4 border-cyan-500 p-4 rounded-r-lg mb-6 text-slate-700 text-sm">
-                                    <p class="font-bold text-cyan-900 mb-1"><i class="fa-solid fa-shield-cat"></i> <span data-i18n="tube_notes_header">Info Sewaan & Keselamatan:</span></p>
-                                    <ul class="list-disc list-inside space-y-1 text-slate-600" data-i18n="tube_notes_list">
-                                        <li>Pelampung tube boleh disewa terus di pejabat pendaftaran.</li>
-                                        <li>Kanak-kanak wajib dipantau oleh ibu bapa / penjaga sepanjang masa.</li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="flex flex-wrap gap-3">
-                                <a href="https://wa.me/60194489296?text=Halo%20TERB,%20saya%20ingin%20bertanya%20sewa%20rubber%20tube" target="_blank" class="bg-cyan-700 hover:bg-cyan-800 text-white font-bold px-5 py-2.5 rounded-lg shadow transition flex items-center gap-2">
-                                    <i class="fa-brands fa-whatsapp"></i> <span data-i18n="btn_book_tube">Tanya Sewaan Rubber Tube</span>
-                                </a>
-                            </div>
+                <!-- Tab: Berkelah -->
+                <div id="kelah" class="tab-content hidden opacity-0 transition-opacity duration-500">
+                    <div class="bg-white rounded-3xl shadow-xl border border-slate-100 overflow-hidden">
+                        <div class="p-8 sm:p-10 text-center max-w-3xl mx-auto">
+                            <i class="fa-solid fa-basket-shopping text-5xl text-emerald-600 mb-6"></i>
+                            <h3 class="text-3xl font-extrabold text-slate-900 mb-4">Berkelah & Santai</h3>
+                            <p class="text-slate-600 leading-relaxed text-lg mb-6">
+                                Luangkan masa berkualiti bersama keluarga di kawasan perkelahan kami. Kemudahan seperti pondok rehat, tempat memasak, tandas, dan surau disediakan untuk keselesaan anda.
+                            </p>
                         </div>
                     </div>
                 </div>
 
-                <!-- Swimming Tab Content -->
-                <div id="tab-swimming" class="tab-content hidden">
-                    <div class="bg-white rounded-2xl shadow-xl overflow-hidden border border-slate-100 grid grid-cols-1 lg:grid-cols-12">
-                        <div class="lg:col-span-6 relative h-64 lg:h-auto">
-                            <img src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=1000&q=80" alt="River Swimming" class="w-full h-full object-cover">
-                            <div class="absolute top-4 left-4 bg-blue-900/90 backdrop-blur-md text-white text-xs font-bold px-3 py-1.5 rounded-full" data-i18n="swim_tag">
-                                Refreshing River
-                            </div>
-                        </div>
-                        <div class="lg:col-span-6 p-6 sm:p-8 lg:p-10 flex flex-col justify-between">
-                            <div>
-                                <div class="flex items-center gap-3 text-blue-600 font-semibold text-sm mb-2 uppercase tracking-wider" data-i18n="swim_sub">
-                                    <i class="fa-solid fa-person-swimming"></i> Mandi-Manda Air Terjun Berkelah
-                                </div>
-                                <h3 class="text-2xl sm:text-3xl font-extrabold text-slate-900 mb-4" data-i18n="swim_title">Swimming</h3>
-                                <p class="text-slate-600 mb-6 leading-relaxed" data-i18n="swim_desc">
-                                    Berenang dan mandi-manda di air terjun bukit 7 tingkat yang begitu jernih, sejuk dan menyegarkan di Hutan Lipur Berkelah, Pahang.
-                                </p>
-                                <div class="bg-blue-50 border-l-4 border-blue-500 p-4 rounded-r-lg mb-6 text-slate-700 text-sm">
-                                    <p class="font-bold text-blue-900 mb-1"><i class="fa-solid fa-triangle-exclamation"></i> <span data-i18n="swim_notes_header">Panduan Mandi Sungai:</span></p>
-                                    <ul class="list-disc list-inside space-y-1 text-slate-600" data-i18n="swim_notes_list">
-                                        <li>Air sungai adalah semula jadi, sila perhatikan arus air terutama jika hujan di hulu.</li>
-                                        <li>Pakaian mandi yang bersesuaian dan sopan amat digalakkan.</li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="flex flex-wrap gap-3">
-                                <a href="https://wa.me/60194489296?text=Halo%20TERB,%20saya%20ingin%20bertanya%20pakej%20mandi%20sungai" target="_blank" class="bg-blue-700 hover:bg-blue-800 text-white font-bold px-5 py-2.5 rounded-lg shadow transition flex items-center gap-2">
-                                    <i class="fa-brands fa-whatsapp"></i> <span data-i18n="btn_contact">Hubungi Kami</span>
-                                </a>
-                            </div>
+                <!-- Tab: Flora -->
+                <div id="flora" class="tab-content hidden opacity-0 transition-opacity duration-500">
+                    <div class="bg-white rounded-3xl shadow-xl border border-slate-100 overflow-hidden">
+                        <div class="p-8 sm:p-10 text-center max-w-3xl mx-auto">
+                            <i class="fa-solid fa-leaf text-5xl text-lime-600 mb-6"></i>
+                            <h3 class="text-3xl font-extrabold text-slate-900 mb-4">Kepelbagaian Flora</h3>
+                            <p class="text-slate-600 leading-relaxed text-lg mb-6">
+                                Terokai pelbagai spesies flora semula jadi di ekosistem Hutan Dipterokarp Bukit. Sesuai untuk pencinta alam sekitar dan aktiviti pendakian riadah.
+                            </p>
                         </div>
                     </div>
                 </div>
 
+                <!-- Tab: Air Terjun -->
+                <div id="air-terjun" class="tab-content hidden opacity-0 transition-opacity duration-500">
+                    <div class="bg-white rounded-3xl shadow-xl border border-slate-100 overflow-hidden">
+                        <div class="p-8 sm:p-10 text-center max-w-3xl mx-auto">
+                            <i class="fa-solid fa-water-ladder text-5xl text-blue-500 mb-6"></i>
+                            <h3 class="text-3xl font-extrabold text-slate-900 mb-4">Air Terjun 7 Tingkat</h3>
+                            <p class="text-slate-600 leading-relaxed text-lg mb-6">
+                                Tarikan paling ikonik: Air Terjun 7 Tingkat yang mengagumkan dengan ketinggian di antara 3 hingga 30 meter di setiap tingkatnya. Pemandangan indah dan sesuai untuk pendakian.
+                            </p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </section>
+
 
         <!-- Prohibited Activities and Rules Section -->
         <section id="prohibited-rules" class="scroll-mt-24 mb-16">
