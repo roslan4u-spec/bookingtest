@@ -278,7 +278,7 @@ if (process.env.NODE_ENV !== 'production' && !process.env.VERCEL) {
     app.use(express.static(rootDir));
 
     app.listen(PORT, () => {
-        console.log(`\n🌿 TERB Server berjalan di: http://localhost:${PORT}/`);
+        console.log(`\n🌿 Taman Eko Rimba Berkelah Server berjalan di: http://localhost:${PORT}/`);
         console.log(`📋 Halaman Tempahan  : http://localhost:${PORT}/rooms`);
         console.log(`🔧 Panel Admin       : http://localhost:${PORT}/admin`);
         console.log(`📡 API Bilik         : http://localhost:${PORT}/api/rooms`);
