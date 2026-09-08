@@ -103,8 +103,30 @@ function generateRef() {
 }
 
 // ──────────────────────────────────────────────
-// API ROUTES
+// API ROUTES & AUTHENTICATION
 // ──────────────────────────────────────────────
+
+// Admin Auth Setup
+const ADMIN_TOKEN = process.env.ADMIN_PASSWORD ? Buffer.from(process.env.ADMIN_PASSWORD).toString('base64') : 'dev_mode_token_123';
+
+app.post('/api/login', (req, res) => {
+    const { password } = req.body;
+    if (password === process.env.ADMIN_PASSWORD || (!process.env.ADMIN_PASSWORD && password === 'admin123')) {
+        res.json({ success: true, token: ADMIN_TOKEN });
+    } else {
+        res.status(401).json({ success: false, message: 'Kata laluan tidak sah!' });
+    }
+});
+
+const requireAdmin = (req, res, next) => {
+    const authHeader = req.headers.authorization;
+    if (authHeader === `Bearer ${ADMIN_TOKEN}`) {
+        next();
+    } else {
+        res.status(401).json({ error: 'Akses Ditolak. Sila log masuk panel admin.' });
+    }
+};
+
 
 // GET all rooms
 app.get('/api/rooms', async (req, res) => {
@@ -220,7 +242,7 @@ app.get('/api/bookings/:ref', async (req, res) => {
 });
 
 // GET all bookings (admin view)
-app.get('/api/admin/bookings', async (req, res) => {
+app.get('/api/admin/bookings', requireAdmin, async (req, res) => {
     try {
         const { rows } = await pool.query('SELECT * FROM bookings ORDER BY created_at DESC');
         res.json(rows);
@@ -244,7 +266,7 @@ app.patch('/api/bookings/:ref/cancel', async (req, res) => {
 });
 
 // PATCH update booking status (admin)
-app.patch('/api/bookings/:ref/status', async (req, res) => {
+app.patch('/api/bookings/:ref/status', requireAdmin, async (req, res) => {
     try {
         const { status } = req.body;
         const allowed = ['Menunggu Pengesahan', 'Disahkan', 'Dibatalkan'];
