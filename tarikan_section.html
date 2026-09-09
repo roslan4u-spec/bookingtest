@@ -1,0 +1,140 @@
+        <!-- Tarikan & Maklumat Rasmi TERB -->
+        <section id="activities-tabs" class="scroll-mt-24 mb-16">
+            <div class="text-center max-w-3xl mx-auto mb-10">
+                <span class="inline-block px-3 py-1 bg-emerald-100 text-emerald-800 rounded-full text-xs font-bold uppercase tracking-wider mb-3">Taman Eko Rimba Berkelah</span>
+                <h2 class="text-3xl sm:text-4xl font-extrabold text-emerald-950 tracking-tight mb-4">Maklumat & Tarikan Utama</h2>
+                <p class="text-slate-600 text-lg">Maklumat rasmi Jabatan Perhutanan Negeri Pahang untuk Taman Eko Rimba Berkelah.</p>
+            </div>
+
+            <!-- Info Cards (Lokasi, Hutan, Kemudahan) -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+                <!-- Lokasi -->
+                <div class="bg-white rounded-2xl p-6 shadow-lg border border-slate-100 flex flex-col items-center text-center">
+                    <div class="w-14 h-14 bg-amber-100 text-amber-600 rounded-full flex items-center justify-center text-2xl mb-4">
+                        <i class="fa-solid fa-map-location-dot"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-800 mb-3">Lokasi</h3>
+                    <p class="text-slate-600 leading-relaxed text-sm">
+                        Kompartmen 363, Hutan Simpan Berkelah. Keluasan pembangunan lebih kurang 5 hektar. Kedudukan kira-kira 45 km dari Kuantan atau 4.8 km daripada jalan utama Kuantan-Maran.
+                    </p>
+                </div>
+                <!-- Jenis Hutan -->
+                <div class="bg-white rounded-2xl p-6 shadow-lg border border-slate-100 flex flex-col items-center text-center">
+                    <div class="w-14 h-14 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center text-2xl mb-4">
+                        <i class="fa-solid fa-tree"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-800 mb-3">Jenis Hutan</h3>
+                    <p class="text-slate-600 leading-relaxed text-sm">
+                        Kawasan ini diklasifikasikan sebagai <strong>Hutan Dipterokarp Bukit</strong> yang kaya dengan pelbagai spesies flora semula jadi.
+                    </p>
+                </div>
+                <!-- Kemudahan -->
+                <div class="bg-white rounded-2xl p-6 shadow-lg border border-slate-100 flex flex-col items-center text-center">
+                    <div class="w-14 h-14 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center text-2xl mb-4">
+                        <i class="fa-solid fa-restroom"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-800 mb-3">Kemudahan</h3>
+                    <div class="flex flex-wrap justify-center gap-2 mt-2">
+                        <span class="px-3 py-1 bg-slate-100 text-slate-700 rounded-md text-xs font-semibold">Pondok Rehat</span>
+                        <span class="px-3 py-1 bg-slate-100 text-slate-700 rounded-md text-xs font-semibold">Parkir</span>
+                        <span class="px-3 py-1 bg-slate-100 text-slate-700 rounded-md text-xs font-semibold">Tandas</span>
+                        <span class="px-3 py-1 bg-slate-100 text-slate-700 rounded-md text-xs font-semibold">Surau</span>
+                        <span class="px-3 py-1 bg-slate-100 text-slate-700 rounded-md text-xs font-semibold">Tempat Memasak</span>
+                        <span class="px-3 py-1 bg-slate-100 text-slate-700 rounded-md text-xs font-semibold">Bilik Persalinan</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab Buttons for Tarikan -->
+            <div class="flex flex-wrap justify-center gap-2 sm:gap-4 border-b border-slate-200 pb-4">
+                <button class="tab-btn active px-5 py-3 rounded-xl font-bold text-sm sm:text-base flex items-center gap-2.5 transition shadow-sm" data-tab="sungai">
+                    <i class="fa-solid fa-water text-cyan-500"></i> <span data-i18n="tarikan_sungai">Sungai</span>
+                </button>
+                <button class="tab-btn px-5 py-3 rounded-xl font-bold text-sm sm:text-base flex items-center gap-2.5 transition text-slate-600 hover:bg-emerald-50" data-tab="khemah">
+                    <i class="fa-solid fa-campground text-amber-600"></i> <span data-i18n="tarikan_khemah">Berkhemah</span>
+                </button>
+                <button class="tab-btn px-5 py-3 rounded-xl font-bold text-sm sm:text-base flex items-center gap-2.5 transition text-slate-600 hover:bg-emerald-50" data-tab="kelah">
+                    <i class="fa-solid fa-basket-shopping text-emerald-600"></i> <span data-i18n="tarikan_kelah">Berkelah</span>
+                </button>
+                <button class="tab-btn px-5 py-3 rounded-xl font-bold text-sm sm:text-base flex items-center gap-2.5 transition text-slate-600 hover:bg-emerald-50" data-tab="flora">
+                    <i class="fa-solid fa-leaf text-lime-600"></i> <span data-i18n="tarikan_flora">Flora</span>
+                </button>
+                <button class="tab-btn px-5 py-3 rounded-xl font-bold text-sm sm:text-base flex items-center gap-2.5 transition text-slate-600 hover:bg-emerald-50" data-tab="air-terjun">
+                    <i class="fa-solid fa-water-ladder text-blue-500"></i> <span data-i18n="tarikan_air_terjun">Air Terjun</span>
+                </button>
+            </div>
+
+            <!-- Tab Contents Container -->
+            <div class="mt-8">
+                <!-- Tab: Sungai -->
+                <div id="sungai" class="tab-content active transition-opacity duration-500 opacity-100">
+                    <div class="bg-white rounded-3xl shadow-xl border border-slate-100 overflow-hidden">
+                        <div class="p-8 sm:p-10 text-center max-w-3xl mx-auto">
+                            <i class="fa-solid fa-water text-5xl text-cyan-500 mb-6"></i>
+                            <h3 class="text-3xl font-extrabold text-slate-900 mb-4">Sungai Jernih</h3>
+                            <p class="text-slate-600 leading-relaxed text-lg mb-6">
+                                Mempunyai sungai dan kolam semula jadi yang amat jernih, sejuk, serta menyegarkan. Sesuai untuk bermandi-manda dan menyejukkan badan.
+                            </p>
+                            <a href="https://wa.me/60194489296" target="_blank" class="inline-flex bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-6 py-3 rounded-lg transition gap-2 items-center">
+                                <i class="fa-brands fa-whatsapp"></i> Pertanyaan
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab: Berkhemah -->
+                <div id="khemah" class="tab-content hidden opacity-0 transition-opacity duration-500">
+                    <div class="bg-white rounded-3xl shadow-xl border border-slate-100 overflow-hidden">
+                        <div class="p-8 sm:p-10 text-center max-w-3xl mx-auto">
+                            <i class="fa-solid fa-campground text-5xl text-amber-600 mb-6"></i>
+                            <h3 class="text-3xl font-extrabold text-slate-900 mb-4">Aktiviti Berkhemah</h3>
+                            <p class="text-slate-600 leading-relaxed text-lg mb-6">
+                                Nikmati pengalaman berkhemah di dalam Hutan Dipterokarp Bukit. Suasana yang bersih, tenang, dan nyaman menjadikan ia tapak perkhemahan yang ideal.
+                            </p>
+                            <a href="https://wa.me/60194489296" target="_blank" class="inline-flex bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-6 py-3 rounded-lg transition gap-2 items-center">
+                                <i class="fa-brands fa-whatsapp"></i> Tempah Tapak
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab: Berkelah -->
+                <div id="kelah" class="tab-content hidden opacity-0 transition-opacity duration-500">
+                    <div class="bg-white rounded-3xl shadow-xl border border-slate-100 overflow-hidden">
+                        <div class="p-8 sm:p-10 text-center max-w-3xl mx-auto">
+                            <i class="fa-solid fa-basket-shopping text-5xl text-emerald-600 mb-6"></i>
+                            <h3 class="text-3xl font-extrabold text-slate-900 mb-4">Berkelah & Santai</h3>
+                            <p class="text-slate-600 leading-relaxed text-lg mb-6">
+                                Luangkan masa berkualiti bersama keluarga di kawasan perkelahan kami. Kemudahan seperti pondok rehat, tempat memasak, tandas, dan surau disediakan untuk keselesaan anda.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab: Flora -->
+                <div id="flora" class="tab-content hidden opacity-0 transition-opacity duration-500">
+                    <div class="bg-white rounded-3xl shadow-xl border border-slate-100 overflow-hidden">
+                        <div class="p-8 sm:p-10 text-center max-w-3xl mx-auto">
+                            <i class="fa-solid fa-leaf text-5xl text-lime-600 mb-6"></i>
+                            <h3 class="text-3xl font-extrabold text-slate-900 mb-4">Kepelbagaian Flora</h3>
+                            <p class="text-slate-600 leading-relaxed text-lg mb-6">
+                                Terokai pelbagai spesies flora semula jadi di ekosistem Hutan Dipterokarp Bukit. Sesuai untuk pencinta alam sekitar dan aktiviti pendakian riadah.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab: Air Terjun -->
+                <div id="air-terjun" class="tab-content hidden opacity-0 transition-opacity duration-500">
+                    <div class="bg-white rounded-3xl shadow-xl border border-slate-100 overflow-hidden">
+                        <div class="p-8 sm:p-10 text-center max-w-3xl mx-auto">
+                            <i class="fa-solid fa-water-ladder text-5xl text-blue-500 mb-6"></i>
+                            <h3 class="text-3xl font-extrabold text-slate-900 mb-4">Air Terjun 7 Tingkat</h3>
+                            <p class="text-slate-600 leading-relaxed text-lg mb-6">
+                                Tarikan paling ikonik: Air Terjun 7 Tingkat yang mengagumkan dengan ketinggian di antara 3 hingga 30 meter di setiap tingkatnya. Pemandangan indah dan sesuai untuk pendakian.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
