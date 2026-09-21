@@ -5,7 +5,7 @@ const translations = {
         announcement_welcome: 'Selamat Datang ke Taman Eko Rimba Berkelah',
         top_contact: '019-4489296',
         brand_subtitle: 'Hutan Lipur Berkelah',
-        nav_home: 'UTAMA',
+        nav_home: 'LAMAN UTAMA',
         nav_direction: 'PANDUAN JALAN',
         nav_tarikan: 'TARIKAN',
         tarikan_sungai: 'Sungai',
@@ -13,7 +13,7 @@ const translations = {
         tarikan_kelah: 'Berkelah',
         tarikan_flora: 'Flora',
         tarikan_air_terjun: 'Air Terjun',
-        nav_rooms: 'BILIK & CHALET',
+        nav_rooms: 'TEMPAHAN',
         nav_activities: 'AKTIVITI',
         nav_terms: 'TERMA & SYARAT',
         nav_contact: 'HUBUNGI KAMI',
@@ -54,14 +54,14 @@ const translations = {
         picnic_desc: 'Sesuai untuk berkelah harian bersama keluarga di bawah pepohonan rimba Taman Eko Rimba Berkelah yang redup dan menyegarkan.',
         picnic_notes_header: 'Panduan Berkelah:',
         picnic_notes_list: '<li>Gazebo / Pondok berkelah boleh disewa tertakluk kepada kekosongan.</li><li>Hormati keselesaan pengunjung lain dengan mengelakkan penggunaan peralatan muzik yang bising.</li><li>Sila bawa beg sampah sendiri dan buang sampah di tempat yang disediakan.</li>',
-        btn_book_picnic: 'Pertanyaan Sewaan Gazebo',
+        btn_book_picnic: 'Pertanyaan Tempahan Gazebo',
         tube_tag: 'Aktiviti Air',
         tube_sub: 'Hanyutan Tiub Sungai',
         tube_title: 'Tiub Hanyutan',
         tube_desc: 'Aktiviti popular berhanyut santai mengikut arus Sungai Berkelah menggunakan tiub getah. Aktiviti yang sangat menyeronokkan untuk kanak-kanak mahupun orang dewasa!',
-        tube_notes_header: 'Maklumat Sewaan & Keselamatan:',
+        tube_notes_header: 'Maklumat Tempahan & Keselamatan:',
         tube_notes_list: '<li>Tiub getah boleh disewa terus di kaunter pendaftaran.</li><li>Kanak-kanak wajib dipantau oleh ibu bapa / penjaga pada setiap masa.</li>',
-        btn_book_tube: 'Tanya Sewaan Tiub Hanyutan',
+        btn_book_tube: 'Tanya Tempahan Tiub Hanyutan',
         swim_tag: 'Air Segar & Jernih',
         swim_sub: 'Mandi-Manda Air Terjun Berkelah',
         swim_title: 'Mandi Sungai',
@@ -104,7 +104,7 @@ const translations = {
         tarikan_kelah: 'Picnic',
         tarikan_flora: 'Flora',
         tarikan_air_terjun: 'Waterfall',
-        nav_rooms: 'ROOMS',
+        nav_rooms: 'BOOKINGS',
         nav_activities: 'ACTIVITIES',
         nav_terms: 'TERMS & CONDITIONS',
         nav_contact: 'CONTACT US',
@@ -194,7 +194,7 @@ function setLanguage(lang) {
     localStorage.setItem('terb_lang', lang);
 
     // Update html lang attribute
-    document.documentElement.lang = lang;
+    document.documentElement.lang = lang === 'bm' ? 'ms' : lang;
 
     // Update all elements with data-i18n
     const elements = document.querySelectorAll('[data-i18n]');
@@ -270,6 +270,14 @@ document.addEventListener('DOMContentLoaded', () => {
     if (mobileMenuBtn && mobileMenu) {
         mobileMenuBtn.addEventListener('click', () => {
             mobileMenu.classList.toggle('hidden');
+        });
+        
+        // Close mobile menu when a link is clicked
+        const mobileMenuLinks = mobileMenu.querySelectorAll('a');
+        mobileMenuLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+            });
         });
     }
 

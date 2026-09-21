@@ -2,6 +2,7 @@
 <html lang="ms">
 <head>
     <meta charset="UTF-8">
+    <meta name="google" content="notranslate">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Activities & Direction – Taman Eko Rimba Berkelah</title>
     <script src="https://cdn.tailwindcss.com"></script>
@@ -17,6 +18,8 @@
                 <i class="fa-solid fa-tree text-emerald-400 mr-2"></i>Selamat Datang ke Taman Eko Rimba Berkelah
             </span>
             <div class="flex items-center space-x-4 mx-auto md:mx-0">
+                <!-- Page Indicator -->
+                <span class="text-amber-400 font-bold tracking-wider uppercase bg-emerald-800/50 px-3 py-1 rounded-full border border-emerald-700/50">Laman Utama</span>
                 <!-- Language Switcher Toggle -->
                 <div class="flex items-center bg-emerald-950/70 rounded-lg p-1 border border-emerald-700/60 shadow-sm">
                     <span class="text-xs text-emerald-300 mr-2 ml-1 hidden sm:inline"><i class="fa-solid fa-globe"></i> Language:</span>
@@ -37,9 +40,7 @@
             <div class="flex justify-between items-center h-20">
                 <!-- Brand Logo / Title -->
                 <a href="index.html" class="flex items-center gap-3">
-                    <div class="w-12 h-12 rounded-full bg-emerald-800 flex items-center justify-center text-amber-400 text-xl font-bold shadow-md">
-                        <i class="fa-solid fa-mountain-sun"></i>
-                    </div>
+                    <img src="images/logo.png" alt="Logo Taman Eko Rimba Berkelah" class="w-12 h-12 object-contain drop-shadow-md">
                     <div>
                         <span class="block text-xl font-extrabold text-emerald-950 tracking-wider">Taman Eko Rimba Berkelah</span>
                         <span class="block text-xs font-semibold text-emerald-600 uppercase tracking-widest" data-i18n="brand_subtitle">Hutan Lipur Berkelah</span>
@@ -53,24 +54,8 @@
                         <i class="fa-solid fa-location-dot text-emerald-600"></i> <span data-i18n="nav_direction">DIRECTION</span>
                     </a>
                     
-                    <!-- Dropdown Tarikan -->
-                    <div class="relative group">
-                        <button class="px-3 py-2 text-slate-700 hover:text-emerald-700 hover:bg-emerald-50 rounded-lg transition flex items-center gap-1 focus:outline-none h-full">
-                            <span data-i18n="nav_tarikan">TARIKAN</span> <i class="fa-solid fa-chevron-down text-[10px]"></i>
-                        </button>
-                        <!-- Dropdown menu -->
-                        <div class="absolute left-0 mt-2 w-48 bg-white rounded-xl shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform origin-top-left border border-slate-100 z-50">
-                            <div class="py-2">
-                                <a href="#activities-tabs" class="block px-4 py-2.5 text-sm text-slate-700 hover:bg-emerald-50 hover:text-emerald-700 transition" data-i18n="tarikan_sungai">Sungai</a>
-                                <a href="#activities-tabs" class="block px-4 py-2.5 text-sm text-slate-700 hover:bg-emerald-50 hover:text-emerald-700 transition" data-i18n="tarikan_khemah">Berkhemah</a>
-                                <a href="#activities-tabs" class="block px-4 py-2.5 text-sm text-slate-700 hover:bg-emerald-50 hover:text-emerald-700 transition" data-i18n="tarikan_kelah">Berkelah</a>
-                                <a href="#activities-tabs" class="block px-4 py-2.5 text-sm text-slate-700 hover:bg-emerald-50 hover:text-emerald-700 transition" data-i18n="tarikan_flora">Flora</a>
-                                <a href="#activities-tabs" class="block px-4 py-2.5 text-sm text-slate-700 hover:bg-emerald-50 hover:text-emerald-700 transition" data-i18n="tarikan_air_terjun">Air Terjun</a>
-                            </div>
-                        </div>
-                    </div>
-                    <a href="/rooms" class="px-3 py-2 text-slate-700 hover:text-emerald-700 hover:bg-emerald-50 rounded-lg transition" data-i18n="nav_rooms">BILIK &amp; CHALET</a>
-                    <a href="#activities-tabs" class="px-3 py-2 text-emerald-800 bg-emerald-100/70 font-semibold rounded-lg shadow-sm border border-emerald-200" data-i18n="nav_activities">ACTIVITIES</a>
+                    <a href="rooms.html" class="px-3 py-2 text-slate-700 hover:text-emerald-700 hover:bg-emerald-50 rounded-lg transition" data-i18n="nav_rooms">TEMPAHAN</a>
+                    <a href="aktiviti.html" class="px-3 py-2 text-slate-700 hover:text-emerald-700 hover:bg-emerald-50 rounded-lg transition" data-i18n="nav_activities">AKTIVITI</a>
                     <a href="#prohibited-rules" class="px-3 py-2 text-slate-700 hover:text-emerald-700 hover:bg-emerald-50 rounded-lg transition" data-i18n="nav_terms">TERMS & CONDITIONS</a>
                     <a href="#contact" class="px-3 py-2 text-slate-700 hover:text-emerald-700 hover:bg-emerald-50 rounded-lg transition" data-i18n="nav_contact">CONTACT US</a>
                 </nav>
@@ -87,19 +72,9 @@
             <a href="#" class="block px-3 py-2 text-slate-700 hover:bg-emerald-50 hover:text-emerald-800 rounded-md" data-i18n="nav_home">HOME</a>
             <a href="#direction" class="block px-3 py-2 text-slate-700 hover:bg-emerald-50 hover:text-emerald-800 rounded-md" data-i18n="nav_direction">DIRECTION</a>
             <div class="space-y-1">
-                <button id="mobile-tarikan-btn" class="w-full text-left px-3 py-2 text-slate-700 hover:bg-emerald-50 hover:text-emerald-800 rounded-md flex justify-between items-center focus:outline-none">
-                    <span data-i18n="nav_tarikan">TARIKAN</span> <i class="fa-solid fa-chevron-down text-xs transition-transform" id="mobile-tarikan-icon"></i>
-                </button>
-                <div id="mobile-tarikan-menu" class="hidden pl-6 pr-3 py-1 space-y-1 border-l-2 border-emerald-100 ml-3">
-                    <a href="#activities-tabs" class="block px-3 py-2 text-sm text-slate-600 hover:text-emerald-800 rounded-md" data-i18n="tarikan_sungai">Sungai</a>
-                    <a href="#activities-tabs" class="block px-3 py-2 text-sm text-slate-600 hover:text-emerald-800 rounded-md" data-i18n="tarikan_khemah">Berkhemah</a>
-                    <a href="#activities-tabs" class="block px-3 py-2 text-sm text-slate-600 hover:text-emerald-800 rounded-md" data-i18n="tarikan_kelah">Berkelah</a>
-                    <a href="#activities-tabs" class="block px-3 py-2 text-sm text-slate-600 hover:text-emerald-800 rounded-md" data-i18n="tarikan_flora">Flora</a>
-                    <a href="#activities-tabs" class="block px-3 py-2 text-sm text-slate-600 hover:text-emerald-800 rounded-md" data-i18n="tarikan_air_terjun">Air Terjun</a>
-                </div>
-            </div>
-            <a href="/rooms" class="block px-3 py-2 text-slate-700 hover:bg-emerald-50 hover:text-emerald-800 rounded-md" data-i18n="nav_rooms">BILIK &amp; CHALET</a>
-            <a href="#activities-tabs" class="block px-3 py-2 font-bold text-emerald-800 bg-emerald-50 rounded-md" data-i18n="nav_activities">ACTIVITIES</a>
+                <a href="rooms.html" class="block px-3 py-2 text-slate-700 hover:bg-emerald-50 hover:text-emerald-800 rounded-md" data-i18n="nav_rooms">TEMPAHAN</a>
+                <a href="aktiviti.html" class="block px-3 py-2 text-slate-700 hover:bg-emerald-50 hover:text-emerald-800 rounded-md" data-i18n="nav_activities">AKTIVITI</a>
+            
             <a href="#prohibited-rules" class="block px-3 py-2 text-slate-700 hover:bg-emerald-50 hover:text-emerald-800 rounded-md" data-i18n="nav_terms">TERMS & CONDITIONS</a>
             <a href="#contact" class="block px-3 py-2 text-slate-700 hover:bg-emerald-50 hover:text-emerald-800 rounded-md" data-i18n="nav_contact">CONTACT US</a>
         </div>
@@ -132,9 +107,7 @@
                     <a href="#direction" class="bg-amber-500 hover:bg-amber-600 text-emerald-950 font-bold px-6 py-3 rounded-lg shadow-lg hover:shadow-xl transition flex items-center gap-2">
                         <i class="fa-solid fa-route"></i> <span data-i18n="hero_btn_direction">Direction Ke Taman Eko Rimba Berkelah</span>
                     </a>
-                    <a href="#activities-tabs" class="bg-white/10 hover:bg-white/20 text-white font-medium px-6 py-3 rounded-lg backdrop-blur-sm transition flex items-center gap-2 border border-white/20">
-                        <i class="fa-solid fa-compass"></i> <span data-i18n="hero_btn_activities">Terokai Aktiviti</span>
-                    </a>
+                    
                 </div>
             </div>
         </div>
@@ -174,9 +147,9 @@
                 <div class="p-6 sm:p-8 lg:p-10 grid grid-cols-1 lg:grid-cols-12 gap-8">
                     <!-- Route Step-by-Step Instructions -->
                     <div class="lg:col-span-6 space-y-6">
-                        <h3 class="text-xl font-bold text-slate-900 flex items-center gap-2 border-b pb-3" data-i18n="dir_routes_header">
-                            <i class="fa-solid fa-car-side text-emerald-600"></i> Panduan Laluan Utama
-                        </h3>
+                        <h3 class="text-xl font-bold text-slate-900 flex items-center gap-2 border-b pb-3" >
+    <i class="fa-solid fa-car-side text-emerald-600"></i> <span data-i18n="dir_routes_header">Panduan Laluan Utama</span>
+</h3>
 
                         <!-- Route 1: From KL -->
                         <div class="bg-slate-50 border border-slate-200 rounded-2xl p-5 hover:border-emerald-300 transition">
@@ -226,9 +199,9 @@
 
                     <!-- Interactive Google Maps Iframe -->
                     <div class="lg:col-span-6 flex flex-col">
-                        <h3 class="text-xl font-bold text-slate-900 flex items-center gap-2 border-b pb-3 mb-4" data-i18n="dir_map_header">
-                            <i class="fa-solid fa-map-location text-emerald-600"></i> Peta Interaktif Google Maps
-                        </h3>
+                        <h3 class="text-xl font-bold text-slate-900 flex items-center gap-2 border-b pb-3 mb-4" >
+    <i class="fa-solid fa-map-location text-emerald-600"></i> <span data-i18n="dir_map_header">Peta Interaktif Google Maps</span>
+</h3>
                         <div class="flex-grow w-full min-h-[350px] lg:min-h-[420px] rounded-2xl overflow-hidden shadow-md border border-slate-200 relative">
                             <iframe 
                                 class="w-full h-full min-h-[350px]" 
@@ -246,147 +219,6 @@
         </section>
 
                 <!-- Tarikan & Maklumat Rasmi Taman Eko Rimba Berkelah -->
-        <section id="activities-tabs" class="scroll-mt-24 mb-16">
-            <div class="text-center max-w-3xl mx-auto mb-10">
-                <span class="inline-block px-3 py-1 bg-emerald-100 text-emerald-800 rounded-full text-xs font-bold uppercase tracking-wider mb-3">Taman Eko Rimba Berkelah</span>
-                <h2 class="text-3xl sm:text-4xl font-extrabold text-emerald-950 tracking-tight mb-4">Maklumat & Tarikan Utama</h2>
-                <p class="text-slate-600 text-lg">Maklumat rasmi Jabatan Perhutanan Negeri Pahang untuk Taman Eko Rimba Berkelah.</p>
-            </div>
-
-            <!-- Info Cards (Lokasi, Hutan, Kemudahan) -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-                <!-- Lokasi -->
-                <div class="bg-white rounded-2xl p-6 shadow-lg border border-slate-100 flex flex-col items-center text-center">
-                    <div class="w-14 h-14 bg-amber-100 text-amber-600 rounded-full flex items-center justify-center text-2xl mb-4">
-                        <i class="fa-solid fa-map-location-dot"></i>
-                    </div>
-                    <h3 class="text-xl font-bold text-slate-800 mb-3">Lokasi</h3>
-                    <p class="text-slate-600 leading-relaxed text-sm">
-                        Kompartmen 363, Hutan Simpan Berkelah. Keluasan pembangunan lebih kurang 5 hektar. Kedudukan kira-kira 45 km dari Kuantan atau 4.8 km daripada jalan utama Kuantan-Maran.
-                    </p>
-                </div>
-                <!-- Jenis Hutan -->
-                <div class="bg-white rounded-2xl p-6 shadow-lg border border-slate-100 flex flex-col items-center text-center">
-                    <div class="w-14 h-14 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center text-2xl mb-4">
-                        <i class="fa-solid fa-tree"></i>
-                    </div>
-                    <h3 class="text-xl font-bold text-slate-800 mb-3">Jenis Hutan</h3>
-                    <p class="text-slate-600 leading-relaxed text-sm">
-                        Kawasan ini diklasifikasikan sebagai <strong>Hutan Dipterokarp Bukit</strong> yang kaya dengan pelbagai spesies flora semula jadi.
-                    </p>
-                </div>
-                <!-- Kemudahan -->
-                <div class="bg-white rounded-2xl p-6 shadow-lg border border-slate-100 flex flex-col items-center text-center">
-                    <div class="w-14 h-14 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center text-2xl mb-4">
-                        <i class="fa-solid fa-restroom"></i>
-                    </div>
-                    <h3 class="text-xl font-bold text-slate-800 mb-3">Kemudahan</h3>
-                    <div class="flex flex-wrap justify-center gap-2 mt-2">
-                        <span class="px-3 py-1 bg-slate-100 text-slate-700 rounded-md text-xs font-semibold">Pondok Rehat</span>
-                        <span class="px-3 py-1 bg-slate-100 text-slate-700 rounded-md text-xs font-semibold">Parkir</span>
-                        <span class="px-3 py-1 bg-slate-100 text-slate-700 rounded-md text-xs font-semibold">Tandas</span>
-                        <span class="px-3 py-1 bg-slate-100 text-slate-700 rounded-md text-xs font-semibold">Surau</span>
-                        <span class="px-3 py-1 bg-slate-100 text-slate-700 rounded-md text-xs font-semibold">Tempat Memasak</span>
-                        <span class="px-3 py-1 bg-slate-100 text-slate-700 rounded-md text-xs font-semibold">Bilik Persalinan</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Tab Buttons for Tarikan -->
-            <div class="flex flex-wrap justify-center gap-2 sm:gap-4 border-b border-slate-200 pb-4">
-                <button class="tab-btn active px-5 py-3 rounded-xl font-bold text-sm sm:text-base flex items-center gap-2.5 transition shadow-sm" data-tab="sungai">
-                    <i class="fa-solid fa-water text-cyan-500"></i> <span data-i18n="tarikan_sungai">Sungai</span>
-                </button>
-                <button class="tab-btn px-5 py-3 rounded-xl font-bold text-sm sm:text-base flex items-center gap-2.5 transition text-slate-600 hover:bg-emerald-50" data-tab="khemah">
-                    <i class="fa-solid fa-campground text-amber-600"></i> <span data-i18n="tarikan_khemah">Berkhemah</span>
-                </button>
-                <button class="tab-btn px-5 py-3 rounded-xl font-bold text-sm sm:text-base flex items-center gap-2.5 transition text-slate-600 hover:bg-emerald-50" data-tab="kelah">
-                    <i class="fa-solid fa-basket-shopping text-emerald-600"></i> <span data-i18n="tarikan_kelah">Berkelah</span>
-                </button>
-                <button class="tab-btn px-5 py-3 rounded-xl font-bold text-sm sm:text-base flex items-center gap-2.5 transition text-slate-600 hover:bg-emerald-50" data-tab="flora">
-                    <i class="fa-solid fa-leaf text-lime-600"></i> <span data-i18n="tarikan_flora">Flora</span>
-                </button>
-                <button class="tab-btn px-5 py-3 rounded-xl font-bold text-sm sm:text-base flex items-center gap-2.5 transition text-slate-600 hover:bg-emerald-50" data-tab="air-terjun">
-                    <i class="fa-solid fa-water-ladder text-blue-500"></i> <span data-i18n="tarikan_air_terjun">Air Terjun</span>
-                </button>
-            </div>
-
-            <!-- Tab Contents Container -->
-            <div class="mt-8">
-                <!-- Tab: Sungai -->
-                <div id="sungai" class="tab-content active transition-opacity duration-500 opacity-100">
-                    <div class="bg-white rounded-3xl shadow-xl border border-slate-100 overflow-hidden">
-                        <div class="p-8 sm:p-10 text-center max-w-3xl mx-auto">
-                            <i class="fa-solid fa-water text-5xl text-cyan-500 mb-6"></i>
-                            <h3 class="text-3xl font-extrabold text-slate-900 mb-4">Sungai Jernih</h3>
-                            <p class="text-slate-600 leading-relaxed text-lg mb-6">
-                                Mempunyai sungai dan kolam semula jadi yang amat jernih, sejuk, serta menyegarkan. Sesuai untuk bermandi-manda dan menyejukkan badan.
-                            </p>
-                            <a href="https://wa.me/60194489296" target="_blank" class="inline-flex bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-6 py-3 rounded-lg transition gap-2 items-center">
-                                <i class="fa-brands fa-whatsapp"></i> Pertanyaan
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Tab: Berkhemah -->
-                <div id="khemah" class="tab-content hidden opacity-0 transition-opacity duration-500">
-                    <div class="bg-white rounded-3xl shadow-xl border border-slate-100 overflow-hidden">
-                        <div class="p-8 sm:p-10 text-center max-w-3xl mx-auto">
-                            <i class="fa-solid fa-campground text-5xl text-amber-600 mb-6"></i>
-                            <h3 class="text-3xl font-extrabold text-slate-900 mb-4">Aktiviti Berkhemah</h3>
-                            <p class="text-slate-600 leading-relaxed text-lg mb-6">
-                                Nikmati pengalaman berkhemah di dalam Hutan Dipterokarp Bukit. Suasana yang bersih, tenang, dan nyaman menjadikan ia tapak perkhemahan yang ideal.
-                            </p>
-                            <a href="https://wa.me/60194489296" target="_blank" class="inline-flex bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-6 py-3 rounded-lg transition gap-2 items-center">
-                                <i class="fa-brands fa-whatsapp"></i> Tempah Tapak
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Tab: Berkelah -->
-                <div id="kelah" class="tab-content hidden opacity-0 transition-opacity duration-500">
-                    <div class="bg-white rounded-3xl shadow-xl border border-slate-100 overflow-hidden">
-                        <div class="p-8 sm:p-10 text-center max-w-3xl mx-auto">
-                            <i class="fa-solid fa-basket-shopping text-5xl text-emerald-600 mb-6"></i>
-                            <h3 class="text-3xl font-extrabold text-slate-900 mb-4">Berkelah & Santai</h3>
-                            <p class="text-slate-600 leading-relaxed text-lg mb-6">
-                                Luangkan masa berkualiti bersama keluarga di kawasan perkelahan kami. Kemudahan seperti pondok rehat, tempat memasak, tandas, dan surau disediakan untuk keselesaan anda.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Tab: Flora -->
-                <div id="flora" class="tab-content hidden opacity-0 transition-opacity duration-500">
-                    <div class="bg-white rounded-3xl shadow-xl border border-slate-100 overflow-hidden">
-                        <div class="p-8 sm:p-10 text-center max-w-3xl mx-auto">
-                            <i class="fa-solid fa-leaf text-5xl text-lime-600 mb-6"></i>
-                            <h3 class="text-3xl font-extrabold text-slate-900 mb-4">Kepelbagaian Flora</h3>
-                            <p class="text-slate-600 leading-relaxed text-lg mb-6">
-                                Terokai pelbagai spesies flora semula jadi di ekosistem Hutan Dipterokarp Bukit. Sesuai untuk pencinta alam sekitar dan aktiviti pendakian riadah.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Tab: Air Terjun -->
-                <div id="air-terjun" class="tab-content hidden opacity-0 transition-opacity duration-500">
-                    <div class="bg-white rounded-3xl shadow-xl border border-slate-100 overflow-hidden">
-                        <div class="p-8 sm:p-10 text-center max-w-3xl mx-auto">
-                            <i class="fa-solid fa-water-ladder text-5xl text-blue-500 mb-6"></i>
-                            <h3 class="text-3xl font-extrabold text-slate-900 mb-4">Air Terjun 7 Tingkat</h3>
-                            <p class="text-slate-600 leading-relaxed text-lg mb-6">
-                                Tarikan paling ikonik: Air Terjun 7 Tingkat yang mengagumkan dengan ketinggian di antara 3 hingga 30 meter di setiap tingkatnya. Pemandangan indah dan sesuai untuk pendakian.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-
         <!-- Prohibited Activities and Rules Section -->
         <section id="prohibited-rules" class="scroll-mt-24 mb-16">
             <div class="bg-rose-900 text-white rounded-3xl p-6 sm:p-10 lg:p-12 shadow-2xl relative overflow-hidden border border-rose-800">
@@ -395,9 +227,9 @@
                 <div class="absolute -bottom-24 -left-24 w-72 h-72 bg-amber-500/20 rounded-full blur-3xl pointer-events-none"></div>
 
                 <div class="relative z-10">
-                    <div class="flex items-center gap-3 text-amber-300 font-bold uppercase tracking-wider mb-2 text-sm sm:text-base" data-i18n="rules_badge">
-                        <i class="fa-solid fa-triangle-exclamation text-xl"></i> PERATURAN & SYARAT PREMIS
-                    </div>
+                    <div class="flex items-center gap-3 text-amber-300 font-bold uppercase tracking-wider mb-2 text-sm sm:text-base" >
+    <i class="fa-solid fa-triangle-exclamation text-xl"></i> <span data-i18n="rules_badge">PERATURAN & SYARAT PREMIS</span>
+</div>
                     <h2 class="text-3xl sm:text-4xl font-extrabold text-white mb-6" data-i18n="rules_title">
                         Prohibited Activities and Items
                     </h2>
@@ -546,7 +378,7 @@
                     <ul class="space-y-2 text-sm">
                         <li><a href="#" class="hover:text-emerald-400 transition" data-i18n="nav_home">Home</a></li>
                         <li><a href="#direction" class="hover:text-emerald-400 transition" data-i18n="nav_direction">Direction Taman Eko Rimba Berkelah</a></li>
-                        <li><a href="#activities-tabs" class="hover:text-emerald-400 transition" data-i18n="nav_activities">Activities</a></li>
+                        
                         <li><a href="#prohibited-rules" class="hover:text-emerald-400 transition" data-i18n="nav_terms">Terms & Conditions</a></li>
                         <li><a href="#contact" class="hover:text-emerald-400 transition" data-i18n="nav_contact">Contact Us</a></li>
                     </ul>
@@ -575,7 +407,7 @@
             <div class="border-t border-slate-900 pt-6 flex flex-col sm:flex-row justify-between items-center text-xs text-slate-500 gap-4">
                 <p>&copy; 2026 Taman Eko Rimba Berkelah. All rights reserved.</p>
                 <div class="flex items-center gap-4">
-                    <a href="/admin" class="bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white px-4 py-2 rounded-lg transition flex items-center gap-2 text-sm font-semibold border border-slate-700">
+                    <a href="admin.html" class="bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white px-4 py-2 rounded-lg transition flex items-center gap-2 text-sm font-semibold border border-slate-700">
                         <i class="fa-solid fa-lock"></i> Log Masuk Admin
                     </a>
                     <a href="#top" class="hover:text-emerald-400 transition flex items-center gap-1">

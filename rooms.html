@@ -2,8 +2,9 @@
 <html lang="ms">
 <head>
     <meta charset="UTF-8">
+    <meta name="google" content="notranslate">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bilik & Chalet – Taman Eko Rimba Berkelah</title>
+    <title>Tempahan – Taman Eko Rimba Berkelah</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
@@ -22,7 +23,7 @@
         .step-connector { background: #e5e7eb; transition: all 0.3s; }
     </style>
 </head>
-<body class="bg-slate-50 text-slate-800 font-sans antialiased">
+<body class="bg-slate-50 text-slate-800 font-sans antialiased pb-40">
 
 <!-- Top Bar -->
 <div class="bg-emerald-900 text-emerald-100 text-xs py-2 px-4 flex justify-between items-center">
@@ -36,39 +37,21 @@
 <header class="bg-white shadow-md sticky top-0 z-40">
     <div class="container mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between items-center h-20">
-            <a href="/" class="flex items-center gap-3">
-                <div class="w-12 h-12 rounded-full bg-emerald-800 flex items-center justify-center text-amber-400 text-xl font-bold shadow-md">
-                    <i class="fa-solid fa-mountain-sun"></i>
-                </div>
+            <a href="index.html" class="flex items-center gap-3">
+                <img src="images/logo.png" alt="Logo Taman Eko Rimba Berkelah" class="w-12 h-12 object-contain drop-shadow-md">
                 <div>
                     <span class="block text-xl font-extrabold text-emerald-950 tracking-wider">Taman Eko Rimba Berkelah</span>
                     <span class="block text-xs font-semibold text-emerald-600 uppercase tracking-widest">Hutan Lipur Berkelah</span>
                 </div>
             </a>
             <nav class="hidden lg:flex space-x-1 font-medium text-sm">
-                <a href="/" class="px-3 py-2 text-slate-700 hover:text-emerald-700 hover:bg-emerald-50 rounded-lg transition">UTAMA</a>
-                <a href="/#direction" class="px-3 py-2 text-slate-700 hover:text-emerald-700 hover:bg-emerald-50 rounded-lg transition">PANDUAN JALAN</a>
+                <a href="index.html" class="px-3 py-2 text-slate-700 hover:text-emerald-700 hover:bg-emerald-50 rounded-lg transition">UTAMA</a>
+                <a href="index.html#direction" class="px-3 py-2 text-slate-700 hover:text-emerald-700 hover:bg-emerald-50 rounded-lg transition">PANDUAN JALAN</a>
                 
-                <!-- Dropdown Tarikan -->
-                <div class="relative group">
-                    <button class="px-3 py-2 text-slate-700 hover:text-emerald-700 hover:bg-emerald-50 rounded-lg transition flex items-center gap-1 focus:outline-none h-full">
-                        <span>TARIKAN</span> <i class="fa-solid fa-chevron-down text-[10px]"></i>
-                    </button>
-                    <!-- Dropdown menu -->
-                    <div class="absolute left-0 mt-2 w-48 bg-white rounded-xl shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform origin-top-left border border-slate-100 z-50">
-                        <div class="py-2">
-                            <a href="/#activities-tabs" class="block px-4 py-2.5 text-sm text-slate-700 hover:bg-emerald-50 hover:text-emerald-700 transition">Sungai</a>
-                            <a href="/#activities-tabs" class="block px-4 py-2.5 text-sm text-slate-700 hover:bg-emerald-50 hover:text-emerald-700 transition">Berkhemah</a>
-                            <a href="/#activities-tabs" class="block px-4 py-2.5 text-sm text-slate-700 hover:bg-emerald-50 hover:text-emerald-700 transition">Berkelah</a>
-                            <a href="/#activities-tabs" class="block px-4 py-2.5 text-sm text-slate-700 hover:bg-emerald-50 hover:text-emerald-700 transition">Flora</a>
-                            <a href="/#activities-tabs" class="block px-4 py-2.5 text-sm text-slate-700 hover:bg-emerald-50 hover:text-emerald-700 transition">Air Terjun</a>
-                        </div>
-                    </div>
-                </div>
-                <a href="/rooms" class="px-3 py-2 text-emerald-800 bg-emerald-100/70 font-bold rounded-lg shadow-sm border border-emerald-200">BILIK & CHALET</a>
-                <a href="/#activities-tabs" class="px-3 py-2 text-slate-700 hover:text-emerald-700 hover:bg-emerald-50 rounded-lg transition">AKTIVITI</a>
-                <a href="/#prohibited-rules" class="px-3 py-2 text-slate-700 hover:text-emerald-700 hover:bg-emerald-50 rounded-lg transition">TERMA & SYARAT</a>
-                <a href="/#contact" class="px-3 py-2 text-slate-700 hover:text-emerald-700 hover:bg-emerald-50 rounded-lg transition">HUBUNGI KAMI</a>
+                <a href="rooms.html" class="px-3 py-2 text-emerald-800 bg-emerald-100/70 font-bold rounded-lg shadow-sm border border-emerald-200">TEMPAHAN</a>
+                <a href="aktiviti.html" class="px-3 py-2 text-slate-700 hover:text-emerald-700 hover:bg-emerald-50 rounded-lg transition">AKTIVITI</a>
+                  <a href="index.html#prohibited-rules" class="px-3 py-2 text-slate-700 hover:text-emerald-700 hover:bg-emerald-50 rounded-lg transition">TERMA & SYARAT</a>
+                <a href="index.html#contact" class="px-3 py-2 text-slate-700 hover:text-emerald-700 hover:bg-emerald-50 rounded-lg transition">HUBUNGI KAMI</a>
             </nav>
             <button id="mobile-menu-btn" class="lg:hidden p-2 text-slate-700">
                 <i class="fa-solid fa-bars text-2xl"></i>
@@ -76,42 +59,14 @@
         </div>
     </div>
     <div id="mobile-menu" class="hidden lg:hidden bg-white border-t border-slate-100 px-4 py-4 space-y-1 shadow-lg">
-        <a href="/" class="block px-3 py-2 text-slate-700 hover:bg-emerald-50 rounded-md">UTAMA</a>
-        <div class="space-y-1">
-            <button id="mobile-tarikan-btn" class="w-full text-left px-3 py-2 text-slate-700 hover:bg-emerald-50 hover:text-emerald-800 rounded-md flex justify-between items-center focus:outline-none">
-                <span>TARIKAN</span> <i class="fa-solid fa-chevron-down text-xs transition-transform" id="mobile-tarikan-icon"></i>
-            </button>
-            <div id="mobile-tarikan-menu" class="hidden pl-6 pr-3 py-1 space-y-1 border-l-2 border-emerald-100 ml-3">
-                <a href="/#activities-tabs" class="block px-3 py-2 text-sm text-slate-600 hover:text-emerald-800 rounded-md">Sungai</a>
-                <a href="/#activities-tabs" class="block px-3 py-2 text-sm text-slate-600 hover:text-emerald-800 rounded-md">Berkhemah</a>
-                <a href="/#activities-tabs" class="block px-3 py-2 text-sm text-slate-600 hover:text-emerald-800 rounded-md">Berkelah</a>
-                <a href="/#activities-tabs" class="block px-3 py-2 text-sm text-slate-600 hover:text-emerald-800 rounded-md">Flora</a>
-                <a href="/#activities-tabs" class="block px-3 py-2 text-sm text-slate-600 hover:text-emerald-800 rounded-md">Air Terjun</a>
-            </div>
-        </div>
-        <a href="/rooms" class="block px-3 py-2 font-bold text-emerald-800 bg-emerald-50 rounded-md">BILIK & CHALET</a>
-        <a href="/#activities-tabs" class="block px-3 py-2 text-slate-700 hover:bg-emerald-50 rounded-md">AKTIVITI</a>
-        <a href="/#contact" class="block px-3 py-2 text-slate-700 hover:bg-emerald-50 rounded-md">HUBUNGI KAMI</a>
+        <a href="index.html" class="block px-3 py-2 text-slate-700 hover:bg-emerald-50 hover:text-emerald-800 rounded-md">UTAMA</a>
+        <a href="index.html#direction" class="block px-3 py-2 text-slate-700 hover:bg-emerald-50 hover:text-emerald-800 rounded-md">PANDUAN JALAN</a>
+        <a href="rooms.html" class="block px-3 py-2 font-bold text-emerald-800 bg-emerald-50 rounded-md">TEMPAHAN</a>
+        <a href="aktiviti.html" class="block px-3 py-2 text-slate-700 hover:bg-emerald-50 hover:text-emerald-800 rounded-md">AKTIVITI</a>
+        <a href="index.html#prohibited-rules" class="block px-3 py-2 text-slate-700 hover:bg-emerald-50 hover:text-emerald-800 rounded-md">TERMA & SYARAT</a>
+        <a href="index.html#contact" class="block px-3 py-2 text-slate-700 hover:bg-emerald-50 hover:text-emerald-800 rounded-md">HUBUNGI KAMI</a>
     </div>
-</header>
-
-<!-- Hero -->
-<section class="relative bg-emerald-900 text-white py-14 overflow-hidden">
-    <div class="absolute inset-0 opacity-25 bg-cover bg-center" style="background-image:url('https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=1600&q=80')"></div>
-    <div class="absolute inset-0 bg-gradient-to-r from-emerald-950/90 via-emerald-900/80 to-transparent"></div>
-    <div class="container mx-auto px-4 relative z-10">
-        <span class="inline-block px-3 py-1 bg-amber-400/20 text-amber-300 rounded-full text-xs font-semibold uppercase tracking-wider mb-4 border border-amber-400/30">
-            <i class="fa-solid fa-bed mr-1"></i> Penginapan di Tengah Hutan
-        </span>
-        <h1 class="text-4xl sm:text-5xl font-extrabold mb-3">Bilik & Chalet Taman Eko Rimba Berkelah</h1>
-        <p class="text-emerald-100 text-lg max-w-2xl leading-relaxed mb-6">
-            Pilih penginapan terbaik di tepi sungai, lereng bukit, atau di dalam rimba Taman Eko Rimba Berkelah. Tempah sekarang untuk pengalaman yang tidak terlupakan!
-        </p>
-        <a href="#room-list" class="bg-amber-500 hover:bg-amber-600 text-emerald-950 font-bold px-6 py-3 rounded-lg shadow-lg transition flex items-center gap-2 inline-flex">
-            <i class="fa-solid fa-magnifying-glass"></i> Lihat Ketersediaan Bilik
-        </a>
-    </div>
-</section>
+  </header>
 
 <!-- Quick Check Availability Bar -->
 <div class="bg-white shadow-md border-b border-slate-200 sticky top-20 z-30">
@@ -137,26 +92,30 @@
     <!-- Filter Bar -->
     <div class="flex flex-wrap items-center justify-between gap-4 mb-8">
         <div>
-            <h2 class="text-2xl font-extrabold text-emerald-950">Semua Bilik & Chalet</h2>
-            <p class="text-slate-500 text-sm mt-1" id="room-count">Memuatkan senarai bilik...</p>
+            <h2 class="text-2xl font-extrabold text-emerald-950">Semua Pilihan Tempahan & Aktiviti</h2>
+            <p class="text-slate-500 text-sm mt-1" id="room-count">Memuatkan senarai tempahan & aktiviti...</p>
         </div>
         <div class="flex items-center gap-2">
             <label class="text-sm text-slate-600 font-medium">Jenis:</label>
             <select id="filter-type" class="border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
-                <option value="">Semua</option>
-                <option value="Chalet">Chalet</option>
-                <option value="Dorm">Dorm</option>
-                <option value="Pondok">Pondok</option>
-            </select>
+                  <option value="">Semua</option>
+                  <option value="AKTIVITI HIKING">AKTIVITI HIKING</option>
+                  <option value="TEMPAHAN KABIN">TEMPAHAN KABIN</option>
+                    <option value="TEMPAHAN TAPAK GAZEBO">TEMPAHAN TAPAK GAZEBO</option>
+                  <option value="AKTIVITI JUGGLE TRACKING">AKTIVITI JUGGLE TRACKING</option>
+                  <option value="TEMPAHAN TAPAK HAMMOCK">TEMPAHAN TAPAK HAMMOCK</option>
+                  <option value="TEMPAHAN TAPAK PERKHEMAHAN">TEMPAHAN TAPAK PERKHEMAHAN</option>
+                  <option value="TEMPAHAN TAPAK KENDERAAN RV / CARAVAN / CAMPERVAN">TEMPAHAN TAPAK KENDERAAN RV / CARAVAN / CAMPERVAN</option>
+              </select>
         </div>
     </div>
 
     <!-- Room Cards Grid -->
-    <div id="rooms-grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 mb-12">
+    <div id="rooms-grid" class="grid grid-cols-1 md:grid-cols-2 max-w-4xl mx-auto gap-8 mb-12">
         <div class="col-span-full flex justify-center py-12">
             <div class="text-center text-slate-400">
                 <i class="fa-solid fa-spinner fa-spin text-3xl mb-3"></i>
-                <p>Memuatkan bilik & chalet...</p>
+                <p>Memuatkan senarai tempahan & aktiviti...</p>
             </div>
         </div>
     </div>
@@ -177,200 +136,257 @@
 </main>
 
 <!-- ─────────────────────────────────────────── -->
+
+<!-- FLOATING CART -->
+<div id="cart-container" class="fixed bottom-0 left-0 right-0 bg-white shadow-[0_-10px_40px_rgba(0,0,0,0.1)] z-40 transform translate-y-full transition-transform duration-300 rounded-t-3xl border-t border-slate-200">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 py-4 flex flex-col md:flex-row justify-between items-center gap-4">
+        <div class="flex-1 w-full">
+            <div class="flex items-center gap-2 mb-2">
+                <i class="fa-solid fa-basket-shopping text-emerald-600 text-xl"></i>
+                <h3 class="font-extrabold text-slate-800 text-lg">Bakul Tempahan (<span id="cart-count">0</span>)</h3>
+                <button onclick="clearCart()" class="ml-auto text-xs text-rose-500 hover:text-rose-700 font-bold bg-rose-50 px-2 py-1 rounded-md">Kosongkan</button>
+            </div>
+            <div id="cart-items" class="max-h-32 overflow-y-auto space-y-2 text-sm">
+                <!-- Cart items injected here -->
+            </div>
+        </div>
+        <div class="flex flex-col md:items-end w-full md:w-auto border-t md:border-t-0 md:border-l border-slate-200 pt-3 md:pt-0 md:pl-6">
+            <div class="text-slate-500 text-sm font-semibold mb-1">Jumlah Keseluruhan:</div>
+            <div class="text-2xl font-extrabold text-emerald-700 mb-3">RM<span id="cart-total">0.00</span></div>
+            <button onclick="openCheckout()" class="w-full md:w-auto bg-emerald-700 hover:bg-emerald-800 text-white font-bold px-8 py-3 rounded-xl transition shadow-lg flex items-center justify-center gap-2">
+                <i class="fa-solid fa-clipboard-check"></i> Teruskan Pendaftaran
+            </button>
+        </div>
+    </div>
+</div>
+
 <!-- BOOKING MODAL -->
-<!-- ─────────────────────────────────────────── -->
 <div id="booking-modal" class="fixed inset-0 bg-slate-900/70 z-50 hidden flex items-center justify-center p-4">
-    <div class="bg-white rounded-3xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+    <div class="bg-white rounded-3xl shadow-2xl w-full max-w-3xl max-h-[90vh] overflow-y-auto relative">
         
         <!-- Modal Header -->
-        <div class="bg-gradient-to-r from-emerald-900 to-emerald-800 text-white px-6 py-5 rounded-t-3xl flex justify-between items-center">
+        <div class="bg-gradient-to-r from-emerald-900 to-emerald-800 text-white px-6 py-5 rounded-t-3xl flex justify-between items-center sticky top-0 z-10 shadow-md">
             <div>
-                <h2 class="text-xl font-extrabold">Borang Tempahan</h2>
-                <p id="modal-room-name" class="text-emerald-200 text-sm mt-0.5"></p>
+                <h2 class="text-xl font-extrabold uppercase">BORANG PENDAFTARAN AKTIVITI</h2>
+                <p id="modal-room-name" class="text-emerald-200 text-sm mt-0.5 font-semibold"></p>
             </div>
             <button id="close-modal" class="w-9 h-9 rounded-full bg-white/20 hover:bg-white/30 flex items-center justify-center transition">
                 <i class="fa-solid fa-xmark text-lg"></i>
             </button>
         </div>
 
-        <!-- Step Indicator -->
-        <div class="px-6 py-4 border-b border-slate-100 flex items-center gap-2">
-            <div class="step-indicator active w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold" id="step1-ind">1</div>
-            <div class="step-connector active h-1 flex-1 rounded" id="step1-conn"></div>
-            <div class="step-indicator w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold" id="step2-ind">2</div>
-            <div class="step-connector h-1 flex-1 rounded" id="step2-conn"></div>
-            <div class="step-indicator w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold" id="step3-ind">3</div>
-        </div>
-
         <!-- Form Body -->
-        <form id="booking-form" class="px-6 py-6 space-y-6">
+        <form id="booking-form" class="px-6 py-6 space-y-8">
             <input type="hidden" id="f-room-id">
             <input type="hidden" id="f-room-name">
             <input type="hidden" id="f-price-per-night">
 
-            <!-- STEP 1: Tarikh -->
-            <div id="step-1">
-                <h3 class="text-base font-bold text-slate-800 mb-4 flex items-center gap-2">
-                    <i class="fa-solid fa-calendar-days text-emerald-600"></i> Langkah 1: Pilih Tarikh Menginap
-                </h3>
+            <div class="bg-amber-50 border border-amber-200 rounded-xl p-4 text-sm text-amber-900">
+                <i class="fa-solid fa-circle-info text-amber-500 mr-2"></i>
+                Penerangan Ringkas: Sila pilih kategori pendaftaran kumpulan anda sebelum meneruskan ke halaman pengisian tarikh, sesi, dan maklumat peribadi.
+            </div>
+
+            <!-- Kategori & Tarikh -->
+            <div class="space-y-5">
+                <div>
+                    <label class="block text-sm font-bold text-slate-700 mb-2">
+                        1. Kategori Pendaftaran <span class="text-rose-500">*</span>
+                    </label>
+                    <select id="f-category" class="w-full border border-slate-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500" required>
+                        <option value="">-- Wajib pilih salah satu --</option>
+                        <option value="Kumpulan Sendiri">Kumpulan Sendiri (Telah mempunyai ahli kumpulan sendiri - Maksimum 7 orang)</option>
+                        <option value="Join Group">Sertai Kumpulan Lain / Join Group (Individu / Kumpulan kecil yang digabungkan)</option>
+                    </select>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-bold text-slate-700 mb-2">
+                        2. Nama Kumpulan / Kod Rujukan Kumpulan <span class="text-rose-500">*</span>
+                    </label>
+                    <input type="text" id="f-groupname" class="w-full border border-slate-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500" required>
+                    <p class="text-xs text-slate-500 mt-2 leading-relaxed bg-slate-50 p-3 rounded-lg border border-slate-100">
+                        <strong>Nota Panduan:</strong><br>
+                        - Jika memilih Kumpulan Sendiri: Ketua kumpulan wajib menetapkan satu nama kumpulan rasmi (contoh: Team Rimba A), dan ahli lain dalam kumpulan yang sama wajib menaip nama yang serupa semasa mendaftar. Jika ahli melebihi 7 orang, sila cipta kumpulan tambahan berasingan (contoh: Team Rimba B).<br>
+                        - Jika memilih Sertai Kumpulan Lain / Join Group: Sila taip perkataan <strong>JOIN GROUP</strong> di ruangan ini.
+                    </p>
+                </div>
+
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                        <label class="block text-sm font-semibold text-slate-700 mb-1">
-                            Tarikh Daftar Masuk <span class="text-rose-500">*</span>
+                        <label class="block text-sm font-bold text-slate-700 mb-2">
+                            3. Tarikh Aktiviti <span class="text-rose-500">*</span>
                         </label>
-                        <input type="text" id="f-checkin" placeholder="Pilih tarikh masuk" class="w-full border border-slate-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 cursor-pointer" readonly required>
+                        <input type="text" id="f-checkin" placeholder="Pilih tarikh" class="w-full border border-slate-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 cursor-pointer" readonly required>
+                        <!-- Hide checkout since hiking is a day trip mostly, but keep it hidden to avoid breaking API -->
+                        <input type="hidden" id="f-checkout">
                     </div>
                     <div>
-                        <label class="block text-sm font-semibold text-slate-700 mb-1">
-                            Tarikh Daftar Keluar <span class="text-rose-500">*</span>
+                        <label class="block text-sm font-bold text-slate-700 mb-2">
+                            4. Pilihan Sesi Waktu Mendaki <span class="text-rose-500">*</span>
                         </label>
-                        <input type="text" id="f-checkout" placeholder="Pilih tarikh keluar" class="w-full border border-slate-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 cursor-pointer" readonly required>
+                        <select id="f-session" class="w-full border border-slate-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500" required>
+                            <option value="">-- Pilih Sesi --</option>
+                            <option value="Sesi Pagi: 9:30 AM - 1:00 PM">Sesi Pagi: 9:30 AM (pagi) - 1:00 PM (tengah hari)</option>
+                            <option value="Sesi Petang: 2:00 PM - 5:30 PM">Sesi Petang: 2:00 PM (petang) - 5:30 PM (petang)</option>
+                        </select>
                     </div>
-                </div>
-
-                <!-- Summary Box -->
-                <div id="date-summary" class="mt-4 bg-emerald-50 rounded-xl p-4 border border-emerald-100 hidden">
-                    <div class="flex justify-between items-center text-sm text-slate-700">
-                        <span><i class="fa-solid fa-moon text-emerald-600 mr-1"></i> <span id="summary-nights">0</span> malam</span>
-                        <span class="font-bold text-emerald-900 text-base">Jumlah: RM<span id="summary-total">0</span></span>
-                    </div>
-                </div>
-
-                <div class="mt-4 bg-slate-50 rounded-xl p-4 text-xs text-slate-500 border border-slate-200">
-                    <i class="fa-solid fa-circle-info text-slate-400 mr-1"></i>
-                    Tarikh yang berwarna merah menunjukkan tempoh yang <strong>telah ditempah</strong> dan tidak tersedia.
-                </div>
-
-                <div class="mt-6 flex justify-end">
-                    <button type="button" id="btn-step1-next" class="bg-emerald-700 hover:bg-emerald-800 text-white font-bold px-6 py-2.5 rounded-xl transition flex items-center gap-2 disabled:opacity-50" disabled>
-                        Seterusnya <i class="fa-solid fa-arrow-right"></i>
-                    </button>
                 </div>
             </div>
 
-            <!-- STEP 2: Maklumat Tetamu -->
-            <div id="step-2" class="hidden">
-                <h3 class="text-base font-bold text-slate-800 mb-4 flex items-center gap-2">
-                    <i class="fa-solid fa-user text-emerald-600"></i> Langkah 2: Maklumat Tetamu
+            <!-- BAHAGIAN A -->
+            <div class="border-t border-slate-200 pt-6">
+                <h3 class="text-lg font-bold text-emerald-800 mb-4 bg-emerald-50 py-2 px-4 rounded-lg uppercase tracking-wide">
+                    BAHAGIAN A: MAKLUMAT DIRI PESERTA (WAJIB BAGI SETIAP INDIVIDU)
                 </h3>
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
                     <div class="sm:col-span-2">
-                        <label class="block text-sm font-semibold text-slate-700 mb-1">
-                            Nama Penuh <span class="text-rose-500">*</span>
-                        </label>
-                        <input type="text" id="f-name" placeholder="Nama seperti dalam IC" class="w-full border border-slate-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500" required>
+                        <label class="block text-sm font-bold text-slate-700 mb-2">5. Nama Penuh (Mengikut Kad Pengenalan / Pasport) <span class="text-rose-500">*</span></label>
+                        <textarea id="f-name" rows="2" class="w-full border border-slate-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500" required></textarea>
                     </div>
                     <div>
-                        <label class="block text-sm font-semibold text-slate-700 mb-1">
-                            No. Telefon / WhatsApp <span class="text-rose-500">*</span>
-                        </label>
-                        <div class="relative">
-                            <span class="absolute left-3 top-3 text-slate-400 text-sm"><i class="fa-brands fa-whatsapp text-emerald-500"></i></span>
-                            <input type="tel" id="f-phone" placeholder="01X-XXXXXXXX" class="w-full border border-slate-300 rounded-xl pl-9 pr-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500" required>
+                        <label class="block text-sm font-bold text-slate-700 mb-2">6. Nombor Kad Pengenalan / Nombor Pasport <span class="text-rose-500">*</span></label>
+                        <input type="text" id="f-ic" class="w-full border border-slate-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500" required>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-slate-700 mb-2">7. Jantina <span class="text-rose-500">*</span></label>
+                        <div class="flex gap-4 mt-2">
+                            <label class="flex items-center gap-2"><input type="radio" name="f-gender" value="Lelaki" required class="w-4 h-4 text-emerald-600"> Lelaki</label>
+                            <label class="flex items-center gap-2"><input type="radio" name="f-gender" value="Perempuan" required class="w-4 h-4 text-emerald-600"> Perempuan</label>
                         </div>
                     </div>
                     <div>
-                        <label class="block text-sm font-semibold text-slate-700 mb-1">No. IC (Pilihan)</label>
-                        <input type="text" id="f-ic" placeholder="XXXXXX-XX-XXXX" class="w-full border border-slate-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                        <label class="block text-sm font-bold text-slate-700 mb-2">8. Umur <span class="text-rose-500">*</span></label>
+                        <input type="number" id="f-age" min="1" class="w-full border border-slate-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500" required>
                     </div>
                     <div>
-                        <label class="block text-sm font-semibold text-slate-700 mb-1">Emel (Pilihan)</label>
-                        <input type="email" id="f-email" placeholder="contoh@email.com" class="w-full border border-slate-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-semibold text-slate-700 mb-1">
-                            Bilangan Tetamu <span class="text-rose-500">*</span>
-                        </label>
-                        <div class="flex items-center gap-3 border border-slate-300 rounded-xl px-4 py-2">
-                            <button type="button" id="btn-guests-minus" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center font-bold text-slate-700 transition">−</button>
-                            <span id="guests-count" class="flex-1 text-center font-bold text-lg">1</span>
-                            <button type="button" id="btn-guests-plus" class="w-8 h-8 rounded-full bg-emerald-100 hover:bg-emerald-200 flex items-center justify-center font-bold text-emerald-700 transition">+</button>
-                        </div>
-                        <p id="capacity-hint" class="text-xs text-slate-400 mt-1"></p>
+                        <label class="block text-sm font-bold text-slate-700 mb-2">9. Nombor Telefon Bimbit (WhatsApp) <span class="text-rose-500">*</span></label>
+                        <input type="tel" id="f-phone" placeholder="01X-XXXXXXXX" class="w-full border border-slate-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500" required>
                     </div>
                     <div class="sm:col-span-2">
-                        <label class="block text-sm font-semibold text-slate-700 mb-1">Permintaan Khas (Pilihan)</label>
-                        <textarea id="f-special" rows="2" placeholder="Contoh: keperluan tilam bayi, akses OKU, dsb." class="w-full border border-slate-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 resize-none"></textarea>
+                        <label class="block text-sm font-bold text-slate-700 mb-2">10. Alamat Emel <span class="text-rose-500">*</span></label>
+                        <input type="email" id="f-email" placeholder="contoh@email.com" class="w-full border border-slate-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500" required>
                     </div>
-                </div>
-                <div class="mt-6 flex justify-between">
-                    <button type="button" id="btn-step2-back" class="text-slate-600 hover:text-slate-800 font-semibold px-5 py-2.5 rounded-xl border border-slate-200 hover:bg-slate-50 transition flex items-center gap-2">
-                        <i class="fa-solid fa-arrow-left"></i> Kembali
-                    </button>
-                    <button type="button" id="btn-step2-next" class="bg-emerald-700 hover:bg-emerald-800 text-white font-bold px-6 py-2.5 rounded-xl transition flex items-center gap-2">
-                        Semak Tempahan <i class="fa-solid fa-arrow-right"></i>
-                    </button>
+                    <div class="sm:col-span-2">
+                        <label class="block text-sm font-bold text-slate-700 mb-2">11. Alamat Kediaman Semasa <span class="text-rose-500">*</span></label>
+                        <textarea id="f-address" rows="2" class="w-full border border-slate-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500" required></textarea>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-slate-700 mb-2">12. Nama Waris / Kontak Kecemasan <span class="text-rose-500">*</span></label>
+                        <input type="text" id="f-emg-name" class="w-full border border-slate-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500" required>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-slate-700 mb-2">13. Hubungan dengan Waris <span class="text-rose-500">*</span></label>
+                        <input type="text" id="f-emg-relation" placeholder="Ibu / Bapa / Suami / Isteri dll" class="w-full border border-slate-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500" required>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-slate-700 mb-2">14. Nombor Telefon Waris / Kecemasan <span class="text-rose-500">*</span></label>
+                        <input type="tel" id="f-emg-phone" class="w-full border border-slate-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500" required>
+                    </div>
+                    <div class="sm:col-span-2">
+                        <label class="block text-sm font-bold text-slate-700 mb-2">15. Sejarah Kesihatan / Penyakit Kronik <span class="text-rose-500">*</span></label>
+                        <input type="text" id="f-health" placeholder="Contoh: Asma, Darah Tinggi, atau tulis TIADA" class="w-full border border-slate-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500" required>
+                    </div>
                 </div>
             </div>
 
-            <!-- STEP 3: Semak & Sahkan -->
-            <div id="step-3" class="hidden">
-                <h3 class="text-base font-bold text-slate-800 mb-4 flex items-center gap-2">
-                    <i class="fa-solid fa-clipboard-check text-emerald-600"></i> Langkah 3: Semak & Sahkan Tempahan
+            <!-- BAHAGIAN B -->
+            <div class="border-t border-slate-200 pt-6">
+                <h3 class="text-lg font-bold text-emerald-800 mb-4 bg-emerald-50 py-2 px-4 rounded-lg uppercase tracking-wide">
+                    BAHAGIAN B: MAKLUMAN KADAR BAYARAN & PERAKUAN PESERTA
                 </h3>
-                <div class="bg-slate-50 rounded-2xl p-5 border border-slate-200 space-y-3 mb-5">
-                    <div class="grid grid-cols-2 gap-3 text-sm">
-                        <div>
-                            <span class="text-slate-500 block text-xs mb-0.5">Bilik / Chalet</span>
-                            <span class="font-bold text-slate-900" id="review-room"></span>
-                        </div>
-                        <div>
-                            <span class="text-slate-500 block text-xs mb-0.5">Bilangan Tetamu</span>
-                            <span class="font-bold text-slate-900" id="review-guests"></span>
-                        </div>
-                        <div>
-                            <span class="text-slate-500 block text-xs mb-0.5">Tarikh Masuk</span>
-                            <span class="font-bold text-slate-900" id="review-checkin"></span>
-                        </div>
-                        <div>
-                            <span class="text-slate-500 block text-xs mb-0.5">Tarikh Keluar</span>
-                            <span class="font-bold text-slate-900" id="review-checkout"></span>
-                        </div>
-                        <div>
-                            <span class="text-slate-500 block text-xs mb-0.5">Nama Tetamu</span>
-                            <span class="font-bold text-slate-900" id="review-name"></span>
-                        </div>
-                        <div>
-                            <span class="text-slate-500 block text-xs mb-0.5">No. Telefon</span>
-                            <span class="font-bold text-slate-900" id="review-phone"></span>
-                        </div>
+                
+                <div class="bg-slate-50 border border-slate-200 rounded-xl p-5 mb-5 space-y-2 text-sm text-slate-700">
+                    <p class="font-bold text-slate-900 border-b pb-2 mb-3">Ringkasan Kadar Bayaran:</p>
+                    <ul class="list-disc list-inside space-y-1.5 ml-1">
+                        <li><strong>Kadar Pemandu Arah:</strong> RM150.00 bagi setiap satu trip (perjalanan) kumpulan (1 hingga 7 orang).</li>
+                        <li><strong>Yuran Pemprosesan:</strong> RM10.00 bagi setiap individu / peserta.</li>
+                    </ul>
+                    <p class="mt-3 text-xs italic text-slate-500">* Pakej merangkumi jurupandu arah berpengalaman serta taklimat PPE (Personal Protective Equipment – Peralatan Perlindungan Diri).</p>
+                </div>
+
+                <div class="space-y-4 text-sm text-slate-700 font-medium">
+                    <p class="font-bold text-slate-900">Kotak Perakuan & Pengesahan Peserta (Wajib Ditandakan Semua):</p>
+                    <label class="flex items-start gap-3 cursor-pointer">
+                        <input type="checkbox" required class="mt-1 w-5 h-5 text-emerald-600 rounded">
+                        <span>Saya mengesahkan bahawa segala maklumat yang diberikan dalam borang ini adalah tepat, benar, dan terkini.</span>
+                    </label>
+                    <label class="flex items-start gap-3 cursor-pointer">
+                        <input type="checkbox" required class="mt-1 w-5 h-5 text-emerald-600 rounded">
+                        <span>Saya memahami bahawa setiap kumpulan terhad kepada maksimum 7 orang peserta sahaja.</span>
+                    </label>
+                    <label class="flex items-start gap-3 cursor-pointer">
+                        <input type="checkbox" required class="mt-1 w-5 h-5 text-emerald-600 rounded">
+                        <span>Bagi kategori Join Group, saya bersetuju digabungkan bersama peserta lain oleh pihak pengurusan sehingga mencukupi kuota 7 orang.</span>
+                    </label>
+                    <label class="flex items-start gap-3 cursor-pointer">
+                        <input type="checkbox" required class="mt-1 w-5 h-5 text-emerald-600 rounded">
+                        <span>Saya bersetuju mematuhi segala peraturan keselamatan, mematuhi arahan jurupandu arah, membawa bekalan makanan/minuman secukupnya, menjaga kebersihan alam sekitar, dan mengambil maklum bahawa peserta digalakkan mengambil perlindungan insurans sendiri sebelum aktiviti dimulakan.</span>
+                    </label>
+                    <label class="flex items-start gap-3 cursor-pointer">
+                        <input type="checkbox" required class="mt-1 w-5 h-5 text-emerald-600 rounded">
+                        <span>Dengan menghantar borang ini, saya telah membaca dan bersetuju dengan segala syarat serta ketetapan yang telah ditetapkan oleh pihak Taman Eko Rimba Berkelah.</span>
+                    </label>
+                </div>
+            </div>
+
+            
+            <!-- BAHAGIAN C -->
+            <div class="border-t border-slate-200 pt-6">
+                <h3 class="text-lg font-bold text-emerald-800 mb-4 bg-emerald-50 py-2 px-4 rounded-lg uppercase tracking-wide">
+                    BAHAGIAN C: RINGKASAN TEMPAHAN & PEMBAYARAN FPX
+                </h3>
+                
+                <!-- Dynamic Cart Summary -->
+                <div class="bg-slate-50 border border-slate-200 rounded-xl p-5 mb-5">
+                    <p class="font-bold text-slate-900 border-b pb-2 mb-3">Senarai Aktiviti Pilihan Anda:</p>
+                    <div id="modal-cart-summary" class="space-y-2 text-sm text-slate-700">
+                        <!-- Populated via JS -->
                     </div>
-                    <hr class="border-slate-200">
-                    <div class="flex justify-between items-center">
-                        <div class="text-slate-600 text-sm">
-                            <span id="review-nights"></span> malam × RM<span id="review-price-per-night"></span>
-                        </div>
-                        <div class="text-emerald-900 font-extrabold text-xl">RM<span id="review-total"></span></div>
+                    <div class="border-t border-slate-200 mt-3 pt-3 flex justify-between items-center text-lg font-extrabold text-emerald-800">
+                        <span>JUMLAH KESELURUHAN:</span>
+                        <span>RM<span id="modal-cart-total">0.00</span></span>
                     </div>
                 </div>
 
-                <div class="bg-amber-50 border border-amber-200 rounded-xl p-4 text-sm text-amber-900 mb-5">
-                    <i class="fa-solid fa-circle-info text-amber-500 mr-2"></i>
-                    Tempahan ini <strong>memerlukan pengesahan</strong> daripada pihak Taman Eko Rimba Berkelah. Kami akan menghubungi anda melalui WhatsApp dalam masa <strong>24 jam</strong>.
+                <!-- FPX Selection -->
+                <div class="bg-white border border-slate-200 rounded-xl p-5 mb-2 shadow-sm">
+                    <label class="block text-sm font-bold text-slate-700 mb-3">
+                        Sila Pilih Bank Anda (FPX) <span class="text-rose-500">*</span>
+                    </label>
+                    <div class="flex items-center gap-3 mb-4">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/FPX_logo.svg/1024px-FPX_logo.svg.png" alt="FPX" class="h-6 object-contain">
+                        <span class="text-xs font-semibold text-slate-500">Perbankan Internet Selamat</span>
+                    </div>
+                    <select id="f-bank" class="w-full border border-slate-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500" required>
+                        <option value="">-- Senarai Bank Tempatan --</option>
+                        <option value="Maybank2u">Maybank2u</option>
+                        <option value="CIMB Clicks">CIMB Clicks</option>
+                        <option value="RHB Now">RHB Now</option>
+                        <option value="Public Bank">Public Bank (PBe)</option>
+                        <option value="Bank Islam">Bank Islam</option>
+                        <option value="AmBank">AmBank</option>
+                        <option value="Hong Leong Connect">Hong Leong Connect</option>
+                        <option value="BSN">BSN</option>
+                    </select>
                 </div>
+            </div>
 
-                <div id="form-error" class="hidden bg-rose-50 border border-rose-200 rounded-xl p-4 text-sm text-rose-800 mb-4">
-                    <i class="fa-solid fa-triangle-exclamation text-rose-500 mr-2"></i>
-                    <span id="form-error-msg"></span>
-                </div>
-
-                <div class="flex justify-between">
-                    <button type="button" id="btn-step3-back" class="text-slate-600 hover:text-slate-800 font-semibold px-5 py-2.5 rounded-xl border border-slate-200 hover:bg-slate-50 transition flex items-center gap-2">
-                        <i class="fa-solid fa-arrow-left"></i> Kembali
-                    </button>
-                    <button type="submit" id="btn-submit" class="bg-emerald-700 hover:bg-emerald-800 text-white font-bold px-8 py-2.5 rounded-xl transition flex items-center gap-2">
-                        <i class="fa-solid fa-check"></i> Sahkan Tempahan
-                    </button>
-                </div>
+            <!-- Submit Button -->
+            <div class="border-t border-slate-200 pt-6 flex justify-end gap-3 sticky bottom-0 bg-white pb-4">
+                <button type="button" onclick="document.getElementById('booking-modal').classList.add('hidden')" class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold px-6 py-2.5 rounded-xl transition">
+                    Kembali / Back
+                </button>
+                <button type="submit" id="btn-submit" class="bg-emerald-700 hover:bg-emerald-800 text-white font-bold px-8 py-2.5 rounded-xl transition flex items-center gap-2">
+                    <i class="fa-solid fa-lock"></i> Bayar & Hantar Borang
+                </button>
             </div>
         </form>
     </div>
 </div>
-
 <!-- SUCCESS MODAL -->
 <div id="success-modal" class="fixed inset-0 bg-slate-900/70 z-50 hidden flex items-center justify-center p-4">
-    <div class="bg-white rounded-3xl shadow-2xl w-full max-w-md p-8 text-center">
-        <div class="w-20 h-20 rounded-full bg-emerald-100 flex items-center justify-center mx-auto mb-5">
+    <div class="bg-white rounded-3xl shadow-2xl w-full max-w-md p-6 sm:p-8 text-center max-h-[90vh] overflow-y-auto">
+        <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-emerald-100 flex items-center justify-center mx-auto mb-5">
             <i class="fa-solid fa-circle-check text-4xl text-emerald-600"></i>
         </div>
         <h2 class="text-2xl font-extrabold text-slate-900 mb-2">Tempahan Berjaya!</h2>
@@ -382,7 +398,7 @@
         </div>
 
         <div class="text-left space-y-2 text-sm bg-slate-50 rounded-xl p-4 border border-slate-100 mb-6">
-            <div class="flex justify-between"><span class="text-slate-500">Bilik:</span><span class="font-semibold" id="success-room"></span></div>
+            <div class="flex justify-between"><span class="text-slate-500">Tempahan & Aktiviti:</span><span class="font-semibold" id="success-room"></span></div>
             <div class="flex justify-between"><span class="text-slate-500">Tarikh Masuk:</span><span class="font-semibold" id="success-checkin"></span></div>
             <div class="flex justify-between"><span class="text-slate-500">Tarikh Keluar:</span><span class="font-semibold" id="success-checkout"></span></div>
             <div class="flex justify-between"><span class="text-slate-500">Jumlah Malam:</span><span class="font-semibold" id="success-nights"></span></div>
@@ -407,7 +423,7 @@
         <p class="mb-2"><span class="text-white font-bold">Taman Eko Rimba Berkelah</span> – Mukim Luit, Pahang</p>
         <p class="mb-6">WhatsApp: <a href="https://wa.me/60194489296" class="text-emerald-400 hover:text-emerald-300">019-4489296</a></p>
         
-        <a href="/admin" class="bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white px-5 py-2.5 rounded-lg transition flex items-center gap-2 text-sm font-semibold border border-slate-700 mb-6">
+        <a href="admin.html" class="bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white px-5 py-2.5 rounded-lg transition flex items-center gap-2 text-sm font-semibold border border-slate-700 mb-6">
             <i class="fa-solid fa-lock"></i> Log Masuk Admin
         </a>
         
@@ -433,30 +449,30 @@ async function loadRooms(typeFilter = '') {
         allRooms = await res.json();
         let filtered = allRooms;
         if (typeFilter) filtered = allRooms.filter(r => r.type === typeFilter);
-        document.getElementById('room-count').textContent = `${filtered.length} bilik / chalet tersedia`;
+        document.getElementById('room-count').textContent = `${filtered.length} tempahan & aktiviti tersedia`;
         renderRooms(filtered);
     } catch (e) {
-        grid.innerHTML = `<div class="col-span-full text-center py-12 text-rose-500"><i class="fa-solid fa-triangle-exclamation mr-2"></i>Gagal memuatkan senarai bilik.</div>`;
+        grid.innerHTML = `<div class="col-span-full text-center py-12 text-rose-500"><i class="fa-solid fa-triangle-exclamation mr-2"></i>Gagal memuatkan senarai tempahan & aktiviti.</div>`;
     }
 }
 
 function renderRooms(rooms) {
     const grid = document.getElementById('rooms-grid');
     if (!rooms.length) {
-        grid.innerHTML = `<div class="col-span-full text-center py-12 text-slate-400"><i class="fa-solid fa-bed text-4xl mb-3 block"></i>Tiada bilik yang sepadan.</div>`;
+        grid.innerHTML = `<div class="col-span-full text-center py-12 text-slate-400"><i class="fa-solid fa-bed text-4xl mb-3 block"></i>Tiada tempahan & aktiviti yang sepadan.</div>`;
         return;
     }
     grid.innerHTML = rooms.map(r => `
         <div class="room-card bg-white rounded-2xl shadow-lg overflow-hidden border border-slate-100 flex flex-col">
-            <div class="relative h-52 overflow-hidden">
-                <img src="${r.image_url}" alt="${r.name}" class="w-full h-full object-cover">
-                <span class="absolute top-3 left-3 bg-emerald-900/90 text-white text-xs font-bold px-3 py-1 rounded-full">${r.type}</span>
-                <span class="absolute top-3 right-3 bg-amber-400 text-emerald-950 text-xs font-extrabold px-3 py-1 rounded-full">
-                    RM${r.price_per_night}<span class="font-normal">/malam</span>
-                </span>
+            <div class="relative w-full bg-slate-50 aspect-[3/4] flex justify-center items-center border-b border-slate-100">
+                  <img src="${r.image_url}" alt="${r.name}" class="w-full h-full ${r.image_url.includes('unsplash.com') ? 'object-cover' : 'object-contain p-2'}">
+                
+                
             </div>
             <div class="p-5 flex flex-col flex-grow">
-                <h3 class="text-lg font-extrabold text-slate-900 mb-1">${r.name}</h3>
+                <div class="flex justify-between items-start mb-2">
+                    <h3 class="text-lg font-extrabold text-slate-900">${r.name}</h3>
+                </div>
                 <p class="text-slate-500 text-sm mb-3 flex-grow">${r.description}</p>
                 <div class="flex items-center gap-2 text-xs text-emerald-700 bg-emerald-50 rounded-lg px-3 py-2 mb-4 border border-emerald-100">
                     <i class="fa-solid fa-users"></i>
@@ -469,8 +485,8 @@ function renderRooms(rooms) {
                         ${r.facilities.split(', ').length > 4 ? `<span class="bg-slate-100 text-slate-500 text-xs px-2 py-0.5 rounded-full">+${r.facilities.split(', ').length - 4} lagi</span>` : ''}
                     </div>
                 </div>
-                <button onclick="openBooking(${r.id})" class="w-full bg-emerald-700 hover:bg-emerald-800 text-white font-bold py-3 rounded-xl transition flex items-center justify-center gap-2 mt-auto">
-                    <i class="fa-solid fa-calendar-plus"></i> Tempah Sekarang
+                <button onclick="addToCart(${r.id})" class="w-full bg-emerald-700 hover:bg-emerald-800 text-white font-bold py-3 rounded-xl transition flex items-center justify-center gap-2 mt-auto">
+                    <i class="fa-solid fa-cart-plus"></i> Tambah ke Bakul
                 </button>
             </div>
         </div>
@@ -520,7 +536,7 @@ async function loadRoomsWithAvailability(checkin, checkout) {
         return { ...r, available: !isConflict };
     }));
     const avail = checks.filter(r => r.available).length;
-    showAvailMsg(`${avail} daripada ${checks.length} bilik tersedia untuk tarikh yang dipilih.`, avail > 0 ? 'success' : 'error');
+    showAvailMsg(`${avail} daripada ${checks.length} tempahan & aktiviti tersedia untuk tarikh yang dipilih.`, avail > 0 ? 'success' : 'error');
     renderRoomsWithAvailability(checks);
 }
 
@@ -528,27 +544,27 @@ function renderRoomsWithAvailability(rooms) {
     const grid = document.getElementById('rooms-grid');
     grid.innerHTML = rooms.map(r => `
         <div class="room-card bg-white rounded-2xl shadow-lg overflow-hidden border ${r.available ? 'border-slate-100' : 'border-rose-200 opacity-70'} flex flex-col">
-            <div class="relative h-52 overflow-hidden">
-                <img src="${r.image_url}" alt="${r.name}" class="w-full h-full object-cover">
+            <div class="relative w-full bg-slate-50 aspect-[3/4] flex justify-center items-center border-b border-slate-100">
+                  <img src="${r.image_url}" alt="${r.name}" class="w-full h-full ${r.image_url.includes('unsplash.com') ? 'object-cover' : 'object-contain p-2'}">
                 <span class="absolute top-3 left-3 ${r.available ? 'bg-emerald-600' : 'bg-rose-600'} text-white text-xs font-bold px-3 py-1 rounded-full">
                     <i class="fa-solid ${r.available ? 'fa-circle-check' : 'fa-circle-xmark'} mr-1"></i>${r.available ? 'Tersedia' : 'Ditempah'}
                 </span>
-                <span class="absolute top-3 right-3 bg-amber-400 text-emerald-950 text-xs font-extrabold px-3 py-1 rounded-full">
-                    RM${r.price_per_night}<span class="font-normal">/malam</span>
-                </span>
+                
             </div>
             <div class="p-5 flex flex-col flex-grow">
-                <h3 class="text-lg font-extrabold text-slate-900 mb-1">${r.name}</h3>
+                <div class="flex justify-between items-start mb-2">
+                    <h3 class="text-lg font-extrabold text-slate-900">${r.name}</h3>
+                </div>
                 <p class="text-slate-500 text-sm mb-3 flex-grow">${r.description}</p>
                 <div class="flex items-center gap-2 text-xs text-emerald-700 bg-emerald-50 rounded-lg px-3 py-2 mb-4 border border-emerald-100">
                     <i class="fa-solid fa-users"></i>
                     <span>Sehingga <strong>${r.capacity} orang</strong></span>
                 </div>
-                <button onclick="${r.available ? `openBooking(${r.id})` : ''}" 
+                <button onclick="${r.available ? `addToCart(${r.id})` : ''}" 
                     class="w-full ${r.available ? 'bg-emerald-700 hover:bg-emerald-800 cursor-pointer' : 'bg-slate-300 cursor-not-allowed'} text-white font-bold py-3 rounded-xl transition flex items-center justify-center gap-2 mt-auto"
                     ${!r.available ? 'disabled' : ''}>
-                    <i class="fa-solid ${r.available ? 'fa-calendar-plus' : 'fa-calendar-xmark'}"></i>
-                    ${r.available ? 'Tempah Sekarang' : 'Tidak Tersedia'}
+                    <i class="fa-solid ${r.available ? 'fa-cart-plus' : 'fa-calendar-xmark'}"></i>
+                    ${r.available ? 'Tambah ke Bakul' : 'Tidak Tersedia'}
                 </button>
             </div>
         </div>
@@ -564,231 +580,210 @@ function showAvailMsg(msg, type) {
 }
 
 // ──── OPEN BOOKING MODAL ────
-async function openBooking(roomId) {
-    selectedRoom = allRooms.find(r => r.id === roomId);
-    if (!selectedRoom) return;
-    guestCount = 1;
-    document.getElementById('guests-count').textContent = 1;
-    document.getElementById('f-room-id').value = selectedRoom.id;
-    document.getElementById('f-room-name').value = selectedRoom.name;
-    document.getElementById('f-price-per-night').value = selectedRoom.price_per_night;
-    document.getElementById('modal-room-name').textContent = `${selectedRoom.name} – RM${selectedRoom.price_per_night}/malam`;
-    document.getElementById('capacity-hint').textContent = `Kapasiti maksimum: ${selectedRoom.capacity} orang`;
+let checkinPicker;
+let cart = [];
 
-    // Get booked dates
-    const res = await fetch(`${API}/api/rooms/${roomId}/booked-dates`);
-    const bookedRanges = await res.json();
+function addToCart(id) {
+    const room = allRooms.find(r => r.id === id);
+    if (!room) return;
+    
+    // Check if already in cart
+    if (cart.find(item => item.id === id)) {
+        alert(room.name + ' sudah ada di dalam bakul.');
+        return;
+    }
+    
+    cart.push(room);
+    updateCartUI();
+    
+    // Show toast or alert
+    const btn = document.querySelector(`button[onclick="addToCart(${id})"]`);
+    if(btn) {
+        const original = btn.innerHTML;
+        btn.innerHTML = '<i class="fa-solid fa-check"></i> Ditambah';
+        btn.classList.add('bg-emerald-500');
+        setTimeout(() => {
+            btn.innerHTML = original;
+            btn.classList.remove('bg-emerald-500');
+        }, 2000);
+    }
+}
 
-    // Disable booked date ranges in flatpickr
-    const disabledRanges = bookedRanges.map(b => ({ from: b.checkin_date, to: b.checkout_date }));
+function removeFromCart(id) {
+    cart = cart.filter(item => item.id !== id);
+    updateCartUI();
+}
 
-    if (checkinFp) checkinFp.destroy();
-    if (checkoutFp) checkoutFp.destroy();
+function clearCart() {
+    cart = [];
+    updateCartUI();
+}
 
-    checkinFp = flatpickr('#f-checkin', {
-        dateFormat: 'Y-m-d', minDate: 'today', disable: disabledRanges,
-        locale: { firstDayOfWeek: 1 },
-        onDayCreate: (dObj, dStr, fp, dayElem) => {
-            const d = flatpickr.formatDate(dayElem.dateObj, 'Y-m-d');
-            if (disabledRanges.some(r => d >= r.from && d < r.to)) dayElem.classList.add('unavailable');
-        },
-        onChange: (sel) => {
-            if (sel[0]) checkoutFp.set('minDate', new Date(sel[0].getTime() + 86400000));
-            updateDateSummary();
-        }
-    });
+function updateCartUI() {
+    const container = document.getElementById('cart-container');
+    const itemsDiv = document.getElementById('cart-items');
+    
+    if (cart.length === 0) {
+        container.classList.add('translate-y-full');
+        return;
+    }
+    
+    container.classList.remove('translate-y-full');
+    document.getElementById('cart-count').textContent = cart.length;
+    
+    let total = 0;
+    itemsDiv.innerHTML = cart.map(item => {
+        total += parseFloat(item.price_per_night);
+        return `
+            <div class="flex justify-between items-center bg-slate-50 p-2 rounded-lg border border-slate-100">
+                <span class="font-semibold text-slate-700 truncate mr-2">${item.name}</span>
+                <div class="flex items-center gap-3">
+                    <span class="font-bold text-emerald-800">RM${item.price_per_night}</span>
+                    <button onclick="removeFromCart(${item.id})" class="text-slate-400 hover:text-rose-500 transition"><i class="fa-solid fa-trash-can"></i></button>
+                </div>
+            </div>
+        `;
+    }).join('');
+    
+    document.getElementById('cart-total').textContent = total.toFixed(2);
+}
 
-    checkoutFp = flatpickr('#f-checkout', {
-        dateFormat: 'Y-m-d', minDate: 'today', disable: disabledRanges,
-        locale: { firstDayOfWeek: 1 },
-        onDayCreate: (dObj, dStr, fp, dayElem) => {
-            const d = flatpickr.formatDate(dayElem.dateObj, 'Y-m-d');
-            if (disabledRanges.some(r => d > r.from && d <= r.to)) dayElem.classList.add('unavailable');
-        },
-        onChange: () => updateDateSummary()
-    });
-
-    // Reset form & steps
+async function openCheckout() {
+    if (cart.length === 0) return;
+    
+    document.getElementById('modal-room-name').innerHTML = `<i class="fa-solid fa-chevron-right text-emerald-400 mx-2 text-xs"></i> ${cart.length} Aktiviti Terpilih`;
     document.getElementById('booking-form').reset();
-    document.getElementById('f-checkin').value = '';
-    document.getElementById('f-checkout').value = '';
-    document.getElementById('date-summary').classList.add('hidden');
-    document.getElementById('btn-step1-next').disabled = true;
-    showStep(1);
-    document.getElementById('form-error').classList.add('hidden');
     document.getElementById('booking-modal').classList.remove('hidden');
-}
+    
+    // Populate Bahagian C summary
+    let modalTotal = 0;
+    document.getElementById('modal-cart-summary').innerHTML = cart.map(item => {
+        modalTotal += parseFloat(item.price_per_night);
+        return `<div class="flex justify-between items-center"><span>${item.name}</span><span class="font-bold">RM${item.price_per_night}</span></div>`;
+    }).join('');
+    document.getElementById('modal-cart-total').textContent = modalTotal.toFixed(2);
 
-function updateDateSummary() {
-    const cin = document.getElementById('f-checkin').value;
-    const cout = document.getElementById('f-checkout').value;
-    if (cin && cout) {
-        const nights = Math.ceil((new Date(cout) - new Date(cin)) / 86400000);
-        const total = nights * parseFloat(document.getElementById('f-price-per-night').value);
-        document.getElementById('summary-nights').textContent = nights;
-        document.getElementById('summary-total').textContent = total.toFixed(2);
-        document.getElementById('date-summary').classList.remove('hidden');
-        document.getElementById('btn-step1-next').disabled = false;
-    } else {
-        document.getElementById('date-summary').classList.add('hidden');
-        document.getElementById('btn-step1-next').disabled = true;
-    }
-}
 
-// ──── STEP NAVIGATION ────
-function showStep(step) {
-    [1, 2, 3].forEach(s => {
-        document.getElementById(`step-${s}`).classList.add('hidden');
-        document.getElementById(`step${s}-ind`).classList.remove('active');
-        if (s < 3) document.getElementById(`step${s}-conn`).classList.remove('active');
-    });
-    document.getElementById(`step-${step}`).classList.remove('hidden');
-    for (let s = 1; s <= step; s++) {
-        document.getElementById(`step${s}-ind`).classList.add('active');
-        if (s < step) document.getElementById(`step${s}-conn`).classList.add('active');
-    }
-}
-
-document.getElementById('btn-step1-next').addEventListener('click', () => {
-    if (!document.getElementById('f-checkin').value || !document.getElementById('f-checkout').value) return;
-    showStep(2);
-});
-
-document.getElementById('btn-step2-back').addEventListener('click', () => showStep(1));
-
-document.getElementById('btn-step2-next').addEventListener('click', () => {
-    const name = document.getElementById('f-name').value.trim();
-    const phone = document.getElementById('f-phone').value.trim();
-    if (!name || !phone) { alert('Sila lengkapkan Nama Penuh dan No. Telefon.'); return; }
-
-    const cin = document.getElementById('f-checkin').value;
-    const cout = document.getElementById('f-checkout').value;
-    const nights = Math.ceil((new Date(cout) - new Date(cin)) / 86400000);
-    const total = nights * parseFloat(document.getElementById('f-price-per-night').value);
-
-    document.getElementById('review-room').textContent = selectedRoom.name;
-    document.getElementById('review-guests').textContent = `${guestCount} orang`;
-    document.getElementById('review-checkin').textContent = cin;
-    document.getElementById('review-checkout').textContent = cout;
-    document.getElementById('review-name').textContent = name;
-    document.getElementById('review-phone').textContent = phone;
-    document.getElementById('review-nights').textContent = nights;
-    document.getElementById('review-price-per-night').textContent = selectedRoom.price_per_night;
-    document.getElementById('review-total').textContent = total.toFixed(2);
-
-    showStep(3);
-});
-
-document.getElementById('btn-step3-back').addEventListener('click', () => showStep(2));
-
-// ──── GUEST COUNT ────
-document.getElementById('btn-guests-plus').addEventListener('click', () => {
-    if (selectedRoom && guestCount < selectedRoom.capacity) {
-        guestCount++;
-        document.getElementById('guests-count').textContent = guestCount;
-    }
-});
-document.getElementById('btn-guests-minus').addEventListener('click', () => {
-    if (guestCount > 1) {
-        guestCount--;
-        document.getElementById('guests-count').textContent = guestCount;
-    }
-});
-
-// ──── SUBMIT BOOKING ────
-document.getElementById('booking-form').addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const btn = document.getElementById('btn-submit');
-    btn.disabled = true;
-    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Menghantar...';
-    document.getElementById('form-error').classList.add('hidden');
-
-    const body = {
-        room_id: parseInt(document.getElementById('f-room-id').value),
-        guest_name: document.getElementById('f-name').value.trim(),
-        guest_phone: document.getElementById('f-phone').value.trim(),
-        guest_email: document.getElementById('f-email').value.trim(),
-        guest_ic: document.getElementById('f-ic').value.trim(),
-        num_guests: guestCount,
-        checkin_date: document.getElementById('f-checkin').value,
-        checkout_date: document.getElementById('f-checkout').value,
-        special_request: document.getElementById('f-special').value.trim()
-    };
-
+    if(checkinPicker) checkinPicker.destroy();
+    
+    // Fetch conflicts for ALL items in cart
+    let allConflicts = [];
     try {
-        const res = await fetch(`${API}/api/bookings`, {
-            method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body)
-        });
-        const data = await res.json();
-        if (!res.ok) {
-            document.getElementById('form-error-msg').textContent = data.error || 'Ralat berlaku.';
-            document.getElementById('form-error').classList.remove('hidden');
-        } else {
-            // Show success
-            document.getElementById('booking-modal').classList.add('hidden');
-            document.getElementById('success-ref').textContent = data.booking.booking_ref;
-            document.getElementById('success-room').textContent = data.booking.room_name;
-            document.getElementById('success-checkin').textContent = data.booking.checkin_date;
-            document.getElementById('success-checkout').textContent = data.booking.checkout_date;
-            document.getElementById('success-nights').textContent = `${data.booking.num_nights} malam`;
-            document.getElementById('success-total').textContent = parseFloat(data.booking.total_price).toFixed(2);
-            const waMsg = `Salam Taman Eko Rimba Berkelah, saya telah membuat tempahan dengan rujukan *${data.booking.booking_ref}*%0aBilik: ${data.booking.room_name}%0aTarikh Masuk: ${data.booking.checkin_date}%0aTarikh Keluar: ${data.booking.checkout_date}%0aJumlah: RM${parseFloat(data.booking.total_price).toFixed(2)}%0aSila sahkan tempahan saya. Terima kasih.`;
-            document.getElementById('btn-wa-confirm').href = `https://wa.me/60194489296?text=${waMsg}`;
-            document.getElementById('success-modal').classList.remove('hidden');
+        for (const item of cart) {
+            const res = await fetch(`/api/rooms/${item.id}/booked-dates`);
+            const data = await res.json();
+            if (data.dates) {
+                allConflicts = [...allConflicts, ...data.dates];
+            }
         }
-    } catch (err) {
-        document.getElementById('form-error-msg').textContent = 'Ralat sambungan. Sila cuba lagi.';
-        document.getElementById('form-error').classList.remove('hidden');
-    }
+    } catch(e) {}
+    
+    checkinPicker = flatpickr("#f-checkin", {
+        minDate: "today",
+        disable: allConflicts,
+        onChange: function(selectedDates, dateStr, instance) {
+            // No longer directly setting checkout here because we handle it in submit
+        }
+    });
+}
 
-    btn.disabled = false;
-    btn.innerHTML = '<i class="fa-solid fa-check"></i> Sahkan Tempahan';
-});
-
-// ──── CLOSE MODAL ────
 document.getElementById('close-modal').addEventListener('click', () => {
     document.getElementById('booking-modal').classList.add('hidden');
 });
-document.getElementById('booking-modal').addEventListener('click', function(e) {
-    if (e.target === this) this.classList.add('hidden');
-});
 
-// ──── BOOKING LOOKUP ────
-document.getElementById('btn-lookup').addEventListener('click', async () => {
-    const ref = document.getElementById('lookup-ref').value.trim().toUpperCase();
-    if (!ref) return;
-    const div = document.getElementById('lookup-result');
-    div.classList.remove('hidden');
-    div.innerHTML = `<div class="text-slate-400 text-sm"><i class="fa-solid fa-spinner fa-spin mr-1"></i> Mencari...</div>`;
-    try {
-        const res = await fetch(`${API}/api/bookings/${ref}`);
-        if (!res.ok) {
-            div.innerHTML = `<div class="bg-rose-50 border border-rose-200 rounded-xl p-3 text-rose-700 text-sm"><i class="fa-solid fa-circle-xmark mr-2"></i>Tempahan tidak dijumpai untuk rujukan <strong>${ref}</strong>.</div>`;
-        } else {
-            const b = await res.json();
-            const statusColor = b.status === 'Menunggu Pengesahan' ? 'bg-amber-100 text-amber-800' : b.status === 'Disahkan' ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800';
-            div.innerHTML = `
-                <div class="bg-white border border-slate-200 rounded-xl p-4 text-sm shadow-sm text-left">
-                    <div class="flex justify-between items-start mb-3">
-                        <div>
-                            <p class="font-extrabold text-slate-900">${b.booking_ref}</p>
-                            <p class="text-slate-500 text-xs">${b.room_name}</p>
-                        </div>
-                        <span class="status-badge ${statusColor}">${b.status}</span>
-                    </div>
-                    <div class="grid grid-cols-2 gap-2 text-xs text-slate-600">
-                        <div><span class="text-slate-400">Nama:</span> ${b.guest_name}</div>
-                        <div><span class="text-slate-400">Tetamu:</span> ${b.num_guests} orang</div>
-                        <div><span class="text-slate-400">Masuk:</span> ${b.checkin_date}</div>
-                        <div><span class="text-slate-400">Keluar:</span> ${b.checkout_date}</div>
-                        <div class="col-span-2 font-bold text-emerald-800">Jumlah: RM${parseFloat(b.total_price).toFixed(2)}</div>
-                    </div>
-                </div>`;
+document.getElementById('booking-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if(cart.length === 0) return;
+
+    const btn = document.getElementById('btn-submit');
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Menghantar...';
+
+    const genderNode = document.querySelector('input[name="f-gender"]:checked');
+    const kategori = document.getElementById('f-category').value;
+    const groupName = document.getElementById('f-groupname').value;
+    
+    const checkinVal = document.getElementById('f-checkin').value;
+    const checkoutDateObj = new Date(checkinVal);
+    checkoutDateObj.setDate(checkoutDateObj.getDate() + 1);
+    const checkoutStr = checkoutDateObj.toISOString().split('T')[0];
+    
+    let allSuccess = true;
+    let errorMsg = '';
+    let bookedRefs = [];
+    let bookedNames = [];
+
+    // Loop and post each cart item
+    for (const item of cart) {
+        const payload = {
+            room_id: parseInt(item.id),
+            checkin_date: checkinVal,
+            checkout_date: checkoutStr,
+            guest_name: document.getElementById('f-name').value,
+            guest_phone: document.getElementById('f-phone').value,
+            num_guests: 1, 
+            special_requests: `Kategori: ${kategori} (${groupName}) | Sesi: ${document.getElementById('f-session').value} | IC: ${document.getElementById('f-ic').value} | Umur: ${document.getElementById('f-age').value} | Jantina: ${genderNode ? genderNode.value : ''} | Emel: ${document.getElementById('f-email').value} | Alamat: ${document.getElementById('f-address').value} | Waris: ${document.getElementById('f-emg-name').value} (${document.getElementById('f-emg-relation').value} - ${document.getElementById('f-emg-phone').value}) | Kesihatan: ${document.getElementById('f-health').value}`
+        };
+
+        try {
+            const res = await fetch('/api/bookings', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+            const data = await res.json();
+            
+            if (data.success) {
+                bookedRefs.push(data.booking.booking_ref);
+                bookedNames.push(item.name);
+            } else {
+                allSuccess = false;
+                errorMsg = data.error || data.message || 'Ralat tempahan.';
+                break; // Stop if one fails
+            }
+        } catch (err) {
+            allSuccess = false;
+            errorMsg = 'Gagal menyambung ke pelayan.';
+            break;
         }
-    } catch { div.innerHTML = `<div class="text-rose-500 text-sm">Ralat sambungan.</div>`; }
-});
+    }
 
-document.getElementById('lookup-ref').addEventListener('keydown', (e) => { if (e.key === 'Enter') document.getElementById('btn-lookup').click(); });
+    if (allSuccess && bookedRefs.length > 0) {
+        document.getElementById('booking-modal').classList.add('hidden');
+        
+        // Show success modal
+        document.getElementById('success-ref').textContent = bookedRefs.join(', ');
+        document.getElementById('success-room').textContent = bookedNames.join(', ');
+        document.getElementById('success-checkin').textContent = checkinVal;
+        document.getElementById('success-checkout').textContent = '-';
+        document.getElementById('success-nights').textContent = '1 Individu';
+        
+        let totalCartPrice = cart.reduce((sum, item) => sum + parseFloat(item.price_per_night), 0);
+        document.getElementById('success-total').textContent = 'RM' + totalCartPrice.toFixed(2);
+        
+        // Build whatsapp message
+        const waMsg = `Salam Taman Eko Rimba Berkelah, saya telah membuat pendaftaran pelbagai aktiviti.
+Rujukan: *${bookedRefs.join(', ')}*
+Aktiviti: ${bookedNames.join(', ')}
+Nama: ${document.getElementById('f-name').value}
+Kumpulan: ${kategori} (${groupName})
+Sesi: ${document.getElementById('f-session').value}
+Tarikh: ${checkinVal}
+Jumlah Harga: RM${totalCartPrice.toFixed(2)}
+Bank Pilihan (FPX): ${document.getElementById('f-bank').value}
+Sila sahkan pendaftaran dan status bayaran saya. Terima kasih.`;
+        
+        document.getElementById('btn-wa-confirm').href = `https://wa.me/60194489296?text=${encodeURIComponent(waMsg)}`;
+        document.getElementById('success-modal').classList.remove('hidden');
+        
+        clearCart(); // Clear the cart after success
+    } else {
+        alert('Ralat pada aktiviti ' + bookedNames.length + 1 + ': ' + errorMsg);
+    }
+
+    btn.disabled = false;
+    btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Hantar Borang / Submit';
+});
 
 // Mobile menu
 document.getElementById('mobile-menu-btn').addEventListener('click', () => {
