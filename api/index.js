@@ -145,8 +145,17 @@ app.get('/api/rooms', async (req, res) => {
             await pool.query("UPDATE rooms SET description = REGEXP_REPLACE(description, 'Gunung Tapis', 'Taman Eko Rimba Berkelah', 'ig')");
         }
         const { rows } = await pool.query('SELECT * FROM rooms WHERE is_active = 1 ORDER BY id ASC');
+        
+        // Force memory replacement of any lingering text before sending to frontend
+        const fixedRows = rows.map(r => {
+            if (r.description) {
+                r.description = r.description.replace(/Gunung Tapis/gi, 'Taman Eko Rimba Berkelah');
+            }
+            return r;
+        });
+        
         res.setHeader('Cache-Control', 'no-store, max-age=0'); // Prevent browser/vercel caching
-        res.json(rows.length > 0 ? rows : MOCK_ROOMS);
+        res.json(fixedRows.length > 0 ? fixedRows : MOCK_ROOMS);
     } catch (err) {
         console.warn("DB Failed, returning mock data");
         res.json(MOCK_ROOMS);
