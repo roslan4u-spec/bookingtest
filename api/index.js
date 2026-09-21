@@ -141,7 +141,10 @@ const MOCK_ROOMS = [
 
 app.get('/api/rooms', async (req, res) => {
     try {
-        const { rows } = await pool.query('SELECT * FROM rooms WHERE is_active = 1');
+        if (process.env.DATABASE_URL) {
+            await pool.query("UPDATE rooms SET description = REPLACE(description, 'Gunung Tapis', 'Taman Eko Rimba Berkelah') WHERE description LIKE '%Gunung Tapis%'");
+        }
+        const { rows } = await pool.query('SELECT * FROM rooms WHERE is_active = 1 ORDER BY id ASC');
         res.json(rows.length > 0 ? rows : MOCK_ROOMS);
     } catch (err) {
         console.warn("DB Failed, returning mock data");
