@@ -445,7 +445,7 @@ let filterDates = { checkin: null, checkout: null };
 async function loadRooms(typeFilter = '') {
     const grid = document.getElementById('rooms-grid');
     try {
-        const res = await fetch(`${API}/api/rooms`);
+        const res = await fetch(`${API}/api/rooms?t=${Date.now()}`);
         allRooms = await res.json();
         let filtered = allRooms;
         if (typeFilter) filtered = allRooms.filter(r => r.type === typeFilter);

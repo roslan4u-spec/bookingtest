@@ -142,9 +142,10 @@ const MOCK_ROOMS = [
 app.get('/api/rooms', async (req, res) => {
     try {
         if (process.env.DATABASE_URL) {
-            await pool.query("UPDATE rooms SET description = REPLACE(description, 'Gunung Tapis', 'Taman Eko Rimba Berkelah') WHERE description LIKE '%Gunung Tapis%'");
+            await pool.query("UPDATE rooms SET description = REGEXP_REPLACE(description, 'Gunung Tapis', 'Taman Eko Rimba Berkelah', 'ig')");
         }
         const { rows } = await pool.query('SELECT * FROM rooms WHERE is_active = 1 ORDER BY id ASC');
+        res.setHeader('Cache-Control', 'no-store, max-age=0'); // Prevent browser/vercel caching
         res.json(rows.length > 0 ? rows : MOCK_ROOMS);
     } catch (err) {
         console.warn("DB Failed, returning mock data");
