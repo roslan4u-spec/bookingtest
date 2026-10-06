@@ -9,7 +9,7 @@ const PORT = process.env.PORT || 8085;
 
 // Middleware
 app.use(cors());
-app.use(express.json());
+app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ extended: true }));
 
 // ──────────────────────────────────────────────
@@ -130,13 +130,13 @@ const requireAdmin = (req, res, next) => {
 
 // GET all rooms
 const MOCK_ROOMS = [
-    { id: 1, name: 'Aktiviti Hiking', type: 'AKTIVITI HIKING', capacity: 7, price_per_night: 50, description: 'Terokai alam semula jadi dengan pendakian berpandu di sekitar Taman Eko Rimba Berkelah.', facilities: 'Pemandu arah, Peralatan asas, Sijil penyertaan', image_url: 'images/hiking.jpg', is_active: 1 },
-    { id: 7, name: 'Sewaan Kabin', type: 'TEMPAHAN KABIN', capacity: 4, price_per_night: 150, description: 'Kabin berhawa dingin yang selesa sesuai untuk percutian keluarga.', facilities: '2 Katil Single, Aircond, Almari, Tandas, Dapur', image_url: 'images/kabin.jpg', is_active: 1 },
-    { id: 2, name: 'Gazebo Tepi Sungai', type: 'TEMPAHAN TAPAK GAZEBO', capacity: 8, price_per_night: 60, description: 'Pondok berehat berhampiran sungai yang sesuai untuk keluarga berkelah.', facilities: 'Bumbung teduh, Meja kayu, Tempat duduk, Tong sampah', image_url: 'images/gazebo.jpg', is_active: 1 },
-    { id: 3, name: 'Jungle Tracking Flora & Fauna', type: 'AKTIVITI JUGGLE TRACKING', capacity: 15, price_per_night: 30, description: 'Pengalaman merentas hutan sambil mempelajari spesies pokok dan tumbuhan herba.', facilities: 'Laluan bertanda, Panduan taklimat', image_url: 'https://images.unsplash.com/photo-1542131596-dec47d6e80b2?auto=format&fit=crop&w=800&q=80', is_active: 1 },
-    { id: 4, name: 'Tapak Hammock Santai', type: 'TEMPAHAN TAPAK HAMMOCK', capacity: 2, price_per_night: 15, description: 'Lokasi strategik di antara pepohonan untuk menggantung hammock anda.', facilities: 'Kawasan redup, Akses mudah ke sungai', image_url: 'images/hammock.jpg', is_active: 1 },
-    { id: 5, name: 'Tapak Perkhemahan Utama', type: 'TEMPAHAN TAPAK PERKHEMAHAN', capacity: 4, price_per_night: 40, description: 'Kawasan lapang khas untuk mendirikan khemah, dilengkapi kemudahan asas.', facilities: 'Tandas awam, Bekalan air paip, Kawasan unggun api', image_url: 'images/perkhemahan.jpg', is_active: 1 },
-    { id: 6, name: 'Tapak Parkir RV / Campervan', type: 'TEMPAHAN TAPAK KENDERAAN RV / CARAVAN / CAMPERVAN', capacity: 6, price_per_night: 80, description: 'Ruang parkir khusus untuk kenderaan rekreasi dengan sokongan kuasa elektrik.', facilities: 'Penyambung elektrik (Plug), Bekalan air, Sisa pembuangan', image_url: 'https://images.unsplash.com/photo-1523987355523-c7b5b0dd90a7?auto=format&fit=crop&w=800&q=80', is_active: 1 }
+    { id: 1, name: 'TEMPAHAN AKTIVITI HIKING', type: 'TEMPAHAN AKTIVITI HIKING', capacity: 7, price_per_night: 50, description: 'Terokai alam semula jadi dengan pendakian berpandu di sekitar Taman Eko Rimba Berkelah.', facilities: 'Pemandu arah, Peralatan asas, Sijil penyertaan', image_url: 'images/hiking.jpg', is_active: 1 },
+    { id: 7, name: 'TEMPAHAN KABIN', type: 'TEMPAHAN KABIN', capacity: 4, price_per_night: 150, description: 'Kabin berhawa dingin yang selesa sesuai untuk percutian keluarga.', facilities: '2 Katil Single, Aircond, Almari, Tandas, Dapur', image_url: 'images/kabin.jpg', is_active: 1 },
+    { id: 2, name: 'TEMPAHAN TAPAK GAZEBO', type: 'TEMPAHAN TAPAK GAZEBO', capacity: 8, price_per_night: 60, description: 'Pondok berehat berhampiran sungai yang sesuai untuk keluarga berkelah.', facilities: 'Bumbung teduh, Meja kayu, Tempat duduk, Tong sampah', image_url: 'images/gazebo.jpg', is_active: 1 },
+    { id: 3, name: 'TEMPAHAN AKTIVITI JUNGLE TREKKING', type: 'TEMPAHAN AKTIVITI JUNGLE TREKKING', capacity: 15, price_per_night: 30, description: 'Pengalaman merentas hutan sambil mempelajari spesies pokok dan tumbuhan herba.', facilities: 'Laluan bertanda, Panduan taklimat', image_url: 'https://images.unsplash.com/photo-1542131596-dec47d6e80b2?auto=format&fit=crop&w=800&q=80', is_active: 1 },
+    { id: 4, name: 'TEMPAHAN TAPAK HAMMOCK', type: 'TEMPAHAN TAPAK HAMMOCK', capacity: 2, price_per_night: 15, description: 'Lokasi strategik di antara pepohonan untuk menggantung hammock anda.', facilities: 'Kawasan redup, Akses mudah ke sungai', image_url: 'images/hammock.jpg', is_active: 1 },
+    { id: 5, name: 'TEMPAHAN TAPAK PERKHEMAHAN', type: 'TEMPAHAN TAPAK PERKHEMAHAN', capacity: 4, price_per_night: 40, description: 'Kawasan lapang khas untuk mendirikan khemah, dilengkapi kemudahan asas.', facilities: 'Tandas awam, Bekalan air paip, Kawasan unggun api', image_url: 'images/perkhemahan.jpg', is_active: 1 },
+    { id: 6, name: 'TEMPAHAN TAPAK KENDERAAN RV / CARAVAN / CAMPERVAN', type: 'TEMPAHAN TAPAK KENDERAAN RV / CARAVAN / CAMPERVAN', capacity: 6, price_per_night: 80, description: 'Ruang parkir khusus untuk kenderaan rekreasi dengan sokongan kuasa elektrik.', facilities: 'Penyambung elektrik (Plug), Bekalan air, Sisa pembuangan', image_url: 'https://images.unsplash.com/photo-1523987355523-c7b5b0dd90a7?auto=format&fit=crop&w=800&q=80', is_active: 1 }
 ];
 
 app.get('/api/rooms', async (req, res) => {
@@ -253,13 +253,13 @@ app.post('/api/bookings', async (req, res) => {
     } catch (err) {
         console.warn("DB Failed on POST booking, returning mock success");
         const MOCK_ROOMS = [
-            { id: 1, name: 'Aktiviti Hiking', type: 'AKTIVITI HIKING', capacity: 7, price_per_night: 50 },
-            { id: 7, name: 'Sewaan Kabin', type: 'TEMPAHAN KABIN', capacity: 4, price_per_night: 150 },
-            { id: 2, name: 'Gazebo Tepi Sungai', type: 'TEMPAHAN TAPAK GAZEBO', capacity: 8, price_per_night: 60 },
-            { id: 3, name: 'Jungle Tracking Flora & Fauna', type: 'AKTIVITI JUGGLE TRACKING', capacity: 15, price_per_night: 30 },
-            { id: 4, name: 'Tapak Hammock Santai', type: 'TEMPAHAN TAPAK HAMMOCK', capacity: 2, price_per_night: 15 },
-            { id: 5, name: 'Tapak Perkhemahan Utama', type: 'TEMPAHAN TAPAK PERKHEMAHAN', capacity: 4, price_per_night: 40 },
-            { id: 6, name: 'Tapak Parkir RV / Campervan', type: 'TEMPAHAN TAPAK KENDERAAN RV / CARAVAN / CAMPERVAN', capacity: 6, price_per_night: 80 }
+            { id: 1, name: 'TEMPAHAN AKTIVITI HIKING', type: 'TEMPAHAN AKTIVITI HIKING', capacity: 7, price_per_night: 50 },
+            { id: 7, name: 'TEMPAHAN KABIN', type: 'TEMPAHAN KABIN', capacity: 4, price_per_night: 150 },
+            { id: 2, name: 'TEMPAHAN TAPAK GAZEBO', type: 'TEMPAHAN TAPAK GAZEBO', capacity: 8, price_per_night: 60 },
+            { id: 3, name: 'TEMPAHAN AKTIVITI JUNGLE TREKKING', type: 'TEMPAHAN AKTIVITI JUNGLE TREKKING', capacity: 15, price_per_night: 30 },
+            { id: 4, name: 'TEMPAHAN TAPAK HAMMOCK', type: 'TEMPAHAN TAPAK HAMMOCK', capacity: 2, price_per_night: 15 },
+            { id: 5, name: 'TEMPAHAN TAPAK PERKHEMAHAN', type: 'TEMPAHAN TAPAK PERKHEMAHAN', capacity: 4, price_per_night: 40 },
+            { id: 6, name: 'TEMPAHAN TAPAK KENDERAAN RV / CARAVAN / CAMPERVAN', type: 'TEMPAHAN TAPAK KENDERAAN RV / CARAVAN / CAMPERVAN', capacity: 6, price_per_night: 80 }
         ];
         
         const room = MOCK_ROOMS.find(r => r.id == req.body.room_id);
@@ -291,8 +291,8 @@ app.post('/api/bookings', async (req, res) => {
 });
 
 let MOCK_BOOKINGS_DATA = [
-    { id: 1, booking_ref: 'REF1234', room_id: 1, room_name: 'Aktiviti Hiking', guest_name: 'Ahmad Albab', guest_phone: '0123456789', num_guests: 4, checkin_date: '2026-10-10', checkout_date: '2026-10-12', num_nights: 2, total_price: 100, status: 'Disahkan', created_at: new Date().toISOString() },
-    { id: 2, booking_ref: 'MOCK5349', room_id: 5, room_name: 'Tapak Perkhemahan Utama', guest_name: 'Peah Bin Puah', guest_phone: '0194489296', num_guests: 2, checkin_date: '2026-09-12', checkout_date: '2026-09-13', num_nights: 1, total_price: 40, status: 'Menunggu Pengesahan', created_at: new Date().toISOString() }
+    { id: 1, booking_ref: 'REF1234', room_id: 1, room_name: 'TEMPAHAN AKTIVITI HIKING', guest_name: 'Ahmad Albab', guest_phone: '0123456789', num_guests: 4, checkin_date: '2026-10-10', checkout_date: '2026-10-12', num_nights: 2, total_price: 100, status: 'Disahkan', created_at: new Date().toISOString() },
+    { id: 2, booking_ref: 'MOCK5349', room_id: 5, room_name: 'TEMPAHAN TAPAK PERKHEMAHAN', guest_name: 'Peah Bin Puah', guest_phone: '0194489296', num_guests: 2, checkin_date: '2026-09-12', checkout_date: '2026-09-13', num_nights: 1, total_price: 40, status: 'Menunggu Pengesahan', created_at: new Date().toISOString() }
 ];
 
 // GET booking by reference
@@ -417,7 +417,64 @@ if (process.env.NODE_ENV !== 'production' && !process.env.VERCEL) {
     // Serve all other static assets (css, js, images)
     app.use(express.static(rootDir));
 
-    app.listen(PORT, () => {
+    
+// 📌📌📌 UPDATE ROOM (CMS) 📌📌📌
+app.put('/api/rooms/:id', async (req, res) => {
+    try {
+        const id = parseInt(req.params.id);
+        const { name, type, capacity, price_per_night, description, facilities, image_base64, image_ext } = req.body;
+        
+        let imageUrl = null;
+
+        // If a new image was uploaded as base64
+        if (image_base64) {
+            const ext = image_ext || 'jpg';
+            const filename = `room_${id}_${Date.now()}.${ext}`;
+            const filepath = require('path').join(__dirname, '..', 'images', filename);
+            
+            // Remove data:image/...;base64, prefix if it exists
+            const base64Data = image_base64.replace(/^data:image\/\w+;base64,/, "");
+            require('fs').writeFileSync(filepath, base64Data, 'base64');
+            imageUrl = `images/${filename}`;
+        }
+
+        // Update in memory mock data
+        const roomIndex = MOCK_ROOMS.findIndex(r => r.id === id);
+        if (roomIndex !== -1) {
+            MOCK_ROOMS[roomIndex].name = name || MOCK_ROOMS[roomIndex].name;
+            MOCK_ROOMS[roomIndex].type = type || MOCK_ROOMS[roomIndex].type;
+            MOCK_ROOMS[roomIndex].capacity = capacity ? parseInt(capacity) : MOCK_ROOMS[roomIndex].capacity;
+            MOCK_ROOMS[roomIndex].price_per_night = price_per_night ? parseFloat(price_per_night) : MOCK_ROOMS[roomIndex].price_per_night;
+            MOCK_ROOMS[roomIndex].description = description || MOCK_ROOMS[roomIndex].description;
+            MOCK_ROOMS[roomIndex].facilities = facilities || MOCK_ROOMS[roomIndex].facilities;
+            if (imageUrl) {
+                MOCK_ROOMS[roomIndex].image_url = imageUrl;
+            }
+        }
+
+        // If real DB is connected
+        if (process.env.DATABASE_URL) {
+            let query = `UPDATE rooms SET name = $1, type = $2, capacity = $3, price_per_night = $4, description = $5, facilities = $6`;
+            let values = [name, type, capacity, price_per_night, description, facilities];
+            
+            if (imageUrl) {
+                query += `, image_url = $7 WHERE id = $8`;
+                values.push(imageUrl, id);
+            } else {
+                query += ` WHERE id = $7`;
+                values.push(id);
+            }
+            await pool.query(query, values);
+        }
+
+        res.json({ success: true, room: MOCK_ROOMS[roomIndex] });
+    } catch (err) {
+        console.error('Error updating room:', err);
+        res.status(500).json({ error: 'Ralat pelayan.' });
+    }
+});
+
+app.listen(PORT, () => {
         console.log(`\n🌿 Taman Eko Rimba Berkelah Server berjalan di: http://localhost:${PORT}/`);
         console.log(`📋 Halaman Tempahan  : http://localhost:${PORT}/rooms`);
         console.log(`🔧 Panel Admin       : http://localhost:${PORT}/admin`);

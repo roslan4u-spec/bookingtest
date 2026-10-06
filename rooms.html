@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tempahan – Taman Eko Rimba Berkelah</title>
     <script src="https://cdn.tailwindcss.com"></script>
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <link rel="stylesheet" href="styles.css">
@@ -24,14 +25,6 @@
     </style>
 </head>
 <body class="bg-slate-50 text-slate-800 font-sans antialiased pb-40">
-
-<!-- Top Bar -->
-<div class="bg-emerald-900 text-emerald-100 text-xs py-2 px-4 flex justify-between items-center">
-    <span class="hidden md:inline"><i class="fa-solid fa-tree text-emerald-400 mr-2"></i>Taman Eko Rimba Berkelah</span>
-    <a href="https://wa.me/60194489296" target="_blank" class="hover:text-amber-300 transition flex items-center gap-1.5 font-bold ml-auto">
-        <i class="fa-brands fa-whatsapp text-emerald-400"></i> 019-4489296
-    </a>
-</div>
 
 <!-- Navigation -->
 <header class="bg-white shadow-md sticky top-0 z-40">
@@ -99,10 +92,10 @@
             <label class="text-sm text-slate-600 font-medium">Jenis:</label>
             <select id="filter-type" class="border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
                   <option value="">Semua</option>
-                  <option value="AKTIVITI HIKING">AKTIVITI HIKING</option>
+                  <option value="TEMPAHAN AKTIVITI HIKING">TEMPAHAN AKTIVITI HIKING</option>
                   <option value="TEMPAHAN KABIN">TEMPAHAN KABIN</option>
                     <option value="TEMPAHAN TAPAK GAZEBO">TEMPAHAN TAPAK GAZEBO</option>
-                  <option value="AKTIVITI JUGGLE TRACKING">AKTIVITI JUGGLE TRACKING</option>
+                  <option value="TEMPAHAN AKTIVITI JUNGLE TREKKING">TEMPAHAN AKTIVITI JUNGLE TREKKING</option>
                   <option value="TEMPAHAN TAPAK HAMMOCK">TEMPAHAN TAPAK HAMMOCK</option>
                   <option value="TEMPAHAN TAPAK PERKHEMAHAN">TEMPAHAN TAPAK PERKHEMAHAN</option>
                   <option value="TEMPAHAN TAPAK KENDERAAN RV / CARAVAN / CAMPERVAN">TEMPAHAN TAPAK KENDERAAN RV / CARAVAN / CAMPERVAN</option>
@@ -111,7 +104,7 @@
     </div>
 
     <!-- Room Cards Grid -->
-    <div id="rooms-grid" class="grid grid-cols-1 md:grid-cols-2 max-w-4xl mx-auto gap-8 mb-12">
+    <div id="rooms-grid" class="flex flex-col max-w-4xl mx-auto gap-12 mb-12 w-full">
         <div class="col-span-full flex justify-center py-12">
             <div class="text-center text-slate-400">
                 <i class="fa-solid fa-spinner fa-spin text-3xl mb-3"></i>
@@ -462,36 +455,118 @@ function renderRooms(rooms) {
         grid.innerHTML = `<div class="col-span-full text-center py-12 text-slate-400"><i class="fa-solid fa-bed text-4xl mb-3 block"></i>Tiada tempahan & aktiviti yang sepadan.</div>`;
         return;
     }
-    grid.innerHTML = rooms.map(r => `
-        <div class="room-card bg-white rounded-2xl shadow-lg overflow-hidden border border-slate-100 flex flex-col">
-            <div class="relative w-full bg-slate-50 aspect-[3/4] flex justify-center items-center border-b border-slate-100">
-                  <img src="${r.image_url}" alt="${r.name}" class="w-full h-full ${r.image_url.includes('unsplash.com') ? 'object-cover' : 'object-contain p-2'}">
-                
-                
-            </div>
-            <div class="p-5 flex flex-col flex-grow">
-                <div class="flex justify-between items-start mb-2">
-                    <h3 class="text-lg font-extrabold text-slate-900">${r.name}</h3>
+    grid.innerHTML = rooms.map(r => {
+        let cardContent = '';
+        if (r.name.toUpperCase().includes('HIKING')) {
+            cardContent = `
+            <div class="p-5 md:p-8 flex flex-col flex-grow w-full">
+                <div class="w-full bg-white border-y-[3px] border-black py-3 mb-6">
+                    <h3 class="text-2xl md:text-3xl font-extrabold text-slate-900 uppercase text-center">${r.name}</h3>
                 </div>
-                <p class="text-slate-500 text-sm mb-3 flex-grow">${r.description}</p>
-                <div class="flex items-center gap-2 text-xs text-emerald-700 bg-emerald-50 rounded-lg px-3 py-2 mb-4 border border-emerald-100">
-                    <i class="fa-solid fa-users"></i>
-                    <span>Sehingga <strong>${r.capacity} orang</strong></span>
-                </div>
-                <div class="mb-4">
-                    <p class="text-xs text-slate-500 font-semibold mb-1.5">Kemudahan:</p>
-                    <div class="flex flex-wrap gap-1.5">
-                        ${r.facilities.split(', ').slice(0,4).map(f => `<span class="bg-slate-100 text-slate-600 text-xs px-2 py-0.5 rounded-full">${f}</span>`).join('')}
-                        ${r.facilities.split(', ').length > 4 ? `<span class="bg-slate-100 text-slate-500 text-xs px-2 py-0.5 rounded-full">+${r.facilities.split(', ').length - 4} lagi</span>` : ''}
+                
+                <div class="text-center font-bold text-sm md:text-base mb-5 uppercase tracking-wide text-slate-800">Semak Tarikh Kekosongan Untuk Tempahan</div>
+
+                <div class="bg-emerald-50 border border-emerald-100 rounded-xl p-5 mb-6 flex flex-col sm:flex-row justify-between text-center gap-4">
+                    <div class="flex-1 flex flex-col items-center justify-center">
+                        <span class="font-bold text-xs md:text-sm mb-3 text-slate-900">BERMALAM<br><span class="font-normal text-slate-600">Menginap sekurang-kurangnya 1 malam</span></span>
+                        <label class="cursor-pointer border-2 border-black w-14 h-8 flex justify-center items-center relative bg-white shadow-inner rounded hover:bg-slate-50 transition">
+                            <input type="radio" name="hiking_type_${r.id}" class="peer sr-only" value="bermalam">
+                            <i class="fa-solid fa-check hidden peer-checked:block text-black text-lg font-bold"></i>
+                        </label>
+                    </div>
+                    <div class="flex-1 flex flex-col items-center justify-center">
+                        <span class="font-bold text-xs md:text-sm mb-3 text-slate-900">BALIK HARI<br><span class="font-normal text-slate-600">Pulang pada hari yang sama</span></span>
+                        <label class="cursor-pointer border-2 border-black w-14 h-8 flex justify-center items-center relative bg-white shadow-inner rounded hover:bg-slate-50 transition">
+                            <input type="radio" name="hiking_type_${r.id}" class="peer sr-only" value="balik_hari" checked>
+                            <i class="fa-solid fa-check hidden peer-checked:block text-black text-lg font-bold"></i>
+                        </label>
                     </div>
                 </div>
-                <button onclick="addToCart(${r.id})" class="w-full bg-emerald-700 hover:bg-emerald-800 text-white font-bold py-3 rounded-xl transition flex items-center justify-center gap-2 mt-auto">
-                    <i class="fa-solid fa-cart-plus"></i> Tambah ke Bakul
+
+                <div class="flex flex-col sm:flex-row items-center gap-3 mb-6">
+                    <div class="flex items-center border-2 border-emerald-700 rounded-xl px-4 py-3 bg-white w-full shadow-sm">
+                        <i class="fa-solid fa-calendar-check text-emerald-700 mr-3 text-lg"></i>
+                        <input type="text" class="w-full focus:outline-none font-bold text-base text-slate-800 hiking-checkin bg-transparent" placeholder="Tarikh Masuk">
+                    </div>
+                    <span class="text-slate-400 hidden sm:block"><i class="fa-solid fa-arrow-right"></i></span>
+                    <div class="flex items-center border border-slate-300 rounded-xl px-4 py-3 bg-white w-full shadow-sm">
+                        <i class="fa-solid fa-calendar-xmark text-slate-400 mr-3 text-lg"></i>
+                        <input type="text" class="w-full focus:outline-none font-bold text-base text-slate-800 hiking-checkout bg-transparent" placeholder="Tarikh Keluar">
+                    </div>
+                    <button class="w-full sm:w-auto bg-emerald-700 hover:bg-emerald-800 text-white font-bold px-8 py-3.5 rounded-xl shadow-md transition flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-search"></i> Semak
+                    </button>
+                </div>
+                
+                <div class="space-y-3 mb-8">
+                    <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center bg-emerald-50/70 border border-emerald-100 p-4 rounded-xl shadow-sm gap-2">
+                        <span class="font-bold text-xs md:text-sm text-slate-900 uppercase">BAKI KEKOSONGAN (SESI PAGI 9:30AM - 1:00PM)</span>
+                        <span class="bg-white px-4 py-1.5 rounded-lg border border-slate-200 text-center shadow-inner font-bold text-slate-800 min-w-[4rem]"></span>
+                    </div>
+                    <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center bg-emerald-50/70 border border-emerald-100 p-4 rounded-xl shadow-sm gap-2">
+                        <span class="font-bold text-xs md:text-sm text-slate-900 uppercase">BAKI KEKOSONGAN (SESI PETANG 2:00PM - 5:30PM)</span>
+                        <span class="bg-white px-4 py-1.5 rounded-lg border border-slate-200 text-center shadow-inner font-bold text-slate-800 min-w-[4rem]"></span>
+                    </div>
+                    <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center bg-emerald-100 border border-emerald-200 p-4 rounded-xl shadow-sm gap-2">
+                        <span class="font-bold text-sm md:text-base text-slate-900">JUMLAH KESELURUHAN</span>
+                        <span class="bg-white px-4 py-1.5 rounded-lg border-2 border-emerald-600 text-center shadow-inner font-black text-emerald-800 text-lg hiking-total">RM220</span>
+                    </div>
+                </div>
+
+                <button onclick="addToCart(${r.id})" class="w-full bg-emerald-700 hover:bg-emerald-800 text-white font-extrabold py-4 rounded-xl transition flex items-center justify-center gap-3 mt-auto text-base shadow-lg">
+                    <i class="fa-solid fa-cart-plus text-xl"></i> Tambah ke Bakul
                 </button>
             </div>
+            `;
+        } else {
+            cardContent = `
+            <div class="p-5 md:p-8 flex flex-col flex-grow w-full">
+                <h3 class="text-2xl md:text-3xl font-extrabold text-slate-900 mb-3">${r.name}</h3>
+                <p class="text-slate-600 text-base md:text-lg mb-6 leading-relaxed">${r.description}</p>
+                
+                <div class="grid grid-cols-2 gap-4 mb-6">
+                    <div class="bg-emerald-50 border border-emerald-100 rounded-xl p-4 flex flex-col items-center justify-center text-center">
+                        <i class="fa-solid fa-users text-emerald-700 text-2xl mb-2"></i>
+                        <span class="text-xs text-slate-500 font-bold uppercase tracking-wider mb-1">Kapasiti</span>
+                        <span class="font-bold text-emerald-900 text-sm md:text-base">Sehingga ${r.capacity} Orang</span>
+                    </div>
+                    <div class="bg-emerald-50 border border-emerald-100 rounded-xl p-4 flex flex-col items-center justify-center text-center">
+                        <i class="fa-solid fa-tag text-emerald-700 text-2xl mb-2"></i>
+                        <span class="text-xs text-slate-500 font-bold uppercase tracking-wider mb-1">Harga Semalaman</span>
+                        <span class="font-bold text-emerald-900 text-sm md:text-base">RM${r.price_per_night}</span>
+                    </div>
+                </div>
+                
+                <div class="mb-8">
+                    <p class="text-sm text-slate-500 font-bold uppercase tracking-wider mb-3">Kemudahan Yang Disediakan:</p>
+                    <div class="flex flex-wrap gap-2">
+                        ${r.facilities.split(', ').map(f => `<span class="bg-slate-100 border border-slate-200 text-slate-700 font-medium text-sm px-4 py-1.5 rounded-full">${f}</span>`).join('')}
+                    </div>
+                </div>
+                
+                <button onclick="addToCart(${r.id})" class="w-full bg-emerald-700 hover:bg-emerald-800 text-white font-extrabold py-4 rounded-xl transition flex items-center justify-center gap-3 mt-auto text-base shadow-lg">
+                    <i class="fa-solid fa-cart-plus text-xl"></i> Tambah ke Bakul
+                </button>
+            </div>
+            `;
+        }
+        
+        return `
+        <div class="room-card bg-white rounded-3xl shadow-xl hover:shadow-2xl transition-shadow duration-300 overflow-hidden border border-slate-100 flex flex-col w-full">
+            <div class="relative w-full h-64 md:h-80 lg:h-96 bg-slate-200 overflow-hidden group">
+                  <img src="${r.image_url}" alt="${r.name}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                  <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+                  <div class="absolute bottom-4 left-4 right-4 text-white">
+                      <span class="bg-emerald-600/90 backdrop-blur text-white text-xs font-bold uppercase px-3 py-1 rounded-full shadow-sm">${r.type}</span>
+                  </div>
+            </div>
+            ${cardContent}
         </div>
-    `).join('');
+        `;
+    }).join('');
+    initHikingCalendars();
 }
+
 
 // ──── FILTER TYPE ────
 document.getElementById('filter-type').addEventListener('change', function() {
@@ -542,33 +617,122 @@ async function loadRoomsWithAvailability(checkin, checkout) {
 
 function renderRoomsWithAvailability(rooms) {
     const grid = document.getElementById('rooms-grid');
-    grid.innerHTML = rooms.map(r => `
-        <div class="room-card bg-white rounded-2xl shadow-lg overflow-hidden border ${r.available ? 'border-slate-100' : 'border-rose-200 opacity-70'} flex flex-col">
-            <div class="relative w-full bg-slate-50 aspect-[3/4] flex justify-center items-center border-b border-slate-100">
-                  <img src="${r.image_url}" alt="${r.name}" class="w-full h-full ${r.image_url.includes('unsplash.com') ? 'object-cover' : 'object-contain p-2'}">
-                <span class="absolute top-3 left-3 ${r.available ? 'bg-emerald-600' : 'bg-rose-600'} text-white text-xs font-bold px-3 py-1 rounded-full">
-                    <i class="fa-solid ${r.available ? 'fa-circle-check' : 'fa-circle-xmark'} mr-1"></i>${r.available ? 'Tersedia' : 'Ditempah'}
-                </span>
+    grid.innerHTML = rooms.map(r => {
+        let cardContent = '';
+        if (r.name.toUpperCase().includes('HIKING')) {
+            cardContent = `
+            <div class="p-5 md:p-8 flex flex-col flex-grow w-full">
+                <div class="w-full bg-white border-y-[3px] border-black py-3 mb-6">
+                    <h3 class="text-2xl md:text-3xl font-extrabold text-slate-900 uppercase text-center">${r.name}</h3>
+                </div>
                 
-            </div>
-            <div class="p-5 flex flex-col flex-grow">
-                <div class="flex justify-between items-start mb-2">
-                    <h3 class="text-lg font-extrabold text-slate-900">${r.name}</h3>
+                <div class="text-center font-bold text-sm md:text-base mb-5 uppercase tracking-wide text-slate-800">Semak Tarikh Kekosongan Untuk Tempahan</div>
+
+                <div class="bg-emerald-50 border border-emerald-100 rounded-xl p-5 mb-6 flex flex-col sm:flex-row justify-between text-center gap-4">
+                    <div class="flex-1 flex flex-col items-center justify-center">
+                        <span class="font-bold text-xs md:text-sm mb-3 text-slate-900">BERMALAM<br><span class="font-normal text-slate-600">Menginap sekurang-kurangnya 1 malam</span></span>
+                        <label class="cursor-pointer border-2 border-black w-14 h-8 flex justify-center items-center relative bg-white shadow-inner rounded hover:bg-slate-50 transition">
+                            <input type="radio" name="hiking_type_${r.id}" class="peer sr-only" value="bermalam">
+                            <i class="fa-solid fa-check hidden peer-checked:block text-black text-lg font-bold"></i>
+                        </label>
+                    </div>
+                    <div class="flex-1 flex flex-col items-center justify-center">
+                        <span class="font-bold text-xs md:text-sm mb-3 text-slate-900">BALIK HARI<br><span class="font-normal text-slate-600">Pulang pada hari yang sama</span></span>
+                        <label class="cursor-pointer border-2 border-black w-14 h-8 flex justify-center items-center relative bg-white shadow-inner rounded hover:bg-slate-50 transition">
+                            <input type="radio" name="hiking_type_${r.id}" class="peer sr-only" value="balik_hari" checked>
+                            <i class="fa-solid fa-check hidden peer-checked:block text-black text-lg font-bold"></i>
+                        </label>
+                    </div>
                 </div>
-                <p class="text-slate-500 text-sm mb-3 flex-grow">${r.description}</p>
-                <div class="flex items-center gap-2 text-xs text-emerald-700 bg-emerald-50 rounded-lg px-3 py-2 mb-4 border border-emerald-100">
-                    <i class="fa-solid fa-users"></i>
-                    <span>Sehingga <strong>${r.capacity} orang</strong></span>
+
+                <div class="flex flex-col sm:flex-row items-center gap-3 mb-6">
+                    <div class="flex items-center border-2 border-emerald-700 rounded-xl px-4 py-3 bg-white w-full shadow-sm">
+                        <i class="fa-solid fa-calendar-check text-emerald-700 mr-3 text-lg"></i>
+                        <input type="text" class="w-full focus:outline-none font-bold text-base text-slate-800 hiking-checkin bg-transparent" placeholder="Tarikh Masuk">
+                    </div>
+                    <span class="text-slate-400 hidden sm:block"><i class="fa-solid fa-arrow-right"></i></span>
+                    <div class="flex items-center border border-slate-300 rounded-xl px-4 py-3 bg-white w-full shadow-sm">
+                        <i class="fa-solid fa-calendar-xmark text-slate-400 mr-3 text-lg"></i>
+                        <input type="text" class="w-full focus:outline-none font-bold text-base text-slate-800 hiking-checkout bg-transparent" placeholder="Tarikh Keluar">
+                    </div>
+                    <button class="w-full sm:w-auto bg-emerald-700 hover:bg-emerald-800 text-white font-bold px-8 py-3.5 rounded-xl shadow-md transition flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-search"></i> Semak
+                    </button>
                 </div>
+                
+                <div class="space-y-3 mb-8">
+                    <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center bg-emerald-50/70 border border-emerald-100 p-4 rounded-xl shadow-sm gap-2">
+                        <span class="font-bold text-xs md:text-sm text-slate-900 uppercase">BAKI KEKOSONGAN (SESI PAGI 9:30AM - 1:00PM)</span>
+                        <span class="bg-white px-4 py-1.5 rounded-lg border border-slate-200 text-center shadow-inner font-bold text-slate-800 min-w-[4rem]">${r.available ? 'ADA' : 'TIADA'}</span>
+                    </div>
+                    <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center bg-emerald-50/70 border border-emerald-100 p-4 rounded-xl shadow-sm gap-2">
+                        <span class="font-bold text-xs md:text-sm text-slate-900 uppercase">BAKI KEKOSONGAN (SESI PETANG 2:00PM - 5:30PM)</span>
+                        <span class="bg-white px-4 py-1.5 rounded-lg border border-slate-200 text-center shadow-inner font-bold text-slate-800 min-w-[4rem]">${r.available ? 'ADA' : 'TIADA'}</span>
+                    </div>
+                    <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center bg-emerald-100 border border-emerald-200 p-4 rounded-xl shadow-sm gap-2">
+                        <span class="font-bold text-sm md:text-base text-slate-900">JUMLAH KESELURUHAN</span>
+                        <span class="bg-white px-4 py-1.5 rounded-lg border-2 border-emerald-600 text-center shadow-inner font-black text-emerald-800 text-lg hiking-total">RM220</span>
+                    </div>
+                </div>
+
                 <button onclick="${r.available ? `addToCart(${r.id})` : ''}" 
-                    class="w-full ${r.available ? 'bg-emerald-700 hover:bg-emerald-800 cursor-pointer' : 'bg-slate-300 cursor-not-allowed'} text-white font-bold py-3 rounded-xl transition flex items-center justify-center gap-2 mt-auto"
+                    class="w-full ${r.available ? 'bg-emerald-700 hover:bg-emerald-800 cursor-pointer' : 'bg-slate-300 cursor-not-allowed text-slate-500'} text-white font-extrabold py-4 rounded-xl transition flex items-center justify-center gap-3 mt-auto text-base shadow-lg"
                     ${!r.available ? 'disabled' : ''}>
-                    <i class="fa-solid ${r.available ? 'fa-cart-plus' : 'fa-calendar-xmark'}"></i>
+                    <i class="fa-solid ${r.available ? 'fa-cart-plus' : 'fa-calendar-xmark'} text-xl"></i>
                     ${r.available ? 'Tambah ke Bakul' : 'Tidak Tersedia'}
                 </button>
             </div>
+            `;
+        } else {
+            cardContent = `
+            <div class="p-5 md:p-8 flex flex-col flex-grow w-full">
+                <h3 class="text-2xl md:text-3xl font-extrabold text-slate-900 mb-3">${r.name}</h3>
+                <p class="text-slate-600 text-base md:text-lg mb-6 leading-relaxed">${r.description}</p>
+                
+                <div class="grid grid-cols-2 gap-4 mb-6">
+                    <div class="bg-emerald-50 border border-emerald-100 rounded-xl p-4 flex flex-col items-center justify-center text-center">
+                        <i class="fa-solid fa-users text-emerald-700 text-2xl mb-2"></i>
+                        <span class="text-xs text-slate-500 font-bold uppercase tracking-wider mb-1">Kapasiti</span>
+                        <span class="font-bold text-emerald-900 text-sm md:text-base">Sehingga ${r.capacity} Orang</span>
+                    </div>
+                    <div class="bg-emerald-50 border border-emerald-100 rounded-xl p-4 flex flex-col items-center justify-center text-center">
+                        <i class="fa-solid fa-tag text-emerald-700 text-2xl mb-2"></i>
+                        <span class="text-xs text-slate-500 font-bold uppercase tracking-wider mb-1">Harga Semalaman</span>
+                        <span class="font-bold text-emerald-900 text-sm md:text-base">RM${r.price_per_night}</span>
+                    </div>
+                </div>
+                
+                <div class="mb-8">
+                    <p class="text-sm text-slate-500 font-bold uppercase tracking-wider mb-3">Kemudahan Yang Disediakan:</p>
+                    <div class="flex flex-wrap gap-2">
+                        ${r.facilities.split(', ').map(f => `<span class="bg-slate-100 border border-slate-200 text-slate-700 font-medium text-sm px-4 py-1.5 rounded-full">${f}</span>`).join('')}
+                    </div>
+                </div>
+                
+                <button onclick="${r.available ? `addToCart(${r.id})` : ''}" 
+                    class="w-full ${r.available ? 'bg-emerald-700 hover:bg-emerald-800 cursor-pointer' : 'bg-slate-300 cursor-not-allowed text-slate-500'} text-white font-extrabold py-4 rounded-xl transition flex items-center justify-center gap-3 mt-auto text-base shadow-lg"
+                    ${!r.available ? 'disabled' : ''}>
+                    <i class="fa-solid ${r.available ? 'fa-cart-plus' : 'fa-calendar-xmark'} text-xl"></i>
+                    ${r.available ? 'Tambah ke Bakul' : 'Tidak Tersedia'}
+                </button>
+            </div>
+            `;
+        }
+        
+        return `
+        <div class="room-card bg-white rounded-3xl shadow-xl hover:shadow-2xl transition-shadow duration-300 overflow-hidden border border-slate-100 flex flex-col w-full">
+            <div class="relative w-full h-64 md:h-80 lg:h-96 bg-slate-200 overflow-hidden group">
+                  <img src="${r.image_url}" alt="${r.name}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                  <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+                  <div class="absolute bottom-4 left-4 right-4 text-white">
+                      <span class="bg-emerald-600/90 backdrop-blur text-white text-xs font-bold uppercase px-3 py-1 rounded-full shadow-sm">${r.type}</span>
+                  </div>
+            </div>
+            ${cardContent}
         </div>
-    `).join('');
+        `;
+    }).join('');
+    initHikingCalendars();
 }
 
 function showAvailMsg(msg, type) {
@@ -793,5 +957,73 @@ document.getElementById('mobile-menu-btn').addEventListener('click', () => {
 // Init
 loadRooms();
 </script>
+
+
+<script>
+const myHolidays = [
+    '2026-01-01', '2026-02-17', '2026-02-18', '2026-03-20', '2026-03-21', '2026-05-01', '2026-05-27', 
+    '2026-06-06', '2026-07-19', '2026-08-31', '2026-09-16', '2026-10-31', '2026-12-25',
+    '2027-01-01', '2027-02-06', '2027-02-07', '2027-03-10', '2027-03-11', '2027-05-01', '2027-05-16',
+    '2027-06-05', '2027-07-08', '2027-08-31', '2027-09-16', '2027-10-20', '2027-12-25'
+];
+
+function initHikingCalendars() {
+    const commonOpts = {
+        dateFormat: 'Y-m-d',
+        minDate: 'today',
+        locale: { firstDayOfWeek: 1 },
+        onDayCreate: function(dObj, dStr, fp, dayElem) {
+            // Adjust for timezone to get correct YYYY-MM-DD
+            const offset = dayElem.dateObj.getTimezoneOffset();
+            const date = new Date(dayElem.dateObj.getTime() - (offset*60*1000));
+            const dateString = date.toISOString().split('T')[0];
+            
+            if (myHolidays.includes(dateString)) {
+                dayElem.style.backgroundColor = '#fecaca'; // rose-200
+                dayElem.style.color = '#9f1239'; // rose-800
+                dayElem.style.fontWeight = 'bold';
+                dayElem.title = 'Cuti Umum (Public Holiday)';
+            }
+        }
+    };
+    
+    flatpickr('.hiking-checkin', {
+        ...commonOpts,
+        onChange: function(sel, dateStr, instance) {
+            const checkoutInput = instance.element.closest('.hiking-calc-container')?.parentElement?.querySelector('.hiking-checkout');
+            if (checkoutInput && checkoutInput._flatpickr) {
+                checkoutInput._flatpickr.set('minDate', dateStr || 'today');
+            }
+        }
+    });
+    
+    flatpickr('.hiking-checkout', commonOpts);
+}
+
+function calcHikingPrice(el) {
+
+    const container = el.closest('.hiking-calc-container');
+    if (!container) return;
+    
+    const pkgSelect = container.querySelector('.hiking-package');
+    const partInput = container.querySelector('.hiking-participants');
+    const groupInput = container.querySelector('.hiking-groups');
+    const procDisplay = container.querySelector('.hiking-processing');
+    const totalDisplay = container.querySelector('.hiking-total');
+    
+    let pkgPrice = parseFloat(pkgSelect.value) || 150;
+    let participants = parseInt(partInput.value) || 1;
+    
+    let groups = Math.ceil(participants / 7);
+    groupInput.value = groups;
+    
+    let procCharge = participants * 10;
+    procDisplay.textContent = 'RM' + procCharge;
+    
+    let total = (pkgPrice * groups) + procCharge;
+    totalDisplay.textContent = 'RM' + total;
+}
+</script>
 </body>
 </html>
+
