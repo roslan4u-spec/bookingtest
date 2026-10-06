@@ -141,9 +141,7 @@ const MOCK_ROOMS = [
 
 app.get('/api/rooms', async (req, res) => {
     try {
-        if (process.env.DATABASE_URL) {
-            await pool.query("UPDATE rooms SET description = REGEXP_REPLACE(description, 'Gunung Tapis', 'Taman Eko Rimba Berkelah', 'ig')");
-        }
+        
         const { rows } = await pool.query('SELECT * FROM rooms WHERE is_active = 1 ORDER BY id ASC');
         
         // Force memory replacement of any lingering text before sending to frontend
