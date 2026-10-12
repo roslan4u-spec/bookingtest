@@ -785,6 +785,58 @@ Sila sahkan pendaftaran dan status bayaran saya. Terima kasih.`;
     btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Hantar Borang / Submit';
 });
 
+// ──── BOOKING LOOKUP ────
+document.getElementById('btn-lookup').addEventListener('click', async () => {
+    const ref = document.getElementById('lookup-ref').value.trim().toUpperCase();
+    if (!ref) return;
+    const div = document.getElementById('lookup-result');
+    div.classList.remove('hidden');
+    div.innerHTML = `<div class="text-slate-400 text-sm py-3 text-center"><i class="fa-solid fa-spinner fa-spin mr-2"></i> Mencari maklumat tempahan...</div>`;
+    try {
+        const res = await fetch(`/api/bookings/${encodeURIComponent(ref)}`);
+        if (!res.ok) {
+            div.innerHTML = `<div class="bg-rose-50 border border-rose-200 rounded-2xl p-4 text-rose-700 text-sm text-center shadow-sm"><i class="fa-solid fa-circle-xmark mr-2 text-rose-500"></i>Tempahan tidak dijumpai untuk rujukan <strong>${ref}</strong>. Sila semak semula nombor rujukan anda.</div>`;
+        } else {
+            const b = await res.json();
+            const statusColor = b.status === 'Menunggu Pengesahan' ? 'bg-amber-100 text-amber-800 border-amber-200' : b.status === 'Disahkan' ? 'bg-emerald-100 text-emerald-800 border-emerald-200' : 'bg-rose-100 text-rose-800 border-rose-200';
+            div.innerHTML = `
+                <div class="bg-white border border-slate-200 rounded-2xl p-5 text-sm shadow-md text-left transition-all">
+                    <div class="flex justify-between items-start mb-4 border-b border-slate-100 pb-3">
+                        <div>
+                            <span class="text-xs text-slate-400 uppercase tracking-wider block font-semibold">Nombor Rujukan</span>
+                            <p class="font-extrabold text-slate-900 text-lg">${b.booking_ref}</p>
+                            <p class="text-emerald-700 font-bold text-sm mt-0.5">${b.room_name}</p>
+                        </div>
+                        <span class="px-3 py-1 rounded-full text-xs font-extrabold border ${statusColor}">${b.status}</span>
+                    </div>
+                    <div class="grid grid-cols-2 gap-3 text-xs text-slate-700 mb-4">
+                        <div class="bg-slate-50 p-2.5 rounded-lg"><span class="text-slate-400 block mb-0.5">Nama Tetamu:</span><strong class="text-slate-900">${b.guest_name}</strong></div>
+                        <div class="bg-slate-50 p-2.5 rounded-lg"><span class="text-slate-400 block mb-0.5">No. Telefon:</span><strong class="text-slate-900">${b.guest_phone}</strong></div>
+                        <div class="bg-slate-50 p-2.5 rounded-lg"><span class="text-slate-400 block mb-0.5">Tarikh Masuk:</span><strong class="text-slate-900">${b.checkin_date}</strong></div>
+                        <div class="bg-slate-50 p-2.5 rounded-lg"><span class="text-slate-400 block mb-0.5">Tarikh Keluar:</span><strong class="text-slate-900">${b.checkout_date || '-'}</strong></div>
+                        <div class="bg-slate-50 p-2.5 rounded-lg"><span class="text-slate-400 block mb-0.5">Bilangan Tetamu:</span><strong class="text-slate-900">${b.num_guests} orang</strong></div>
+                        <div class="bg-emerald-50 p-2.5 rounded-lg border border-emerald-100"><span class="text-emerald-700 block mb-0.5">Jumlah Bayaran:</span><strong class="text-emerald-900 text-sm">RM${parseFloat(b.total_price).toFixed(2)}</strong></div>
+                    </div>
+                    <div class="text-center pt-2">
+                        <a href="https://wa.me/60194489296?text=Salam%20Taman%20Eko%20Rimba%20Berkelah,%20saya%20ingin%20bertanya%20tentang%20status%20tempahan%20saya%20*${b.booking_ref}*" 
+                            target="_blank" class="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-4 py-2 rounded-xl text-xs transition shadow-sm">
+                            <i class="fa-brands fa-whatsapp text-sm"></i> Hubungi Pengurusan (WhatsApp)
+                        </a>
+                    </div>
+                </div>`;
+        }
+    } catch { 
+        div.innerHTML = `<div class="bg-rose-50 border border-rose-200 rounded-2xl p-4 text-rose-700 text-sm text-center"><i class="fa-solid fa-triangle-exclamation mr-2"></i>Ralat menyambung ke pelayan. Sila cuba sebentar lagi.</div>`; 
+    }
+});
+
+document.getElementById('lookup-ref').addEventListener('keydown', (e) => { 
+    if (e.key === 'Enter') {
+        e.preventDefault();
+        document.getElementById('btn-lookup').click(); 
+    }
+});
+
 // Mobile menu
 document.getElementById('mobile-menu-btn').addEventListener('click', () => {
     document.getElementById('mobile-menu').classList.toggle('hidden');
