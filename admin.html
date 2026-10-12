@@ -128,16 +128,19 @@
 </div>
 
 <!-- Detail Modal -->
-<div id="detail-modal" class="fixed inset-0 bg-slate-900/60 z-50 hidden flex items-center justify-center p-4" style="backdrop-filter:blur(3px)">
-    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg">
-        <div class="flex justify-between items-center px-6 py-4 border-b border-slate-100">
-            <h3 class="font-bold text-slate-900">Butiran Tempahan</h3>
-            <button onclick="document.getElementById('detail-modal').classList.add('hidden')" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center">
-                <i class="fa-solid fa-xmark text-sm"></i>
+<div id="detail-modal" class="fixed inset-0 bg-slate-900/60 z-50 hidden flex items-center justify-center p-3 sm:p-4 overflow-y-auto" style="backdrop-filter:blur(3px)">
+    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-xl max-h-[90vh] flex flex-col my-auto overflow-hidden">
+        <div class="flex justify-between items-center px-6 py-4 border-b border-slate-100 flex-shrink-0 bg-white">
+            <div>
+                <h3 class="font-extrabold text-slate-900 text-lg leading-tight">Butiran Lengkap Tempahan</h3>
+                <p class="text-xs text-slate-400">Maklumat tetamu dan status pengesahan</p>
+            </div>
+            <button onclick="document.getElementById('detail-modal').classList.add('hidden')" class="w-9 h-9 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center transition">
+                <i class="fa-solid fa-xmark text-base"></i>
             </button>
         </div>
-        <div id="detail-content" class="px-6 py-5 space-y-3 text-sm"></div>
-        <div id="detail-actions" class="px-6 pb-5 flex gap-3"></div>
+        <div id="detail-content" class="px-6 py-5 space-y-3 text-sm overflow-y-auto flex-grow"></div>
+        <div id="detail-actions" class="px-6 py-4 border-t border-slate-100 flex gap-2 flex-wrap sm:flex-nowrap flex-shrink-0 bg-slate-50"></div>
     </div>
 </div>
 
@@ -241,15 +244,20 @@ function showDetail(ref) {
         <p class="text-xs text-slate-400 text-right mt-2">Diterima: ${b.created_at}</p>
     `;
     document.getElementById('detail-actions').innerHTML = `
-        <a href="https://wa.me/${b.guest_phone.replace(/[^0-9]/g,'').replace(/^0/,'60')}?text=Salam%20${encodeURIComponent(b.guest_name)},%20tempahan%20anda%20*${b.booking_ref}*%20telah%20disahkan.%20Selamat%20datang%20ke%20TERB%20Hutan%20Lipur%20Berkelah!" 
-            target="_blank" class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 rounded-xl transition flex items-center justify-center gap-2 text-sm">
-            <i class="fa-brands fa-whatsapp"></i> Hubungi Tetamu
+        <a href="https://wa.me/${b.guest_phone.replace(/[^0-9]/g,'').replace(/^0/,'60')}?text=Salam%20${encodeURIComponent(b.guest_name)},%20tempahan%20anda%20*${b.booking_ref}*%20telah%20disahkan.%20Selamat%20datang%20ke%20Taman%20Eko%20Rimba%20Berkelah!" 
+            target="_blank" class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 px-4 rounded-xl transition flex items-center justify-center gap-2 text-sm shadow-sm">
+            <i class="fa-brands fa-whatsapp text-base"></i> Hubungi Tetamu
         </a>
-        ${b.status !== 'Disahkan' ? `<button onclick="updateStatus('${b.booking_ref}','Disahkan')" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2.5 rounded-xl transition text-sm"><i class="fa-solid fa-check mr-1"></i> Sahkan</button>` : ''}
-        ${b.status !== 'Dibatalkan' ? `<button onclick="cancelBooking('${b.booking_ref}')" class="flex-1 border border-rose-200 hover:bg-rose-50 text-rose-700 font-bold py-2.5 rounded-xl transition text-sm"><i class="fa-solid fa-xmark mr-1"></i> Batalkan</button>` : ''}
+        ${b.status !== 'Disahkan' ? `<button onclick="updateStatus('${b.booking_ref}','Disahkan')" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2.5 px-4 rounded-xl transition text-sm shadow-sm"><i class="fa-solid fa-check mr-1"></i> Sahkan</button>` : ''}
+        ${b.status !== 'Dibatalkan' ? `<button onclick="cancelBooking('${b.booking_ref}')" class="flex-1 border border-rose-200 hover:bg-rose-50 text-rose-700 font-bold py-2.5 px-4 rounded-xl transition text-sm"><i class="fa-solid fa-xmark mr-1"></i> Batalkan</button>` : ''}
+        <button onclick="document.getElementById('detail-modal').classList.add('hidden')" class="px-5 py-2.5 bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold rounded-xl transition text-sm">Tutup</button>
     `;
     document.getElementById('detail-modal').classList.remove('hidden');
 }
+
+document.getElementById('detail-modal').addEventListener('click', function(e) {
+    if (e.target === this) this.classList.add('hidden');
+});
 
 async function cancelBooking(ref) {
     if (!confirm(`Batalkan tempahan ${ref}?`)) return;
