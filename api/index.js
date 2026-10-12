@@ -352,47 +352,6 @@ app.patch('/api/bookings/:ref/status', requireAdmin, async (req, res) => {
     }
 });
 
-// GET all bookings (admin view)
-app.get('/api/admin/bookings', requireAdmin, async (req, res) => {
-    try {
-        const { rows } = await pool.query('SELECT * FROM bookings ORDER BY created_at DESC');
-        res.json(rows);
-    } catch (err) {
-        res.status(500).json({ error: err.message });
-    }
-});
-
-// PATCH cancel booking
-app.patch('/api/bookings/:ref/cancel', async (req, res) => {
-    try {
-        const updateRes = await pool.query(
-            "UPDATE bookings SET status = 'Dibatalkan' WHERE booking_ref = $1",
-            [req.params.ref]
-        );
-        if (updateRes.rowCount === 0) return res.status(404).json({ error: 'Tempahan tidak dijumpai.' });
-        res.json({ success: true, message: 'Tempahan telah dibatalkan.' });
-    } catch (err) {
-        res.status(500).json({ error: err.message });
-    }
-});
-
-// PATCH update booking status (admin)
-app.patch('/api/bookings/:ref/status', requireAdmin, async (req, res) => {
-    try {
-        const { status } = req.body;
-        const allowed = ['Menunggu Pengesahan', 'Disahkan', 'Dibatalkan'];
-        if (!allowed.includes(status)) return res.status(400).json({ error: 'Status tidak sah.' });
-        
-        const updateRes = await pool.query(
-            'UPDATE bookings SET status = $1 WHERE booking_ref = $2',
-            [status, req.params.ref]
-        );
-        if (updateRes.rowCount === 0) return res.status(404).json({ error: 'Tempahan tidak dijumpai.' });
-        res.json({ success: true, message: `Status dikemaskini kepada: ${status}` });
-    } catch (err) {
-        res.status(500).json({ error: err.message });
-    }
-});
 
 
 // ──────────────────────────────────────────────
