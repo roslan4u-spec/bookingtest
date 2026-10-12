@@ -126,7 +126,7 @@ const requireAdmin = (req, res, next) => {
 
 // GET all rooms
 const MOCK_ROOMS = [
-    { id: 1, name: 'TEMPAHAN AKTIVITI HIKING', type: 'TEMPAHAN AKTIVITI HIKING', capacity: 7, price_per_night: 50, description: 'Terokai alam semula jadi dengan pendakian berpandu di sekitar Taman Eko Rimba Berkelah.', facilities: 'Pemandu arah, Peralatan asas, Sijil penyertaan', image_url: 'images/hiking.jpg', is_active: 1 },
+    { id: 1, name: 'TEMPAHAN AKTIVITI HIKING', type: 'TEMPAHAN AKTIVITI HIKING', capacity: 7, price_per_night: 50, description: 'Terokai alam semula jadi dengan pendakian berpandu di sekitar Taman Eko Rimba Berkelah Pahang.', facilities: 'Pemandu arah, Peralatan asas, Sijil penyertaan', image_url: 'images/hiking.jpg', is_active: 1 },
     { id: 7, name: 'TEMPAHAN KABIN', type: 'TEMPAHAN KABIN', capacity: 4, price_per_night: 150, description: 'Kabin berhawa dingin yang selesa sesuai untuk percutian keluarga.', facilities: '2 Katil Single, Aircond, Almari, Tandas, Dapur', image_url: 'images/kabin.jpg', is_active: 1 },
     { id: 2, name: 'TEMPAHAN TAPAK GAZEBO', type: 'TEMPAHAN TAPAK GAZEBO', capacity: 8, price_per_night: 60, description: 'Pondok berehat berhampiran sungai yang sesuai untuk keluarga berkelah.', facilities: 'Bumbung teduh, Meja kayu, Tempat duduk, Tong sampah', image_url: 'images/gazebo.jpg', is_active: 1 },
     { id: 3, name: 'TEMPAHAN AKTIVITI JUNGLE TREKKING', type: 'TEMPAHAN AKTIVITI JUNGLE TREKKING', capacity: 15, price_per_night: 30, description: 'Pengalaman merentas hutan sambil mempelajari spesies pokok dan tumbuhan herba.', facilities: 'Laluan bertanda, Panduan taklimat', image_url: 'https://images.unsplash.com/photo-1542131596-dec47d6e80b2?auto=format&fit=crop&w=800&q=80', is_active: 1 },
@@ -143,7 +143,7 @@ app.get('/api/rooms', async (req, res) => {
         // Force memory replacement of any lingering text before sending to frontend
         const fixedRows = rows.map(r => {
             if (r.description) {
-                r.description = r.description.replace(/Gunung Tapis/gi, 'Taman Eko Rimba Berkelah');
+                r.description = r.description.replace(/Gunung Tapis/gi, 'Taman Eko Rimba Berkelah Pahang');
             }
             return r;
         });
@@ -459,7 +459,7 @@ app.put('/api/rooms/:id', async (req, res) => {
 });
 
 app.listen(PORT, () => {
-        console.log(`\n🌿 Taman Eko Rimba Berkelah Server berjalan di: http://localhost:${PORT}/`);
+        console.log(`\n🌿 Taman Eko Rimba Berkelah Pahang Server berjalan di: http://localhost:${PORT}/`);
         console.log(`📋 Halaman Tempahan  : http://localhost:${PORT}/rooms`);
         console.log(`🔧 Panel Admin       : http://localhost:${PORT}/admin`);
         console.log(`📡 API Tempahan & Aktiviti         : http://localhost:${PORT}/api/rooms`);

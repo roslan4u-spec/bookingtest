@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Panel Admin – Tempahan Taman Eko Rimba Berkelah</title>
+    <title>Panel Admin – Tempahan Taman Eko Rimba Berkelah Pahang</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -22,7 +22,7 @@
             <i class="fa-solid fa-lock-open text-sm"></i>
         </div>
         <div>
-            <h1 class="font-extrabold text-lg leading-tight">Panel Admin Taman Eko Rimba Berkelah</h1>
+            <h1 class="font-extrabold text-lg leading-tight">Panel Admin Taman Eko Rimba Berkelah Pahang</h1>
             <p class="text-emerald-300 text-xs">Pengurusan Tempahan & Penyata Tetamu</p>
         </div>
     </div>
@@ -623,12 +623,12 @@ function renderUnifiedStatementModal(bookingsList, highlightRef = null) {
     document.getElementById('detail-content').innerHTML = contentHtml;
 
     // Sediakan Mesej WhatsApp Penyata Lengkap (Khusus untuk tarikh ini sahaja)
-    let waMessage = `Salam ${guestName},\n\nBerikut adalah *PENYATA RASMI TEMPAHAN* anda di *Taman Eko Rimba Berkelah* bagi tarikh *${first.checkin_date} hingga ${first.checkout_date}*:\n\n`;
+    let waMessage = `Salam ${guestName},\n\nBerikut adalah *PENYATA RASMI TEMPAHAN* anda di *Taman Eko Rimba Berkelah Pahang* bagi tarikh *${first.checkin_date} hingga ${first.checkout_date}*:\n\n`;
     bookingsList.forEach((b, idx) => {
         const cleanRoom = (b.room_name || '').replace(/^TEMPAHAN\s+/i, '');
         waMessage += `${idx + 1}. *${cleanRoom}*\n   - No. Rujukan: ${b.booking_ref}\n   - Tarikh: ${b.checkin_date} hingga ${b.checkout_date}\n   - Status: ${b.status}\n   - Harga: RM${parseFloat(b.total_price).toFixed(2)}\n\n`;
     });
-    waMessage += `*JUMLAH KESELURUHAN (Tarikh Ini):* RM${totalAmount.toFixed(2)}\n\nTerima kasih kerana memilih Taman Eko Rimba Berkelah! Jumpa anda di sana.`;
+    waMessage += `*JUMLAH KESELURUHAN (Tarikh Ini):* RM${totalAmount.toFixed(2)}\n\nTerima kasih kerana memilih Taman Eko Rimba Berkelah Pahang! Jumpa anda di sana.`;
 
     const pendingCount = bookingsList.filter(b => b.status !== 'Disahkan').length;
 
@@ -688,7 +688,7 @@ function downloadStatementPDF(statementKey) {
     // Header Rasmi
     doc.setFontSize(18);
     doc.setTextColor(6, 78, 59); // Emerald 900
-    doc.text('TAMAN EKO RIMBA BERKELAH', 14, 18);
+    doc.text('TAMAN EKO RIMBA BERKELAH PAHANG', 14, 18);
 
     doc.setFontSize(11);
     doc.setTextColor(71, 85, 105);
@@ -777,7 +777,7 @@ function downloadStatementPDF(statementKey) {
     doc.setFont(undefined, 'normal');
     doc.setFontSize(8);
     doc.setTextColor(148, 163, 184);
-    doc.text('Terima kasih kerana memilih Taman Eko Rimba Berkelah. Sila tunjukkan penyata ini semasa mendaftar masuk.', 14, finalY + 28);
+    doc.text('Terima kasih kerana memilih Taman Eko Rimba Berkelah Pahang. Sila tunjukkan penyata ini semasa mendaftar masuk.', 14, finalY + 28);
 
     doc.save(`Penyata_${first.guest_name.replace(/[^a-zA-Z0-9]/g, '_')}_${first.checkin_date}.pdf`);
 }
@@ -848,7 +848,7 @@ document.getElementById('btn-export-pdf').addEventListener('click', () => {
     
     doc.setFontSize(16);
     doc.setTextColor(6, 78, 59);
-    doc.text('TAMAN EKO RIMBA BERKELAH', 14, 15);
+    doc.text('TAMAN EKO RIMBA BERKELAH PAHANG', 14, 15);
     
     doc.setFontSize(11);
     doc.setTextColor(71, 85, 105);

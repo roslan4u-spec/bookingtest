@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="google" content="notranslate">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tempahan – Taman Eko Rimba Berkelah Pahang</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .room-card { transition: transform 0.2s ease, box-shadow 0.2s ease; }
+        .room-card:hover { transform: translateY(-4px); box-shadow: 0 20px 40px rgba(0,0,0,0.12); }
+        .room-card.selected { ring: 3px; ring-color: #059669; }
+        .flatpickr-day.unavailable { background: #fee2e2 !important; color: #dc2626 !important; text-decoration: line-through; cursor: not-allowed !important; }
+        .flatpickr-day.unavailable:hover { background: #fca5a5 !important; }
+        #booking-modal { backdrop-filter: blur(4px); }
+        .status-badge { display: inline-flex; align-items: center; gap: 4px; padding: 2px 10px; border-radius: 9999px; font-size: 0.75rem; font-weight: 700; }
+        .step-indicator.active { background: #065f46; color: white; }
+        .step-indicator { background: #e5e7eb; color: #6b7280; transition: all 0.3s; }
+        .step-connector.active { background: #059669; }
+        .step-connector { background: #e5e7eb; transition: all 0.3s; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased pb-40">
+
+<!-- Top Bar -->
+<div class="bg-emerald-900 text-emerald-100 text-xs py-2 px-4 flex justify-between items-center">
+    <span class="hidden md:inline"><i class="fa-solid fa-tree text-emerald-400 mr-2"></i>Taman Eko Rimba Berkelah Pahang</span>
+    <a href="https://wa.me/60194489296" target="_blank" class="hover:text-amber-300 transition flex items-center gap-1.5 font-bold ml-auto">
+        <i class="fa-brands fa-whatsapp text-emerald-400"></i> 019-4489296
+    </a>
+</div>
+
+<!-- Navigation -->
+<header class="bg-white shadow-md sticky top-0 z-40">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center h-20">
+            <a href="index.html" class="flex items-center gap-3">
+                <img src="images/logo.png" alt="Logo Taman Eko Rimba Berkelah Pahang" class="w-12 h-12 object-contain drop-shadow-md">
+                <div>
+                    <span class="block text-xl font-extrabold text-emerald-950 tracking-wider">Taman Eko Rimba Berkelah Pahang</span>
+                    <span class="block text-xs font-semibold text-emerald-600 uppercase tracking-widest">Hutan Lipur Berkelah</span>
+                </div>
+            </a>
+            <nav class="hidden lg:flex space-x-1 font-medium text-sm">
+                <a href="index.html" class="px-3 py-2 text-slate-700 hover:text-emerald-700 hover:bg-emerald-50 rounded-lg transition">UTAMA</a>
+                <a href="index.html#direction" class="px-3 py-2 text-slate-700 hover:text-emerald-700 hover:bg-emerald-50 rounded-lg transition">PANDUAN JALAN</a>
+                
+                <a href="rooms.html" class="px-3 py-2 text-emerald-800 bg-emerald-100/70 font-bold rounded-lg shadow-sm border border-emerald-200">TEMPAHAN</a>
+                <a href="aktiviti.html" class="px-3 py-2 text-slate-700 hover:text-emerald-700 hover:bg-emerald-50 rounded-lg transition">AKTIVITI</a>
+                  <a href="index.html#prohibited-rules" class="px-3 py-2 text-slate-700 hover:text-emerald-700 hover:bg-emerald-50 rounded-lg transition">TERMA & SYARAT</a>
+                <a href="index.html#contact" class="px-3 py-2 text-slate-700 hover:text-emerald-700 hover:bg-emerald-50 rounded-lg transition">HUBUNGI KAMI</a>
+            </nav>
+            <button id="mobile-menu-btn" class="lg:hidden p-2 text-slate-700">
+                <i class="fa-solid fa-bars text-2xl"></i>
+            </button>
+        </div>
+    </div>
+    <div id="mobile-menu" class="hidden lg:hidden bg-white border-t border-slate-100 px-4 py-4 space-y-1 shadow-lg">
+        <a href="index.html" class="block px-3 py-2 text-slate-700 hover:bg-emerald-50 hover:text-emerald-800 rounded-md">UTAMA</a>
+        <a href="index.html#direction" class="block px-3 py-2 text-slate-700 hover:bg-emerald-50 hover:text-emerald-800 rounded-md">PANDUAN JALAN</a>
+        <a href="rooms.html" class="block px-3 py-2 font-bold text-emerald-800 bg-emerald-50 rounded-md">TEMPAHAN</a>
+        <a href="aktiviti.html" class="block px-3 py-2 text-slate-700 hover:bg-emerald-50 hover:text-emerald-800 rounded-md">AKTIVITI</a>
+        <a href="index.html#prohibited-rules" class="block px-3 py-2 text-slate-700 hover:bg-emerald-50 hover:text-emerald-800 rounded-md">TERMA & SYARAT</a>
+        <a href="index.html#contact" class="block px-3 py-2 text-slate-700 hover:bg-emerald-50 hover:text-emerald-800 rounded-md">HUBUNGI KAMI</a>
+    </div>
+  </header>
+
+<!-- Room Listing -->
+<main class="container mx-auto px-4 sm:px-6 lg:px-8 py-10" id="room-list">
+
+    <!-- Room Cards Grid -->
+    <div id="rooms-grid" class="grid grid-cols-1 md:grid-cols-2 max-w-4xl mx-auto gap-8 mb-12">
+        <div class="col-span-full flex justify-center py-12">
+            <div class="text-center text-slate-400">
+                <i class="fa-solid fa-spinner fa-spin text-3xl mb-3"></i>
+                <p>Memuatkan senarai tempahan & aktiviti...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- My Booking Lookup -->
+    <div class="bg-emerald-50 rounded-2xl p-6 border border-emerald-100 max-w-lg mx-auto text-center">
+        <i class="fa-solid fa-receipt text-emerald-600 text-3xl mb-3"></i>
+        <h3 class="font-bold text-emerald-900 text-lg mb-2">Semak Status Tempahan</h3>
+        <p class="text-slate-600 text-sm mb-4">Masukkan nombor rujukan tempahan anda untuk menyemak status.</p>
+        <div class="flex gap-2">
+            <input type="text" id="lookup-ref" placeholder="Contoh: TERB-20260903-1234" class="flex-1 border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 uppercase">
+            <button id="btn-lookup" class="bg-emerald-700 hover:bg-emerald-800 text-white font-bold px-4 py-2 rounded-lg text-sm transition">
+                <i class="fa-solid fa-search"></i> Cari
+            </button>
+        </div>
+        <div id="lookup-result" class="mt-4 hidden"></div>
+    </div>
+</main>
+
+<!-- ─────────────────────────────────────────── -->
+
+
+
+<div id="success-modal" class="fixed inset-0 bg-slate-900/70 z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl shadow-2xl w-full max-w-md p-6 sm:p-8 text-center max-h-[90vh] overflow-y-auto">
+        <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-emerald-100 flex items-center justify-center mx-auto mb-5">
+            <i class="fa-solid fa-circle-check text-4xl text-emerald-600"></i>
+        </div>
+        <h2 class="text-2xl font-extrabold text-slate-900 mb-2">Tempahan Berjaya!</h2>
+        <p class="text-slate-500 mb-6 text-sm">Terima kasih atas tempahan anda. Kami akan menghubungi anda melalui WhatsApp untuk pengesahan.</p>
+
+        <div class="bg-emerald-50 rounded-2xl p-4 border border-emerald-100 mb-6">
+            <p class="text-xs text-slate-500 mb-1">Nombor Rujukan Tempahan</p>
+            <p class="text-2xl font-extrabold text-emerald-800 tracking-wider" id="success-ref"></p>
+        </div>
+
+        <div class="text-left space-y-2 text-sm bg-slate-50 rounded-xl p-4 border border-slate-100 mb-6">
+            <div class="flex justify-between"><span class="text-slate-500">Tempahan & Aktiviti:</span><span class="font-semibold" id="success-room"></span></div>
+            <div class="flex justify-between"><span class="text-slate-500">Tarikh Masuk:</span><span class="font-semibold" id="success-checkin"></span></div>
+            <div class="flex justify-between"><span class="text-slate-500">Tarikh Keluar:</span><span class="font-semibold" id="success-checkout"></span></div>
+            <div class="flex justify-between"><span class="text-slate-500">Jumlah Malam:</span><span class="font-semibold" id="success-nights"></span></div>
+            <hr class="border-slate-200">
+            <div class="flex justify-between text-base font-bold"><span class="text-slate-700">Jumlah Bayaran:</span><span class="text-emerald-800">RM<span id="success-total"></span></span></div>
+        </div>
+
+        <div class="flex gap-3">
+            <a id="btn-wa-confirm" href="#" target="_blank" class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-xl transition flex items-center justify-center gap-2">
+                <i class="fa-brands fa-whatsapp text-xl"></i> Hubungi via WhatsApp
+            </a>
+            <button onclick="document.getElementById('success-modal').classList.add('hidden');location.reload();" class="flex-1 border border-slate-200 hover:bg-slate-50 text-slate-700 font-bold py-3 rounded-xl transition">
+                Kembali
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Footer -->
+<footer class="bg-slate-950 text-slate-400 py-8 mt-12 border-t border-slate-800">
+    <div class="container mx-auto px-4 text-center text-sm flex flex-col items-center">
+        <p class="mb-2"><span class="text-white font-bold">Taman Eko Rimba Berkelah Pahang</span> – Mukim Luit, Pahang</p>
+        <p class="mb-6">WhatsApp: <a href="https://wa.me/60194489296" class="text-emerald-400 hover:text-emerald-300">019-4489296</a></p>
+        
+        <a href="admin.html" class="bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white px-5 py-2.5 rounded-lg transition flex items-center gap-2 text-sm font-semibold border border-slate-700 mb-6">
+            <i class="fa-solid fa-lock"></i> Log Masuk Admin
+        </a>
+        
+        <p class="text-xs text-slate-600">&copy; 2026 Taman Eko Rimba Berkelah Pahang. All rights reserved.</p>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script>
+const API = '';
+
+let allRooms = [];
+let selectedRoom = null;
+let guestCount = 1;
+let checkinFp, checkoutFp, filterCheckinFp, filterCheckoutFp;
+let filterDates = { checkin: null, checkout: null };
+
+// ──── LOAD ROOMS ────
+async function loadRooms(typeFilter = '') {
+    const grid = document.getElementById('rooms-grid');
+    try {
+        const res = await fetch(`${API}/api/rooms?t=${Date.now()}`);
+        allRooms = await res.json();
+        let filtered = allRooms;
+        if (typeFilter) filtered = allRooms.filter(r => r.type === typeFilter);
+        // removed room count logic
+        renderRooms(filtered);
+    } catch (e) {
+        grid.innerHTML = `<div class="col-span-full text-center py-12 text-rose-500"><i class="fa-solid fa-triangle-exclamation mr-2"></i>Gagal memuatkan senarai tempahan & aktiviti.</div>`;
+    }
+}
+
+
+function renderRooms(rooms) {
+    const grid = document.getElementById('rooms-grid');
+    if (!rooms.length) {
+        grid.innerHTML = `<div class="col-span-full text-center py-12 text-slate-400"><i class="fa-solid fa-bed text-4xl mb-3 block"></i>Tiada tempahan & aktiviti yang sepadan.</div>`;
+        return;
+    }
+    grid.innerHTML = rooms.map(r => `
+        <div class="room-card bg-white rounded-2xl shadow-lg overflow-hidden border-2 border-dashed border-amber-400 flex flex-col relative group" data-room-id="${r.id}">
+            
+            <!-- Edit Overlay Image -->
+            <div class="absolute top-2 left-2 z-10 bg-black/70 text-white text-xs px-3 py-2 rounded-lg cursor-pointer hover:bg-emerald-600 transition shadow-lg flex items-center gap-2" onclick="document.getElementById('img-upload-${r.id}').click()">
+                <i class="fa-solid fa-camera"></i> Tukar Gambar
+            </div>
+            <input type="file" id="img-upload-${r.id}" class="hidden" accept="image/*" onchange="handleImage(event, ${r.id})">
+
+            <div class="relative w-full bg-slate-50 aspect-[3/4] flex justify-center items-center border-b border-slate-100 cursor-pointer" onclick="document.getElementById('img-upload-${r.id}').click()">
+                  <img id="img-preview-${r.id}" src="${r.image_url}" alt="${r.name}" class="w-full h-full object-cover p-2 hover:opacity-80 transition">
+            </div>
+            <div class="p-5 flex flex-col flex-grow bg-amber-50/20">
+                <div class="flex justify-between items-start mb-2">
+                    <h3 class="text-lg font-extrabold text-slate-900 border-b border-dashed border-emerald-500/50 hover:bg-emerald-50 focus:bg-emerald-100 focus:outline-none transition w-full" contenteditable="true" data-field="name" title="Klik untuk sunting">${r.name}</h3>
+                </div>
+                <p class="text-slate-600 text-sm mb-3 flex-grow border-b border-dashed border-emerald-500/50 hover:bg-emerald-50 focus:bg-emerald-100 focus:outline-none transition" contenteditable="true" data-field="description" title="Klik untuk sunting">${r.description}</p>
+                <div class="flex flex-col gap-2 mb-4 text-sm text-slate-700 bg-white p-3 rounded-lg border border-slate-200">
+                    <div class="flex items-center gap-2">
+                        <i class="fa-solid fa-users text-slate-400 w-4"></i> Kapasiti: 
+                        <span class="font-bold border-b border-dashed border-emerald-500/50 hover:bg-emerald-50 focus:bg-emerald-100 focus:outline-none transition px-1" contenteditable="true" data-field="capacity" title="Klik untuk sunting">${r.capacity}</span> orang
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <i class="fa-solid fa-tag text-slate-400 w-4"></i> Harga (RM): 
+                        <span class="font-bold border-b border-dashed border-emerald-500/50 hover:bg-emerald-50 focus:bg-emerald-100 focus:outline-none transition px-1" contenteditable="true" data-field="price_per_night" title="Klik untuk sunting">${r.price_per_night}</span>
+                    </div>
+                    <div class="flex flex-col mt-2">
+                        <span class="text-xs text-slate-500 font-semibold mb-1">Kemudahan:</span>
+                        <span class="font-medium text-xs border-b border-dashed border-emerald-500/50 hover:bg-emerald-50 focus:bg-emerald-100 focus:outline-none transition p-1" contenteditable="true" data-field="facilities" title="Klik untuk sunting">${r.facilities || '-'}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `).join('');
+}
+
+let imagePayloads = {};
+
+function handleImage(event, id) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+        document.getElementById('img-preview-' + id).src = e.target.result;
+        const ext = file.name.split('.').pop();
+        imagePayloads[id] = {
+            base64: e.target.result,
+            ext: ext
+        };
+    };
+    reader.readAsDataURL(file);
+}
+
+async function saveAllChanges() {
+    const btn = document.getElementById('btn-save-cms');
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Menyimpan...';
+
+    const cards = document.querySelectorAll('.room-card');
+    let allSuccess = true;
+
+    for (const card of cards) {
+        const id = card.getAttribute('data-room-id');
+        const name = card.querySelector('[data-field="name"]').innerText.trim();
+        const description = card.querySelector('[data-field="description"]').innerText.trim();
+        const capacity = card.querySelector('[data-field="capacity"]').innerText.trim();
+        const price = card.querySelector('[data-field="price_per_night"]').innerText.trim();
+        const facilities = card.querySelector('[data-field="facilities"]').innerText.trim();
+
+        const payload = {
+            name: name,
+            description: description,
+            capacity: capacity,
+            price_per_night: price,
+            facilities: facilities
+        };
+
+        if (imagePayloads[id]) {
+            payload.image_base64 = imagePayloads[id].base64;
+            payload.image_ext = imagePayloads[id].ext;
+        }
+
+        try {
+            const res = await fetch('/api/rooms/' + id, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+            const data = await res.json();
+            if (!data.success) {
+                allSuccess = false;
+                console.error(data);
+            }
+        } catch(e) {
+            allSuccess = false;
+        }
+    }
+
+    if (allSuccess) {
+        imagePayloads = {};
+        alert('Taniah! Semua perubahan berjaya disimpan. Sila periksa Laman Tempahan awam untuk melihat perubahan.');
+    } else {
+        alert('Terdapat ralat semasa menyimpan sebahagian data.');
+    }
+
+    btn.disabled = false;
+    btn.innerHTML = '<i class="fa-solid fa-cloud-arrow-up"></i> Simpan Perubahan / Publish';
+}
+
+// Init
+loadRooms();
+</script>
+
+<!-- CMS SAVE BUTTON -->
+<div class="fixed bottom-6 right-6 z-50">
+    <button onclick="saveAllChanges()" id="btn-save-cms" class="bg-emerald-600 hover:bg-emerald-700 text-white shadow-2xl rounded-full px-8 py-4 font-bold text-lg flex items-center gap-3 transition transform hover:scale-105 border-4 border-emerald-400/30">
+        <i class="fa-solid fa-cloud-arrow-up"></i> Simpan Perubahan / Publish
+    </button>
+</div>
+
+</body>
+</html>
