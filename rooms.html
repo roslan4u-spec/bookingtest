@@ -97,16 +97,16 @@
         </div>
         <div class="flex items-center gap-2">
             <label class="text-sm text-slate-600 font-medium">Jenis:</label>
-            <select id="filter-type" class="border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
-                  <option value="">Semua</option>
-                  <option value="AKTIVITI HIKING">AKTIVITI HIKING</option>
-                  <option value="TEMPAHAN KABIN">TEMPAHAN KABIN</option>
-                    <option value="TEMPAHAN TAPAK GAZEBO">TEMPAHAN TAPAK GAZEBO</option>
-                  <option value="AKTIVITI JUGGLE TRACKING">AKTIVITI JUGGLE TRACKING</option>
-                  <option value="TEMPAHAN TAPAK HAMMOCK">TEMPAHAN TAPAK HAMMOCK</option>
-                  <option value="TEMPAHAN TAPAK PERKHEMAHAN">TEMPAHAN TAPAK PERKHEMAHAN</option>
-                  <option value="TEMPAHAN TAPAK KENDERAAN RV / CARAVAN / CAMPERVAN">TEMPAHAN TAPAK KENDERAAN RV / CARAVAN / CAMPERVAN</option>
-              </select>
+            <select id="filter-type" class="border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 bg-white">
+                <option value="">Semua Pilihan</option>
+                <option value="AKTIVITI HIKING">AKTIVITI HIKING</option>
+                <option value="TEMPAHAN KABIN">TEMPAHAN KABIN</option>
+                <option value="TEMPAHAN TAPAK GAZEBO">TEMPAHAN TAPAK GAZEBO</option>
+                <option value="AKTIVITI JUNGLE TREKKING">AKTIVITI JUNGLE TREKKING</option>
+                <option value="TEMPAHAN TAPAK HAMMOCK">TEMPAHAN TAPAK HAMMOCK</option>
+                <option value="TEMPAHAN TAPAK PERKHEMAHAN">TEMPAHAN TAPAK PERKHEMAHAN</option>
+                <option value="TEMPAHAN TAPAK KENDERAAN RV / CARAVAN / CAMPERVAN">TEMPAHAN TAPAK KENDERAAN RV / CARAVAN / CAMPERVAN</option>
+            </select>
         </div>
     </div>
 
@@ -441,6 +441,48 @@ let guestCount = 1;
 let checkinFp, checkoutFp, filterCheckinFp, filterCheckoutFp;
 let filterDates = { checkin: null, checkout: null };
 
+// ──── HELPER PENAPIS AKTIVITI & PENGINAPAN ────
+function matchRoomType(room, filterValue) {
+    if (!filterValue) return true;
+    const filter = filterValue.trim().toUpperCase();
+    const type = (room.type || '').toUpperCase();
+    const name = (room.name || '').toUpperCase();
+
+    // Padanan tepat jenis atau nama
+    if (type === filter || name === filter) return true;
+
+    // Padanan Hiking
+    if (filter.includes('HIKING') && (type.includes('HIKING') || name.includes('HIKING'))) return true;
+
+    // Padanan Kabin
+    if (filter.includes('KABIN') && (type.includes('KABIN') || name.includes('KABIN'))) return true;
+
+    // Padanan Gazebo
+    if (filter.includes('GAZEBO') && (type.includes('GAZEBO') || name.includes('GAZEBO'))) return true;
+
+    // Padanan Jungle Trekking
+    if ((filter.includes('JUNGLE') || filter.includes('TREKKING') || filter.includes('TRACKING') || filter.includes('JUGGLE')) &&
+        (type.includes('JUNGLE') || type.includes('TREKKING') || name.includes('JUNGLE') || name.includes('TREKKING'))) return true;
+
+    // Padanan Hammock
+    if (filter.includes('HAMMOCK') && (type.includes('HAMMOCK') || name.includes('HAMMOCK'))) return true;
+
+    // Padanan Perkhemahan / Khemah
+    if ((filter.includes('PERKHEMAHAN') || filter.includes('KHEMAH')) &&
+        (type.includes('PERKHEMAHAN') || name.includes('PERKHEMAHAN') || type.includes('KHEMAH') || name.includes('KHEMAH'))) return true;
+
+    // Padanan Kenderaan RV / Caravan / Campervan
+    if ((filter.includes('RV') || filter.includes('CARAVAN') || filter.includes('CAMPERVAN')) &&
+        (type.includes('RV') || type.includes('CARAVAN') || type.includes('CAMPERVAN') || name.includes('RV') || name.includes('CARAVAN') || name.includes('CAMPERVAN'))) return true;
+
+    // Padanan pembersihan awalan kata (strip 'TEMPAHAN', 'AKTIVITI')
+    const cleanF = filter.replace(/^TEMPAHAN\s+/i, '').replace(/^AKTIVITI\s+/i, '').trim();
+    const cleanT = type.replace(/^TEMPAHAN\s+/i, '').replace(/^AKTIVITI\s+/i, '').trim();
+    const cleanN = name.replace(/^TEMPAHAN\s+/i, '').replace(/^AKTIVITI\s+/i, '').trim();
+
+    return cleanT.includes(cleanF) || cleanN.includes(cleanF) || cleanF.includes(cleanT) || cleanF.includes(cleanN);
+}
+
 // ──── LOAD ROOMS ────
 async function loadRooms(typeFilter = '') {
     const grid = document.getElementById('rooms-grid');
@@ -448,7 +490,7 @@ async function loadRooms(typeFilter = '') {
         const res = await fetch(`${API}/api/rooms?t=${Date.now()}`);
         allRooms = await res.json();
         let filtered = allRooms;
-        if (typeFilter) filtered = allRooms.filter(r => r.type === typeFilter);
+        if (typeFilter) filtered = allRooms.filter(r => matchRoomType(r, typeFilter));
         document.getElementById('room-count').textContent = `${filtered.length} tempahan & aktiviti tersedia`;
         renderRooms(filtered);
     } catch (e) {
@@ -527,7 +569,7 @@ document.getElementById('btn-clear-filter').addEventListener('click', () => {
 
 async function loadRoomsWithAvailability(checkin, checkout) {
     const typeFilter = document.getElementById('filter-type').value;
-    let rooms = typeFilter ? allRooms.filter(r => r.type === typeFilter) : [...allRooms];
+    let rooms = typeFilter ? allRooms.filter(r => matchRoomType(r, typeFilter)) : [...allRooms];
     // Check each room
     const checks = await Promise.all(rooms.map(async r => {
         const res = await fetch(`${API}/api/rooms/${r.id}/booked-dates`);
