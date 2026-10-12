@@ -2,7 +2,6 @@
 <html lang="ms">
 <head>
     <meta charset="UTF-8">
-    <meta name="google" content="notranslate">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Panel Admin – Tempahan Taman Eko Rimba Berkelah</title>
     <script src="https://cdn.tailwindcss.com"></script>
@@ -11,8 +10,6 @@
         tbody tr:hover { background: #f8fafc; }
         .badge { display: inline-flex; align-items: center; padding: 2px 10px; border-radius: 9999px; font-size: 0.72rem; font-weight: 700; }
     </style>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
 </head>
 <body class="bg-slate-100 text-slate-800 font-sans antialiased min-h-screen">
 
@@ -23,20 +20,15 @@
             <i class="fa-solid fa-lock-open text-sm"></i>
         </div>
         <div>
-            <h1 class="font-extrabold text-lg leading-tight">Panel Admin</h1>
-            <p class="text-emerald-300 text-xs">Pengurusan Tempahan Tempahan & Aktiviti</p>
+            <h1 class="font-extrabold text-lg leading-tight">Panel Admin Taman Eko Rimba Berkelah</h1>
+            <p class="text-emerald-300 text-xs">Pengurusan Tempahan Bilik & Chalet</p>
         </div>
     </div>
     <div class="flex items-center gap-3">
-        <!-- Page Indicator -->
-        <a href="admin_cms.html" class="bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-bold px-4 py-2 rounded-lg transition flex items-center gap-2 border border-indigo-500 shadow-md">
-            <i class="fa-solid fa-pen-to-square"></i> Visual Editor (CMS)
-        </a>
-          <span class="text-amber-400 font-bold tracking-wider uppercase bg-emerald-800/50 px-3 py-2 rounded-lg border border-emerald-700/50 mr-2 flex items-center">Panel Admin</span>
-          <a href="rooms.html" target="_blank" class="bg-white/10 hover:bg-white/20 text-white text-sm font-semibold px-4 py-2 rounded-lg transition flex items-center gap-2">
+        <a href="/rooms" target="_blank" class="bg-white/10 hover:bg-white/20 text-white text-sm font-semibold px-4 py-2 rounded-lg transition flex items-center gap-2">
             <i class="fa-solid fa-external-link-alt"></i> Halaman Tempahan
         </a>
-        <a href="index.html" class="bg-amber-500 hover:bg-amber-600 text-emerald-950 text-sm font-bold px-4 py-2 rounded-lg transition flex items-center gap-2">
+        <a href="/" class="bg-amber-500 hover:bg-amber-600 text-emerald-950 text-sm font-bold px-4 py-2 rounded-lg transition flex items-center gap-2">
             <i class="fa-solid fa-house"></i> Laman Utama
         </a>
     </div>
@@ -45,30 +37,7 @@
 <div class="max-w-7xl mx-auto px-4 py-8">
 
     <!-- Stats Cards -->
-    
-    <!-- Login Section -->
-    <div id="login-section" class="max-w-sm mx-auto mt-20 bg-white p-8 rounded-2xl shadow-xl border border-slate-100 text-center">
-        <div class="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center text-3xl mx-auto mb-6">
-            <i class="fa-solid fa-user-shield"></i>
-        </div>
-        <h2 class="text-2xl font-extrabold text-slate-900 mb-2">Log Masuk Admin</h2>
-        <p class="text-slate-500 text-sm mb-6">Sila masukkan kata laluan untuk mengakses panel admin.</p>
-        
-        <form id="login-form" class="space-y-4 text-left">
-            <div>
-                <label class="block text-sm font-semibold text-slate-700 mb-1">Kata Laluan</label>
-                <input type="password" id="admin-password" class="w-full border border-slate-300 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-emerald-500" required>
-            </div>
-            <p id="login-error" class="text-rose-500 text-sm hidden font-medium text-center"></p>
-            <button type="submit" id="btn-login" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-xl transition">
-                Log Masuk <i class="fa-solid fa-arrow-right ml-2"></i>
-            </button>
-        </form>
-    </div>
-
-    <!-- Admin Dashboard (Hidden by default) -->
-    <div id="admin-dashboard" class="hidden">
-        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8" id="stats-cards">
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8" id="stats-cards">
         <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-100">
             <div class="flex items-center justify-between mb-3">
                 <span class="text-slate-500 text-sm">Jumlah Tempahan</span>
@@ -117,10 +86,7 @@
                     <i class="fa-solid fa-arrows-rotate"></i> Muat Semula
                 </button>
                 <button id="btn-export" class="bg-slate-800 hover:bg-slate-900 text-white font-semibold px-4 py-2 text-sm rounded-lg transition flex items-center gap-2">
-                    <i class="fa-solid fa-file-csv"></i> Eksport CSV
-                </button>
-                <button id="btn-export-pdf" class="bg-rose-600 hover:bg-rose-700 text-white font-semibold px-4 py-2 text-sm rounded-lg transition flex items-center gap-2">
-                    <i class="fa-solid fa-file-pdf"></i> Eksport PDF
+                    <i class="fa-solid fa-download"></i> Eksport CSV
                 </button>
             </div>
         </div>
@@ -138,7 +104,7 @@
                 <thead>
                     <tr class="bg-slate-50 text-slate-500 text-xs uppercase tracking-wider">
                         <th class="px-4 py-3 text-left font-semibold">Rujukan</th>
-                        <th class="px-4 py-3 text-left font-semibold">Tempahan & Aktiviti</th>
+                        <th class="px-4 py-3 text-left font-semibold">Bilik</th>
                         <th class="px-4 py-3 text-left font-semibold">Tetamu</th>
                         <th class="px-4 py-3 text-left font-semibold">Tarikh Masuk</th>
                         <th class="px-4 py-3 text-left font-semibold">Tarikh Keluar</th>
@@ -163,7 +129,7 @@
 
 <!-- Detail Modal -->
 <div id="detail-modal" class="fixed inset-0 bg-slate-900/60 z-50 hidden flex items-center justify-center p-4" style="backdrop-filter:blur(3px)">
-    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto">
+    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg">
         <div class="flex justify-between items-center px-6 py-4 border-b border-slate-100">
             <h3 class="font-bold text-slate-900">Butiran Tempahan</h3>
             <button onclick="document.getElementById('detail-modal').classList.add('hidden')" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center">
@@ -178,71 +144,10 @@
 <script>
 let allBookings = [];
 
-function getAuthHeaders() { return { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + (localStorage.getItem('adminToken') || '') }; }
-
-function showLogin() { document.getElementById('login-section').classList.remove('hidden'); document.getElementById('admin-dashboard').classList.add('hidden'); localStorage.removeItem('adminToken'); }
-
-function showDashboard() { document.getElementById('login-section').classList.add('hidden'); document.getElementById('admin-dashboard').classList.remove('hidden'); // Export PDF
-document.getElementById('btn-export-pdf').addEventListener('click', () => {
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF('landscape');
-    
-    doc.setFontSize(16);
-    doc.text('Senarai Tempahan - Taman Eko Rimba Berkelah', 14, 15);
-    
-    doc.setFontSize(10);
-    doc.text(`Tarikh Janaan: ${new Date().toLocaleDateString('ms-MY')}`, 14, 22);
-
-    const header = [['Rujukan', 'Tempahan & Aktiviti', 'Nama', 'Telefon', 'Masuk', 'Keluar', 'Tetamu', 'Jumlah (RM)', 'Status']];
-    const rows = allBookings.map(b => [
-        b.booking_ref, 
-        b.room_name, 
-        b.guest_name, 
-        b.guest_phone, 
-        b.checkin_date, 
-        b.checkout_date, 
-        b.num_guests, 
-        parseFloat(b.total_price).toFixed(2), 
-        b.status
-    ]);
-
-    doc.autoTable({
-        head: header,
-        body: rows,
-        startY: 28,
-        theme: 'grid',
-        styles: { fontSize: 8 },
-        headStyles: { fillColor: [5, 150, 105] } // Emerald 600
-    });
-
-    doc.save(`TERB_Tempahan_${new Date().toISOString().slice(0,10)}.pdf`);
-});
-
-loadBookings(); }
-
-document.getElementById('login-form').addEventListener('submit', async (e) => { 
-    e.preventDefault(); 
-    const btn = document.getElementById('btn-login'); 
-    const err = document.getElementById('login-error'); 
-    const pwd = document.getElementById('admin-password').value; 
-    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Memuatkan...'; 
-    err.classList.add('hidden'); 
-    try { 
-        const res = await fetch('/api/login', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ password: pwd }) }); 
-        const data = await res.json(); 
-        if(res.ok && data.success) { localStorage.setItem('adminToken', data.token); showDashboard(); } 
-        else { err.textContent = data.message || 'Gagal log masuk.'; err.classList.remove('hidden'); } 
-    } catch (e) { 
-        err.textContent = 'Ralat rangkaian. Sila cuba lagi.'; err.classList.remove('hidden'); 
-    } 
-    btn.innerHTML = 'Log Masuk <i class="fa-solid fa-arrow-right ml-2"></i>'; 
-});
-
-
 async function loadBookings() {
     document.getElementById('booking-count-label').textContent = 'Memuatkan...';
     try {
-        const res = await fetch('/api/admin/bookings', { headers: getAuthHeaders() }); if(res.status === 401) return showLogin();
+        const res = await fetch('/api/admin/bookings');
         allBookings = await res.json();
         updateStats(allBookings);
         renderTable(allBookings);
@@ -321,7 +226,7 @@ function showDetail(ref) {
             <div class="mt-1">${statusBadge(b.status)}</div>
         </div>
         <div class="grid grid-cols-2 gap-3">
-            <div class="bg-slate-50 rounded-lg p-3"><p class="text-xs text-slate-400 mb-0.5">Tempahan & Aktiviti</p><p class="font-bold">${b.room_name}</p></div>
+            <div class="bg-slate-50 rounded-lg p-3"><p class="text-xs text-slate-400 mb-0.5">Bilik / Chalet</p><p class="font-bold">${b.room_name}</p></div>
             <div class="bg-slate-50 rounded-lg p-3"><p class="text-xs text-slate-400 mb-0.5">Bilangan Tetamu</p><p class="font-bold">${b.num_guests} orang</p></div>
             <div class="bg-slate-50 rounded-lg p-3"><p class="text-xs text-slate-400 mb-0.5">Nama</p><p class="font-bold">${b.guest_name}</p></div>
             <div class="bg-slate-50 rounded-lg p-3"><p class="text-xs text-slate-400 mb-0.5">No. Telefon</p><p class="font-bold">${b.guest_phone}</p></div>
@@ -348,13 +253,13 @@ function showDetail(ref) {
 
 async function cancelBooking(ref) {
     if (!confirm(`Batalkan tempahan ${ref}?`)) return;
-    const res = await fetch(`/api/bookings/${ref}/cancel`, { method: 'PATCH', headers: getAuthHeaders() }); if(res.status === 401) return showLogin();
+    await fetch(`/api/bookings/${ref}/cancel`, { method: 'PATCH' });
     document.getElementById('detail-modal').classList.add('hidden');
     loadBookings();
 }
 
 async function updateStatus(ref, status) {
-    const res = await fetch(`/api/bookings/${ref}/status`, { method: 'PATCH', headers: getAuthHeaders(), body: JSON.stringify({ status }) }); if(res.status === 401) return showLogin();
+    await fetch(`/api/bookings/${ref}/status`, { method: 'PATCH', headers: {'Content-Type':'application/json'}, body: JSON.stringify({ status }) });
     document.getElementById('detail-modal').classList.add('hidden');
     loadBookings();
 }
@@ -373,7 +278,7 @@ document.getElementById('search-input').addEventListener('input', function() {
 
 // Export CSV
 document.getElementById('btn-export').addEventListener('click', () => {
-    const header = ['Rujukan','Tempahan & Aktiviti','Nama','Telefon','IC','Emel','Tarikh Masuk','Tarikh Keluar','Malam','Tetamu','Jumlah RM','Status','Permintaan Khas','Diterima'];
+    const header = ['Rujukan','Bilik','Nama','Telefon','IC','Emel','Tarikh Masuk','Tarikh Keluar','Malam','Tetamu','Jumlah RM','Status','Permintaan Khas','Diterima'];
     const rows = allBookings.map(b => [b.booking_ref, b.room_name, b.guest_name, b.guest_phone, b.guest_ic, b.guest_email, b.checkin_date, b.checkout_date, b.num_nights, b.num_guests, b.total_price, b.status, b.special_request, b.created_at]);
     const csv = [header, ...rows].map(r => r.map(c => `"${String(c||'').replace(/"/g,'""')}"`).join(',')).join('\n');
     const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
