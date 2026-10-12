@@ -6,6 +6,8 @@
     <title>Panel Admin – Tempahan Taman Eko Rimba Berkelah</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
     <style>
         tbody tr:hover { background: #f8fafc; }
         .badge { display: inline-flex; align-items: center; padding: 2px 10px; border-radius: 9999px; font-size: 0.72rem; font-weight: 700; }
@@ -87,6 +89,9 @@
                 </button>
                 <button id="btn-export" class="bg-slate-800 hover:bg-slate-900 text-white font-semibold px-4 py-2 text-sm rounded-lg transition flex items-center gap-2">
                     <i class="fa-solid fa-download"></i> Eksport CSV
+                </button>
+                <button id="btn-export-pdf" class="bg-rose-700 hover:bg-rose-800 text-white font-semibold px-4 py-2 text-sm rounded-lg transition flex items-center gap-2 shadow-sm">
+                    <i class="fa-solid fa-file-pdf"></i> Muat Turun PDF
                 </button>
             </div>
         </div>
@@ -294,6 +299,100 @@ document.getElementById('btn-export').addEventListener('click', () => {
     a.href = URL.createObjectURL(blob);
     a.download = `TERB_Tempahan_${new Date().toISOString().slice(0,10)}.csv`;
     a.click();
+});
+
+// Export PDF
+document.getElementById('btn-export-pdf').addEventListener('click', () => {
+    if (!allBookings || allBookings.length === 0) {
+        alert('Tiada rekod tempahan untuk dimuat turun ke format PDF.');
+        return;
+    }
+    
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF('landscape');
+    
+    // Header
+    doc.setFontSize(16);
+    doc.setTextColor(6, 78, 59); // Emerald-900
+    doc.text('TAMAN EKO RIMBA BERKELAH', 14, 15);
+    
+    doc.setFontSize(11);
+    doc.setTextColor(71, 85, 105); // Slate-600
+    doc.text('Laporan Senarai Semua Tempahan Pelanggan', 14, 22);
+    
+    doc.setFontSize(9);
+    doc.setTextColor(100, 116, 139);
+    const tarikhCetak = new Date().toLocaleDateString('ms-MY', { day: '2-digit', month: '2-digit', year: 'numeric' });
+    doc.text(`Tarikh Dijana: ${tarikhCetak}  |  Jumlah Rekod: ${allBookings.length} tempahan`, 14, 28);
+    
+    const columns = [
+        { header: '#', dataKey: 'no' },
+        { header: 'No Rujukan', dataKey: 'ref' },
+        { header: 'Bilik / Aktiviti', dataKey: 'room' },
+        { header: 'Nama Tetamu', dataKey: 'name' },
+        { header: 'No. Telefon', dataKey: 'phone' },
+        { header: 'Tarikh Masuk', dataKey: 'checkin' },
+        { header: 'Tarikh Keluar', dataKey: 'checkout' },
+        { header: 'Malam', dataKey: 'nights' },
+        { header: 'Tetamu', dataKey: 'guests' },
+        { header: 'Jumlah (RM)', dataKey: 'price' },
+        { header: 'Status', dataKey: 'status' }
+    ];
+    
+    const rows = allBookings.map((b, idx) => ({
+        no: idx + 1,
+        ref: b.booking_ref || '-',
+        room: b.room_name || '-',
+        name: b.guest_name || '-',
+        phone: b.guest_phone || '-',
+        checkin: b.checkin_date || '-',
+        checkout: b.checkout_date || '-',
+        nights: b.num_nights ? `${b.num_nights}` : '-',
+        guests: b.num_guests ? `${b.num_guests}` : '-',
+        price: parseFloat(b.total_price || 0).toFixed(2),
+        status: b.status || '-'
+    }));
+    
+    doc.autoTable({
+        columns: columns,
+        body: rows,
+        startY: 33,
+        theme: 'striped',
+        styles: {
+            fontSize: 8.5,
+            cellPadding: 3,
+            valign: 'middle'
+        },
+        headStyles: {
+            fillColor: [6, 78, 59], // Emerald 900
+            textColor: [255, 255, 255],
+            fontStyle: 'bold'
+        },
+        alternateRowStyles: {
+            fillColor: [248, 250, 252] // Slate 50
+        },
+        columnStyles: {
+            0: { cellWidth: 10, halign: 'center' },
+            1: { fontStyle: 'bold' },
+            7: { halign: 'center' },
+            8: { halign: 'center' },
+            9: { halign: 'right', fontStyle: 'bold' },
+            10: { halign: 'center', fontStyle: 'bold' }
+        },
+        didParseCell: function(data) {
+            if (data.section === 'body' && data.column.dataKey === 'status') {
+                if (data.cell.raw === 'Disahkan') {
+                    data.cell.styles.textColor = [5, 150, 105]; // emerald-600
+                } else if (data.cell.raw === 'Menunggu Pengesahan') {
+                    data.cell.styles.textColor = [217, 119, 6]; // amber-600
+                } else if (data.cell.raw === 'Dibatalkan') {
+                    data.cell.styles.textColor = [225, 29, 72]; // rose-600
+                }
+            }
+        }
+    });
+    
+    doc.save(`TERB_Tempahan_${new Date().toISOString().slice(0, 10)}.pdf`);
 });
 
 loadBookings();
