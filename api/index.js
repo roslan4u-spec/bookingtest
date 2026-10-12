@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
+const fs = require('fs');
 const { Pool } = require('pg');
 require('dotenv').config();
 
@@ -170,14 +171,46 @@ app.get('/api/rooms/:id/booked-dates', async (req, res) => {
     }
 });
 
+// MOCK DATA PERSISTENCE
+const MOCK_FILE = path.join(__dirname, '..', 'mock_bookings.json');
+
+function loadMockBookings() {
+    try {
+        if (fs.existsSync(MOCK_FILE)) {
+            const data = JSON.parse(fs.readFileSync(MOCK_FILE, 'utf8'));
+            if (Array.isArray(data) && data.length > 0) return data;
+        }
+    } catch(e) {}
+    return [
+        { id: 101, booking_ref: 'MOCK9083', room_id: 1, room_name: 'TEMPAHAN AKTIVITI HIKING', guest_name: 'Peah Bin Puah', guest_phone: '0194489296', num_guests: 1, checkin_date: '2026-10-15', checkout_date: '2026-10-16', num_nights: 1, total_price: 50, status: 'Menunggu Pengesahan', created_at: new Date().toISOString() },
+        { id: 102, booking_ref: 'MOCK8521', room_id: 7, room_name: 'TEMPAHAN KABIN', guest_name: 'Peah Bin Puah', guest_phone: '0194489296', num_guests: 1, checkin_date: '2026-10-15', checkout_date: '2026-10-16', num_nights: 1, total_price: 150, status: 'Menunggu Pengesahan', created_at: new Date().toISOString() },
+        { id: 103, booking_ref: 'MOCK8447', room_id: 2, room_name: 'TEMPAHAN TAPAK GAZEBO', guest_name: 'Peah Bin Puah', guest_phone: '0194489296', num_guests: 1, checkin_date: '2026-10-15', checkout_date: '2026-10-16', num_nights: 1, total_price: 60, status: 'Menunggu Pengesahan', created_at: new Date().toISOString() },
+        { id: 104, booking_ref: 'MOCK3328', room_id: 3, room_name: 'TEMPAHAN AKTIVITI JUNGLE TREKKING', guest_name: 'Peah Bin Puah', guest_phone: '0194489296', num_guests: 1, checkin_date: '2026-10-15', checkout_date: '2026-10-16', num_nights: 1, total_price: 30, status: 'Menunggu Pengesahan', created_at: new Date().toISOString() },
+        { id: 105, booking_ref: 'MOCK1908', room_id: 4, room_name: 'TEMPAHAN TAPAK HAMMOCK', guest_name: 'Peah Bin Puah', guest_phone: '0194489296', num_guests: 1, checkin_date: '2026-10-15', checkout_date: '2026-10-16', num_nights: 1, total_price: 15, status: 'Menunggu Pengesahan', created_at: new Date().toISOString() },
+        { id: 106, booking_ref: 'MOCK9337', room_id: 5, room_name: 'TEMPAHAN TAPAK PERKHEMAHAN', guest_name: 'Peah Bin Puah', guest_phone: '0194489296', num_guests: 1, checkin_date: '2026-10-15', checkout_date: '2026-10-16', num_nights: 1, total_price: 40, status: 'Menunggu Pengesahan', created_at: new Date().toISOString() },
+        { id: 107, booking_ref: 'MOCK1632', room_id: 6, room_name: 'TEMPAHAN TAPAK KENDERAAN RV / CARAVAN / CAMPERVAN', guest_name: 'Peah Bin Puah', guest_phone: '0194489296', num_guests: 1, checkin_date: '2026-10-15', checkout_date: '2026-10-16', num_nights: 1, total_price: 80, status: 'Menunggu Pengesahan', created_at: new Date().toISOString() },
+        { id: 1, booking_ref: 'REF1234', room_id: 1, room_name: 'TEMPAHAN AKTIVITI HIKING', guest_name: 'Ahmad Albab', guest_phone: '0123456789', num_guests: 4, checkin_date: '2026-10-10', checkout_date: '2026-10-12', num_nights: 2, total_price: 100, status: 'Disahkan', created_at: new Date().toISOString() },
+        { id: 2, booking_ref: 'MOCK5349', room_id: 5, room_name: 'TEMPAHAN TAPAK PERKHEMAHAN', guest_name: 'Peah Bin Puah', guest_phone: '0194489296', num_guests: 2, checkin_date: '2026-09-12', checkout_date: '2026-09-13', num_nights: 1, total_price: 40, status: 'Disahkan', created_at: new Date().toISOString() }
+    ];
+}
+
+function saveMockBookings() {
+    try {
+        fs.writeFileSync(MOCK_FILE, JSON.stringify(MOCK_BOOKINGS_DATA, null, 2));
+    } catch(e) {}
+}
+
+let MOCK_BOOKINGS_DATA = loadMockBookings();
+saveMockBookings();
+
 // POST new booking
 app.post('/api/bookings', async (req, res) => {
     try {
         const {
             room_id, guest_name, guest_phone, guest_email,
-            guest_ic, num_guests, checkin_date, checkout_date,
-            special_request
+            guest_ic, num_guests, checkin_date, checkout_date
         } = req.body;
+        const special_request = req.body.special_requests || req.body.special_request || '';
 
         // Validation
         if (!room_id || !guest_name || !guest_phone || !num_guests || !checkin_date || !checkout_date) {
@@ -244,49 +277,46 @@ app.post('/api/bookings', async (req, res) => {
         });
 
     } catch (err) {
-        console.warn("DB Failed on POST booking, returning mock success");
-        const MOCK_ROOMS = [
-            { id: 1, name: 'TEMPAHAN AKTIVITI HIKING', type: 'TEMPAHAN AKTIVITI HIKING', capacity: 7, price_per_night: 50 },
-            { id: 7, name: 'TEMPAHAN KABIN', type: 'TEMPAHAN KABIN', capacity: 4, price_per_night: 150 },
-            { id: 2, name: 'TEMPAHAN TAPAK GAZEBO', type: 'TEMPAHAN TAPAK GAZEBO', capacity: 8, price_per_night: 60 },
-            { id: 3, name: 'TEMPAHAN AKTIVITI JUNGLE TREKKING', type: 'TEMPAHAN AKTIVITI JUNGLE TREKKING', capacity: 15, price_per_night: 30 },
-            { id: 4, name: 'TEMPAHAN TAPAK HAMMOCK', type: 'TEMPAHAN TAPAK HAMMOCK', capacity: 2, price_per_night: 15 },
-            { id: 5, name: 'TEMPAHAN TAPAK PERKHEMAHAN', type: 'TEMPAHAN TAPAK PERKHEMAHAN', capacity: 4, price_per_night: 40 },
-            { id: 6, name: 'TEMPAHAN TAPAK KENDERAAN RV / CARAVAN / CAMPERVAN', type: 'TEMPAHAN TAPAK KENDERAAN RV / CARAVAN / CAMPERVAN', capacity: 6, price_per_night: 80 }
-        ];
+        console.warn("DB Offline/Localhost on POST booking, saving into mock data:", err.message);
         
-        const room = MOCK_ROOMS.find(r => r.id == req.body.room_id);
-        if (!room) {
-            return res.status(404).json({ error: 'Tempahan & Aktiviti tidak dijumpai dalam MOCK.' });
-        }
-        
+        const room = MOCK_ROOMS.find(r => r.id == req.body.room_id) || { id: req.body.room_id || 1, name: 'TEMPAHAN AKTIVITI', price_per_night: 50 };
         const checkin = new Date(req.body.checkin_date);
-        const checkout = new Date(req.body.checkout_date);
-        const num_nights = Math.ceil((checkout - checkin) / (1000 * 60 * 60 * 24));
-        const total_price = num_nights * room.price_per_night;
+        const checkout = new Date(req.body.checkout_date || req.body.checkin_date);
+        let num_nights = Math.ceil((checkout - checkin) / (1000 * 60 * 60 * 24));
+        if (isNaN(num_nights) || num_nights < 1) num_nights = 1;
+        const total_price = num_nights * (room.price_per_night || 50);
         const booking_ref = 'MOCK' + Math.floor(1000 + Math.random() * 9000);
+
+        const newBooking = {
+            id: Date.now() + Math.floor(Math.random() * 1000),
+            booking_ref,
+            room_id: room.id,
+            room_name: room.name,
+            guest_name: req.body.guest_name || 'Tetamu',
+            guest_phone: req.body.guest_phone || '-',
+            guest_email: req.body.guest_email || '-',
+            guest_ic: req.body.guest_ic || '-',
+            num_guests: parseInt(req.body.num_guests) || 1,
+            checkin_date: req.body.checkin_date,
+            checkout_date: req.body.checkout_date || req.body.checkin_date,
+            num_nights,
+            total_price,
+            special_request: req.body.special_requests || req.body.special_request || '',
+            status: 'Menunggu Pengesahan',
+            created_at: new Date().toISOString()
+        };
+
+        // Simpan terus ke dalam senarai mock aktif dan fail JSON
+        MOCK_BOOKINGS_DATA.unshift(newBooking);
+        saveMockBookings();
 
         res.status(201).json({
             success: true,
-            message: 'Tempahan berjaya disimpan (Mock)!',
-            booking: {
-                id: Math.floor(Math.random() * 100),
-                booking_ref,
-                room_name: room.name,
-                checkin_date: req.body.checkin_date,
-                checkout_date: req.body.checkout_date,
-                num_nights,
-                total_price,
-                status: 'Menunggu Pengesahan'
-            }
+            message: 'Tempahan berjaya disimpan!',
+            booking: newBooking
         });
     }
 });
-
-let MOCK_BOOKINGS_DATA = [
-    { id: 1, booking_ref: 'REF1234', room_id: 1, room_name: 'TEMPAHAN AKTIVITI HIKING', guest_name: 'Ahmad Albab', guest_phone: '0123456789', num_guests: 4, checkin_date: '2026-10-10', checkout_date: '2026-10-12', num_nights: 2, total_price: 100, status: 'Disahkan', created_at: new Date().toISOString() },
-    { id: 2, booking_ref: 'MOCK5349', room_id: 5, room_name: 'TEMPAHAN TAPAK PERKHEMAHAN', guest_name: 'Peah Bin Puah', guest_phone: '0194489296', num_guests: 2, checkin_date: '2026-09-12', checkout_date: '2026-09-13', num_nights: 1, total_price: 40, status: 'Menunggu Pengesahan', created_at: new Date().toISOString() }
-];
 
 // GET booking by reference
 app.get('/api/bookings/:ref', async (req, res) => {
@@ -326,7 +356,8 @@ app.patch('/api/bookings/:ref/cancel', async (req, res) => {
         const b = MOCK_BOOKINGS_DATA.find(b => b.booking_ref === req.params.ref);
         if (!b) return res.status(404).json({ error: 'Tempahan tidak dijumpai.' });
         b.status = 'Dibatalkan';
-        res.json({ success: true, message: 'Tempahan telah dibatalkan (Mock).' });
+        saveMockBookings();
+        res.json({ success: true, message: 'Tempahan telah dibatalkan.' });
     }
 });
 
@@ -348,7 +379,8 @@ app.patch('/api/bookings/:ref/status', requireAdmin, async (req, res) => {
         const b = MOCK_BOOKINGS_DATA.find(b => b.booking_ref === req.params.ref);
         if (!b) return res.status(404).json({ error: 'Tempahan tidak dijumpai.' });
         b.status = status;
-        res.json({ success: true, message: `Status dikemaskini kepada: ${status} (Mock)` });
+        saveMockBookings();
+        res.json({ success: true, message: `Status dikemaskini kepada: ${status}` });
     }
 });
 
