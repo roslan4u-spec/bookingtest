@@ -250,14 +250,15 @@ app.post('/api/bookings', async (req, res) => {
             return res.status(409).json({ error: 'Maaf, tarikh yang dipilih telah ditempah. Sila pilih tarikh lain.' });
         }
 
-        const total_price = num_nights * room.price_per_night;
+        const total_price = req.body.total_price ? parseFloat(req.body.total_price) : (num_nights * room.price_per_night);
+        const booking_room_name = req.body.room_name || room.name;
         const booking_ref = generateRef();
 
         const insertRes = await pool.query(
             `INSERT INTO bookings (booking_ref, room_id, room_name, guest_name, guest_phone, guest_email, guest_ic,
              num_guests, checkin_date, checkout_date, num_nights, total_price, special_request)
              VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13) RETURNING id`,
-            [booking_ref, room_id, room.name, guest_name, guest_phone, guest_email || '', guest_ic || '',
+            [booking_ref, room_id, booking_room_name, guest_name, guest_phone, guest_email || '', guest_ic || '',
              num_guests, checkin_date, checkout_date, num_nights, total_price, special_request || '']
         );
 
@@ -284,14 +285,14 @@ app.post('/api/bookings', async (req, res) => {
         const checkout = new Date(req.body.checkout_date || req.body.checkin_date);
         let num_nights = Math.ceil((checkout - checkin) / (1000 * 60 * 60 * 24));
         if (isNaN(num_nights) || num_nights < 1) num_nights = 1;
-        const total_price = num_nights * (room.price_per_night || 50);
+        const total_price = req.body.total_price ? parseFloat(req.body.total_price) : (num_nights * (room.price_per_night || 50));
         const booking_ref = 'MOCK' + Math.floor(1000 + Math.random() * 9000);
 
         const newBooking = {
             id: Date.now() + Math.floor(Math.random() * 1000),
             booking_ref,
             room_id: room.id,
-            room_name: room.name,
+            room_name: req.body.room_name || room.name,
             guest_name: req.body.guest_name || 'Tetamu',
             guest_phone: req.body.guest_phone || '-',
             guest_email: req.body.guest_email || '-',
