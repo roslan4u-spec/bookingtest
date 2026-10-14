@@ -517,15 +517,15 @@ function renderHikingCard(r, isAvailabilityCheck = false) {
                     <h3 class="text-xl sm:text-2xl font-black text-slate-900 text-center mb-5 tracking-tight uppercase">${r.name}</h3>
 
                     <div class="space-y-3 mb-6">
-                        <!-- 1. Caj Pemandu Arah Dropdown (Jimat Ruang, Tanpa Titik Bulat, 2 Baris Wrap) -->
+                        <!-- 1. Caj Pemandu Arah Dropdown (Jimat Ruang, 2 Baris Kemas Tanpa Wrap) -->
                         <div class="relative">
                             <button type="button" id="hiking-dropdown-btn-${r.id}" onclick="toggleHikingDropdown(${r.id})"
                                 class="w-full bg-emerald-50/80 border-2 border-emerald-300 rounded-2xl p-2.5 sm:p-3 px-4 flex items-center justify-between shadow-sm hover:border-[#2d6a4f] transition text-left cursor-pointer">
-                                <div id="hiking-selected-text-${r.id}" class="flex flex-col text-left flex-grow pr-2 whitespace-normal break-words">
-                                    <span class="font-black text-slate-900 text-xs sm:text-[13px] tracking-tight uppercase leading-tight">
+                                <div id="hiking-selected-text-${r.id}" class="flex flex-col text-left flex-grow pr-2 whitespace-nowrap">
+                                    <span class="font-black text-slate-900 text-xs sm:text-[13px] tracking-tight uppercase leading-tight whitespace-nowrap">
                                         CAJ PEMANDU ARAH KE
                                     </span>
-                                    <span class="font-black text-slate-900 text-xs sm:text-[13px] tracking-tight uppercase leading-tight">
+                                    <span class="font-black text-slate-900 text-xs sm:text-[13px] tracking-tight uppercase leading-tight whitespace-nowrap">
                                         TINGKAT 3 RM150
                                     </span>
                                 </div>
@@ -538,11 +538,11 @@ function renderHikingCard(r, isAvailabilityCheck = false) {
                                 <!-- Pilihan 1: Tingkat 3 RM150 -->
                                 <div onclick="selectHikingDropdownOption(${r.id}, 150, 'CAJ PEMANDU ARAH KE', 'TINGKAT 3 RM150')"
                                     class="p-2.5 sm:p-3 px-4 hover:bg-emerald-50 cursor-pointer transition">
-                                    <div class="flex flex-col text-left whitespace-normal break-words">
-                                        <span class="font-black text-slate-900 text-xs sm:text-sm tracking-tight uppercase leading-tight">
+                                    <div class="flex flex-col text-left whitespace-nowrap">
+                                        <span class="font-black text-slate-900 text-xs sm:text-sm tracking-tight uppercase leading-tight whitespace-nowrap">
                                             CAJ PEMANDU ARAH KE
                                         </span>
-                                        <span class="font-black text-slate-900 text-xs sm:text-sm tracking-tight uppercase leading-tight">
+                                        <span class="font-black text-slate-900 text-xs sm:text-sm tracking-tight uppercase leading-tight whitespace-nowrap">
                                             TINGKAT 3 RM150
                                         </span>
                                     </div>
@@ -551,11 +551,11 @@ function renderHikingCard(r, isAvailabilityCheck = false) {
                                 <!-- Pilihan 2: Tingkat 7 RM300 -->
                                 <div onclick="selectHikingDropdownOption(${r.id}, 300, 'CAJ PEMANDU ARAH KE', 'TINGKAT 7 RM300')"
                                     class="p-2.5 sm:p-3 px-4 hover:bg-emerald-50 cursor-pointer transition">
-                                    <div class="flex flex-col text-left whitespace-normal break-words">
-                                        <span class="font-black text-slate-900 text-xs sm:text-sm tracking-tight uppercase leading-tight">
+                                    <div class="flex flex-col text-left whitespace-nowrap">
+                                        <span class="font-black text-slate-900 text-xs sm:text-sm tracking-tight uppercase leading-tight whitespace-nowrap">
                                             CAJ PEMANDU ARAH KE
                                         </span>
-                                        <span class="font-black text-slate-900 text-xs sm:text-sm tracking-tight uppercase leading-tight">
+                                        <span class="font-black text-slate-900 text-xs sm:text-sm tracking-tight uppercase leading-tight whitespace-nowrap">
                                             TINGKAT 7 RM300
                                         </span>
                                     </div>
@@ -671,8 +671,8 @@ function selectHikingDropdownOption(id, rate, line1, line2) {
     
     if (textBox) {
         textBox.innerHTML = `
-            <span class="font-black text-slate-900 text-xs sm:text-[13px] tracking-tight uppercase leading-tight">${line1}</span>
-            <span class="font-black text-slate-900 text-xs sm:text-[13px] tracking-tight uppercase leading-tight">${line2}</span>
+            <span class="font-black text-slate-900 text-xs sm:text-[13px] tracking-tight uppercase leading-tight whitespace-nowrap">${line1}</span>
+            <span class="font-black text-slate-900 text-xs sm:text-[13px] tracking-tight uppercase leading-tight whitespace-nowrap">${line2}</span>
         `;
     }
     
