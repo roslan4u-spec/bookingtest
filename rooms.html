@@ -517,33 +517,44 @@ function renderHikingCard(r, isAvailabilityCheck = false) {
                     <h3 class="text-xl sm:text-2xl font-black text-slate-900 text-center mb-5 tracking-tight uppercase">${r.name}</h3>
 
                     <div class="space-y-3 mb-6">
-                        <!-- 1. Caj Pemandu Arah (Tingkat 3 & Tingkat 7 Sentiasa Kelihatan) -->
-                        <div class="bg-emerald-50/70 border-2 border-emerald-200 rounded-2xl p-2.5 sm:p-3 shadow-sm flex flex-col gap-1.5">
+                        <!-- 1. Caj Pemandu Arah (Tingkat 3 & Tingkat 7) -->
+                        <div class="bg-emerald-50/70 border-2 border-emerald-300 rounded-3xl p-3 shadow-sm flex flex-col gap-2">
                             <!-- Pilihan Tingkat 3 -->
                             <div id="hiking-opt-150-${r.id}" onclick="selectHikingPackage(${r.id}, 150)" 
-                                class="flex items-center justify-between p-2 sm:p-2.5 px-3 rounded-xl cursor-pointer transition border-2 border-emerald-600 bg-white shadow-xs">
-                                <div class="flex items-center gap-2.5 min-w-0">
-                                    <span id="hiking-radio-icon-150-${r.id}" class="text-emerald-700 text-sm flex-shrink-0">
+                                class="flex items-center justify-between p-3 rounded-2xl cursor-pointer transition border-2 border-[#2d6a4f] bg-white shadow-xs">
+                                <div class="flex items-center gap-3 min-w-0">
+                                    <span id="hiking-radio-icon-150-${r.id}" class="text-[#2d6a4f] text-lg sm:text-xl flex-shrink-0">
                                         <i class="fa-solid fa-circle-dot"></i>
                                     </span>
-                                    <span class="font-black text-slate-900 text-xs sm:text-[13px] tracking-tight uppercase leading-snug">
-                                        CAJ PEMANDU ARAH KE TINGKAT 3 RM150
-                                    </span>
+                                    <div class="flex flex-col text-left">
+                                        <span class="font-black text-slate-900 text-xs sm:text-sm tracking-tight uppercase leading-tight">
+                                            CAJ PEMANDU ARAH KE
+                                        </span>
+                                        <span class="font-black text-slate-900 text-xs sm:text-sm tracking-tight uppercase leading-tight">
+                                            TINGKAT 3 RM150
+                                        </span>
+                                    </div>
                                 </div>
-                                <span class="text-slate-900 text-xs font-bold pl-2 flex-shrink-0">▽</span>
+                                <span id="hiking-arrow-150-${r.id}" class="text-slate-900 text-xs sm:text-sm font-black pl-2 flex-shrink-0">▽</span>
                             </div>
 
                             <!-- Pilihan Tingkat 7 -->
                             <div id="hiking-opt-300-${r.id}" onclick="selectHikingPackage(${r.id}, 300)" 
-                                class="flex items-center justify-between p-2 sm:p-2.5 px-3 rounded-xl cursor-pointer transition border-2 border-transparent hover:bg-emerald-100/60">
-                                <div class="flex items-center gap-2.5 min-w-0">
-                                    <span id="hiking-radio-icon-300-${r.id}" class="text-slate-400 text-sm flex-shrink-0">
+                                class="flex items-center justify-between p-3 rounded-2xl cursor-pointer transition border-2 border-transparent hover:bg-emerald-100/60">
+                                <div class="flex items-center gap-3 min-w-0">
+                                    <span id="hiking-radio-icon-300-${r.id}" class="text-slate-400 text-lg sm:text-xl flex-shrink-0">
                                         <i class="fa-regular fa-circle"></i>
                                     </span>
-                                    <span class="font-black text-slate-900 text-xs sm:text-[13px] tracking-tight uppercase leading-snug">
-                                        CAJ PEMANDU ARAH KE TINGKAT 7 RM300
-                                    </span>
+                                    <div class="flex flex-col text-left">
+                                        <span class="font-black text-slate-900 text-xs sm:text-sm tracking-tight uppercase leading-tight">
+                                            CAJ PEMANDU ARAH KE TINGKAT
+                                        </span>
+                                        <span class="font-black text-slate-900 text-xs sm:text-sm tracking-tight uppercase leading-tight">
+                                            7 RM300
+                                        </span>
+                                    </div>
                                 </div>
+                                <span id="hiking-arrow-300-${r.id}" class="text-slate-900 text-xs sm:text-sm font-black pl-2 flex-shrink-0 hidden">▽</span>
                             </div>
 
                             <!-- Hidden select for form compatibility -->
@@ -639,25 +650,31 @@ function selectHikingPackage(id, rate) {
     const opt300 = document.getElementById(`hiking-opt-300-${id}`);
     const icon150 = document.getElementById(`hiking-radio-icon-150-${id}`);
     const icon300 = document.getElementById(`hiking-radio-icon-300-${id}`);
+    const arrow150 = document.getElementById(`hiking-arrow-150-${id}`);
+    const arrow300 = document.getElementById(`hiking-arrow-300-${id}`);
     
     if (rate === 150) {
         if (opt150) {
-            opt150.className = "flex items-center justify-between p-2 sm:p-2.5 px-3 rounded-xl cursor-pointer transition border-2 border-emerald-600 bg-white shadow-xs";
+            opt150.className = "flex items-center justify-between p-3 rounded-2xl cursor-pointer transition border-2 border-[#2d6a4f] bg-white shadow-xs";
         }
         if (opt300) {
-            opt300.className = "flex items-center justify-between p-2 sm:p-2.5 px-3 rounded-xl cursor-pointer transition border-2 border-transparent hover:bg-emerald-100/60";
+            opt300.className = "flex items-center justify-between p-3 rounded-2xl cursor-pointer transition border-2 border-transparent hover:bg-emerald-100/60";
         }
-        if (icon150) icon150.innerHTML = '<i class="fa-solid fa-circle-dot text-emerald-700"></i>';
+        if (icon150) icon150.innerHTML = '<i class="fa-solid fa-circle-dot text-[#2d6a4f]"></i>';
         if (icon300) icon300.innerHTML = '<i class="fa-regular fa-circle text-slate-400"></i>';
+        if (arrow150) arrow150.classList.remove('hidden');
+        if (arrow300) arrow300.classList.add('hidden');
     } else {
         if (opt150) {
-            opt150.className = "flex items-center justify-between p-2 sm:p-2.5 px-3 rounded-xl cursor-pointer transition border-2 border-transparent hover:bg-emerald-100/60";
+            opt150.className = "flex items-center justify-between p-3 rounded-2xl cursor-pointer transition border-2 border-transparent hover:bg-emerald-100/60";
         }
         if (opt300) {
-            opt300.className = "flex items-center justify-between p-2 sm:p-2.5 px-3 rounded-xl cursor-pointer transition border-2 border-emerald-600 bg-white shadow-xs";
+            opt300.className = "flex items-center justify-between p-3 rounded-2xl cursor-pointer transition border-2 border-[#2d6a4f] bg-white shadow-xs";
         }
         if (icon150) icon150.innerHTML = '<i class="fa-regular fa-circle text-slate-400"></i>';
-        if (icon300) icon300.innerHTML = '<i class="fa-solid fa-circle-dot text-emerald-700"></i>';
+        if (icon300) icon300.innerHTML = '<i class="fa-solid fa-circle-dot text-[#2d6a4f]"></i>';
+        if (arrow150) arrow150.classList.add('hidden');
+        if (arrow300) arrow300.classList.remove('hidden');
     }
     
     updateHikingPrice(id);
