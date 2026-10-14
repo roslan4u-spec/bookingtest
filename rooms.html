@@ -518,8 +518,8 @@ function renderHikingCard(r, isAvailabilityCheck = false) {
 
                     <div class="space-y-3 mb-6">
                         <!-- 1. Caj Pemandu Arah Dropdown -->
-                        <div class="relative bg-emerald-50/80 border border-emerald-200 rounded-2xl p-3.5 shadow-sm hover:border-emerald-400 transition">
-                            <select id="hiking-pkg-${r.id}" onchange="updateHikingPrice(${r.id})" class="w-full bg-transparent font-extrabold text-slate-900 text-xs sm:text-sm tracking-tight appearance-none pr-8 cursor-pointer focus:outline-none">
+                        <div class="relative bg-emerald-50/70 border-2 border-emerald-200 rounded-2xl p-3 sm:p-3.5 shadow-sm hover:border-emerald-400 transition">
+                            <select id="hiking-pkg-${r.id}" onchange="updateHikingPrice(${r.id})" class="w-full bg-transparent font-black text-slate-900 text-xs sm:text-sm tracking-tight appearance-none pr-8 cursor-pointer focus:outline-none uppercase">
                                 <option value="150">CAJ PEMANDU ARAH KE TINGKAT 3 RM150</option>
                                 <option value="300">CAJ PEMANDU ARAH KE TINGKAT 7 RM300</option>
                             </select>
@@ -530,42 +530,68 @@ function renderHikingCard(r, isAvailabilityCheck = false) {
                             </div>
                         </div>
 
-                        <!-- 2. Caj Pemprosesan Seorang RM10 X [Peserta] -->
-                        <div class="bg-emerald-50/80 border border-emerald-200 rounded-2xl p-3 px-4 flex justify-between items-center shadow-sm gap-2">
-                            <span class="font-extrabold text-slate-900 text-xs sm:text-sm tracking-tight uppercase whitespace-nowrap">
-                                CAJ PEMPROSESAN SEORANG RM10 X
+                        <!-- 2. Jumlah Kumpulan & Jumlah Peserta -->
+                        <div class="bg-emerald-50/70 border-2 border-emerald-200 rounded-2xl p-3 sm:p-3.5 shadow-sm flex items-center gap-2 sm:gap-4">
+                            <!-- Icon Kumpulan / Users -->
+                            <div class="pl-2 pr-1 text-emerald-800 text-2xl sm:text-3xl flex items-center justify-center">
+                                <i class="fa-solid fa-users"></i>
+                            </div>
+
+                            <!-- 2 Ruangan: JUMLAH KUMPULAN & JUMLAH PESERTA -->
+                            <div class="grid grid-cols-2 gap-2 sm:gap-4 flex-grow text-center">
+                                <!-- Kolum Jumlah Kumpulan -->
+                                <div class="flex flex-col items-center">
+                                    <span class="font-black text-slate-900 text-xs sm:text-sm tracking-tight leading-tight uppercase">
+                                        JUMLAH<br>KUMPULAN
+                                    </span>
+                                    <div class="w-20 sm:w-24 mt-2">
+                                        <input type="text" id="hiking-groups-${r.id}" value="1" readonly
+                                            class="w-full text-center font-black text-slate-900 text-base sm:text-lg bg-transparent border-b-2 border-slate-900 focus:outline-none py-0.5 cursor-default"
+                                            title="Auto-dikira: 1 Kumpulan bagi setiap 7 peserta">
+                                    </div>
+                                </div>
+
+                                <!-- Kolum Jumlah Peserta -->
+                                <div class="flex flex-col items-center">
+                                    <span class="font-black text-slate-900 text-xs sm:text-sm tracking-tight leading-tight uppercase">
+                                        JUMLAH<br>PESERTA
+                                    </span>
+                                    <div class="w-20 sm:w-24 mt-2">
+                                        <input type="number" id="hiking-pax-${r.id}" min="1" max="100" value="1"
+                                            class="w-full text-center font-black text-slate-900 text-base sm:text-lg bg-transparent border-b-2 border-slate-900 focus:outline-none py-0.5 cursor-pointer"
+                                            placeholder="1"
+                                            title="Masukkan bilangan peserta (Maksimum 7 orang bagi 1 kumpulan)"
+                                            oninput="updateHikingPrice(${r.id})" onchange="updateHikingPrice(${r.id})">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 3. Caj Pemprosesan Seorang RM10 -->
+                        <div class="bg-emerald-50/70 border-2 border-emerald-200 rounded-2xl p-3 sm:p-3.5 px-4 flex justify-between items-center shadow-sm">
+                            <span class="font-black text-slate-900 text-xs sm:text-sm tracking-tight uppercase">
+                                CAJ PEMPROSESAN SEORANG
                             </span>
-                            <div class="flex items-center gap-1.5 flex-shrink-0">
-                                <input type="number" id="hiking-pax-${r.id}" min="1" max="100" value="1" 
-                                    class="w-16 sm:w-20 bg-white border-2 border-emerald-400 rounded-xl px-2 py-1 text-center font-black text-slate-900 text-sm sm:text-base shadow-inner focus:outline-none focus:ring-2 focus:ring-emerald-500 cursor-pointer" 
-                                    placeholder="1"
-                                    title="Bilangan Peserta"
-                                    oninput="updateHikingPrice(${r.id})" onchange="updateHikingPrice(${r.id})">
-                            </div>
+                            <span class="font-black text-slate-900 text-xs sm:text-sm tracking-tight">
+                                RM10
+                            </span>
                         </div>
 
-                        <!-- Info Kumpulan & Auto-Scaling Badge -->
-                        <div id="hiking-group-badge-${r.id}" class="bg-emerald-100/90 border border-emerald-300 rounded-xl px-3 py-2 text-xs font-bold text-emerald-950 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-1">
-                            <div class="flex items-center gap-1.5">
-                                <i class="fa-solid fa-users text-emerald-700"></i>
-                                <span>Kumpulan: <strong id="hiking-group-count-${r.id}" class="text-emerald-900">1 Kumpulan</strong> (<span id="hiking-pax-count-${r.id}">1</span> orang)</span>
-                            </div>
-                            <div class="text-[11px] text-emerald-800">
-                                <span id="hiking-group-breakdown-${r.id}">1 Pemandu Arah (Maks 7 org/kumpulan)</span>
-                            </div>
-                        </div>
-
-                        <!-- 3. Jumlah Keseluruhan -->
-                        <div class="bg-emerald-50/80 border border-emerald-200 rounded-2xl p-3.5 px-4 flex justify-between items-center shadow-sm">
-                            <span class="font-extrabold text-slate-900 text-xs sm:text-sm tracking-tight uppercase">JUMLAH KESELURUHAN</span>
-                            <span class="font-extrabold text-slate-900 text-xs sm:text-sm tracking-tight">RM <span id="hiking-total-${r.id}">160</span></span>
+                        <!-- 4. Jumlah Keseluruhan -->
+                        <div class="bg-emerald-50/70 border-2 border-emerald-200 rounded-2xl p-3 sm:p-3.5 px-4 flex justify-between items-center shadow-sm">
+                            <span class="font-black text-slate-900 text-xs sm:text-sm tracking-tight uppercase">
+                                JUMLAH KESELURUHAN
+                            </span>
+                            <span class="font-black text-slate-900 text-xs sm:text-sm tracking-tight">
+                                RM <span id="hiking-total-${r.id}">160</span>
+                            </span>
                         </div>
                     </div>
                 </div>
 
-                <!-- 4. Tambah ke Bakul Button -->
+                <!-- 5. Tambah ke Bakul Button -->
                 <button onclick="${isAvail ? `addToCartHiking(${r.id})` : ''}" 
-                    class="w-full ${isAvail ? 'bg-[#2d6a4f] hover:bg-[#23533e] cursor-pointer' : 'bg-slate-300 cursor-not-allowed text-slate-500'} text-white font-extrabold py-3.5 px-6 rounded-2xl transition flex items-center justify-center gap-2.5 text-base shadow-md mt-auto"
+                    class="w-full ${isAvail ? 'bg-[#2d6a4f] hover:bg-[#23533e] cursor-pointer' : 'bg-slate-300 cursor-not-allowed text-slate-500'} text-white font-extrabold py-3.5 px-6 rounded-2xl transition flex items-center justify-center gap-2.5 text-base sm:text-lg shadow-md mt-auto"
                     ${!isAvail ? 'disabled' : ''}>
                     <i class="fa-solid ${isAvail ? 'fa-cart-plus' : 'fa-calendar-xmark'} text-lg"></i>
                     <span>${isAvail ? 'Tambah ke Bakul' : 'Tidak Tersedia'}</span>
@@ -578,10 +604,8 @@ function renderHikingCard(r, isAvailabilityCheck = false) {
 function updateHikingPrice(id) {
     const pkgSelect = document.getElementById(`hiking-pkg-${id}`);
     const paxInput = document.getElementById(`hiking-pax-${id}`);
+    const groupsInput = document.getElementById(`hiking-groups-${id}`);
     const totalSpan = document.getElementById(`hiking-total-${id}`);
-    const groupCountSpan = document.getElementById(`hiking-group-count-${id}`);
-    const paxCountSpan = document.getElementById(`hiking-pax-count-${id}`);
-    const groupBreakdownSpan = document.getElementById(`hiking-group-breakdown-${id}`);
     if (!pkgSelect || !totalSpan) return;
 
     let pax = parseInt(paxInput ? paxInput.value : 1);
@@ -589,19 +613,14 @@ function updateHikingPrice(id) {
 
     const pkgRate = parseFloat(pkgSelect.value) || 150;
     // Maks 7 orang bagi 1 kumpulan; lebih dari 7 bertambah secara automatik:
-    // 1-7 orang = 1 kumpulan, 8-14 = 2 kumpulan, 15-21 = 3 kumpulan, dst.
+    // 1-7 orang = 1 kumpulan, 8-14 = 2 kumpulan, 15-21 = 3 kumpulan, dan seterusnya.
     const groups = Math.ceil(pax / 7);
     const guideTotal = groups * pkgRate;
     const procTotal = pax * 10;
     const grandTotal = guideTotal + procTotal;
 
     totalSpan.textContent = grandTotal;
-
-    if (groupCountSpan) groupCountSpan.textContent = `${groups} Kumpulan`;
-    if (paxCountSpan) paxCountSpan.textContent = pax;
-    if (groupBreakdownSpan) {
-        groupBreakdownSpan.textContent = `${groups} Pemandu (RM${guideTotal}) + Caj (RM${procTotal})`;
-    }
+    if (groupsInput) groupsInput.value = groups;
 }
 
 function addToCartHiking(id) {
