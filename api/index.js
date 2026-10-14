@@ -232,8 +232,9 @@ app.post('/api/bookings', async (req, res) => {
         if (roomRes.rows.length === 0) return res.status(404).json({ error: 'Tempahan & Aktiviti tidak dijumpai.' });
         const room = roomRes.rows[0];
 
-        // Check capacity
-        if (parseInt(num_guests) > room.capacity) {
+        // Check capacity (Hiking auto-scales groups per 7 pax)
+        const isHiking = (room.name && room.name.toUpperCase().includes('HIKING')) || (room.type && room.type.toUpperCase().includes('HIKING'));
+        if (!isHiking && parseInt(num_guests) > room.capacity) {
             return res.status(400).json({
                 error: `Bilangan tetamu (${num_guests}) melebihi kapasiti ${room.name} (${room.capacity} orang).`
             });

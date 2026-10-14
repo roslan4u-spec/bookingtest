@@ -516,7 +516,7 @@ function renderHikingCard(r, isAvailabilityCheck = false) {
                 <div>
                     <h3 class="text-xl sm:text-2xl font-black text-slate-900 text-center mb-5 tracking-tight uppercase">${r.name}</h3>
 
-                    <div class="space-y-3.5 mb-6">
+                    <div class="space-y-3 mb-6">
                         <!-- 1. Caj Pemandu Arah Dropdown -->
                         <div class="relative bg-emerald-50/80 border border-emerald-200 rounded-2xl p-3.5 shadow-sm hover:border-emerald-400 transition">
                             <select id="hiking-pkg-${r.id}" onchange="updateHikingPrice(${r.id})" class="w-full bg-transparent font-extrabold text-slate-900 text-xs sm:text-sm tracking-tight appearance-none pr-8 cursor-pointer focus:outline-none">
@@ -530,10 +530,29 @@ function renderHikingCard(r, isAvailabilityCheck = false) {
                             </div>
                         </div>
 
-                        <!-- 2. Caj Pemprosesan Seorang -->
-                        <div class="bg-emerald-50/80 border border-emerald-200 rounded-2xl p-3.5 px-4 flex justify-between items-center shadow-sm">
-                            <span class="font-extrabold text-slate-900 text-xs sm:text-sm tracking-tight uppercase">CAJ PEMPROSESAN SEORANG</span>
-                            <span class="font-extrabold text-slate-900 text-xs sm:text-sm tracking-tight">RM10</span>
+                        <!-- 2. Caj Pemprosesan Seorang RM10 X [Peserta] -->
+                        <div class="bg-emerald-50/80 border border-emerald-200 rounded-2xl p-3 px-4 flex justify-between items-center shadow-sm gap-2">
+                            <span class="font-extrabold text-slate-900 text-xs sm:text-sm tracking-tight uppercase whitespace-nowrap">
+                                CAJ PEMPROSESAN SEORANG RM10 X
+                            </span>
+                            <div class="flex items-center gap-1.5 flex-shrink-0">
+                                <input type="number" id="hiking-pax-${r.id}" min="1" max="100" value="1" 
+                                    class="w-16 sm:w-20 bg-white border-2 border-emerald-400 rounded-xl px-2 py-1 text-center font-black text-slate-900 text-sm sm:text-base shadow-inner focus:outline-none focus:ring-2 focus:ring-emerald-500 cursor-pointer" 
+                                    placeholder="1"
+                                    title="Bilangan Peserta"
+                                    oninput="updateHikingPrice(${r.id})" onchange="updateHikingPrice(${r.id})">
+                            </div>
+                        </div>
+
+                        <!-- Info Kumpulan & Auto-Scaling Badge -->
+                        <div id="hiking-group-badge-${r.id}" class="bg-emerald-100/90 border border-emerald-300 rounded-xl px-3 py-2 text-xs font-bold text-emerald-950 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-1">
+                            <div class="flex items-center gap-1.5">
+                                <i class="fa-solid fa-users text-emerald-700"></i>
+                                <span>Kumpulan: <strong id="hiking-group-count-${r.id}" class="text-emerald-900">1 Kumpulan</strong> (<span id="hiking-pax-count-${r.id}">1</span> orang)</span>
+                            </div>
+                            <div class="text-[11px] text-emerald-800">
+                                <span id="hiking-group-breakdown-${r.id}">1 Pemandu Arah (Maks 7 org/kumpulan)</span>
+                            </div>
                         </div>
 
                         <!-- 3. Jumlah Keseluruhan -->
@@ -558,11 +577,31 @@ function renderHikingCard(r, isAvailabilityCheck = false) {
 
 function updateHikingPrice(id) {
     const pkgSelect = document.getElementById(`hiking-pkg-${id}`);
+    const paxInput = document.getElementById(`hiking-pax-${id}`);
     const totalSpan = document.getElementById(`hiking-total-${id}`);
+    const groupCountSpan = document.getElementById(`hiking-group-count-${id}`);
+    const paxCountSpan = document.getElementById(`hiking-pax-count-${id}`);
+    const groupBreakdownSpan = document.getElementById(`hiking-group-breakdown-${id}`);
     if (!pkgSelect || !totalSpan) return;
-    const pkgFee = parseFloat(pkgSelect.value) || 150;
-    const total = pkgFee + 10;
-    totalSpan.textContent = total;
+
+    let pax = parseInt(paxInput ? paxInput.value : 1);
+    if (isNaN(pax) || pax < 1) pax = 1;
+
+    const pkgRate = parseFloat(pkgSelect.value) || 150;
+    // Maks 7 orang bagi 1 kumpulan; lebih dari 7 bertambah secara automatik:
+    // 1-7 orang = 1 kumpulan, 8-14 = 2 kumpulan, 15-21 = 3 kumpulan, dst.
+    const groups = Math.ceil(pax / 7);
+    const guideTotal = groups * pkgRate;
+    const procTotal = pax * 10;
+    const grandTotal = guideTotal + procTotal;
+
+    totalSpan.textContent = grandTotal;
+
+    if (groupCountSpan) groupCountSpan.textContent = `${groups} Kumpulan`;
+    if (paxCountSpan) paxCountSpan.textContent = pax;
+    if (groupBreakdownSpan) {
+        groupBreakdownSpan.textContent = `${groups} Pemandu (RM${guideTotal}) + Caj (RM${procTotal})`;
+    }
 }
 
 function addToCartHiking(id) {
@@ -570,32 +609,46 @@ function addToCartHiking(id) {
     if (!room) return;
     
     const pkgSelect = document.getElementById(`hiking-pkg-${id}`);
-    const pkgFee = pkgSelect ? (parseFloat(pkgSelect.value) || 150) : 150;
-    const isTingkat7 = pkgFee === 300;
-    const pkgTitle = isTingkat7 ? 'CAJ PEMANDU ARAH KE TINGKAT 7 RM300' : 'CAJ PEMANDU ARAH KE TINGKAT 3 RM150';
-    const totalHikingPrice = pkgFee + 10;
+    const paxInput = document.getElementById(`hiking-pax-${id}`);
+    let pax = parseInt(paxInput ? paxInput.value : 1);
+    if (isNaN(pax) || pax < 1) pax = 1;
+    
+    const pkgRate = pkgSelect ? (parseFloat(pkgSelect.value) || 150) : 150;
+    const isTingkat7 = pkgRate === 300;
+    const groups = Math.ceil(pax / 7);
+    const guideTotal = groups * pkgRate;
+    const procTotal = pax * 10;
+    const totalHikingPrice = guideTotal + procTotal;
+    
+    const pkgLocation = isTingkat7 ? 'TINGKAT 7' : 'TINGKAT 3';
+    const pkgTitle = `CAJ PEMANDU ARAH KE ${pkgLocation} (${groups} Kumpulan x RM${pkgRate} = RM${guideTotal}) + Caj Pemprosesan (${pax} Orang x RM10 = RM${procTotal})`;
+    const cartItemName = `TEMPAHAN AKTIVITI HIKING (${pkgLocation} - ${pax} ORANG / ${groups} KUMPULAN)`;
     
     // Semak sekiranya hiking sudah ada dalam bakul
     const existingIndex = cart.findIndex(item => item.id === id || (item.name && item.name.includes('HIKING')));
     if (existingIndex !== -1) {
         cart[existingIndex].price_per_night = totalHikingPrice;
         cart[existingIndex].total_price = totalHikingPrice;
-        cart[existingIndex].name = `TEMPAHAN AKTIVITI HIKING (${isTingkat7 ? 'TINGKAT 7' : 'TINGKAT 3'})`;
+        cart[existingIndex].name = cartItemName;
         cart[existingIndex].packageName = pkgTitle;
+        cart[existingIndex].num_guests = pax;
+        cart[existingIndex].groups = groups;
         updateCartUI();
-        alert('Pilihan aktiviti hiking di dalam bakul telah dikemaskini: ' + (isTingkat7 ? 'Tingkat 7 (RM310.00)' : 'Tingkat 3 (RM160.00)'));
+        alert(`Pilihan aktiviti hiking di dalam bakul telah dikemaskini: ${cartItemName} - RM${totalHikingPrice.toFixed(2)}`);
         return;
     }
     
     const hikingItem = {
         ...room,
         id: room.id,
-        name: `TEMPAHAN AKTIVITI HIKING (${isTingkat7 ? 'TINGKAT 7' : 'TINGKAT 3'})`,
+        name: cartItemName,
         packageName: pkgTitle,
         price_per_night: totalHikingPrice,
         total_price: totalHikingPrice,
-        packageFee: pkgFee,
-        processingFee: 10
+        num_guests: pax,
+        groups: groups,
+        packageFee: guideTotal,
+        processingFee: procTotal
     };
     
     cart.push(hikingItem);
@@ -890,8 +943,8 @@ document.getElementById('booking-form').addEventListener('submit', async (e) => 
             checkout_date: checkoutStr,
             guest_name: document.getElementById('f-name').value,
             guest_phone: document.getElementById('f-phone').value,
-            num_guests: 1, 
-            special_requests: `Kategori: ${kategori} (${groupName}) | ${item.packageName ? `Pakej: ${item.packageName} | ` : ''}Sesi: ${document.getElementById('f-session').value} | IC: ${document.getElementById('f-ic').value} | Umur: ${document.getElementById('f-age').value} | Jantina: ${genderNode ? genderNode.value : ''} | Emel: ${document.getElementById('f-email').value} | Alamat: ${document.getElementById('f-address').value} | Waris: ${document.getElementById('f-emg-name').value} (${document.getElementById('f-emg-relation').value} - ${document.getElementById('f-emg-phone').value}) | Kesihatan: ${document.getElementById('f-health').value}`
+            num_guests: parseInt(item.num_guests) || 1, 
+            special_requests: `Kategori: ${kategori} (${groupName}) | ${item.packageName ? `Pakej: ${item.packageName} | ` : ''}${item.groups ? `Jumlah Kumpulan: ${item.groups} | ` : ''}${item.num_guests ? `Bilangan Peserta: ${item.num_guests} orang | ` : ''}Sesi: ${document.getElementById('f-session').value} | IC: ${document.getElementById('f-ic').value} | Umur: ${document.getElementById('f-age').value} | Jantina: ${genderNode ? genderNode.value : ''} | Emel: ${document.getElementById('f-email').value} | Alamat: ${document.getElementById('f-address').value} | Waris: ${document.getElementById('f-emg-name').value} (${document.getElementById('f-emg-relation').value} - ${document.getElementById('f-emg-phone').value}) | Kesihatan: ${document.getElementById('f-health').value}`
         };
 
         try {
@@ -925,7 +978,7 @@ document.getElementById('booking-form').addEventListener('submit', async (e) => 
         document.getElementById('success-room').textContent = bookedNames.join(', ');
         document.getElementById('success-checkin').textContent = checkinVal;
         document.getElementById('success-checkout').textContent = '-';
-        document.getElementById('success-nights').textContent = '1 Individu';
+        document.getElementById('success-nights').textContent = cart.some(i => i.num_guests && i.num_guests > 1) ? cart.map(i => (i.num_guests || 1) + ' Orang' + (i.groups ? ` (${i.groups} Kumpulan)` : '')).join(', ') : '1 Individu';
         
         let totalCartPrice = cart.reduce((sum, item) => sum + parseFloat(item.price_per_night), 0);
         document.getElementById('success-total').textContent = 'RM' + totalCartPrice.toFixed(2);
