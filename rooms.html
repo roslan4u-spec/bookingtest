@@ -525,32 +525,32 @@ function renderHikingCard(r, isAvailabilityCheck = false) {
                 <div>
                     <h3 class="text-base sm:text-lg lg:text-xl font-black text-slate-900 text-center mb-4 tracking-tight uppercase whitespace-nowrap">${r.name}</h3>
 
-                    <div class="space-y-3 sm:space-y-3.5 mb-6">
-                        <!-- 1. Caj Pemandu Arah Dropdown Pill (Satu Baris Ayat, Tanpa Wrap, 100% Mengikut Gambar) -->
+                    <div class="space-y-2.5 sm:space-y-3 mb-6">
+                        <!-- 1. Caj Pemandu Arah Dropdown (Satu Baris Ayat, Tanpa Wrap, Fit Penuh) -->
                         <div class="relative">
                             <button type="button" id="hiking-dropdown-btn-${r.id}" onclick="toggleHikingDropdown(${r.id})"
-                                class="w-full bg-[#F3FDF7] border-[2.5px] border-[#94E3BA] rounded-full py-2.5 sm:py-3.5 px-3 sm:px-5 md:px-6 flex items-center justify-between shadow-sm hover:border-[#2d6a4f] transition text-left cursor-pointer">
-                                <span id="hiking-selected-text-${r.id}" class="font-black text-[#121829] text-[11px] sm:text-[13px] md:text-sm tracking-tight uppercase whitespace-nowrap overflow-visible">
+                                class="w-full bg-[#F3FDF7] border-2 border-[#94E3BA] rounded-full py-2.5 sm:py-3 px-3 sm:px-3.5 flex items-center justify-between shadow-sm hover:border-[#2d6a4f] transition text-left cursor-pointer">
+                                <span id="hiking-selected-text-${r.id}" class="font-black text-slate-900 text-[11px] sm:text-xs tracking-tight uppercase whitespace-nowrap overflow-visible">
                                     CAJ PEMANDU ARAH KE TINGKAT 3 RM150
                                 </span>
-                                <span id="hiking-dropdown-arrow-${r.id}" class="text-[#121829] text-xs sm:text-sm font-black pl-1.5 flex-shrink-0 transition-transform duration-200">▽</span>
+                                <span id="hiking-dropdown-arrow-${r.id}" class="text-slate-900 text-xs font-black pl-1.5 flex-shrink-0 transition-transform duration-200">▽</span>
                             </button>
 
                             <!-- Floating Dropdown Menu (2 Baris Tetap: Baris 1 & Baris 2) -->
                             <div id="hiking-dropdown-menu-${r.id}" 
-                                class="hidden absolute left-0 right-0 top-full mt-2 z-30 bg-white border-2 border-[#94E3BA] rounded-2xl shadow-xl overflow-hidden divide-y divide-[#E2F7EC]">
+                                class="hidden absolute left-0 right-0 top-full mt-1.5 z-30 bg-white border-2 border-[#94E3BA] rounded-2xl shadow-xl overflow-hidden divide-y divide-emerald-100">
                                 <!-- Baris 1: Tingkat 3 RM150 -->
                                 <div onclick="selectHikingDropdownOption(${r.id}, 150, 'CAJ PEMANDU ARAH KE TINGKAT 3 RM150')"
-                                    class="py-3 px-4 sm:px-6 hover:bg-[#F3FDF7] cursor-pointer transition">
-                                    <span class="font-black text-[#121829] text-xs sm:text-sm tracking-tight uppercase whitespace-nowrap block">
+                                    class="py-2.5 sm:py-3 px-3 sm:px-4 hover:bg-[#F3FDF7] cursor-pointer transition">
+                                    <span class="font-black text-slate-900 text-[11px] sm:text-xs tracking-tight uppercase whitespace-nowrap block">
                                         CAJ PEMANDU ARAH KE TINGKAT 3 RM150
                                     </span>
                                 </div>
 
                                 <!-- Baris 2: Tingkat 7 RM300 -->
                                 <div onclick="selectHikingDropdownOption(${r.id}, 300, 'CAJ PEMANDU ARAH KE TINGKAT 7 RM300')"
-                                    class="py-3 px-4 sm:px-6 hover:bg-[#F3FDF7] cursor-pointer transition">
-                                    <span class="font-black text-[#121829] text-xs sm:text-sm tracking-tight uppercase whitespace-nowrap block">
+                                    class="py-2.5 sm:py-3 px-3 sm:px-4 hover:bg-[#F3FDF7] cursor-pointer transition">
+                                    <span class="font-black text-slate-900 text-[11px] sm:text-xs tracking-tight uppercase whitespace-nowrap block">
                                         CAJ PEMANDU ARAH KE TINGKAT 7 RM300
                                     </span>
                                 </div>
@@ -563,40 +563,40 @@ function renderHikingCard(r, isAvailabilityCheck = false) {
                             </select>
                         </div>
 
-                        <!-- 2. Jumlah Kumpulan & Jumlah Peserta (Kotak Berasingan Kiri dan Kanan 100% Mengikut Gambar) -->
-                        <div class="grid grid-cols-2 gap-2.5 sm:gap-3.5">
+                        <!-- 2. Jumlah Kumpulan & Jumlah Peserta (Kotak Berasingan Kiri dan Kanan) -->
+                        <div class="grid grid-cols-2 gap-2 sm:gap-2.5">
                             <!-- Kotak Kiri: Jumlah Kumpulan -->
-                            <div class="bg-[#F3FDF7] border-[2.5px] border-[#94E3BA] rounded-3xl p-2.5 sm:p-4 flex flex-col items-center justify-between shadow-sm min-w-0">
-                                <span class="font-black text-[#121829] text-[10.5px] sm:text-xs md:text-sm tracking-tight uppercase whitespace-nowrap text-center mb-2 sm:mb-2.5">
+                            <div class="bg-[#F3FDF7] border-2 border-[#94E3BA] rounded-3xl p-2.5 sm:p-3 flex flex-col items-center justify-between shadow-sm min-w-0">
+                                <span class="font-black text-slate-900 text-[10.5px] sm:text-xs tracking-tight uppercase whitespace-nowrap text-center mb-1.5">
                                     JUMLAH KUMPULAN
                                 </span>
-                                <div class="w-full h-10 sm:h-12 flex items-center justify-center gap-2.5 sm:gap-4 bg-white border-2 border-[#94E3BA] rounded-full px-2 sm:px-3 shadow-inner">
-                                    <i class="fa-solid fa-users text-[#2D5D48] text-sm sm:text-base md:text-lg flex-shrink-0"></i>
+                                <div class="w-full h-9 flex items-center justify-center bg-white border border-[#94E3BA] rounded-full px-2 shadow-inner">
+                                    <i class="fa-solid fa-users text-[#2D5D48] text-xs sm:text-sm mr-1.5 flex-shrink-0"></i>
                                     <input type="text" id="hiking-groups-${r.id}" value="1" readonly
-                                        class="w-10 sm:w-12 text-center font-black text-[#121829] text-lg sm:text-xl md:text-2xl bg-transparent focus:outline-none cursor-default select-none p-0 leading-none"
+                                        class="w-10 text-center font-black text-slate-900 text-base sm:text-lg bg-transparent focus:outline-none cursor-default select-none p-0"
                                         title="Auto-dikira: 1 Kumpulan bagi setiap 7 peserta">
                                 </div>
                             </div>
 
                             <!-- Kotak Kanan: Jumlah Peserta -->
-                            <div class="bg-[#F3FDF7] border-[2.5px] border-[#94E3BA] rounded-3xl p-2.5 sm:p-4 flex flex-col items-center justify-between shadow-sm min-w-0">
-                                <span class="font-black text-[#121829] text-[10.5px] sm:text-xs md:text-sm tracking-tight uppercase whitespace-nowrap text-center mb-2 sm:mb-2.5">
+                            <div class="bg-[#F3FDF7] border-2 border-[#94E3BA] rounded-3xl p-2.5 sm:p-3 flex flex-col items-center justify-between shadow-sm min-w-0">
+                                <span class="font-black text-slate-900 text-[10.5px] sm:text-xs tracking-tight uppercase whitespace-nowrap text-center mb-1.5">
                                     JUMLAH PESERTA
                                 </span>
-                                <div class="w-full h-10 sm:h-12 flex items-center justify-between bg-white border-2 border-[#94E3BA] rounded-full overflow-hidden shadow-inner pl-2 sm:pl-3 pr-0">
+                                <div class="w-full h-9 flex items-center justify-between bg-white border border-[#94E3BA] rounded-full overflow-hidden px-2 shadow-inner">
                                     <input type="number" id="hiking-pax-${r.id}" min="1" max="100" value="1"
-                                        class="w-full text-center font-black text-[#121829] text-lg sm:text-xl md:text-2xl bg-transparent focus:outline-none cursor-pointer hide-native-spinner p-0 leading-none"
+                                        class="w-full text-center font-black text-slate-900 text-base sm:text-lg bg-transparent focus:outline-none cursor-pointer hide-native-spinner p-0"
                                         placeholder="1"
                                         title="Masukkan bilangan peserta"
                                         oninput="updateHikingPrice(${r.id})" onchange="updateHikingPrice(${r.id})">
-                                    <div class="flex flex-col items-center justify-center h-full border-l-2 border-[#BBF0D2] px-1.5 sm:px-2.5 flex-shrink-0 bg-transparent">
+                                    <div class="flex flex-col items-center justify-center h-full pl-1.5 border-l border-[#BBF0D2] flex-shrink-0">
                                         <button type="button" onclick="stepHikingPax(${r.id}, 1)" 
-                                            class="w-5 h-3.5 sm:h-4 flex items-center justify-center text-[#121829] hover:text-emerald-700 active:scale-90 text-[9px] sm:text-[10px] font-black transition cursor-pointer select-none leading-none"
+                                            class="w-5 h-3.5 flex items-center justify-center text-slate-900 hover:text-emerald-700 active:scale-90 text-[9px] font-black transition cursor-pointer select-none leading-none"
                                             title="Tambah peserta">
                                             ▲
                                         </button>
                                         <button type="button" onclick="stepHikingPax(${r.id}, -1)" 
-                                            class="w-5 h-3.5 sm:h-4 flex items-center justify-center text-[#121829] hover:text-emerald-700 active:scale-90 text-[9px] sm:text-[10px] font-black transition cursor-pointer select-none leading-none"
+                                            class="w-5 h-3.5 flex items-center justify-center text-slate-900 hover:text-emerald-700 active:scale-90 text-[9px] font-black transition cursor-pointer select-none leading-none"
                                             title="Kurangkan peserta">
                                             ▼
                                         </button>
@@ -606,26 +606,26 @@ function renderHikingCard(r, isAvailabilityCheck = false) {
                         </div>
 
                         <!-- 3. Caj Pemprosesan Seorang -->
-                        <div class="bg-[#F3FDF7] border-[2.5px] border-[#94E3BA] rounded-3xl py-3 sm:py-4 px-3.5 sm:px-5 flex justify-between items-center shadow-sm">
+                        <div class="bg-[#F3FDF7] border-2 border-[#94E3BA] rounded-3xl py-2.5 sm:py-3 px-3 sm:px-3.5 flex justify-between items-center shadow-sm">
                             <div class="flex flex-col justify-center min-w-0 pr-2">
-                                <span class="font-black text-[#121829] text-[11px] sm:text-xs md:text-sm tracking-tight uppercase whitespace-nowrap">
+                                <span class="font-black text-slate-900 text-[11px] sm:text-xs tracking-tight uppercase whitespace-nowrap">
                                     CAJ PEMPROSESAN SEORANG
                                 </span>
-                                <span id="hiking-proc-calc-${r.id}" class="text-[10px] sm:text-xs md:text-sm font-bold text-[#2D5D48] whitespace-nowrap mt-0.5">
+                                <span id="hiking-proc-calc-${r.id}" class="text-[10px] sm:text-[11px] font-bold text-[#2D5D48] whitespace-nowrap mt-0.5">
                                     (RM10 × <span id="hiking-proc-pax-${r.id}">1</span>)
                                 </span>
                             </div>
-                            <span class="font-black text-[#121829] text-lg sm:text-xl md:text-2xl tracking-tight whitespace-nowrap pl-2 flex-shrink-0">
+                            <span class="font-black text-slate-900 text-xs sm:text-sm tracking-tight whitespace-nowrap pl-1 flex-shrink-0">
                                 RM<span id="hiking-proc-${r.id}">10</span>
                             </span>
                         </div>
 
                         <!-- 4. Jumlah Keseluruhan -->
-                        <div class="bg-[#F3FDF7] border-[2.5px] border-[#94E3BA] rounded-3xl py-3 sm:py-4 px-3.5 sm:px-5 flex justify-between items-center shadow-sm">
-                            <span class="font-black text-[#121829] text-[11px] sm:text-xs md:text-sm tracking-tight uppercase whitespace-nowrap">
+                        <div class="bg-[#F3FDF7] border-2 border-[#94E3BA] rounded-3xl py-2.5 sm:py-3 px-3 sm:px-3.5 flex justify-between items-center shadow-sm">
+                            <span class="font-black text-slate-900 text-[11px] sm:text-xs tracking-tight uppercase whitespace-nowrap">
                                 JUMLAH KESELURUHAN
                             </span>
-                            <span class="font-black text-[#121829] text-lg sm:text-xl md:text-2xl tracking-tight whitespace-nowrap pl-2 flex-shrink-0">
+                            <span class="font-black text-slate-900 text-xs sm:text-sm tracking-tight whitespace-nowrap pl-1 flex-shrink-0">
                                 RM <span id="hiking-total-${r.id}">160</span>
                             </span>
                         </div>

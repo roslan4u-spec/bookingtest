@@ -396,9 +396,9 @@ if (process.env.NODE_ENV !== 'production' && !process.env.VERCEL) {
     const fs = require('fs');
     const rootDir = path.join(__dirname, '..');
     
-    app.get('/', (req, res) => { res.setHeader('Content-Type', 'text/html'); res.send(fs.readFileSync(path.join(rootDir, 'index.html'))); });
-    app.get('/rooms', (req, res) => { res.setHeader('Content-Type', 'text/html'); res.send(fs.readFileSync(path.join(rootDir, 'rooms.html'))); });
-    app.get('/admin', (req, res) => { res.setHeader('Content-Type', 'text/html'); res.send(fs.readFileSync(path.join(rootDir, 'admin.html'))); });
+    app.get('/', (req, res) => { res.setHeader('Content-Type', 'text/html'); res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate'); res.send(fs.readFileSync(path.join(rootDir, 'index.html'))); });
+    app.get('/rooms', (req, res) => { res.setHeader('Content-Type', 'text/html'); res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate'); res.send(fs.readFileSync(path.join(rootDir, 'rooms.html'))); });
+    app.get('/admin', (req, res) => { res.setHeader('Content-Type', 'text/html'); res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate'); res.send(fs.readFileSync(path.join(rootDir, 'admin.html'))); });
     
     // Serve all other static assets (css, js, images)
     app.use(express.static(rootDir));
