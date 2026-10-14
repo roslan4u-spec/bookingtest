@@ -21,6 +21,15 @@
         .step-indicator { background: #e5e7eb; color: #6b7280; transition: all 0.3s; }
         .step-connector.active { background: #059669; }
         .step-connector { background: #e5e7eb; transition: all 0.3s; }
+        /* Custom number input controls - always show custom up/down buttons and hide default browser spinners */
+        input[type=number].hide-native-spinner::-webkit-inner-spin-button, 
+        input[type=number].hide-native-spinner::-webkit-outer-spin-button { 
+            -webkit-appearance: none; 
+            margin: 0; 
+        }
+        input[type=number].hide-native-spinner {
+            -moz-appearance: textfield;
+        }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-800 font-sans antialiased pb-40">
@@ -554,38 +563,43 @@ function renderHikingCard(r, isAvailabilityCheck = false) {
                             </select>
                         </div>
 
-                        <!-- 2. Jumlah Kumpulan & Jumlah Peserta -->
-                        <div class="bg-emerald-50/70 border-2 border-emerald-200 rounded-2xl p-2.5 sm:p-3 shadow-sm flex items-center gap-2 sm:gap-3">
-                            <!-- Icon Kumpulan / Users -->
-                            <div class="pl-1 text-emerald-800 text-2xl sm:text-3xl flex items-center justify-center flex-shrink-0">
-                                <i class="fa-solid fa-users"></i>
+                        <!-- 2. Jumlah Kumpulan & Jumlah Peserta (Kotak Berasingan Kiri dan Kanan) -->
+                        <div class="grid grid-cols-2 gap-2 sm:gap-2.5">
+                            <!-- Kotak Kiri: Jumlah Kumpulan -->
+                            <div class="bg-emerald-50/70 border-2 border-emerald-200 rounded-2xl p-2.5 sm:p-3 flex flex-col items-center justify-between shadow-sm min-w-0">
+                                <span class="font-black text-slate-900 text-[10.5px] sm:text-xs tracking-tight uppercase whitespace-nowrap text-center mb-1.5">
+                                    JUMLAH KUMPULAN
+                                </span>
+                                <div class="w-full h-9 flex items-center justify-center bg-white border border-emerald-300 rounded-xl px-2 shadow-inner">
+                                    <i class="fa-solid fa-users text-emerald-800 text-xs sm:text-sm mr-1.5 flex-shrink-0"></i>
+                                    <input type="text" id="hiking-groups-${r.id}" value="1" readonly
+                                        class="w-10 text-center font-black text-slate-900 text-base sm:text-lg bg-transparent focus:outline-none cursor-default select-none p-0"
+                                        title="Auto-dikira: 1 Kumpulan bagi setiap 7 peserta">
+                                </div>
                             </div>
 
-                            <!-- 2 Ruangan: JUMLAH KUMPULAN & JUMLAH PESERTA -->
-                            <div class="grid grid-cols-2 gap-2 flex-grow text-center">
-                                <!-- Kolum Jumlah Kumpulan -->
-                                <div class="flex flex-col items-center">
-                                    <span class="font-black text-slate-900 text-[10.5px] sm:text-xs tracking-tight uppercase whitespace-nowrap">
-                                        JUMLAH KUMPULAN
-                                    </span>
-                                    <div class="w-16 sm:w-20 mt-1.5">
-                                        <input type="text" id="hiking-groups-${r.id}" value="1" readonly
-                                            class="w-full text-center font-black text-slate-900 text-base sm:text-lg bg-transparent border-b-2 border-slate-900 focus:outline-none py-0.5 cursor-default"
-                                            title="Auto-dikira: 1 Kumpulan bagi setiap 7 peserta">
-                                    </div>
-                                </div>
-
-                                <!-- Kolum Jumlah Peserta -->
-                                <div class="flex flex-col items-center">
-                                    <span class="font-black text-slate-900 text-[10.5px] sm:text-xs tracking-tight uppercase whitespace-nowrap">
-                                        JUMLAH PESERTA
-                                    </span>
-                                    <div class="w-16 sm:w-20 mt-1.5">
-                                        <input type="number" id="hiking-pax-${r.id}" min="1" max="100" value="1"
-                                            class="w-full text-center font-black text-slate-900 text-base sm:text-lg bg-transparent border-b-2 border-slate-900 focus:outline-none py-0.5 cursor-pointer"
-                                            placeholder="1"
-                                            title="Masukkan bilangan peserta (Maksimum 7 orang bagi 1 kumpulan)"
-                                            oninput="updateHikingPrice(${r.id})" onchange="updateHikingPrice(${r.id})">
+                            <!-- Kotak Kanan: Jumlah Peserta -->
+                            <div class="bg-emerald-50/70 border-2 border-emerald-200 rounded-2xl p-2.5 sm:p-3 flex flex-col items-center justify-between shadow-sm min-w-0">
+                                <span class="font-black text-slate-900 text-[10.5px] sm:text-xs tracking-tight uppercase whitespace-nowrap text-center mb-1.5">
+                                    JUMLAH PESERTA
+                                </span>
+                                <div class="w-full h-9 flex items-center justify-between bg-white border border-emerald-300 rounded-xl px-2 shadow-inner">
+                                    <input type="number" id="hiking-pax-${r.id}" min="1" max="100" value="1"
+                                        class="w-full text-center font-black text-slate-900 text-base sm:text-lg bg-transparent focus:outline-none cursor-pointer hide-native-spinner p-0"
+                                        placeholder="1"
+                                        title="Masukkan bilangan peserta"
+                                        oninput="updateHikingPrice(${r.id})" onchange="updateHikingPrice(${r.id})">
+                                    <div class="flex flex-col items-center justify-center h-full pl-1.5 border-l border-emerald-200 flex-shrink-0">
+                                        <button type="button" onclick="stepHikingPax(${r.id}, 1)" 
+                                            class="w-5 h-3.5 flex items-center justify-center text-slate-800 hover:text-emerald-700 hover:bg-emerald-100 active:scale-90 rounded text-[9px] font-black transition cursor-pointer select-none leading-none"
+                                            title="Tambah peserta">
+                                            ▲
+                                        </button>
+                                        <button type="button" onclick="stepHikingPax(${r.id}, -1)" 
+                                            class="w-5 h-3.5 flex items-center justify-center text-slate-800 hover:text-emerald-700 hover:bg-emerald-100 active:scale-90 rounded text-[9px] font-black transition cursor-pointer select-none leading-none"
+                                            title="Kurangkan peserta">
+                                            ▼
+                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -672,6 +686,18 @@ document.addEventListener('click', function(e) {
     }
 });
 
+function stepHikingPax(id, delta) {
+    const paxInput = document.getElementById(`hiking-pax-${id}`);
+    if (!paxInput) return;
+    let pax = parseInt(paxInput.value);
+    if (isNaN(pax) || pax < 1) pax = 1;
+    pax += delta;
+    if (pax < 1) pax = 1;
+    if (pax > 100) pax = 100;
+    paxInput.value = pax;
+    updateHikingPrice(id);
+}
+
 function updateHikingPrice(id) {
     const pkgSelect = document.getElementById(`hiking-pkg-${id}`);
     const paxInput = document.getElementById(`hiking-pax-${id}`);
@@ -705,7 +731,10 @@ function updateHikingPrice(id) {
     }
 
     totalSpan.textContent = grandTotal;
-    if (groupsInput) groupsInput.value = groups;
+    if (groupsInput) {
+        if ('value' in groupsInput) groupsInput.value = groups;
+        groupsInput.textContent = groups;
+    }
 }
 
 function addToCartHiking(id) {
