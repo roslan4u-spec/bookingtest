@@ -517,48 +517,33 @@ function renderHikingCard(r, isAvailabilityCheck = false) {
                     <h3 class="text-xl sm:text-2xl font-black text-slate-900 text-center mb-5 tracking-tight uppercase">${r.name}</h3>
 
                     <div class="space-y-3 mb-6">
-                        <!-- 1. Caj Pemandu Arah Dropdown (Jimat Ruang, 2 Baris Kemas Tanpa Wrap) -->
+                        <!-- 1. Caj Pemandu Arah Dropdown (Satu Baris Ayat, Tanpa Wrap, Fit Penuh) -->
                         <div class="relative">
                             <button type="button" id="hiking-dropdown-btn-${r.id}" onclick="toggleHikingDropdown(${r.id})"
-                                class="w-full bg-emerald-50/80 border-2 border-emerald-300 rounded-2xl p-2.5 sm:p-3 px-4 flex items-center justify-between shadow-sm hover:border-[#2d6a4f] transition text-left cursor-pointer">
-                                <div id="hiking-selected-text-${r.id}" class="flex flex-col text-left flex-grow pr-2 whitespace-nowrap">
-                                    <span class="font-black text-slate-900 text-xs sm:text-[13px] tracking-tight uppercase leading-tight whitespace-nowrap">
-                                        CAJ PEMANDU ARAH KE
-                                    </span>
-                                    <span class="font-black text-slate-900 text-xs sm:text-[13px] tracking-tight uppercase leading-tight whitespace-nowrap">
-                                        TINGKAT 3 RM150
-                                    </span>
-                                </div>
-                                <span id="hiking-dropdown-arrow-${r.id}" class="text-slate-900 text-xs font-black pl-2 flex-shrink-0 transition-transform duration-200">▽</span>
+                                class="w-full bg-emerald-50/80 border-2 border-emerald-300 rounded-2xl py-3 px-3 sm:px-3.5 flex items-center justify-between shadow-sm hover:border-[#2d6a4f] transition text-left cursor-pointer">
+                                <span id="hiking-selected-text-${r.id}" class="font-black text-slate-900 text-[11px] sm:text-xs tracking-tight uppercase whitespace-nowrap overflow-visible">
+                                    CAJ PEMANDU ARAH KE TINGKAT 3 RM150
+                                </span>
+                                <span id="hiking-dropdown-arrow-${r.id}" class="text-slate-900 text-xs font-black pl-1.5 flex-shrink-0 transition-transform duration-200">▽</span>
                             </button>
 
-                            <!-- Floating Dropdown Menu (Jimat Ruang - Terapung) -->
+                            <!-- Floating Dropdown Menu (2 Baris Tetap: Baris 1 & Baris 2) -->
                             <div id="hiking-dropdown-menu-${r.id}" 
                                 class="hidden absolute left-0 right-0 top-full mt-1.5 z-30 bg-white border-2 border-[#2d6a4f] rounded-2xl shadow-xl overflow-hidden divide-y divide-emerald-100">
-                                <!-- Pilihan 1: Tingkat 3 RM150 -->
-                                <div onclick="selectHikingDropdownOption(${r.id}, 150, 'CAJ PEMANDU ARAH KE', 'TINGKAT 3 RM150')"
-                                    class="p-2.5 sm:p-3 px-4 hover:bg-emerald-50 cursor-pointer transition">
-                                    <div class="flex flex-col text-left whitespace-nowrap">
-                                        <span class="font-black text-slate-900 text-xs sm:text-sm tracking-tight uppercase leading-tight whitespace-nowrap">
-                                            CAJ PEMANDU ARAH KE
-                                        </span>
-                                        <span class="font-black text-slate-900 text-xs sm:text-sm tracking-tight uppercase leading-tight whitespace-nowrap">
-                                            TINGKAT 3 RM150
-                                        </span>
-                                    </div>
+                                <!-- Baris 1: Tingkat 3 RM150 -->
+                                <div onclick="selectHikingDropdownOption(${r.id}, 150, 'CAJ PEMANDU ARAH KE TINGKAT 3 RM150')"
+                                    class="py-3 px-3 sm:px-4 hover:bg-emerald-50 cursor-pointer transition">
+                                    <span class="font-black text-slate-900 text-[11px] sm:text-xs tracking-tight uppercase whitespace-nowrap block">
+                                        CAJ PEMANDU ARAH KE TINGKAT 3 RM150
+                                    </span>
                                 </div>
 
-                                <!-- Pilihan 2: Tingkat 7 RM300 -->
-                                <div onclick="selectHikingDropdownOption(${r.id}, 300, 'CAJ PEMANDU ARAH KE', 'TINGKAT 7 RM300')"
-                                    class="p-2.5 sm:p-3 px-4 hover:bg-emerald-50 cursor-pointer transition">
-                                    <div class="flex flex-col text-left whitespace-nowrap">
-                                        <span class="font-black text-slate-900 text-xs sm:text-sm tracking-tight uppercase leading-tight whitespace-nowrap">
-                                            CAJ PEMANDU ARAH KE
-                                        </span>
-                                        <span class="font-black text-slate-900 text-xs sm:text-sm tracking-tight uppercase leading-tight whitespace-nowrap">
-                                            TINGKAT 7 RM300
-                                        </span>
-                                    </div>
+                                <!-- Baris 2: Tingkat 7 RM300 -->
+                                <div onclick="selectHikingDropdownOption(${r.id}, 300, 'CAJ PEMANDU ARAH KE TINGKAT 7 RM300')"
+                                    class="py-3 px-3 sm:px-4 hover:bg-emerald-50 cursor-pointer transition">
+                                    <span class="font-black text-slate-900 text-[11px] sm:text-xs tracking-tight uppercase whitespace-nowrap block">
+                                        CAJ PEMANDU ARAH KE TINGKAT 7 RM300
+                                    </span>
                                 </div>
                             </div>
 
@@ -661,7 +646,7 @@ function toggleHikingDropdown(id) {
     }
 }
 
-function selectHikingDropdownOption(id, rate, line1, line2) {
+function selectHikingDropdownOption(id, rate, text) {
     const pkgSelect = document.getElementById(`hiking-pkg-${id}`);
     const textBox = document.getElementById(`hiking-selected-text-${id}`);
     const menu = document.getElementById(`hiking-dropdown-menu-${id}`);
@@ -670,10 +655,7 @@ function selectHikingDropdownOption(id, rate, line1, line2) {
     if (pkgSelect) pkgSelect.value = rate;
     
     if (textBox) {
-        textBox.innerHTML = `
-            <span class="font-black text-slate-900 text-xs sm:text-[13px] tracking-tight uppercase leading-tight whitespace-nowrap">${line1}</span>
-            <span class="font-black text-slate-900 text-xs sm:text-[13px] tracking-tight uppercase leading-tight whitespace-nowrap">${line2}</span>
-        `;
+        textBox.textContent = text;
     }
     
     if (menu) menu.classList.add('hidden');
