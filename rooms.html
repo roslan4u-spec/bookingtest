@@ -567,13 +567,18 @@ function renderHikingCard(r, isAvailabilityCheck = false) {
                             </div>
                         </div>
 
-                        <!-- 3. Caj Pemprosesan Seorang RM10 -->
+                        <!-- 3. Caj Pemprosesan Seorang -->
                         <div class="bg-emerald-50/70 border-2 border-emerald-200 rounded-2xl p-3 sm:p-3.5 px-4 flex justify-between items-center shadow-sm">
-                            <span class="font-black text-slate-900 text-xs sm:text-sm tracking-tight uppercase">
-                                CAJ PEMPROSESAN SEORANG
-                            </span>
-                            <span class="font-black text-slate-900 text-xs sm:text-sm tracking-tight">
-                                RM10
+                            <div class="flex items-center gap-1.5 flex-wrap">
+                                <span class="font-black text-slate-900 text-xs sm:text-sm tracking-tight uppercase">
+                                    CAJ PEMPROSESAN SEORANG
+                                </span>
+                                <span id="hiking-proc-calc-${r.id}" class="text-[11px] sm:text-xs font-bold text-emerald-800 hidden">
+                                    (RM10 × <span id="hiking-proc-pax-${r.id}">1</span>)
+                                </span>
+                            </div>
+                            <span class="font-black text-slate-900 text-xs sm:text-sm tracking-tight whitespace-nowrap">
+                                RM<span id="hiking-proc-${r.id}">10</span>
                             </span>
                         </div>
 
@@ -605,6 +610,9 @@ function updateHikingPrice(id) {
     const pkgSelect = document.getElementById(`hiking-pkg-${id}`);
     const paxInput = document.getElementById(`hiking-pax-${id}`);
     const groupsInput = document.getElementById(`hiking-groups-${id}`);
+    const procSpan = document.getElementById(`hiking-proc-${id}`);
+    const procCalcSpan = document.getElementById(`hiking-proc-calc-${id}`);
+    const procPaxSpan = document.getElementById(`hiking-proc-pax-${id}`);
     const totalSpan = document.getElementById(`hiking-total-${id}`);
     if (!pkgSelect || !totalSpan) return;
 
@@ -618,6 +626,17 @@ function updateHikingPrice(id) {
     const guideTotal = groups * pkgRate;
     const procTotal = pax * 10;
     const grandTotal = guideTotal + procTotal;
+
+    // Caj Pemprosesan bertambah secara auto mengikut jumlah peserta (cth: RM10 x 10 peserta = RM100)
+    if (procSpan) procSpan.textContent = procTotal;
+    if (procPaxSpan) procPaxSpan.textContent = pax;
+    if (procCalcSpan) {
+        if (pax > 1) {
+            procCalcSpan.classList.remove('hidden');
+        } else {
+            procCalcSpan.classList.add('hidden');
+        }
+    }
 
     totalSpan.textContent = grandTotal;
     if (groupsInput) groupsInput.value = groups;
