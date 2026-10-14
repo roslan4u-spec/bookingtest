@@ -607,11 +607,11 @@ function renderHikingCard(r, isAvailabilityCheck = false) {
 
                         <!-- 3. Caj Pemprosesan Seorang -->
                         <div class="bg-emerald-50/70 border-2 border-emerald-200 rounded-2xl py-2.5 sm:py-3 px-3 sm:px-3.5 flex justify-between items-center shadow-sm">
-                            <div class="flex items-center gap-1.5 min-w-0 pr-2">
+                            <div class="flex flex-col justify-center min-w-0 pr-2">
                                 <span class="font-black text-slate-900 text-[11px] sm:text-xs tracking-tight uppercase whitespace-nowrap">
                                     CAJ PEMPROSESAN SEORANG
                                 </span>
-                                <span id="hiking-proc-calc-${r.id}" class="text-[10px] sm:text-[11px] font-bold text-emerald-800 whitespace-nowrap hidden">
+                                <span id="hiking-proc-calc-${r.id}" class="text-[10px] sm:text-[11px] font-bold text-emerald-800 whitespace-nowrap mt-0.5">
                                     (RM10 × <span id="hiking-proc-pax-${r.id}">1</span>)
                                 </span>
                             </div>
@@ -722,13 +722,7 @@ function updateHikingPrice(id) {
     // Caj Pemprosesan bertambah secara auto mengikut jumlah peserta (cth: RM10 x 10 peserta = RM100)
     if (procSpan) procSpan.textContent = procTotal;
     if (procPaxSpan) procPaxSpan.textContent = pax;
-    if (procCalcSpan) {
-        if (pax > 1) {
-            procCalcSpan.classList.remove('hidden');
-        } else {
-            procCalcSpan.classList.add('hidden');
-        }
-    }
+    if (procCalcSpan) procCalcSpan.classList.remove('hidden');
 
     totalSpan.textContent = grandTotal;
     if (groupsInput) {
