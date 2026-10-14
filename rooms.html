@@ -747,12 +747,14 @@ function addToCartHiking(id) {
     const procTotal = pax * 10;
     const totalHikingPrice = guideTotal + procTotal;
     
+    const isKabin = (room.name && room.name.toUpperCase().includes('KABIN'));
+    const itemType = isKabin ? 'TEMPAHAN KABIN' : 'TEMPAHAN AKTIVITI HIKING';
     const pkgLocation = isTingkat7 ? 'TINGKAT 7' : 'TINGKAT 3';
     const pkgTitle = `CAJ PEMANDU ARAH KE ${pkgLocation} (${groups} Kumpulan x RM${pkgRate} = RM${guideTotal}) + Caj Pemprosesan (${pax} Orang x RM10 = RM${procTotal})`;
-    const cartItemName = `TEMPAHAN AKTIVITI HIKING (${pkgLocation} - ${pax} ORANG / ${groups} KUMPULAN)`;
+    const cartItemName = `${itemType} (${pkgLocation} - ${pax} ORANG / ${groups} KUMPULAN)`;
     
-    // Semak sekiranya hiking sudah ada dalam bakul
-    const existingIndex = cart.findIndex(item => item.id === id || (item.name && item.name.includes('HIKING')));
+    // Semak sekiranya item sudah ada dalam bakul
+    const existingIndex = cart.findIndex(item => item.id === id);
     if (existingIndex !== -1) {
         cart[existingIndex].price_per_night = totalHikingPrice;
         cart[existingIndex].total_price = totalHikingPrice;
@@ -761,7 +763,7 @@ function addToCartHiking(id) {
         cart[existingIndex].num_guests = pax;
         cart[existingIndex].groups = groups;
         updateCartUI();
-        alert(`Pilihan aktiviti hiking di dalam bakul telah dikemaskini: ${cartItemName} - RM${totalHikingPrice.toFixed(2)}`);
+        alert(`Pilihan ${itemType} di dalam bakul telah dikemaskini: ${cartItemName} - RM${totalHikingPrice.toFixed(2)}`);
         return;
     }
     
@@ -800,7 +802,8 @@ function renderRooms(rooms) {
         return;
     }
     grid.innerHTML = rooms.map(r => {
-        if ((r.name && r.name.toUpperCase().includes('HIKING')) || (r.type && r.type.toUpperCase().includes('HIKING'))) {
+        if ((r.name && r.name.toUpperCase().includes('HIKING')) || (r.type && r.type.toUpperCase().includes('HIKING')) ||
+            (r.name && r.name.toUpperCase().includes('KABIN')) || (r.type && r.type.toUpperCase().includes('KABIN'))) {
             return renderHikingCard(r, false);
         }
         return `
@@ -885,7 +888,8 @@ async function loadRoomsWithAvailability(checkin, checkout) {
 function renderRoomsWithAvailability(rooms) {
     const grid = document.getElementById('rooms-grid');
     grid.innerHTML = rooms.map(r => {
-        if ((r.name && r.name.toUpperCase().includes('HIKING')) || (r.type && r.type.toUpperCase().includes('HIKING'))) {
+        if ((r.name && r.name.toUpperCase().includes('HIKING')) || (r.type && r.type.toUpperCase().includes('HIKING')) ||
+            (r.name && r.name.toUpperCase().includes('KABIN')) || (r.type && r.type.toUpperCase().includes('KABIN'))) {
             return renderHikingCard(r, true);
         }
         return `
