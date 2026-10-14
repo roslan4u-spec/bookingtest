@@ -512,15 +512,15 @@ function renderHikingCard(r, isAvailabilityCheck = false) {
                 ${availBadge}
                 <img src="${r.image_url}" alt="${r.name}" class="w-full h-full ${r.image_url && r.image_url.includes('unsplash.com') ? 'object-cover' : 'object-contain p-2'}">
             </div>
-            <div class="p-5 sm:p-6 flex flex-col flex-grow justify-between bg-white">
+            <div class="p-4 sm:p-5 flex flex-col flex-grow justify-between bg-white">
                 <div>
-                    <h3 class="text-xl sm:text-2xl font-black text-slate-900 text-center mb-5 tracking-tight uppercase">${r.name}</h3>
+                    <h3 class="text-base sm:text-lg lg:text-xl font-black text-slate-900 text-center mb-4 tracking-tight uppercase whitespace-nowrap">${r.name}</h3>
 
-                    <div class="space-y-3 mb-6">
+                    <div class="space-y-2.5 sm:space-y-3 mb-6">
                         <!-- 1. Caj Pemandu Arah Dropdown (Satu Baris Ayat, Tanpa Wrap, Fit Penuh) -->
                         <div class="relative">
                             <button type="button" id="hiking-dropdown-btn-${r.id}" onclick="toggleHikingDropdown(${r.id})"
-                                class="w-full bg-emerald-50/80 border-2 border-emerald-300 rounded-2xl py-3 px-3 sm:px-3.5 flex items-center justify-between shadow-sm hover:border-[#2d6a4f] transition text-left cursor-pointer">
+                                class="w-full bg-emerald-50/80 border-2 border-emerald-300 rounded-2xl py-2.5 sm:py-3 px-3 sm:px-3.5 flex items-center justify-between shadow-sm hover:border-[#2d6a4f] transition text-left cursor-pointer">
                                 <span id="hiking-selected-text-${r.id}" class="font-black text-slate-900 text-[11px] sm:text-xs tracking-tight uppercase whitespace-nowrap overflow-visible">
                                     CAJ PEMANDU ARAH KE TINGKAT 3 RM150
                                 </span>
@@ -532,7 +532,7 @@ function renderHikingCard(r, isAvailabilityCheck = false) {
                                 class="hidden absolute left-0 right-0 top-full mt-1.5 z-30 bg-white border-2 border-[#2d6a4f] rounded-2xl shadow-xl overflow-hidden divide-y divide-emerald-100">
                                 <!-- Baris 1: Tingkat 3 RM150 -->
                                 <div onclick="selectHikingDropdownOption(${r.id}, 150, 'CAJ PEMANDU ARAH KE TINGKAT 3 RM150')"
-                                    class="py-3 px-3 sm:px-4 hover:bg-emerald-50 cursor-pointer transition">
+                                    class="py-2.5 sm:py-3 px-3 sm:px-4 hover:bg-emerald-50 cursor-pointer transition">
                                     <span class="font-black text-slate-900 text-[11px] sm:text-xs tracking-tight uppercase whitespace-nowrap block">
                                         CAJ PEMANDU ARAH KE TINGKAT 3 RM150
                                     </span>
@@ -540,7 +540,7 @@ function renderHikingCard(r, isAvailabilityCheck = false) {
 
                                 <!-- Baris 2: Tingkat 7 RM300 -->
                                 <div onclick="selectHikingDropdownOption(${r.id}, 300, 'CAJ PEMANDU ARAH KE TINGKAT 7 RM300')"
-                                    class="py-3 px-3 sm:px-4 hover:bg-emerald-50 cursor-pointer transition">
+                                    class="py-2.5 sm:py-3 px-3 sm:px-4 hover:bg-emerald-50 cursor-pointer transition">
                                     <span class="font-black text-slate-900 text-[11px] sm:text-xs tracking-tight uppercase whitespace-nowrap block">
                                         CAJ PEMANDU ARAH KE TINGKAT 7 RM300
                                     </span>
@@ -555,20 +555,20 @@ function renderHikingCard(r, isAvailabilityCheck = false) {
                         </div>
 
                         <!-- 2. Jumlah Kumpulan & Jumlah Peserta -->
-                        <div class="bg-emerald-50/70 border-2 border-emerald-200 rounded-2xl p-3 sm:p-3.5 shadow-sm flex items-center gap-2 sm:gap-4">
+                        <div class="bg-emerald-50/70 border-2 border-emerald-200 rounded-2xl p-2.5 sm:p-3 shadow-sm flex items-center gap-2 sm:gap-3">
                             <!-- Icon Kumpulan / Users -->
-                            <div class="pl-2 pr-1 text-emerald-800 text-2xl sm:text-3xl flex items-center justify-center">
+                            <div class="pl-1 text-emerald-800 text-2xl sm:text-3xl flex items-center justify-center flex-shrink-0">
                                 <i class="fa-solid fa-users"></i>
                             </div>
 
                             <!-- 2 Ruangan: JUMLAH KUMPULAN & JUMLAH PESERTA -->
-                            <div class="grid grid-cols-2 gap-2 sm:gap-4 flex-grow text-center">
+                            <div class="grid grid-cols-2 gap-2 flex-grow text-center">
                                 <!-- Kolum Jumlah Kumpulan -->
                                 <div class="flex flex-col items-center">
-                                    <span class="font-black text-slate-900 text-xs sm:text-sm tracking-tight leading-tight uppercase">
-                                        JUMLAH<br>KUMPULAN
+                                    <span class="font-black text-slate-900 text-[10.5px] sm:text-xs tracking-tight uppercase whitespace-nowrap">
+                                        JUMLAH KUMPULAN
                                     </span>
-                                    <div class="w-20 sm:w-24 mt-2">
+                                    <div class="w-16 sm:w-20 mt-1.5">
                                         <input type="text" id="hiking-groups-${r.id}" value="1" readonly
                                             class="w-full text-center font-black text-slate-900 text-base sm:text-lg bg-transparent border-b-2 border-slate-900 focus:outline-none py-0.5 cursor-default"
                                             title="Auto-dikira: 1 Kumpulan bagi setiap 7 peserta">
@@ -577,10 +577,10 @@ function renderHikingCard(r, isAvailabilityCheck = false) {
 
                                 <!-- Kolum Jumlah Peserta -->
                                 <div class="flex flex-col items-center">
-                                    <span class="font-black text-slate-900 text-xs sm:text-sm tracking-tight leading-tight uppercase">
-                                        JUMLAH<br>PESERTA
+                                    <span class="font-black text-slate-900 text-[10.5px] sm:text-xs tracking-tight uppercase whitespace-nowrap">
+                                        JUMLAH PESERTA
                                     </span>
-                                    <div class="w-20 sm:w-24 mt-2">
+                                    <div class="w-16 sm:w-20 mt-1.5">
                                         <input type="number" id="hiking-pax-${r.id}" min="1" max="100" value="1"
                                             class="w-full text-center font-black text-slate-900 text-base sm:text-lg bg-transparent border-b-2 border-slate-900 focus:outline-none py-0.5 cursor-pointer"
                                             placeholder="1"
@@ -592,26 +592,26 @@ function renderHikingCard(r, isAvailabilityCheck = false) {
                         </div>
 
                         <!-- 3. Caj Pemprosesan Seorang -->
-                        <div class="bg-emerald-50/70 border-2 border-emerald-200 rounded-2xl p-3 sm:p-3.5 px-4 flex justify-between items-center shadow-sm">
-                            <div class="flex items-center gap-1.5 flex-wrap">
-                                <span class="font-black text-slate-900 text-xs sm:text-sm tracking-tight uppercase">
+                        <div class="bg-emerald-50/70 border-2 border-emerald-200 rounded-2xl py-2.5 sm:py-3 px-3 sm:px-3.5 flex justify-between items-center shadow-sm">
+                            <div class="flex items-center gap-1.5 min-w-0 pr-2">
+                                <span class="font-black text-slate-900 text-[11px] sm:text-xs tracking-tight uppercase whitespace-nowrap">
                                     CAJ PEMPROSESAN SEORANG
                                 </span>
-                                <span id="hiking-proc-calc-${r.id}" class="text-[11px] sm:text-xs font-bold text-emerald-800 hidden">
+                                <span id="hiking-proc-calc-${r.id}" class="text-[10px] sm:text-[11px] font-bold text-emerald-800 whitespace-nowrap hidden">
                                     (RM10 × <span id="hiking-proc-pax-${r.id}">1</span>)
                                 </span>
                             </div>
-                            <span class="font-black text-slate-900 text-xs sm:text-sm tracking-tight whitespace-nowrap">
+                            <span class="font-black text-slate-900 text-xs sm:text-sm tracking-tight whitespace-nowrap pl-1 flex-shrink-0">
                                 RM<span id="hiking-proc-${r.id}">10</span>
                             </span>
                         </div>
 
                         <!-- 4. Jumlah Keseluruhan -->
-                        <div class="bg-emerald-50/70 border-2 border-emerald-200 rounded-2xl p-3 sm:p-3.5 px-4 flex justify-between items-center shadow-sm">
-                            <span class="font-black text-slate-900 text-xs sm:text-sm tracking-tight uppercase">
+                        <div class="bg-emerald-50/70 border-2 border-emerald-200 rounded-2xl py-2.5 sm:py-3 px-3 sm:px-3.5 flex justify-between items-center shadow-sm">
+                            <span class="font-black text-slate-900 text-[11px] sm:text-xs tracking-tight uppercase whitespace-nowrap">
                                 JUMLAH KESELURUHAN
                             </span>
-                            <span class="font-black text-slate-900 text-xs sm:text-sm tracking-tight">
+                            <span class="font-black text-slate-900 text-xs sm:text-sm tracking-tight whitespace-nowrap pl-1 flex-shrink-0">
                                 RM <span id="hiking-total-${r.id}">160</span>
                             </span>
                         </div>
@@ -620,10 +620,10 @@ function renderHikingCard(r, isAvailabilityCheck = false) {
 
                 <!-- 5. Tambah ke Bakul Button -->
                 <button onclick="${isAvail ? `addToCartHiking(${r.id})` : ''}" 
-                    class="w-full ${isAvail ? 'bg-[#2d6a4f] hover:bg-[#23533e] cursor-pointer' : 'bg-slate-300 cursor-not-allowed text-slate-500'} text-white font-extrabold py-3.5 px-6 rounded-2xl transition flex items-center justify-center gap-2.5 text-base sm:text-lg shadow-md mt-auto"
+                    class="w-full ${isAvail ? 'bg-[#2d6a4f] hover:bg-[#23533e] cursor-pointer' : 'bg-slate-300 cursor-not-allowed text-slate-500'} text-white font-extrabold py-3.5 px-6 rounded-2xl transition flex items-center justify-center gap-2.5 text-base sm:text-lg shadow-md mt-auto whitespace-nowrap"
                     ${!isAvail ? 'disabled' : ''}>
                     <i class="fa-solid ${isAvail ? 'fa-cart-plus' : 'fa-calendar-xmark'} text-lg"></i>
-                    <span>${isAvail ? 'Tambah ke Bakul' : 'Tidak Tersedia'}</span>
+                    <span class="whitespace-nowrap">${isAvail ? 'Tambah ke Bakul' : 'Tidak Tersedia'}</span>
                 </button>
             </div>
         </div>
