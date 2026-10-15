@@ -831,52 +831,52 @@ const KEMASUKAN_ITEMS = [
 
 function renderKemasukanGroup(r, groupKey, groupTitle, items) {
     const rowsHtml = items.map(item => `
-        <div class="bg-[#F3FDF7] border-2 border-[#94E3BA] rounded-full py-1.5 sm:py-2 px-3 sm:px-4 flex items-center justify-between gap-2 shadow-xs hover:border-[#2d6a4f] transition select-none">
-            <!-- Kiri: Checkbox & Label -->
-            <label class="flex items-center gap-2 sm:gap-2.5 cursor-pointer flex-grow min-w-0" for="kemasukan-chk-${r.id}-${item.idx}">
+        <div class="bg-[#F3FDF7] border-2 border-[#94E3BA] rounded-full py-1 px-2.5 sm:px-3 flex items-center justify-between gap-1.5 sm:gap-2 shadow-xs hover:border-[#2d6a4f] transition select-none">
+            <!-- Kiri: Checkbox & Label (Satu Baris Ayat Penuh Tanpa Wrap) -->
+            <label class="flex items-center gap-1.5 sm:gap-2 cursor-pointer flex-shrink-0" for="kemasukan-chk-${r.id}-${item.idx}">
                 <input type="checkbox" id="kemasukan-chk-${r.id}-${item.idx}" 
                     ${item.defaultQty > 0 ? 'checked' : ''} 
                     onchange="toggleKemasukanRowCheck(${r.id}, ${item.idx})"
-                    class="w-4 h-4 sm:w-5 sm:h-5 rounded border-2 border-slate-900 text-[#2d6a4f] focus:ring-0 cursor-pointer accent-[#2d6a4f] flex-shrink-0">
-                <span class="font-black text-slate-900 text-xs sm:text-sm tracking-tight uppercase truncate">
+                    class="w-4 h-4 rounded border-2 border-slate-900 text-[#2d6a4f] focus:ring-0 cursor-pointer accent-[#2d6a4f] flex-shrink-0">
+                <span class="font-black text-slate-900 text-[10.5px] sm:text-[11.5px] tracking-tight uppercase whitespace-nowrap select-none">
                     ${item.rowLabel}
                 </span>
             </label>
 
-            <!-- Tengah: Kapsul Stepper Putih -->
-            <div class="bg-white border border-[#94E3BA] rounded-full flex items-center justify-between px-2 py-0.5 h-7 sm:h-8 w-[72px] sm:w-[84px] shadow-inner flex-shrink-0">
+            <!-- Tengah: Kapsul Stepper Putih Seimbang -->
+            <div class="bg-white border border-[#94E3BA] rounded-full flex items-center justify-between px-1.5 py-0 h-6 sm:h-7 w-[54px] sm:w-[62px] shadow-inner flex-shrink-0 mx-1">
                 <input type="number" id="kemasukan-qty-${r.id}-${item.idx}" min="0" max="500" value="${item.defaultQty}"
-                    class="w-6 sm:w-7 text-center font-black text-slate-900 text-xs sm:text-sm bg-transparent focus:outline-none cursor-pointer hide-native-spinner p-0"
+                    class="w-5 sm:w-6 text-center font-black text-slate-900 text-[11px] sm:text-xs bg-transparent focus:outline-none cursor-pointer hide-native-spinner p-0"
                     oninput="handleKemasukanQtyInput(${r.id}, ${item.idx})" onchange="handleKemasukanQtyInput(${r.id}, ${item.idx})">
                 <div class="flex flex-col items-center justify-center h-full pl-1 border-l border-[#BBF0D2] flex-shrink-0">
                     <button type="button" onclick="stepKemasukanRowQty(${r.id}, ${item.idx}, 1)"
-                        class="w-3.5 sm:w-4 h-3 flex items-center justify-center text-slate-900 hover:text-emerald-700 active:scale-90 text-[8px] font-black transition cursor-pointer select-none leading-none"
+                        class="w-3 sm:w-3.5 h-2.5 sm:h-3 flex items-center justify-center text-slate-900 hover:text-emerald-700 active:scale-90 text-[7px] sm:text-[8px] font-black transition cursor-pointer select-none leading-none"
                         title="Tambah kuantiti">
                         ▲
                     </button>
                     <button type="button" onclick="stepKemasukanRowQty(${r.id}, ${item.idx}, -1)"
-                        class="w-3.5 sm:w-4 h-3 flex items-center justify-center text-slate-900 hover:text-emerald-700 active:scale-90 text-[8px] font-black transition cursor-pointer select-none leading-none"
+                        class="w-3 sm:w-3.5 h-2.5 sm:h-3 flex items-center justify-center text-slate-900 hover:text-emerald-700 active:scale-90 text-[7px] sm:text-[8px] font-black transition cursor-pointer select-none leading-none"
                         title="Kurangkan kuantiti">
                         ▼
                     </button>
                 </div>
             </div>
 
-            <!-- Kanan: Harga Subtotal Baris -->
-            <div class="font-black text-slate-900 text-xs sm:text-sm tracking-tight whitespace-nowrap min-w-[56px] sm:min-w-[68px] text-right flex-shrink-0">
+            <!-- Kanan: Harga Pakej / Subtotal Seimbang Tanpa Terpotong -->
+            <div class="font-black text-slate-900 text-[10.5px] sm:text-[11.5px] tracking-tight whitespace-nowrap min-w-[50px] sm:min-w-[58px] text-right flex-shrink-0">
                 <span id="kemasukan-price-${r.id}-${item.idx}">
-                    ${item.rate === 0 ? 'PERCUMA' : (item.defaultQty > 0 ? 'RM' + (item.defaultQty * item.rate).toFixed(2) : 'RM0.00')}
+                    ${item.rate === 0 ? 'PERCUMA' : (item.defaultQty > 1 ? 'RM' + (item.defaultQty * item.rate).toFixed(2) : 'RM' + item.rate.toFixed(2))}
                 </span>
             </div>
         </div>
     `).join('');
 
     return `
-        <div id="kemasukan-cat-${r.id}-${groupKey}" class="space-y-2 pt-1">
-            <h4 class="font-black text-slate-900 text-xs sm:text-sm uppercase tracking-tight flex items-center gap-1.5 px-1">
+        <div id="kemasukan-cat-${r.id}-${groupKey}" class="space-y-1.5 pt-1">
+            <h4 class="font-black text-slate-900 text-[11px] sm:text-xs uppercase tracking-tight flex items-center gap-1.5 px-1 whitespace-nowrap">
                 ${groupTitle}
             </h4>
-            <div class="space-y-2">
+            <div class="space-y-1.5">
                 ${rowsHtml}
             </div>
         </div>
@@ -902,39 +902,39 @@ function renderKemasukanCard(r, isAvailabilityCheck = false) {
                 ${availBadge}
                 <img src="${r.image_url}" alt="${r.name}" class="w-full h-full ${r.image_url && r.image_url.includes('unsplash.com') ? 'object-cover' : 'object-contain p-2'}">
             </div>
-            <div class="p-4 sm:p-5 flex flex-col flex-grow justify-between bg-white">
+            <div class="p-3.5 sm:p-4 flex flex-col flex-grow justify-between bg-white">
                 <div>
-                    <h3 class="text-base sm:text-lg lg:text-xl font-black text-slate-900 text-center mb-3 tracking-tight uppercase whitespace-nowrap">${r.name}</h3>
+                    <h3 class="text-sm sm:text-base lg:text-lg font-black text-slate-900 text-center mb-2.5 tracking-tight uppercase whitespace-nowrap">${r.name}</h3>
 
                     <!-- Senarai Penuh Kadar Caj Mengikut Poster Rasmi (Header Badge) -->
-                    <div class="bg-emerald-50 border border-emerald-200/90 rounded-2xl py-2 px-3 text-center mb-3 shadow-xs">
-                        <span class="text-[11px] sm:text-xs font-black text-emerald-950 uppercase tracking-tight flex items-center justify-center gap-1.5">
+                    <div class="bg-emerald-50 border border-emerald-200/90 rounded-2xl py-1.5 px-2.5 text-center mb-2.5 shadow-xs">
+                        <span class="text-[10px] sm:text-[11px] font-black text-emerald-950 uppercase tracking-tight flex items-center justify-center gap-1.5 whitespace-nowrap">
                             <i class="fa-solid fa-ticket text-emerald-700"></i> Senarai Penuh Kadar Caj Mengikut Poster Rasmi
                         </span>
                     </div>
 
                     <!-- Category Quick Jump Navigation -->
-                    <div class="flex items-center gap-1.5 overflow-x-auto pb-1.5 mb-2.5 no-scrollbar">
+                    <div class="flex items-center gap-1 sm:gap-1.5 overflow-x-auto pb-1 mb-2.5 no-scrollbar">
                         <button type="button" onclick="scrollKemasukanToCategory(${r.id}, 'wn')"
-                            class="text-[10px] sm:text-[11px] font-black px-2.5 py-1 rounded-full bg-emerald-100 hover:bg-emerald-200 text-emerald-900 border border-emerald-300 transition whitespace-nowrap cursor-pointer">
+                            class="text-[9.5px] sm:text-[10.5px] font-black px-2 sm:px-2.5 py-1 rounded-full bg-emerald-100 hover:bg-emerald-200 text-emerald-900 border border-emerald-300 transition whitespace-nowrap cursor-pointer">
                             🇲🇾 Warga Negara
                         </button>
                         <button type="button" onclick="scrollKemasukanToCategory(${r.id}, 'bwn')"
-                            class="text-[10px] sm:text-[11px] font-black px-2.5 py-1 rounded-full bg-emerald-100 hover:bg-emerald-200 text-emerald-900 border border-emerald-300 transition whitespace-nowrap cursor-pointer">
+                            class="text-[9.5px] sm:text-[10.5px] font-black px-2 sm:px-2.5 py-1 rounded-full bg-emerald-100 hover:bg-emerald-200 text-emerald-900 border border-emerald-300 transition whitespace-nowrap cursor-pointer">
                             🌐 Bukan Warga
                         </button>
                         <button type="button" onclick="scrollKemasukanToCategory(${r.id}, 'kend')"
-                            class="text-[10px] sm:text-[11px] font-black px-2.5 py-1 rounded-full bg-emerald-100 hover:bg-emerald-200 text-emerald-900 border border-emerald-300 transition whitespace-nowrap cursor-pointer">
+                            class="text-[9.5px] sm:text-[10.5px] font-black px-2 sm:px-2.5 py-1 rounded-full bg-emerald-100 hover:bg-emerald-200 text-emerald-900 border border-emerald-300 transition whitespace-nowrap cursor-pointer">
                             🚗 Kenderaan
                         </button>
                         <button type="button" onclick="scrollKemasukanToCategory(${r.id}, 'percuma')"
-                            class="text-[10px] sm:text-[11px] font-black px-2.5 py-1 rounded-full bg-amber-100 hover:bg-amber-200 text-amber-900 border border-amber-300 transition whitespace-nowrap cursor-pointer">
+                            class="text-[9.5px] sm:text-[10.5px] font-black px-2 sm:px-2.5 py-1 rounded-full bg-amber-100 hover:bg-amber-200 text-amber-900 border border-amber-300 transition whitespace-nowrap cursor-pointer">
                             ✨ Percuma
                         </button>
                     </div>
 
                     <!-- Scrollable Container for All 11 Category Rows -->
-                    <div id="kemasukan-scroll-container-${r.id}" class="max-h-[380px] sm:max-h-[420px] overflow-y-auto space-y-4 pr-1 scroll-smooth mb-5">
+                    <div id="kemasukan-scroll-container-${r.id}" class="max-h-[380px] sm:max-h-[420px] overflow-y-auto space-y-3 pr-1 scroll-smooth mb-4">
                         ${wnGroup}
                         ${bwnGroup}
                         ${kendGroup}
@@ -942,16 +942,16 @@ function renderKemasukanCard(r, isAvailabilityCheck = false) {
                     </div>
 
                     <!-- Grand Total Container -->
-                    <div class="bg-[#F3FDF7] border-2 border-[#94E3BA] rounded-3xl py-2.5 sm:py-3 px-3.5 sm:px-4 flex justify-between items-center shadow-sm mb-4">
+                    <div class="bg-[#F3FDF7] border-2 border-[#94E3BA] rounded-3xl py-2 px-3 sm:px-3.5 flex justify-between items-center shadow-sm mb-3.5">
                         <div class="flex flex-col justify-center min-w-0 pr-2">
-                            <span class="font-black text-slate-900 text-xs sm:text-sm tracking-tight uppercase whitespace-nowrap">
+                            <span class="font-black text-slate-900 text-[11px] sm:text-xs tracking-tight uppercase whitespace-nowrap">
                                 JUMLAH KESELURUHAN
                             </span>
-                            <span id="kemasukan-summary-count-${r.id}" class="text-[10.5px] sm:text-[11px] font-bold text-[#2D5D48] whitespace-nowrap mt-0.5">
+                            <span id="kemasukan-summary-count-${r.id}" class="text-[10px] sm:text-[10.5px] font-bold text-[#2D5D48] whitespace-nowrap mt-0.5">
                                 (1 Pilihan Dipilih)
                             </span>
                         </div>
-                        <span class="font-black text-slate-900 text-sm sm:text-base tracking-tight whitespace-nowrap pl-1 flex-shrink-0">
+                        <span class="font-black text-slate-900 text-xs sm:text-sm tracking-tight whitespace-nowrap pl-1 flex-shrink-0">
                             RM <span id="kemasukan-grand-total-${r.id}">3.00</span>
                         </span>
                     </div>
@@ -1034,10 +1034,11 @@ function updateKemasukanCalculations(roomId) {
         const priceSpan = document.getElementById(`kemasukan-price-${roomId}-${item.idx}`);
 
         let q = qtyInput ? (parseInt(qtyInput.value) || 0) : 0;
-        if (chk && !chk.checked) {
+        const isChecked = chk && chk.checked;
+        if (!isChecked) {
             q = 0;
             if (qtyInput) qtyInput.value = 0;
-        } else if (chk && chk.checked && q <= 0) {
+        } else if (isChecked && q <= 0) {
             q = 1;
             if (qtyInput) qtyInput.value = 1;
         }
@@ -1046,12 +1047,14 @@ function updateKemasukanCalculations(roomId) {
         if (priceSpan) {
             if (item.rate === 0) {
                 priceSpan.textContent = 'PERCUMA';
+            } else if (isChecked && q > 1) {
+                priceSpan.textContent = 'RM' + subtotal.toFixed(2);
             } else {
-                priceSpan.textContent = 'RM' + (q > 0 ? subtotal.toFixed(2) : '0.00');
+                priceSpan.textContent = 'RM' + item.rate.toFixed(2);
             }
         }
 
-        if (q > 0) {
+        if (isChecked && q > 0) {
             grandTotal += subtotal;
             totalItems += q;
         }
