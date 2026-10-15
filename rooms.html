@@ -808,6 +808,20 @@ function addToCartHiking(id) {
     }
 }
 
+const KEMASUKAN_OPTIONS_DATA = [
+    { id: 0, category: 'WARGA NEGARA', label: 'Dewasa', fullTitle: 'WARGA NEGARA - DEWASA RM3', rate: 3, unit: 'Orang', icon: 'fa-user' },
+    { id: 1, category: 'WARGA NEGARA', label: 'Kanak-kanak', fullTitle: 'WARGA NEGARA - KANAK-KANAK RM1', rate: 1, unit: 'Orang', icon: 'fa-child' },
+    { id: 2, category: 'WARGA NEGARA', label: 'Warga Emas', fullTitle: 'WARGA NEGARA - WARGA EMAS RM1', rate: 1, unit: 'Orang', icon: 'fa-person-cane' },
+    { id: 3, category: 'BUKAN WARGA NEGARA', label: 'Dewasa', fullTitle: 'BUKAN WARGA NEGARA - DEWASA RM10', rate: 10, unit: 'Orang', icon: 'fa-user' },
+    { id: 4, category: 'BUKAN WARGA NEGARA', label: 'Kanak-kanak', fullTitle: 'BUKAN WARGA NEGARA - KANAK-KANAK RM5', rate: 5, unit: 'Orang', icon: 'fa-child' },
+    { id: 5, category: 'BUKAN WARGA NEGARA', label: 'Warga Emas', fullTitle: 'BUKAN WARGA NEGARA - WARGA EMAS RM5', rate: 5, unit: 'Orang', icon: 'fa-person-cane' },
+    { id: 6, category: 'CAJ KENDERAAN', label: 'Kereta', fullTitle: 'CAJ KENDERAAN - KERETA RM3', rate: 3, unit: 'Kenderaan', icon: 'fa-car-side' },
+    { id: 7, category: 'CAJ KENDERAAN', label: 'Motorsikal', fullTitle: 'CAJ KENDERAAN - MOTORSIKAL RM1', rate: 1, unit: 'Kenderaan', icon: 'fa-motorcycle' },
+    { id: 8, category: 'CAJ KENDERAAN', label: 'Bas / Lori', fullTitle: 'CAJ KENDERAAN - BAS / LORI RM10', rate: 10, unit: 'Kenderaan', icon: 'fa-bus' },
+    { id: 9, category: 'PERCUMA', label: '0-4 Tahun', fullTitle: 'KANAK-KANAK 0-4 TAHUN (PERCUMA)', rate: 0, unit: 'Orang', icon: 'fa-baby' },
+    { id: 10, category: 'PERCUMA', label: 'OKU', fullTitle: 'OKU (PERCUMA)', rate: 0, unit: 'Orang', icon: 'fa-wheelchair' }
+];
+
 function renderKemasukanCard(r, isAvailabilityCheck = false) {
     const isAvail = !isAvailabilityCheck || r.available;
     const availBadge = isAvailabilityCheck ? `
@@ -824,115 +838,160 @@ function renderKemasukanCard(r, isAvailabilityCheck = false) {
             </div>
             <div class="p-4 sm:p-5 flex flex-col flex-grow justify-between bg-white">
                 <div>
-                    <h3 class="text-base sm:text-lg lg:text-xl font-black text-slate-900 text-center mb-4 tracking-tight uppercase whitespace-nowrap">${r.name}</h3>
+                    <h3 class="text-base sm:text-lg lg:text-xl font-black text-slate-900 text-center mb-3 tracking-tight uppercase whitespace-nowrap">${r.name}</h3>
 
-                    <div class="space-y-2.5 sm:space-y-3 mb-6">
-                        <!-- 1. Dropdown Pilihan Kategori Tiket & Kenderaan -->
-                        <div class="relative">
-                            <button type="button" id="kemasukan-dropdown-btn-${r.id}" onclick="toggleKemasukanDropdown(${r.id})"
-                                class="w-full bg-[#F3FDF7] border-2 border-[#94E3BA] rounded-full py-2.5 sm:py-3 px-3 sm:px-3.5 flex items-center justify-between shadow-sm hover:border-[#2d6a4f] transition text-left cursor-pointer">
-                                <span id="kemasukan-selected-text-${r.id}" class="font-black text-slate-900 text-[11px] sm:text-xs tracking-tight uppercase whitespace-nowrap overflow-hidden text-ellipsis mr-1">
-                                    WARGA NEGARA - DEWASA RM3
-                                </span>
-                                <span id="kemasukan-dropdown-arrow-${r.id}" class="text-slate-900 text-xs font-black pl-1.5 flex-shrink-0 transition-transform duration-200">▽</span>
-                            </button>
+                    <!-- Senarai Penuh Kadar Caj Mengikut Poster Rasmi (Header Badge) -->
+                    <div class="bg-emerald-50 border border-emerald-200/90 rounded-2xl py-2 px-3 text-center mb-3.5 shadow-xs">
+                        <span class="text-[11px] sm:text-xs font-black text-emerald-950 uppercase tracking-tight flex items-center justify-center gap-1.5">
+                            <i class="fa-solid fa-ticket text-emerald-700"></i> Senarai Penuh Kadar Caj Mengikut Poster Rasmi
+                        </span>
+                    </div>
 
-                            <!-- Floating Dropdown Menu (11 Pilihan Senarai Penuh Dari Poster) -->
-                            <div id="kemasukan-dropdown-menu-${r.id}" 
-                                class="hidden absolute left-0 right-0 top-full mt-1.5 z-30 bg-white border-2 border-[#94E3BA] rounded-2xl shadow-xl overflow-hidden divide-y divide-emerald-100 max-h-72 overflow-y-auto">
-                                
-                                <!-- Kategori 1: WARGA NEGARA -->
-                                <div class="bg-emerald-50 px-3 py-1.5 text-[10px] font-black text-emerald-800 tracking-wider uppercase sticky top-0 border-b border-emerald-100 flex items-center gap-1.5">
-                                    <i class="fa-solid fa-flag text-emerald-600"></i> WARGA NEGARA
+                    <div class="space-y-3 mb-6">
+                        <!-- Kotak Kecil Pilihan Memuatkan Kesemua 11 Kategori Tiket & Kenderaan -->
+                        <div class="bg-[#F9FCFA] border-2 border-[#94E3BA] rounded-2xl p-2.5 sm:p-3 shadow-xs space-y-2.5">
+                            
+                            <!-- 1. WARGA NEGARA -->
+                            <div>
+                                <div class="flex items-center justify-between text-[10px] font-black text-emerald-900 uppercase tracking-wider mb-1 px-0.5">
+                                    <span class="flex items-center gap-1"><i class="fa-solid fa-flag text-emerald-700 text-[9px]"></i> WARGA NEGARA</span>
+                                    <span class="text-[9.5px] text-slate-600 font-bold">RM1 - RM3</span>
                                 </div>
-                                <div onclick="selectKemasukanDropdownOption(${r.id}, 3, 'WARGA NEGARA - DEWASA RM3', 'Orang')"
-                                    class="py-2.5 px-3.5 hover:bg-[#F3FDF7] cursor-pointer transition">
-                                    <span class="font-black text-slate-900 text-[11px] sm:text-xs tracking-tight uppercase whitespace-nowrap block">
-                                        WARGA NEGARA - DEWASA RM3
-                                    </span>
-                                </div>
-                                <div onclick="selectKemasukanDropdownOption(${r.id}, 1, 'WARGA NEGARA - KANAK-KANAK RM1', 'Orang')"
-                                    class="py-2.5 px-3.5 hover:bg-[#F3FDF7] cursor-pointer transition">
-                                    <span class="font-black text-slate-900 text-[11px] sm:text-xs tracking-tight uppercase whitespace-nowrap block">
-                                        WARGA NEGARA - KANAK-KANAK RM1
-                                    </span>
-                                </div>
-                                <div onclick="selectKemasukanDropdownOption(${r.id}, 1, 'WARGA NEGARA - WARGA EMAS RM1', 'Orang')"
-                                    class="py-2.5 px-3.5 hover:bg-[#F3FDF7] cursor-pointer transition">
-                                    <span class="font-black text-slate-900 text-[11px] sm:text-xs tracking-tight uppercase whitespace-nowrap block">
-                                        WARGA NEGARA - WARGA EMAS RM1
-                                    </span>
-                                </div>
-
-                                <!-- Kategori 2: BUKAN WARGA NEGARA -->
-                                <div class="bg-emerald-50 px-3 py-1.5 text-[10px] font-black text-emerald-800 tracking-wider uppercase sticky top-0 border-b border-emerald-100 flex items-center gap-1.5">
-                                    <i class="fa-solid fa-globe text-emerald-600"></i> BUKAN WARGA NEGARA
-                                </div>
-                                <div onclick="selectKemasukanDropdownOption(${r.id}, 10, 'BUKAN WARGA NEGARA - DEWASA RM10', 'Orang')"
-                                    class="py-2.5 px-3.5 hover:bg-[#F3FDF7] cursor-pointer transition">
-                                    <span class="font-black text-slate-900 text-[11px] sm:text-xs tracking-tight uppercase whitespace-nowrap block">
-                                        BUKAN WARGA NEGARA - DEWASA RM10
-                                    </span>
-                                </div>
-                                <div onclick="selectKemasukanDropdownOption(${r.id}, 5, 'BUKAN WARGA NEGARA - KANAK-KANAK RM5', 'Orang')"
-                                    class="py-2.5 px-3.5 hover:bg-[#F3FDF7] cursor-pointer transition">
-                                    <span class="font-black text-slate-900 text-[11px] sm:text-xs tracking-tight uppercase whitespace-nowrap block">
-                                        BUKAN WARGA NEGARA - KANAK-KANAK RM5
-                                    </span>
-                                </div>
-                                <div onclick="selectKemasukanDropdownOption(${r.id}, 5, 'BUKAN WARGA NEGARA - WARGA EMAS RM5', 'Orang')"
-                                    class="py-2.5 px-3.5 hover:bg-[#F3FDF7] cursor-pointer transition">
-                                    <span class="font-black text-slate-900 text-[11px] sm:text-xs tracking-tight uppercase whitespace-nowrap block">
-                                        BUKAN WARGA NEGARA - WARGA EMAS RM5
-                                    </span>
-                                </div>
-
-                                <!-- Kategori 3: CAJ KENDERAAN -->
-                                <div class="bg-emerald-50 px-3 py-1.5 text-[10px] font-black text-emerald-800 tracking-wider uppercase sticky top-0 border-b border-emerald-100 flex items-center gap-1.5">
-                                    <i class="fa-solid fa-car text-emerald-600"></i> CAJ KENDERAAN
-                                </div>
-                                <div onclick="selectKemasukanDropdownOption(${r.id}, 3, 'CAJ KENDERAAN - KERETA RM3', 'Kenderaan')"
-                                    class="py-2.5 px-3.5 hover:bg-[#F3FDF7] cursor-pointer transition">
-                                    <span class="font-black text-slate-900 text-[11px] sm:text-xs tracking-tight uppercase whitespace-nowrap block">
-                                        CAJ KENDERAAN - KERETA RM3
-                                    </span>
-                                </div>
-                                <div onclick="selectKemasukanDropdownOption(${r.id}, 1, 'CAJ KENDERAAN - MOTORSIKAL RM1', 'Kenderaan')"
-                                    class="py-2.5 px-3.5 hover:bg-[#F3FDF7] cursor-pointer transition">
-                                    <span class="font-black text-slate-900 text-[11px] sm:text-xs tracking-tight uppercase whitespace-nowrap block">
-                                        CAJ KENDERAAN - MOTORSIKAL RM1
-                                    </span>
-                                </div>
-                                <div onclick="selectKemasukanDropdownOption(${r.id}, 10, 'CAJ KENDERAAN - BAS / LORI RM10', 'Kenderaan')"
-                                    class="py-2.5 px-3.5 hover:bg-[#F3FDF7] cursor-pointer transition">
-                                    <span class="font-black text-slate-900 text-[11px] sm:text-xs tracking-tight uppercase whitespace-nowrap block">
-                                        CAJ KENDERAAN - BAS / LORI RM10
-                                    </span>
-                                </div>
-
-                                <!-- Kategori 4: PERCUMA -->
-                                <div class="bg-emerald-50 px-3 py-1.5 text-[10px] font-black text-emerald-800 tracking-wider uppercase sticky top-0 border-b border-emerald-100 flex items-center gap-1.5">
-                                    <i class="fa-solid fa-gift text-emerald-600"></i> PERCUMA
-                                </div>
-                                <div onclick="selectKemasukanDropdownOption(${r.id}, 0, 'KANAK-KANAK 0-4 TAHUN PERCUMA', 'Orang')"
-                                    class="py-2.5 px-3.5 hover:bg-[#F3FDF7] cursor-pointer transition">
-                                    <span class="font-black text-slate-900 text-[11px] sm:text-xs tracking-tight uppercase whitespace-nowrap block">
-                                        KANAK-KANAK 0-4 TAHUN (PERCUMA)
-                                    </span>
-                                </div>
-                                <div onclick="selectKemasukanDropdownOption(${r.id}, 0, 'OKU PERCUMA', 'Orang')"
-                                    class="py-2.5 px-3.5 hover:bg-[#F3FDF7] cursor-pointer transition">
-                                    <span class="font-black text-slate-900 text-[11px] sm:text-xs tracking-tight uppercase whitespace-nowrap block">
-                                        OKU (PERCUMA)
-                                    </span>
+                                <div class="grid grid-cols-3 gap-1.5">
+                                    <!-- 0: Dewasa RM3 -->
+                                    <button type="button" onclick="selectKemasukanBoxOption(${r.id}, 0)" id="opt-kemasukan-${r.id}-0"
+                                        class="kemasukan-opt-btn flex flex-col items-center justify-center py-2 px-1 rounded-xl border-2 border-[#1b4332] bg-[#2d6a4f] text-white shadow-md ring-2 ring-emerald-400/60 scale-[1.02] transition cursor-pointer select-none text-center min-w-0"
+                                        title="Pilih Dewasa (Warga Negara) RM3">
+                                        <i class="fa-solid fa-user text-xs mb-0.5 text-emerald-200"></i>
+                                        <span class="text-[10px] sm:text-[10.5px] font-extrabold uppercase tracking-tight leading-tight whitespace-nowrap">Dewasa</span>
+                                        <span class="opt-price text-[11px] font-black mt-0.5 tracking-tight text-white">RM3</span>
+                                    </button>
+                                    <!-- 1: Kanak-kanak RM1 -->
+                                    <button type="button" onclick="selectKemasukanBoxOption(${r.id}, 1)" id="opt-kemasukan-${r.id}-1"
+                                        class="kemasukan-opt-btn flex flex-col items-center justify-center py-2 px-1 rounded-xl border-2 border-[#94E3BA] bg-[#F3FDF7] text-slate-800 hover:border-emerald-600 hover:bg-emerald-100/60 transition cursor-pointer select-none text-center min-w-0"
+                                        title="Pilih Kanak-kanak (Warga Negara) RM1">
+                                        <i class="fa-solid fa-child text-xs mb-0.5 text-[#2D5D48]"></i>
+                                        <span class="text-[10px] sm:text-[10.5px] font-extrabold uppercase tracking-tight leading-tight whitespace-nowrap">Kanak-kanak</span>
+                                        <span class="opt-price text-[11px] font-black mt-0.5 tracking-tight text-emerald-800">RM1</span>
+                                    </button>
+                                    <!-- 2: Warga Emas RM1 -->
+                                    <button type="button" onclick="selectKemasukanBoxOption(${r.id}, 2)" id="opt-kemasukan-${r.id}-2"
+                                        class="kemasukan-opt-btn flex flex-col items-center justify-center py-2 px-1 rounded-xl border-2 border-[#94E3BA] bg-[#F3FDF7] text-slate-800 hover:border-emerald-600 hover:bg-emerald-100/60 transition cursor-pointer select-none text-center min-w-0"
+                                        title="Pilih Warga Emas (Warga Negara) RM1">
+                                        <i class="fa-solid fa-person-cane text-xs mb-0.5 text-[#2D5D48]"></i>
+                                        <span class="text-[10px] sm:text-[10.5px] font-extrabold uppercase tracking-tight leading-tight whitespace-nowrap">Warga Emas</span>
+                                        <span class="opt-price text-[11px] font-black mt-0.5 tracking-tight text-emerald-800">RM1</span>
+                                    </button>
                                 </div>
                             </div>
 
-                            <!-- Hidden inputs for active selection -->
-                            <input type="hidden" id="kemasukan-rate-${r.id}" value="3">
-                            <input type="hidden" id="kemasukan-label-${r.id}" value="WARGA NEGARA - DEWASA RM3">
-                            <input type="hidden" id="kemasukan-unit-${r.id}" value="Orang">
+                            <!-- 2. BUKAN WARGA NEGARA -->
+                            <div>
+                                <div class="flex items-center justify-between text-[10px] font-black text-emerald-900 uppercase tracking-wider mb-1 px-0.5">
+                                    <span class="flex items-center gap-1"><i class="fa-solid fa-globe text-emerald-700 text-[9px]"></i> BUKAN WARGA NEGARA</span>
+                                    <span class="text-[9.5px] text-slate-600 font-bold">RM5 - RM10</span>
+                                </div>
+                                <div class="grid grid-cols-3 gap-1.5">
+                                    <!-- 3: Dewasa RM10 -->
+                                    <button type="button" onclick="selectKemasukanBoxOption(${r.id}, 3)" id="opt-kemasukan-${r.id}-3"
+                                        class="kemasukan-opt-btn flex flex-col items-center justify-center py-2 px-1 rounded-xl border-2 border-[#94E3BA] bg-[#F3FDF7] text-slate-800 hover:border-emerald-600 hover:bg-emerald-100/60 transition cursor-pointer select-none text-center min-w-0"
+                                        title="Pilih Dewasa (Bukan Warga Negara) RM10">
+                                        <i class="fa-solid fa-user text-xs mb-0.5 text-[#2D5D48]"></i>
+                                        <span class="text-[10px] sm:text-[10.5px] font-extrabold uppercase tracking-tight leading-tight whitespace-nowrap">Dewasa</span>
+                                        <span class="opt-price text-[11px] font-black mt-0.5 tracking-tight text-emerald-800">RM10</span>
+                                    </button>
+                                    <!-- 4: Kanak-kanak RM5 -->
+                                    <button type="button" onclick="selectKemasukanBoxOption(${r.id}, 4)" id="opt-kemasukan-${r.id}-4"
+                                        class="kemasukan-opt-btn flex flex-col items-center justify-center py-2 px-1 rounded-xl border-2 border-[#94E3BA] bg-[#F3FDF7] text-slate-800 hover:border-emerald-600 hover:bg-emerald-100/60 transition cursor-pointer select-none text-center min-w-0"
+                                        title="Pilih Kanak-kanak (Bukan Warga Negara) RM5">
+                                        <i class="fa-solid fa-child text-xs mb-0.5 text-[#2D5D48]"></i>
+                                        <span class="text-[10px] sm:text-[10.5px] font-extrabold uppercase tracking-tight leading-tight whitespace-nowrap">Kanak-kanak</span>
+                                        <span class="opt-price text-[11px] font-black mt-0.5 tracking-tight text-emerald-800">RM5</span>
+                                    </button>
+                                    <!-- 5: Warga Emas RM5 -->
+                                    <button type="button" onclick="selectKemasukanBoxOption(${r.id}, 5)" id="opt-kemasukan-${r.id}-5"
+                                        class="kemasukan-opt-btn flex flex-col items-center justify-center py-2 px-1 rounded-xl border-2 border-[#94E3BA] bg-[#F3FDF7] text-slate-800 hover:border-emerald-600 hover:bg-emerald-100/60 transition cursor-pointer select-none text-center min-w-0"
+                                        title="Pilih Warga Emas (Bukan Warga Negara) RM5">
+                                        <i class="fa-solid fa-person-cane text-xs mb-0.5 text-[#2D5D48]"></i>
+                                        <span class="text-[10px] sm:text-[10.5px] font-extrabold uppercase tracking-tight leading-tight whitespace-nowrap">Warga Emas</span>
+                                        <span class="opt-price text-[11px] font-black mt-0.5 tracking-tight text-emerald-800">RM5</span>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- 3. CAJ KENDERAAN -->
+                            <div>
+                                <div class="flex items-center justify-between text-[10px] font-black text-emerald-900 uppercase tracking-wider mb-1 px-0.5">
+                                    <span class="flex items-center gap-1"><i class="fa-solid fa-car text-emerald-700 text-[9px]"></i> CAJ KENDERAAN</span>
+                                    <span class="text-[9.5px] text-slate-600 font-bold">RM1 - RM10</span>
+                                </div>
+                                <div class="grid grid-cols-3 gap-1.5">
+                                    <!-- 6: Kereta RM3 -->
+                                    <button type="button" onclick="selectKemasukanBoxOption(${r.id}, 6)" id="opt-kemasukan-${r.id}-6"
+                                        class="kemasukan-opt-btn flex flex-col items-center justify-center py-2 px-1 rounded-xl border-2 border-[#94E3BA] bg-[#F3FDF7] text-slate-800 hover:border-emerald-600 hover:bg-emerald-100/60 transition cursor-pointer select-none text-center min-w-0"
+                                        title="Pilih Kereta RM3">
+                                        <i class="fa-solid fa-car-side text-xs mb-0.5 text-[#2D5D48]"></i>
+                                        <span class="text-[10px] sm:text-[10.5px] font-extrabold uppercase tracking-tight leading-tight whitespace-nowrap">Kereta</span>
+                                        <span class="opt-price text-[11px] font-black mt-0.5 tracking-tight text-emerald-800">RM3</span>
+                                    </button>
+                                    <!-- 7: Motorsikal RM1 -->
+                                    <button type="button" onclick="selectKemasukanBoxOption(${r.id}, 7)" id="opt-kemasukan-${r.id}-7"
+                                        class="kemasukan-opt-btn flex flex-col items-center justify-center py-2 px-1 rounded-xl border-2 border-[#94E3BA] bg-[#F3FDF7] text-slate-800 hover:border-emerald-600 hover:bg-emerald-100/60 transition cursor-pointer select-none text-center min-w-0"
+                                        title="Pilih Motorsikal RM1">
+                                        <i class="fa-solid fa-motorcycle text-xs mb-0.5 text-[#2D5D48]"></i>
+                                        <span class="text-[10px] sm:text-[10.5px] font-extrabold uppercase tracking-tight leading-tight whitespace-nowrap">Motorsikal</span>
+                                        <span class="opt-price text-[11px] font-black mt-0.5 tracking-tight text-emerald-800">RM1</span>
+                                    </button>
+                                    <!-- 8: Bas / Lori RM10 -->
+                                    <button type="button" onclick="selectKemasukanBoxOption(${r.id}, 8)" id="opt-kemasukan-${r.id}-8"
+                                        class="kemasukan-opt-btn flex flex-col items-center justify-center py-2 px-1 rounded-xl border-2 border-[#94E3BA] bg-[#F3FDF7] text-slate-800 hover:border-emerald-600 hover:bg-emerald-100/60 transition cursor-pointer select-none text-center min-w-0"
+                                        title="Pilih Bas / Lori RM10">
+                                        <i class="fa-solid fa-bus text-xs mb-0.5 text-[#2D5D48]"></i>
+                                        <span class="text-[10px] sm:text-[10.5px] font-extrabold uppercase tracking-tight leading-tight whitespace-nowrap">Bas / Lori</span>
+                                        <span class="opt-price text-[11px] font-black mt-0.5 tracking-tight text-emerald-800">RM10</span>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- 4. PERCUMA (RM0) -->
+                            <div>
+                                <div class="flex items-center justify-between text-[10px] font-black text-amber-900 uppercase tracking-wider mb-1 px-0.5">
+                                    <span class="flex items-center gap-1"><i class="fa-solid fa-gift text-amber-600 text-[9px]"></i> KATEGORI PERCUMA</span>
+                                    <span class="text-[9.5px] text-amber-700 font-bold">RM0</span>
+                                </div>
+                                <div class="grid grid-cols-2 gap-1.5">
+                                    <!-- 9: Kanak-kanak 0-4 Tahun -->
+                                    <button type="button" onclick="selectKemasukanBoxOption(${r.id}, 9)" id="opt-kemasukan-${r.id}-9"
+                                        class="kemasukan-opt-btn flex flex-col items-center justify-center py-2 px-1.5 rounded-xl border-2 border-[#94E3BA] bg-[#F3FDF7] text-slate-800 hover:border-emerald-600 hover:bg-emerald-100/60 transition cursor-pointer select-none text-center min-w-0"
+                                        title="Pilih Kanak-kanak 0-4 Tahun (Percuma)">
+                                        <i class="fa-solid fa-baby text-xs mb-0.5 text-[#2D5D48]"></i>
+                                        <span class="text-[10px] sm:text-[10.5px] font-extrabold uppercase tracking-tight leading-tight whitespace-nowrap">0-4 Tahun</span>
+                                        <span class="opt-price text-[10.5px] font-black mt-0.5 tracking-tight text-amber-700">PERCUMA</span>
+                                    </button>
+                                    <!-- 10: OKU -->
+                                    <button type="button" onclick="selectKemasukanBoxOption(${r.id}, 10)" id="opt-kemasukan-${r.id}-10"
+                                        class="kemasukan-opt-btn flex flex-col items-center justify-center py-2 px-1.5 rounded-xl border-2 border-[#94E3BA] bg-[#F3FDF7] text-slate-800 hover:border-emerald-600 hover:bg-emerald-100/60 transition cursor-pointer select-none text-center min-w-0"
+                                        title="Pilih OKU (Percuma)">
+                                        <i class="fa-solid fa-wheelchair text-xs mb-0.5 text-[#2D5D48]"></i>
+                                        <span class="text-[10px] sm:text-[10.5px] font-extrabold uppercase tracking-tight leading-tight whitespace-nowrap">OKU</span>
+                                        <span class="opt-price text-[10.5px] font-black mt-0.5 tracking-tight text-amber-700">PERCUMA</span>
+                                    </button>
+                                </div>
+                            </div>
                         </div>
+
+                        <!-- Active Selection Banner / Pill -->
+                        <div class="bg-[#F3FDF7] border-2 border-[#94E3BA] rounded-full py-2 sm:py-2.5 px-3.5 flex items-center justify-between shadow-xs">
+                            <span class="text-[10px] sm:text-[10.5px] font-black text-[#2D5D48] uppercase tracking-tight flex-shrink-0">PILIHAN TIKET:</span>
+                            <span id="kemasukan-selected-text-${r.id}" class="text-[11px] sm:text-xs font-black text-slate-900 tracking-tight uppercase truncate text-right ml-1">
+                                WARGA NEGARA - DEWASA RM3
+                            </span>
+                        </div>
+
+                        <!-- Hidden inputs for active selection -->
+                        <input type="hidden" id="kemasukan-rate-${r.id}" value="3">
+                        <input type="hidden" id="kemasukan-label-${r.id}" value="WARGA NEGARA - DEWASA RM3">
+                        <input type="hidden" id="kemasukan-unit-${r.id}" value="Orang">
 
                         <!-- 2. Kadar Seunit & Bilangan / Kuantiti (Kotak Berasingan Kiri dan Kanan) -->
                         <div class="grid grid-cols-2 gap-2 sm:gap-2.5">
@@ -1015,43 +1074,58 @@ function renderKemasukanCard(r, isAvailabilityCheck = false) {
     `;
 }
 
-function toggleKemasukanDropdown(id) {
-    const menu = document.getElementById(`kemasukan-dropdown-menu-${id}`);
-    const arrow = document.getElementById(`kemasukan-dropdown-arrow-${id}`);
-    if (!menu) return;
-    
-    const isHidden = menu.classList.contains('hidden');
-    // Tutup mana-mana dropdown lain
-    document.querySelectorAll('[id^="kemasukan-dropdown-menu-"]').forEach(m => m.classList.add('hidden'));
-    document.querySelectorAll('[id^="kemasukan-dropdown-arrow-"]').forEach(a => a.style.transform = 'rotate(0deg)');
-    document.querySelectorAll('[id^="hiking-dropdown-menu-"]').forEach(m => m.classList.add('hidden'));
-    document.querySelectorAll('[id^="hiking-dropdown-arrow-"]').forEach(a => a.style.transform = 'rotate(0deg)');
-    
-    if (isHidden) {
-        menu.classList.remove('hidden');
-        if (arrow) arrow.style.transform = 'rotate(180deg)';
+function selectKemasukanBoxOption(roomId, index) {
+    const opt = KEMASUKAN_OPTIONS_DATA[index];
+    if (!opt) return;
+
+    const rateInput = document.getElementById(`kemasukan-rate-${roomId}`);
+    const labelInput = document.getElementById(`kemasukan-label-${roomId}`);
+    const unitInput = document.getElementById(`kemasukan-unit-${roomId}`);
+    const textSpan = document.getElementById(`kemasukan-selected-text-${roomId}`);
+    const unitPriceBox = document.getElementById(`kemasukan-unit-price-${roomId}`);
+
+    if (rateInput) rateInput.value = opt.rate;
+    if (labelInput) labelInput.value = opt.fullTitle;
+    if (unitInput) unitInput.value = opt.unit;
+    if (textSpan) textSpan.textContent = opt.fullTitle;
+    if (unitPriceBox) unitPriceBox.textContent = opt.rate === 0 ? 'PERCUMA' : `RM${opt.rate}`;
+
+    for (let i = 0; i < 11; i++) {
+        const box = document.getElementById(`opt-kemasukan-${roomId}-${i}`);
+        if (!box) continue;
+        const icon = box.querySelector('i');
+        const price = box.querySelector('.opt-price');
+        if (i === index) {
+            box.className = "kemasukan-opt-btn flex flex-col items-center justify-center py-2 px-1 rounded-xl border-2 border-[#1b4332] bg-[#2d6a4f] text-white shadow-md ring-2 ring-emerald-400/60 scale-[1.02] transition cursor-pointer select-none text-center min-w-0";
+            if (icon) {
+                icon.classList.remove('text-[#2D5D48]');
+                icon.classList.add('text-emerald-200');
+            }
+            if (price) {
+                price.className = "opt-price text-[11px] font-black mt-0.5 tracking-tight text-white";
+            }
+        } else {
+            box.className = "kemasukan-opt-btn flex flex-col items-center justify-center py-2 px-1 rounded-xl border-2 border-[#94E3BA] bg-[#F3FDF7] text-slate-800 hover:border-emerald-600 hover:bg-emerald-100/60 transition cursor-pointer select-none text-center min-w-0";
+            if (icon) {
+                icon.classList.remove('text-emerald-200');
+                icon.classList.add('text-[#2D5D48]');
+            }
+            if (price) {
+                const isFree = (i === 9 || i === 10);
+                price.className = `opt-price text-[10.5px] sm:text-[11px] font-black mt-0.5 tracking-tight ${isFree ? 'text-amber-700' : 'text-emerald-800'}`;
+            }
+        }
     }
+
+    updateKemasukanPrice(roomId);
 }
 
+// Alias untuk keserasian jika diperlukan
 function selectKemasukanDropdownOption(id, rate, text, unit = 'Orang') {
-    const rateInput = document.getElementById(`kemasukan-rate-${id}`);
-    const labelInput = document.getElementById(`kemasukan-label-${id}`);
-    const unitInput = document.getElementById(`kemasukan-unit-${id}`);
-    const textBox = document.getElementById(`kemasukan-selected-text-${id}`);
-    const unitPriceBox = document.getElementById(`kemasukan-unit-price-${id}`);
-    const menu = document.getElementById(`kemasukan-dropdown-menu-${id}`);
-    const arrow = document.getElementById(`kemasukan-dropdown-arrow-${id}`);
-    
-    if (rateInput) rateInput.value = rate;
-    if (labelInput) labelInput.value = text;
-    if (unitInput) unitInput.value = unit;
-    if (textBox) textBox.textContent = text;
-    if (unitPriceBox) unitPriceBox.textContent = rate === 0 ? 'PERCUMA' : `RM${rate}`;
-    
-    if (menu) menu.classList.add('hidden');
-    if (arrow) arrow.style.transform = 'rotate(0deg)';
-    
-    updateKemasukanPrice(id);
+    const foundIndex = KEMASUKAN_OPTIONS_DATA.findIndex(o => o.fullTitle === text || o.rate === rate);
+    if (foundIndex !== -1) {
+        selectKemasukanBoxOption(id, foundIndex);
+    }
 }
 
 function stepKemasukanQty(id, delta) {
