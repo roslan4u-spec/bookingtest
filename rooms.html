@@ -693,6 +693,10 @@ document.addEventListener('click', function(e) {
         document.querySelectorAll('[id^="hiking-dropdown-menu-"]').forEach(m => m.classList.add('hidden'));
         document.querySelectorAll('[id^="hiking-dropdown-arrow-"]').forEach(a => a.style.transform = 'rotate(0deg)');
     }
+    if (!e.target.closest('[id^="kemasukan-dropdown-btn-"]') && !e.target.closest('[id^="kemasukan-dropdown-menu-"]')) {
+        document.querySelectorAll('[id^="kemasukan-dropdown-menu-"]').forEach(m => m.classList.add('hidden'));
+        document.querySelectorAll('[id^="kemasukan-dropdown-arrow-"]').forEach(a => a.style.transform = 'rotate(0deg)');
+    }
 });
 
 function stepHikingPax(id, delta) {
@@ -804,6 +808,355 @@ function addToCartHiking(id) {
     }
 }
 
+function renderKemasukanCard(r, isAvailabilityCheck = false) {
+    const isAvail = !isAvailabilityCheck || r.available;
+    const availBadge = isAvailabilityCheck ? `
+        <span class="absolute top-3 left-3 ${r.available ? 'bg-emerald-600' : 'bg-rose-600'} text-white text-xs font-bold px-3 py-1 rounded-full shadow-sm z-10">
+            <i class="fa-solid ${r.available ? 'fa-circle-check' : 'fa-circle-xmark'} mr-1"></i>${r.available ? 'Tersedia' : 'Ditempah'}
+        </span>
+    ` : '';
+
+    return `
+        <div class="room-card bg-white rounded-2xl shadow-lg overflow-hidden border ${isAvailabilityCheck && !r.available ? 'border-rose-200 opacity-70' : 'border-slate-100'} flex flex-col">
+            <div class="relative w-full bg-slate-50 aspect-[3/4] flex justify-center items-center border-b border-slate-100">
+                ${availBadge}
+                <img src="${r.image_url}" alt="${r.name}" class="w-full h-full ${r.image_url && r.image_url.includes('unsplash.com') ? 'object-cover' : 'object-contain p-2'}">
+            </div>
+            <div class="p-4 sm:p-5 flex flex-col flex-grow justify-between bg-white">
+                <div>
+                    <h3 class="text-base sm:text-lg lg:text-xl font-black text-slate-900 text-center mb-4 tracking-tight uppercase whitespace-nowrap">${r.name}</h3>
+
+                    <div class="space-y-2.5 sm:space-y-3 mb-6">
+                        <!-- 1. Dropdown Pilihan Kategori Tiket & Kenderaan -->
+                        <div class="relative">
+                            <button type="button" id="kemasukan-dropdown-btn-${r.id}" onclick="toggleKemasukanDropdown(${r.id})"
+                                class="w-full bg-[#F3FDF7] border-2 border-[#94E3BA] rounded-full py-2.5 sm:py-3 px-3 sm:px-3.5 flex items-center justify-between shadow-sm hover:border-[#2d6a4f] transition text-left cursor-pointer">
+                                <span id="kemasukan-selected-text-${r.id}" class="font-black text-slate-900 text-[11px] sm:text-xs tracking-tight uppercase whitespace-nowrap overflow-hidden text-ellipsis mr-1">
+                                    WARGA NEGARA - DEWASA RM3
+                                </span>
+                                <span id="kemasukan-dropdown-arrow-${r.id}" class="text-slate-900 text-xs font-black pl-1.5 flex-shrink-0 transition-transform duration-200">▽</span>
+                            </button>
+
+                            <!-- Floating Dropdown Menu (11 Pilihan Senarai Penuh Dari Poster) -->
+                            <div id="kemasukan-dropdown-menu-${r.id}" 
+                                class="hidden absolute left-0 right-0 top-full mt-1.5 z-30 bg-white border-2 border-[#94E3BA] rounded-2xl shadow-xl overflow-hidden divide-y divide-emerald-100 max-h-72 overflow-y-auto">
+                                
+                                <!-- Kategori 1: WARGA NEGARA -->
+                                <div class="bg-emerald-50 px-3 py-1.5 text-[10px] font-black text-emerald-800 tracking-wider uppercase sticky top-0 border-b border-emerald-100 flex items-center gap-1.5">
+                                    <i class="fa-solid fa-flag text-emerald-600"></i> WARGA NEGARA
+                                </div>
+                                <div onclick="selectKemasukanDropdownOption(${r.id}, 3, 'WARGA NEGARA - DEWASA RM3', 'Orang')"
+                                    class="py-2.5 px-3.5 hover:bg-[#F3FDF7] cursor-pointer transition">
+                                    <span class="font-black text-slate-900 text-[11px] sm:text-xs tracking-tight uppercase whitespace-nowrap block">
+                                        WARGA NEGARA - DEWASA RM3
+                                    </span>
+                                </div>
+                                <div onclick="selectKemasukanDropdownOption(${r.id}, 1, 'WARGA NEGARA - KANAK-KANAK RM1', 'Orang')"
+                                    class="py-2.5 px-3.5 hover:bg-[#F3FDF7] cursor-pointer transition">
+                                    <span class="font-black text-slate-900 text-[11px] sm:text-xs tracking-tight uppercase whitespace-nowrap block">
+                                        WARGA NEGARA - KANAK-KANAK RM1
+                                    </span>
+                                </div>
+                                <div onclick="selectKemasukanDropdownOption(${r.id}, 1, 'WARGA NEGARA - WARGA EMAS RM1', 'Orang')"
+                                    class="py-2.5 px-3.5 hover:bg-[#F3FDF7] cursor-pointer transition">
+                                    <span class="font-black text-slate-900 text-[11px] sm:text-xs tracking-tight uppercase whitespace-nowrap block">
+                                        WARGA NEGARA - WARGA EMAS RM1
+                                    </span>
+                                </div>
+
+                                <!-- Kategori 2: BUKAN WARGA NEGARA -->
+                                <div class="bg-emerald-50 px-3 py-1.5 text-[10px] font-black text-emerald-800 tracking-wider uppercase sticky top-0 border-b border-emerald-100 flex items-center gap-1.5">
+                                    <i class="fa-solid fa-globe text-emerald-600"></i> BUKAN WARGA NEGARA
+                                </div>
+                                <div onclick="selectKemasukanDropdownOption(${r.id}, 10, 'BUKAN WARGA NEGARA - DEWASA RM10', 'Orang')"
+                                    class="py-2.5 px-3.5 hover:bg-[#F3FDF7] cursor-pointer transition">
+                                    <span class="font-black text-slate-900 text-[11px] sm:text-xs tracking-tight uppercase whitespace-nowrap block">
+                                        BUKAN WARGA NEGARA - DEWASA RM10
+                                    </span>
+                                </div>
+                                <div onclick="selectKemasukanDropdownOption(${r.id}, 5, 'BUKAN WARGA NEGARA - KANAK-KANAK RM5', 'Orang')"
+                                    class="py-2.5 px-3.5 hover:bg-[#F3FDF7] cursor-pointer transition">
+                                    <span class="font-black text-slate-900 text-[11px] sm:text-xs tracking-tight uppercase whitespace-nowrap block">
+                                        BUKAN WARGA NEGARA - KANAK-KANAK RM5
+                                    </span>
+                                </div>
+                                <div onclick="selectKemasukanDropdownOption(${r.id}, 5, 'BUKAN WARGA NEGARA - WARGA EMAS RM5', 'Orang')"
+                                    class="py-2.5 px-3.5 hover:bg-[#F3FDF7] cursor-pointer transition">
+                                    <span class="font-black text-slate-900 text-[11px] sm:text-xs tracking-tight uppercase whitespace-nowrap block">
+                                        BUKAN WARGA NEGARA - WARGA EMAS RM5
+                                    </span>
+                                </div>
+
+                                <!-- Kategori 3: CAJ KENDERAAN -->
+                                <div class="bg-emerald-50 px-3 py-1.5 text-[10px] font-black text-emerald-800 tracking-wider uppercase sticky top-0 border-b border-emerald-100 flex items-center gap-1.5">
+                                    <i class="fa-solid fa-car text-emerald-600"></i> CAJ KENDERAAN
+                                </div>
+                                <div onclick="selectKemasukanDropdownOption(${r.id}, 3, 'CAJ KENDERAAN - KERETA RM3', 'Kenderaan')"
+                                    class="py-2.5 px-3.5 hover:bg-[#F3FDF7] cursor-pointer transition">
+                                    <span class="font-black text-slate-900 text-[11px] sm:text-xs tracking-tight uppercase whitespace-nowrap block">
+                                        CAJ KENDERAAN - KERETA RM3
+                                    </span>
+                                </div>
+                                <div onclick="selectKemasukanDropdownOption(${r.id}, 1, 'CAJ KENDERAAN - MOTORSIKAL RM1', 'Kenderaan')"
+                                    class="py-2.5 px-3.5 hover:bg-[#F3FDF7] cursor-pointer transition">
+                                    <span class="font-black text-slate-900 text-[11px] sm:text-xs tracking-tight uppercase whitespace-nowrap block">
+                                        CAJ KENDERAAN - MOTORSIKAL RM1
+                                    </span>
+                                </div>
+                                <div onclick="selectKemasukanDropdownOption(${r.id}, 10, 'CAJ KENDERAAN - BAS / LORI RM10', 'Kenderaan')"
+                                    class="py-2.5 px-3.5 hover:bg-[#F3FDF7] cursor-pointer transition">
+                                    <span class="font-black text-slate-900 text-[11px] sm:text-xs tracking-tight uppercase whitespace-nowrap block">
+                                        CAJ KENDERAAN - BAS / LORI RM10
+                                    </span>
+                                </div>
+
+                                <!-- Kategori 4: PERCUMA -->
+                                <div class="bg-emerald-50 px-3 py-1.5 text-[10px] font-black text-emerald-800 tracking-wider uppercase sticky top-0 border-b border-emerald-100 flex items-center gap-1.5">
+                                    <i class="fa-solid fa-gift text-emerald-600"></i> PERCUMA
+                                </div>
+                                <div onclick="selectKemasukanDropdownOption(${r.id}, 0, 'KANAK-KANAK 0-4 TAHUN PERCUMA', 'Orang')"
+                                    class="py-2.5 px-3.5 hover:bg-[#F3FDF7] cursor-pointer transition">
+                                    <span class="font-black text-slate-900 text-[11px] sm:text-xs tracking-tight uppercase whitespace-nowrap block">
+                                        KANAK-KANAK 0-4 TAHUN (PERCUMA)
+                                    </span>
+                                </div>
+                                <div onclick="selectKemasukanDropdownOption(${r.id}, 0, 'OKU PERCUMA', 'Orang')"
+                                    class="py-2.5 px-3.5 hover:bg-[#F3FDF7] cursor-pointer transition">
+                                    <span class="font-black text-slate-900 text-[11px] sm:text-xs tracking-tight uppercase whitespace-nowrap block">
+                                        OKU (PERCUMA)
+                                    </span>
+                                </div>
+                            </div>
+
+                            <!-- Hidden inputs for active selection -->
+                            <input type="hidden" id="kemasukan-rate-${r.id}" value="3">
+                            <input type="hidden" id="kemasukan-label-${r.id}" value="WARGA NEGARA - DEWASA RM3">
+                            <input type="hidden" id="kemasukan-unit-${r.id}" value="Orang">
+                        </div>
+
+                        <!-- 2. Kadar Seunit & Bilangan / Kuantiti (Kotak Berasingan Kiri dan Kanan) -->
+                        <div class="grid grid-cols-2 gap-2 sm:gap-2.5">
+                            <!-- Kotak Kiri: Kadar Seunit -->
+                            <div class="bg-[#F3FDF7] border-2 border-[#94E3BA] rounded-3xl p-2.5 sm:p-3 flex flex-col items-center justify-between shadow-sm min-w-0">
+                                <span class="font-black text-slate-900 text-[10.5px] sm:text-xs tracking-tight uppercase whitespace-nowrap text-center mb-1.5">
+                                    KADAR SEUNIT
+                                </span>
+                                <div class="w-full h-9 flex items-center justify-center bg-white border border-[#94E3BA] rounded-full px-2 shadow-inner">
+                                    <i class="fa-solid fa-tag text-[#2D5D48] text-xs sm:text-sm mr-1.5 flex-shrink-0"></i>
+                                    <span id="kemasukan-unit-price-${r.id}" class="font-black text-slate-900 text-sm sm:text-base select-none">
+                                        RM3
+                                    </span>
+                                </div>
+                            </div>
+
+                            <!-- Kotak Kanan: Bilangan / Kuantiti -->
+                            <div class="bg-[#F3FDF7] border-2 border-[#94E3BA] rounded-3xl p-2.5 sm:p-3 flex flex-col items-center justify-between shadow-sm min-w-0">
+                                <span class="font-black text-slate-900 text-[10.5px] sm:text-xs tracking-tight uppercase whitespace-nowrap text-center mb-1.5">
+                                    KUANTITI / BILANGAN
+                                </span>
+                                <div class="w-full h-9 flex items-center justify-between bg-white border border-[#94E3BA] rounded-full overflow-hidden px-2 shadow-inner">
+                                    <input type="number" id="kemasukan-qty-${r.id}" min="1" max="500" value="1"
+                                        class="w-full text-center font-black text-slate-900 text-base sm:text-lg bg-transparent focus:outline-none cursor-pointer hide-native-spinner p-0"
+                                        placeholder="1"
+                                        title="Masukkan kuantiti"
+                                        oninput="updateKemasukanPrice(${r.id})" onchange="updateKemasukanPrice(${r.id})">
+                                    <div class="flex flex-col items-center justify-center h-full pl-1.5 border-l border-[#BBF0D2] flex-shrink-0">
+                                        <button type="button" onclick="stepKemasukanQty(${r.id}, 1)" 
+                                            class="w-5 h-3.5 flex items-center justify-center text-slate-900 hover:text-emerald-700 active:scale-90 text-[9px] font-black transition cursor-pointer select-none leading-none"
+                                            title="Tambah kuantiti">
+                                            ▲
+                                        </button>
+                                        <button type="button" onclick="stepKemasukanQty(${r.id}, -1)" 
+                                            class="w-5 h-3.5 flex items-center justify-center text-slate-900 hover:text-emerald-700 active:scale-90 text-[9px] font-black transition cursor-pointer select-none leading-none"
+                                            title="Kurangkan kuantiti">
+                                            ▼
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 3. Pengiraan Kadar Caj -->
+                        <div class="bg-[#F3FDF7] border-2 border-[#94E3BA] rounded-3xl py-2.5 sm:py-3 px-3 sm:px-3.5 flex justify-between items-center shadow-sm">
+                            <div class="flex flex-col justify-center min-w-0 pr-2">
+                                <span class="font-black text-slate-900 text-[11px] sm:text-xs tracking-tight uppercase whitespace-nowrap">
+                                    PENGIRAAN KADAR CAJ
+                                </span>
+                                <span id="kemasukan-calc-formula-${r.id}" class="text-[10px] sm:text-[11px] font-bold text-[#2D5D48] whitespace-nowrap mt-0.5">
+                                    (RM3 × <span id="kemasukan-calc-qty-${r.id}">1</span> <span id="kemasukan-calc-unit-${r.id}">Orang</span>)
+                                </span>
+                            </div>
+                            <span class="font-black text-slate-900 text-xs sm:text-sm tracking-tight whitespace-nowrap pl-1 flex-shrink-0">
+                                RM<span id="kemasukan-subtotal-${r.id}">3.00</span>
+                            </span>
+                        </div>
+
+                        <!-- 4. Jumlah Keseluruhan -->
+                        <div class="bg-[#F3FDF7] border-2 border-[#94E3BA] rounded-3xl py-2.5 sm:py-3 px-3 sm:px-3.5 flex justify-between items-center shadow-sm">
+                            <span class="font-black text-slate-900 text-[11px] sm:text-xs tracking-tight uppercase whitespace-nowrap">
+                                JUMLAH KESELURUHAN
+                            </span>
+                            <span class="font-black text-slate-900 text-xs sm:text-sm tracking-tight whitespace-nowrap pl-1 flex-shrink-0">
+                                RM <span id="kemasukan-total-${r.id}">3.00</span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 5. Tambah ke Bakul Button -->
+                <button onclick="${isAvail ? `addToCartKemasukan(${r.id})` : ''}" 
+                    class="w-full ${isAvail ? 'bg-[#2d6a4f] hover:bg-[#23533e] cursor-pointer' : 'bg-slate-300 cursor-not-allowed text-slate-500'} text-white font-extrabold py-3.5 px-6 rounded-2xl transition flex items-center justify-center gap-2.5 text-base sm:text-lg shadow-md mt-auto whitespace-nowrap"
+                    ${!isAvail ? 'disabled' : ''}>
+                    <i class="fa-solid ${isAvail ? 'fa-cart-plus' : 'fa-calendar-xmark'} text-lg"></i>
+                    <span class="whitespace-nowrap">${isAvail ? 'Tambah ke Bakul' : 'Tidak Tersedia'}</span>
+                </button>
+            </div>
+        </div>
+    `;
+}
+
+function toggleKemasukanDropdown(id) {
+    const menu = document.getElementById(`kemasukan-dropdown-menu-${id}`);
+    const arrow = document.getElementById(`kemasukan-dropdown-arrow-${id}`);
+    if (!menu) return;
+    
+    const isHidden = menu.classList.contains('hidden');
+    // Tutup mana-mana dropdown lain
+    document.querySelectorAll('[id^="kemasukan-dropdown-menu-"]').forEach(m => m.classList.add('hidden'));
+    document.querySelectorAll('[id^="kemasukan-dropdown-arrow-"]').forEach(a => a.style.transform = 'rotate(0deg)');
+    document.querySelectorAll('[id^="hiking-dropdown-menu-"]').forEach(m => m.classList.add('hidden'));
+    document.querySelectorAll('[id^="hiking-dropdown-arrow-"]').forEach(a => a.style.transform = 'rotate(0deg)');
+    
+    if (isHidden) {
+        menu.classList.remove('hidden');
+        if (arrow) arrow.style.transform = 'rotate(180deg)';
+    }
+}
+
+function selectKemasukanDropdownOption(id, rate, text, unit = 'Orang') {
+    const rateInput = document.getElementById(`kemasukan-rate-${id}`);
+    const labelInput = document.getElementById(`kemasukan-label-${id}`);
+    const unitInput = document.getElementById(`kemasukan-unit-${id}`);
+    const textBox = document.getElementById(`kemasukan-selected-text-${id}`);
+    const unitPriceBox = document.getElementById(`kemasukan-unit-price-${id}`);
+    const menu = document.getElementById(`kemasukan-dropdown-menu-${id}`);
+    const arrow = document.getElementById(`kemasukan-dropdown-arrow-${id}`);
+    
+    if (rateInput) rateInput.value = rate;
+    if (labelInput) labelInput.value = text;
+    if (unitInput) unitInput.value = unit;
+    if (textBox) textBox.textContent = text;
+    if (unitPriceBox) unitPriceBox.textContent = rate === 0 ? 'PERCUMA' : `RM${rate}`;
+    
+    if (menu) menu.classList.add('hidden');
+    if (arrow) arrow.style.transform = 'rotate(0deg)';
+    
+    updateKemasukanPrice(id);
+}
+
+function stepKemasukanQty(id, delta) {
+    const qtyInput = document.getElementById(`kemasukan-qty-${id}`);
+    if (!qtyInput) return;
+    let qty = parseInt(qtyInput.value);
+    if (isNaN(qty) || qty < 1) qty = 1;
+    qty += delta;
+    if (qty < 1) qty = 1;
+    if (qty > 500) qty = 500;
+    qtyInput.value = qty;
+    updateKemasukanPrice(id);
+}
+
+function updateKemasukanPrice(id) {
+    const rateInput = document.getElementById(`kemasukan-rate-${id}`);
+    const unitInput = document.getElementById(`kemasukan-unit-${id}`);
+    const qtyInput = document.getElementById(`kemasukan-qty-${id}`);
+    const calcQty = document.getElementById(`kemasukan-calc-qty-${id}`);
+    const calcUnit = document.getElementById(`kemasukan-calc-unit-${id}`);
+    const calcFormula = document.getElementById(`kemasukan-calc-formula-${id}`);
+    const subtotal = document.getElementById(`kemasukan-subtotal-${id}`);
+    const total = document.getElementById(`kemasukan-total-${id}`);
+
+    const rate = parseFloat(rateInput ? rateInput.value : 3) || 0;
+    const unit = unitInput ? unitInput.value : 'Orang';
+    let qty = parseInt(qtyInput ? qtyInput.value : 1);
+    if (isNaN(qty) || qty < 1) qty = 1;
+
+    const grandTotal = rate * qty;
+
+    if (calcQty) calcQty.textContent = qty;
+    if (calcUnit) calcUnit.textContent = unit;
+    if (calcFormula) {
+        calcFormula.innerHTML = rate === 0 
+            ? `(PERCUMA × <span>${qty}</span> <span>${unit}</span>)`
+            : `(RM${rate} × <span>${qty}</span> <span>${unit}</span>)`;
+    }
+    if (subtotal) subtotal.textContent = grandTotal.toFixed(2);
+    if (total) total.textContent = grandTotal.toFixed(2);
+}
+
+function addToCartKemasukan(id) {
+    const room = allRooms.find(r => r.id === id);
+    if (!room) return;
+
+    const rateInput = document.getElementById(`kemasukan-rate-${id}`);
+    const labelInput = document.getElementById(`kemasukan-label-${id}`);
+    const unitInput = document.getElementById(`kemasukan-unit-${id}`);
+    const qtyInput = document.getElementById(`kemasukan-qty-${id}`);
+
+    const rate = parseFloat(rateInput ? rateInput.value : 3) || 0;
+    const label = labelInput ? labelInput.value : 'WARGA NEGARA - DEWASA RM3';
+    const unit = unitInput ? unitInput.value : 'Orang';
+    let qty = parseInt(qtyInput ? qtyInput.value : 1);
+    if (isNaN(qty) || qty < 1) qty = 1;
+
+    const totalPrice = rate * qty;
+    const cartKey = `kemasukan_${id}_${label.replace(/[^a-zA-Z0-9]/g, '_')}`;
+    const cartItemName = `TEMPAHAN CAJ KEMASUKAN: ${label} (${qty} ${unit})`;
+    const pkgTitle = `Kadar: RM${rate.toFixed(2)} x ${qty} ${unit} = RM${totalPrice.toFixed(2)}`;
+
+    // Semak sekiranya pilihan tiket yang sama sudah ada di dalam bakul
+    const existingIndex = cart.findIndex(item => (item.cartKey === cartKey || item.name.startsWith(`TEMPAHAN CAJ KEMASUKAN: ${label}`)));
+    if (existingIndex !== -1) {
+        cart[existingIndex].price_per_night = totalPrice;
+        cart[existingIndex].total_price = totalPrice;
+        cart[existingIndex].name = cartItemName;
+        cart[existingIndex].packageName = pkgTitle;
+        cart[existingIndex].num_guests = qty;
+        cart[existingIndex].unit = unit;
+        updateCartUI();
+        alert(`Pilihan ${label} di dalam bakul telah dikemaskini: ${qty} ${unit} - RM${totalPrice.toFixed(2)}`);
+        return;
+    }
+
+    const kemasukanItem = {
+        ...room,
+        id: id,
+        room_id: id,
+        cartKey: cartKey,
+        name: cartItemName,
+        packageName: pkgTitle,
+        price_per_night: totalPrice,
+        total_price: totalPrice,
+        num_guests: qty,
+        unit: unit,
+        ticketRate: rate
+    };
+
+    cart.push(kemasukanItem);
+    updateCartUI();
+
+    const btn = document.querySelector(`button[onclick*="addToCartKemasukan(${id})"]`);
+    if (btn) {
+        const original = btn.innerHTML;
+        btn.innerHTML = '<i class="fa-solid fa-check text-lg"></i> Ditambah';
+        btn.classList.add('bg-emerald-500');
+        setTimeout(() => {
+            btn.innerHTML = original;
+            btn.classList.remove('bg-emerald-500');
+        }, 2000);
+    }
+}
+
 function renderRooms(rooms) {
     const grid = document.getElementById('rooms-grid');
     if (!rooms.length) {
@@ -811,6 +1164,10 @@ function renderRooms(rooms) {
         return;
     }
     grid.innerHTML = rooms.map(r => {
+        if ((r.name && (r.name.toUpperCase().includes('KEMASUKAN') || r.name.toUpperCase().includes('TIKET'))) ||
+            (r.type && (r.type.toUpperCase().includes('KEMASUKAN') || r.type.toUpperCase().includes('TIKET')))) {
+            return renderKemasukanCard(r, false);
+        }
         if ((r.name && r.name.toUpperCase().includes('HIKING')) || (r.type && r.type.toUpperCase().includes('HIKING')) ||
             (r.name && r.name.toUpperCase().includes('KABIN')) || (r.type && r.type.toUpperCase().includes('KABIN'))) {
             return renderHikingCard(r, false);
@@ -897,6 +1254,10 @@ async function loadRoomsWithAvailability(checkin, checkout) {
 function renderRoomsWithAvailability(rooms) {
     const grid = document.getElementById('rooms-grid');
     grid.innerHTML = rooms.map(r => {
+        if ((r.name && (r.name.toUpperCase().includes('KEMASUKAN') || r.name.toUpperCase().includes('TIKET'))) ||
+            (r.type && (r.type.toUpperCase().includes('KEMASUKAN') || r.type.toUpperCase().includes('TIKET')))) {
+            return renderKemasukanCard(r, true);
+        }
         if ((r.name && r.name.toUpperCase().includes('HIKING')) || (r.type && r.type.toUpperCase().includes('HIKING')) ||
             (r.name && r.name.toUpperCase().includes('KABIN')) || (r.type && r.type.toUpperCase().includes('KABIN'))) {
             return renderHikingCard(r, true);
@@ -976,8 +1337,8 @@ function addToCart(id) {
     }
 }
 
-function removeFromCart(id) {
-    cart = cart.filter(item => item.id !== id);
+function removeFromCart(keyOrId) {
+    cart = cart.filter(item => (item.cartKey ? item.cartKey !== keyOrId : (item.id != keyOrId)));
     updateCartUI();
 }
 
@@ -1006,7 +1367,7 @@ function updateCartUI() {
                 <span class="font-semibold text-slate-700 truncate mr-2">${item.name}</span>
                 <div class="flex items-center gap-3">
                     <span class="font-bold text-emerald-800">RM${parseFloat(item.price_per_night).toFixed(2)}</span>
-                    <button onclick="removeFromCart(${item.id})" class="text-slate-400 hover:text-rose-500 transition"><i class="fa-solid fa-trash-can"></i></button>
+                    <button onclick="removeFromCart('${item.cartKey || item.id}')" class="text-slate-400 hover:text-rose-500 transition"><i class="fa-solid fa-trash-can"></i></button>
                 </div>
             </div>
         `;
@@ -1037,10 +1398,13 @@ async function openCheckout() {
     let allConflicts = [];
     try {
         for (const item of cart) {
-            const res = await fetch(`/api/rooms/${item.id}/booked-dates`);
-            const data = await res.json();
-            if (data.dates) {
-                allConflicts = [...allConflicts, ...data.dates];
+            const roomId = parseInt(item.room_id || item.id);
+            if (!isNaN(roomId)) {
+                const res = await fetch(`/api/rooms/${roomId}/booked-dates`);
+                const data = await res.json();
+                if (data && data.dates) {
+                    allConflicts = [...allConflicts, ...data.dates];
+                }
             }
         }
     } catch(e) {}
@@ -1083,7 +1447,7 @@ document.getElementById('booking-form').addEventListener('submit', async (e) => 
     // Loop and post each cart item
     for (const item of cart) {
         const payload = {
-            room_id: parseInt(item.id),
+            room_id: parseInt(item.room_id || item.id),
             room_name: item.name,
             total_price: item.price_per_night,
             checkin_date: checkinVal,
@@ -1091,7 +1455,7 @@ document.getElementById('booking-form').addEventListener('submit', async (e) => 
             guest_name: document.getElementById('f-name').value,
             guest_phone: document.getElementById('f-phone').value,
             num_guests: parseInt(item.num_guests) || 1, 
-            special_requests: `Kategori: ${kategori} (${groupName}) | ${item.packageName ? `Pakej: ${item.packageName} | ` : ''}${item.groups ? `Jumlah Kumpulan: ${item.groups} | ` : ''}${item.num_guests ? `Bilangan Peserta: ${item.num_guests} orang | ` : ''}Sesi: ${document.getElementById('f-session').value} | IC: ${document.getElementById('f-ic').value} | Umur: ${document.getElementById('f-age').value} | Jantina: ${genderNode ? genderNode.value : ''} | Emel: ${document.getElementById('f-email').value} | Alamat: ${document.getElementById('f-address').value} | Waris: ${document.getElementById('f-emg-name').value} (${document.getElementById('f-emg-relation').value} - ${document.getElementById('f-emg-phone').value}) | Kesihatan: ${document.getElementById('f-health').value}`
+            special_requests: `Kategori: ${kategori} (${groupName}) | ${item.packageName ? `Pakej: ${item.packageName} | ` : ''}${item.groups ? `Jumlah Kumpulan: ${item.groups} | ` : ''}${item.num_guests ? `Bilangan: ${item.num_guests} ${item.unit || 'orang'} | ` : ''}Sesi: ${document.getElementById('f-session').value} | IC: ${document.getElementById('f-ic').value} | Umur: ${document.getElementById('f-age').value} | Jantina: ${genderNode ? genderNode.value : ''} | Emel: ${document.getElementById('f-email').value} | Alamat: ${document.getElementById('f-address').value} | Waris: ${document.getElementById('f-emg-name').value} (${document.getElementById('f-emg-relation').value} - ${document.getElementById('f-emg-phone').value}) | Kesihatan: ${document.getElementById('f-health').value}`
         };
 
         try {
@@ -1125,7 +1489,7 @@ document.getElementById('booking-form').addEventListener('submit', async (e) => 
         document.getElementById('success-room').textContent = bookedNames.join(', ');
         document.getElementById('success-checkin').textContent = checkinVal;
         document.getElementById('success-checkout').textContent = '-';
-        document.getElementById('success-nights').textContent = cart.some(i => i.num_guests && i.num_guests > 1) ? cart.map(i => (i.num_guests || 1) + ' Orang' + (i.groups ? ` (${i.groups} Kumpulan)` : '')).join(', ') : '1 Individu';
+        document.getElementById('success-nights').textContent = cart.some(i => i.num_guests && i.num_guests > 1) ? cart.map(i => (i.num_guests || 1) + ' ' + (i.unit || 'Orang') + (i.groups ? ` (${i.groups} Kumpulan)` : '')).join(', ') : '1 Individu';
         
         let totalCartPrice = cart.reduce((sum, item) => sum + parseFloat(item.price_per_night), 0);
         document.getElementById('success-total').textContent = 'RM' + totalCartPrice.toFixed(2);

@@ -162,7 +162,11 @@ async function loadRooms(typeFilter = '') {
     const grid = document.getElementById('rooms-grid');
     try {
         const res = await fetch(`${API}/api/rooms?t=${Date.now()}`);
-        allRooms = await res.json();
+        allRooms = (await res.json()).map(r => {
+            if (r.name) r.name = r.name.replace(/TEMPAHAN TAPAK GAZEBO/gi, 'TEMPAHAN GAZEBO');
+            if (r.type) r.type = r.type.replace(/TEMPAHAN TAPAK GAZEBO/gi, 'TEMPAHAN GAZEBO');
+            return r;
+        });
         let filtered = allRooms;
         if (typeFilter) filtered = allRooms.filter(r => r.type === typeFilter);
         // removed room count logic
