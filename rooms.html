@@ -808,19 +808,80 @@ function addToCartHiking(id) {
     }
 }
 
-const KEMASUKAN_OPTIONS_DATA = [
-    { id: 0, category: 'WARGA NEGARA', label: 'Dewasa', fullTitle: 'WARGA NEGARA - DEWASA RM3', rate: 3, unit: 'Orang', icon: 'fa-user' },
-    { id: 1, category: 'WARGA NEGARA', label: 'Kanak-kanak', fullTitle: 'WARGA NEGARA - KANAK-KANAK RM1', rate: 1, unit: 'Orang', icon: 'fa-child' },
-    { id: 2, category: 'WARGA NEGARA', label: 'Warga Emas', fullTitle: 'WARGA NEGARA - WARGA EMAS RM1', rate: 1, unit: 'Orang', icon: 'fa-person-cane' },
-    { id: 3, category: 'BUKAN WARGA NEGARA', label: 'Dewasa', fullTitle: 'BUKAN WARGA NEGARA - DEWASA RM10', rate: 10, unit: 'Orang', icon: 'fa-user' },
-    { id: 4, category: 'BUKAN WARGA NEGARA', label: 'Kanak-kanak', fullTitle: 'BUKAN WARGA NEGARA - KANAK-KANAK RM5', rate: 5, unit: 'Orang', icon: 'fa-child' },
-    { id: 5, category: 'BUKAN WARGA NEGARA', label: 'Warga Emas', fullTitle: 'BUKAN WARGA NEGARA - WARGA EMAS RM5', rate: 5, unit: 'Orang', icon: 'fa-person-cane' },
-    { id: 6, category: 'CAJ KENDERAAN', label: 'Kereta', fullTitle: 'CAJ KENDERAAN - KERETA RM3', rate: 3, unit: 'Kenderaan', icon: 'fa-car-side' },
-    { id: 7, category: 'CAJ KENDERAAN', label: 'Motorsikal', fullTitle: 'CAJ KENDERAAN - MOTORSIKAL RM1', rate: 1, unit: 'Kenderaan', icon: 'fa-motorcycle' },
-    { id: 8, category: 'CAJ KENDERAAN', label: 'Bas / Lori', fullTitle: 'CAJ KENDERAAN - BAS / LORI RM10', rate: 10, unit: 'Kenderaan', icon: 'fa-bus' },
-    { id: 9, category: 'PERCUMA', label: '0-4 Tahun', fullTitle: 'KANAK-KANAK 0-4 TAHUN (PERCUMA)', rate: 0, unit: 'Orang', icon: 'fa-baby' },
-    { id: 10, category: 'PERCUMA', label: 'OKU', fullTitle: 'OKU (PERCUMA)', rate: 0, unit: 'Orang', icon: 'fa-wheelchair' }
+const KEMASUKAN_ITEMS = [
+    // 🇲🇾 CAJ KEMASUKAN WARGA NEGARA
+    { idx: 0, groupKey: 'wn', groupTitle: '🇲🇾 CAJ KEMASUKAN WARGA NEGARA', rowLabel: 'CAJ DEWASA', cartLabel: 'WARGA NEGARA - DEWASA', rate: 3, unit: 'Orang', defaultQty: 1 },
+    { idx: 1, groupKey: 'wn', groupTitle: '🇲🇾 CAJ KEMASUKAN WARGA NEGARA', rowLabel: 'CAJ KANAK-KANAK', cartLabel: 'WARGA NEGARA - KANAK-KANAK', rate: 1, unit: 'Orang', defaultQty: 0 },
+    { idx: 2, groupKey: 'wn', groupTitle: '🇲🇾 CAJ KEMASUKAN WARGA NEGARA', rowLabel: 'CAJ WARGA EMAS', cartLabel: 'WARGA NEGARA - WARGA EMAS', rate: 1, unit: 'Orang', defaultQty: 0 },
+
+    // 🌐 CAJ KEMASUKAN BUKAN WARGA NEGARA
+    { idx: 3, groupKey: 'bwn', groupTitle: '🌐 CAJ KEMASUKAN BUKAN WARGA NEGARA', rowLabel: 'CAJ DEWASA', cartLabel: 'BUKAN WARGA NEGARA - DEWASA', rate: 10, unit: 'Orang', defaultQty: 0 },
+    { idx: 4, groupKey: 'bwn', groupTitle: '🌐 CAJ KEMASUKAN BUKAN WARGA NEGARA', rowLabel: 'CAJ KANAK-KANAK', cartLabel: 'BUKAN WARGA NEGARA - KANAK-KANAK', rate: 5, unit: 'Orang', defaultQty: 0 },
+    { idx: 5, groupKey: 'bwn', groupTitle: '🌐 CAJ KEMASUKAN BUKAN WARGA NEGARA', rowLabel: 'CAJ WARGA EMAS', cartLabel: 'BUKAN WARGA NEGARA - WARGA EMAS', rate: 5, unit: 'Orang', defaultQty: 0 },
+
+    // 🚗 CAJ KEMASUKAN KENDERAAN
+    { idx: 6, groupKey: 'kend', groupTitle: '🚗 CAJ KEMASUKAN KENDERAAN', rowLabel: 'CAJ KERETA', cartLabel: 'CAJ KENDERAAN - KERETA', rate: 3, unit: 'Kenderaan', defaultQty: 0 },
+    { idx: 7, groupKey: 'kend', groupTitle: '🚗 CAJ KEMASUKAN KENDERAAN', rowLabel: 'CAJ MOTORSIKAL', cartLabel: 'CAJ KENDERAAN - MOTORSIKAL', rate: 1, unit: 'Kenderaan', defaultQty: 0 },
+    { idx: 8, groupKey: 'kend', groupTitle: '🚗 CAJ KEMASUKAN KENDERAAN', rowLabel: 'CAJ BAS / LORI', cartLabel: 'CAJ KENDERAAN - BAS / LORI', rate: 10, unit: 'Kenderaan', defaultQty: 0 },
+
+    // ✨ PERCUMA
+    { idx: 9, groupKey: 'percuma', groupTitle: '✨ PERCUMA', rowLabel: '0-4 TAHUN', cartLabel: 'KANAK-KANAK 0-4 TAHUN (PERCUMA)', rate: 0, unit: 'Orang', defaultQty: 0 },
+    { idx: 10, groupKey: 'percuma', groupTitle: '✨ PERCUMA', rowLabel: 'OKU', cartLabel: 'OKU (PERCUMA)', rate: 0, unit: 'Orang', defaultQty: 0 }
 ];
+
+function renderKemasukanGroup(r, groupKey, groupTitle, items) {
+    const rowsHtml = items.map(item => `
+        <div class="bg-[#F3FDF7] border-2 border-[#94E3BA] rounded-full py-1.5 sm:py-2 px-3 sm:px-4 flex items-center justify-between gap-2 shadow-xs hover:border-[#2d6a4f] transition select-none">
+            <!-- Kiri: Checkbox & Label -->
+            <label class="flex items-center gap-2 sm:gap-2.5 cursor-pointer flex-grow min-w-0" for="kemasukan-chk-${r.id}-${item.idx}">
+                <input type="checkbox" id="kemasukan-chk-${r.id}-${item.idx}" 
+                    ${item.defaultQty > 0 ? 'checked' : ''} 
+                    onchange="toggleKemasukanRowCheck(${r.id}, ${item.idx})"
+                    class="w-4 h-4 sm:w-5 sm:h-5 rounded border-2 border-slate-900 text-[#2d6a4f] focus:ring-0 cursor-pointer accent-[#2d6a4f] flex-shrink-0">
+                <span class="font-black text-slate-900 text-xs sm:text-sm tracking-tight uppercase truncate">
+                    ${item.rowLabel}
+                </span>
+            </label>
+
+            <!-- Tengah: Kapsul Stepper Putih -->
+            <div class="bg-white border border-[#94E3BA] rounded-full flex items-center justify-between px-2 py-0.5 h-7 sm:h-8 w-[72px] sm:w-[84px] shadow-inner flex-shrink-0">
+                <input type="number" id="kemasukan-qty-${r.id}-${item.idx}" min="0" max="500" value="${item.defaultQty}"
+                    class="w-6 sm:w-7 text-center font-black text-slate-900 text-xs sm:text-sm bg-transparent focus:outline-none cursor-pointer hide-native-spinner p-0"
+                    oninput="handleKemasukanQtyInput(${r.id}, ${item.idx})" onchange="handleKemasukanQtyInput(${r.id}, ${item.idx})">
+                <div class="flex flex-col items-center justify-center h-full pl-1 border-l border-[#BBF0D2] flex-shrink-0">
+                    <button type="button" onclick="stepKemasukanRowQty(${r.id}, ${item.idx}, 1)"
+                        class="w-3.5 sm:w-4 h-3 flex items-center justify-center text-slate-900 hover:text-emerald-700 active:scale-90 text-[8px] font-black transition cursor-pointer select-none leading-none"
+                        title="Tambah kuantiti">
+                        ▲
+                    </button>
+                    <button type="button" onclick="stepKemasukanRowQty(${r.id}, ${item.idx}, -1)"
+                        class="w-3.5 sm:w-4 h-3 flex items-center justify-center text-slate-900 hover:text-emerald-700 active:scale-90 text-[8px] font-black transition cursor-pointer select-none leading-none"
+                        title="Kurangkan kuantiti">
+                        ▼
+                    </button>
+                </div>
+            </div>
+
+            <!-- Kanan: Harga Subtotal Baris -->
+            <div class="font-black text-slate-900 text-xs sm:text-sm tracking-tight whitespace-nowrap min-w-[56px] sm:min-w-[68px] text-right flex-shrink-0">
+                <span id="kemasukan-price-${r.id}-${item.idx}">
+                    ${item.rate === 0 ? 'PERCUMA' : (item.defaultQty > 0 ? 'RM' + (item.defaultQty * item.rate).toFixed(2) : 'RM0.00')}
+                </span>
+            </div>
+        </div>
+    `).join('');
+
+    return `
+        <div id="kemasukan-cat-${r.id}-${groupKey}" class="space-y-2 pt-1">
+            <h4 class="font-black text-slate-900 text-xs sm:text-sm uppercase tracking-tight flex items-center gap-1.5 px-1">
+                ${groupTitle}
+            </h4>
+            <div class="space-y-2">
+                ${rowsHtml}
+            </div>
+        </div>
+    `;
+}
 
 function renderKemasukanCard(r, isAvailabilityCheck = false) {
     const isAvail = !isAvailabilityCheck || r.available;
@@ -829,6 +890,11 @@ function renderKemasukanCard(r, isAvailabilityCheck = false) {
             <i class="fa-solid ${r.available ? 'fa-circle-check' : 'fa-circle-xmark'} mr-1"></i>${r.available ? 'Tersedia' : 'Ditempah'}
         </span>
     ` : '';
+
+    const wnGroup = renderKemasukanGroup(r, 'wn', '🇲🇾 CAJ KEMASUKAN WARGA NEGARA', KEMASUKAN_ITEMS.filter(i => i.groupKey === 'wn'));
+    const bwnGroup = renderKemasukanGroup(r, 'bwn', '🌐 CAJ KEMASUKAN BUKAN WARGA NEGARA', KEMASUKAN_ITEMS.filter(i => i.groupKey === 'bwn'));
+    const kendGroup = renderKemasukanGroup(r, 'kend', '🚗 CAJ KEMASUKAN KENDERAAN', KEMASUKAN_ITEMS.filter(i => i.groupKey === 'kend'));
+    const percumaGroup = renderKemasukanGroup(r, 'percuma', '✨ PERCUMA', KEMASUKAN_ITEMS.filter(i => i.groupKey === 'percuma'));
 
     return `
         <div class="room-card bg-white rounded-2xl shadow-lg overflow-hidden border ${isAvailabilityCheck && !r.available ? 'border-rose-200 opacity-70' : 'border-slate-100'} flex flex-col">
@@ -841,229 +907,58 @@ function renderKemasukanCard(r, isAvailabilityCheck = false) {
                     <h3 class="text-base sm:text-lg lg:text-xl font-black text-slate-900 text-center mb-3 tracking-tight uppercase whitespace-nowrap">${r.name}</h3>
 
                     <!-- Senarai Penuh Kadar Caj Mengikut Poster Rasmi (Header Badge) -->
-                    <div class="bg-emerald-50 border border-emerald-200/90 rounded-2xl py-2 px-3 text-center mb-3.5 shadow-xs">
+                    <div class="bg-emerald-50 border border-emerald-200/90 rounded-2xl py-2 px-3 text-center mb-3 shadow-xs">
                         <span class="text-[11px] sm:text-xs font-black text-emerald-950 uppercase tracking-tight flex items-center justify-center gap-1.5">
                             <i class="fa-solid fa-ticket text-emerald-700"></i> Senarai Penuh Kadar Caj Mengikut Poster Rasmi
                         </span>
                     </div>
 
-                    <div class="space-y-3 mb-6">
-                        <!-- Kotak Kecil Pilihan Memuatkan Kesemua 11 Kategori Tiket & Kenderaan -->
-                        <div class="bg-[#F9FCFA] border-2 border-[#94E3BA] rounded-2xl p-2.5 sm:p-3 shadow-xs space-y-2.5">
-                            
-                            <!-- 1. WARGA NEGARA -->
-                            <div>
-                                <div class="flex items-center justify-between text-[10px] font-black text-emerald-900 uppercase tracking-wider mb-1 px-0.5">
-                                    <span class="flex items-center gap-1"><i class="fa-solid fa-flag text-emerald-700 text-[9px]"></i> WARGA NEGARA</span>
-                                    <span class="text-[9.5px] text-slate-600 font-bold">RM1 - RM3</span>
-                                </div>
-                                <div class="grid grid-cols-3 gap-1.5">
-                                    <!-- 0: Dewasa RM3 -->
-                                    <button type="button" onclick="selectKemasukanBoxOption(${r.id}, 0)" id="opt-kemasukan-${r.id}-0"
-                                        class="kemasukan-opt-btn flex flex-col items-center justify-center py-2 px-1 rounded-xl border-2 border-[#1b4332] bg-[#2d6a4f] text-white shadow-md ring-2 ring-emerald-400/60 scale-[1.02] transition cursor-pointer select-none text-center min-w-0"
-                                        title="Pilih Dewasa (Warga Negara) RM3">
-                                        <i class="fa-solid fa-user text-xs mb-0.5 text-emerald-200"></i>
-                                        <span class="text-[10px] sm:text-[10.5px] font-extrabold uppercase tracking-tight leading-tight whitespace-nowrap">Dewasa</span>
-                                        <span class="opt-price text-[11px] font-black mt-0.5 tracking-tight text-white">RM3</span>
-                                    </button>
-                                    <!-- 1: Kanak-kanak RM1 -->
-                                    <button type="button" onclick="selectKemasukanBoxOption(${r.id}, 1)" id="opt-kemasukan-${r.id}-1"
-                                        class="kemasukan-opt-btn flex flex-col items-center justify-center py-2 px-1 rounded-xl border-2 border-[#94E3BA] bg-[#F3FDF7] text-slate-800 hover:border-emerald-600 hover:bg-emerald-100/60 transition cursor-pointer select-none text-center min-w-0"
-                                        title="Pilih Kanak-kanak (Warga Negara) RM1">
-                                        <i class="fa-solid fa-child text-xs mb-0.5 text-[#2D5D48]"></i>
-                                        <span class="text-[10px] sm:text-[10.5px] font-extrabold uppercase tracking-tight leading-tight whitespace-nowrap">Kanak-kanak</span>
-                                        <span class="opt-price text-[11px] font-black mt-0.5 tracking-tight text-emerald-800">RM1</span>
-                                    </button>
-                                    <!-- 2: Warga Emas RM1 -->
-                                    <button type="button" onclick="selectKemasukanBoxOption(${r.id}, 2)" id="opt-kemasukan-${r.id}-2"
-                                        class="kemasukan-opt-btn flex flex-col items-center justify-center py-2 px-1 rounded-xl border-2 border-[#94E3BA] bg-[#F3FDF7] text-slate-800 hover:border-emerald-600 hover:bg-emerald-100/60 transition cursor-pointer select-none text-center min-w-0"
-                                        title="Pilih Warga Emas (Warga Negara) RM1">
-                                        <i class="fa-solid fa-person-cane text-xs mb-0.5 text-[#2D5D48]"></i>
-                                        <span class="text-[10px] sm:text-[10.5px] font-extrabold uppercase tracking-tight leading-tight whitespace-nowrap">Warga Emas</span>
-                                        <span class="opt-price text-[11px] font-black mt-0.5 tracking-tight text-emerald-800">RM1</span>
-                                    </button>
-                                </div>
-                            </div>
+                    <!-- Category Quick Jump Navigation -->
+                    <div class="flex items-center gap-1.5 overflow-x-auto pb-1.5 mb-2.5 no-scrollbar">
+                        <button type="button" onclick="scrollKemasukanToCategory(${r.id}, 'wn')"
+                            class="text-[10px] sm:text-[11px] font-black px-2.5 py-1 rounded-full bg-emerald-100 hover:bg-emerald-200 text-emerald-900 border border-emerald-300 transition whitespace-nowrap cursor-pointer">
+                            🇲🇾 Warga Negara
+                        </button>
+                        <button type="button" onclick="scrollKemasukanToCategory(${r.id}, 'bwn')"
+                            class="text-[10px] sm:text-[11px] font-black px-2.5 py-1 rounded-full bg-emerald-100 hover:bg-emerald-200 text-emerald-900 border border-emerald-300 transition whitespace-nowrap cursor-pointer">
+                            🌐 Bukan Warga
+                        </button>
+                        <button type="button" onclick="scrollKemasukanToCategory(${r.id}, 'kend')"
+                            class="text-[10px] sm:text-[11px] font-black px-2.5 py-1 rounded-full bg-emerald-100 hover:bg-emerald-200 text-emerald-900 border border-emerald-300 transition whitespace-nowrap cursor-pointer">
+                            🚗 Kenderaan
+                        </button>
+                        <button type="button" onclick="scrollKemasukanToCategory(${r.id}, 'percuma')"
+                            class="text-[10px] sm:text-[11px] font-black px-2.5 py-1 rounded-full bg-amber-100 hover:bg-amber-200 text-amber-900 border border-amber-300 transition whitespace-nowrap cursor-pointer">
+                            ✨ Percuma
+                        </button>
+                    </div>
 
-                            <!-- 2. BUKAN WARGA NEGARA -->
-                            <div>
-                                <div class="flex items-center justify-between text-[10px] font-black text-emerald-900 uppercase tracking-wider mb-1 px-0.5">
-                                    <span class="flex items-center gap-1"><i class="fa-solid fa-globe text-emerald-700 text-[9px]"></i> BUKAN WARGA NEGARA</span>
-                                    <span class="text-[9.5px] text-slate-600 font-bold">RM5 - RM10</span>
-                                </div>
-                                <div class="grid grid-cols-3 gap-1.5">
-                                    <!-- 3: Dewasa RM10 -->
-                                    <button type="button" onclick="selectKemasukanBoxOption(${r.id}, 3)" id="opt-kemasukan-${r.id}-3"
-                                        class="kemasukan-opt-btn flex flex-col items-center justify-center py-2 px-1 rounded-xl border-2 border-[#94E3BA] bg-[#F3FDF7] text-slate-800 hover:border-emerald-600 hover:bg-emerald-100/60 transition cursor-pointer select-none text-center min-w-0"
-                                        title="Pilih Dewasa (Bukan Warga Negara) RM10">
-                                        <i class="fa-solid fa-user text-xs mb-0.5 text-[#2D5D48]"></i>
-                                        <span class="text-[10px] sm:text-[10.5px] font-extrabold uppercase tracking-tight leading-tight whitespace-nowrap">Dewasa</span>
-                                        <span class="opt-price text-[11px] font-black mt-0.5 tracking-tight text-emerald-800">RM10</span>
-                                    </button>
-                                    <!-- 4: Kanak-kanak RM5 -->
-                                    <button type="button" onclick="selectKemasukanBoxOption(${r.id}, 4)" id="opt-kemasukan-${r.id}-4"
-                                        class="kemasukan-opt-btn flex flex-col items-center justify-center py-2 px-1 rounded-xl border-2 border-[#94E3BA] bg-[#F3FDF7] text-slate-800 hover:border-emerald-600 hover:bg-emerald-100/60 transition cursor-pointer select-none text-center min-w-0"
-                                        title="Pilih Kanak-kanak (Bukan Warga Negara) RM5">
-                                        <i class="fa-solid fa-child text-xs mb-0.5 text-[#2D5D48]"></i>
-                                        <span class="text-[10px] sm:text-[10.5px] font-extrabold uppercase tracking-tight leading-tight whitespace-nowrap">Kanak-kanak</span>
-                                        <span class="opt-price text-[11px] font-black mt-0.5 tracking-tight text-emerald-800">RM5</span>
-                                    </button>
-                                    <!-- 5: Warga Emas RM5 -->
-                                    <button type="button" onclick="selectKemasukanBoxOption(${r.id}, 5)" id="opt-kemasukan-${r.id}-5"
-                                        class="kemasukan-opt-btn flex flex-col items-center justify-center py-2 px-1 rounded-xl border-2 border-[#94E3BA] bg-[#F3FDF7] text-slate-800 hover:border-emerald-600 hover:bg-emerald-100/60 transition cursor-pointer select-none text-center min-w-0"
-                                        title="Pilih Warga Emas (Bukan Warga Negara) RM5">
-                                        <i class="fa-solid fa-person-cane text-xs mb-0.5 text-[#2D5D48]"></i>
-                                        <span class="text-[10px] sm:text-[10.5px] font-extrabold uppercase tracking-tight leading-tight whitespace-nowrap">Warga Emas</span>
-                                        <span class="opt-price text-[11px] font-black mt-0.5 tracking-tight text-emerald-800">RM5</span>
-                                    </button>
-                                </div>
-                            </div>
+                    <!-- Scrollable Container for All 11 Category Rows -->
+                    <div id="kemasukan-scroll-container-${r.id}" class="max-h-[380px] sm:max-h-[420px] overflow-y-auto space-y-4 pr-1 scroll-smooth mb-5">
+                        ${wnGroup}
+                        ${bwnGroup}
+                        ${kendGroup}
+                        ${percumaGroup}
+                    </div>
 
-                            <!-- 3. CAJ KENDERAAN -->
-                            <div>
-                                <div class="flex items-center justify-between text-[10px] font-black text-emerald-900 uppercase tracking-wider mb-1 px-0.5">
-                                    <span class="flex items-center gap-1"><i class="fa-solid fa-car text-emerald-700 text-[9px]"></i> CAJ KENDERAAN</span>
-                                    <span class="text-[9.5px] text-slate-600 font-bold">RM1 - RM10</span>
-                                </div>
-                                <div class="grid grid-cols-3 gap-1.5">
-                                    <!-- 6: Kereta RM3 -->
-                                    <button type="button" onclick="selectKemasukanBoxOption(${r.id}, 6)" id="opt-kemasukan-${r.id}-6"
-                                        class="kemasukan-opt-btn flex flex-col items-center justify-center py-2 px-1 rounded-xl border-2 border-[#94E3BA] bg-[#F3FDF7] text-slate-800 hover:border-emerald-600 hover:bg-emerald-100/60 transition cursor-pointer select-none text-center min-w-0"
-                                        title="Pilih Kereta RM3">
-                                        <i class="fa-solid fa-car-side text-xs mb-0.5 text-[#2D5D48]"></i>
-                                        <span class="text-[10px] sm:text-[10.5px] font-extrabold uppercase tracking-tight leading-tight whitespace-nowrap">Kereta</span>
-                                        <span class="opt-price text-[11px] font-black mt-0.5 tracking-tight text-emerald-800">RM3</span>
-                                    </button>
-                                    <!-- 7: Motorsikal RM1 -->
-                                    <button type="button" onclick="selectKemasukanBoxOption(${r.id}, 7)" id="opt-kemasukan-${r.id}-7"
-                                        class="kemasukan-opt-btn flex flex-col items-center justify-center py-2 px-1 rounded-xl border-2 border-[#94E3BA] bg-[#F3FDF7] text-slate-800 hover:border-emerald-600 hover:bg-emerald-100/60 transition cursor-pointer select-none text-center min-w-0"
-                                        title="Pilih Motorsikal RM1">
-                                        <i class="fa-solid fa-motorcycle text-xs mb-0.5 text-[#2D5D48]"></i>
-                                        <span class="text-[10px] sm:text-[10.5px] font-extrabold uppercase tracking-tight leading-tight whitespace-nowrap">Motorsikal</span>
-                                        <span class="opt-price text-[11px] font-black mt-0.5 tracking-tight text-emerald-800">RM1</span>
-                                    </button>
-                                    <!-- 8: Bas / Lori RM10 -->
-                                    <button type="button" onclick="selectKemasukanBoxOption(${r.id}, 8)" id="opt-kemasukan-${r.id}-8"
-                                        class="kemasukan-opt-btn flex flex-col items-center justify-center py-2 px-1 rounded-xl border-2 border-[#94E3BA] bg-[#F3FDF7] text-slate-800 hover:border-emerald-600 hover:bg-emerald-100/60 transition cursor-pointer select-none text-center min-w-0"
-                                        title="Pilih Bas / Lori RM10">
-                                        <i class="fa-solid fa-bus text-xs mb-0.5 text-[#2D5D48]"></i>
-                                        <span class="text-[10px] sm:text-[10.5px] font-extrabold uppercase tracking-tight leading-tight whitespace-nowrap">Bas / Lori</span>
-                                        <span class="opt-price text-[11px] font-black mt-0.5 tracking-tight text-emerald-800">RM10</span>
-                                    </button>
-                                </div>
-                            </div>
-
-                            <!-- 4. PERCUMA (RM0) -->
-                            <div>
-                                <div class="flex items-center justify-between text-[10px] font-black text-amber-900 uppercase tracking-wider mb-1 px-0.5">
-                                    <span class="flex items-center gap-1"><i class="fa-solid fa-gift text-amber-600 text-[9px]"></i> KATEGORI PERCUMA</span>
-                                    <span class="text-[9.5px] text-amber-700 font-bold">RM0</span>
-                                </div>
-                                <div class="grid grid-cols-2 gap-1.5">
-                                    <!-- 9: Kanak-kanak 0-4 Tahun -->
-                                    <button type="button" onclick="selectKemasukanBoxOption(${r.id}, 9)" id="opt-kemasukan-${r.id}-9"
-                                        class="kemasukan-opt-btn flex flex-col items-center justify-center py-2 px-1.5 rounded-xl border-2 border-[#94E3BA] bg-[#F3FDF7] text-slate-800 hover:border-emerald-600 hover:bg-emerald-100/60 transition cursor-pointer select-none text-center min-w-0"
-                                        title="Pilih Kanak-kanak 0-4 Tahun (Percuma)">
-                                        <i class="fa-solid fa-baby text-xs mb-0.5 text-[#2D5D48]"></i>
-                                        <span class="text-[10px] sm:text-[10.5px] font-extrabold uppercase tracking-tight leading-tight whitespace-nowrap">0-4 Tahun</span>
-                                        <span class="opt-price text-[10.5px] font-black mt-0.5 tracking-tight text-amber-700">PERCUMA</span>
-                                    </button>
-                                    <!-- 10: OKU -->
-                                    <button type="button" onclick="selectKemasukanBoxOption(${r.id}, 10)" id="opt-kemasukan-${r.id}-10"
-                                        class="kemasukan-opt-btn flex flex-col items-center justify-center py-2 px-1.5 rounded-xl border-2 border-[#94E3BA] bg-[#F3FDF7] text-slate-800 hover:border-emerald-600 hover:bg-emerald-100/60 transition cursor-pointer select-none text-center min-w-0"
-                                        title="Pilih OKU (Percuma)">
-                                        <i class="fa-solid fa-wheelchair text-xs mb-0.5 text-[#2D5D48]"></i>
-                                        <span class="text-[10px] sm:text-[10.5px] font-extrabold uppercase tracking-tight leading-tight whitespace-nowrap">OKU</span>
-                                        <span class="opt-price text-[10.5px] font-black mt-0.5 tracking-tight text-amber-700">PERCUMA</span>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Active Selection Banner / Pill -->
-                        <div class="bg-[#F3FDF7] border-2 border-[#94E3BA] rounded-full py-2 sm:py-2.5 px-3.5 flex items-center justify-between shadow-xs">
-                            <span class="text-[10px] sm:text-[10.5px] font-black text-[#2D5D48] uppercase tracking-tight flex-shrink-0">PILIHAN TIKET:</span>
-                            <span id="kemasukan-selected-text-${r.id}" class="text-[11px] sm:text-xs font-black text-slate-900 tracking-tight uppercase truncate text-right ml-1">
-                                WARGA NEGARA - DEWASA RM3
-                            </span>
-                        </div>
-
-                        <!-- Hidden inputs for active selection -->
-                        <input type="hidden" id="kemasukan-rate-${r.id}" value="3">
-                        <input type="hidden" id="kemasukan-label-${r.id}" value="WARGA NEGARA - DEWASA RM3">
-                        <input type="hidden" id="kemasukan-unit-${r.id}" value="Orang">
-
-                        <!-- 2. Kadar Seunit & Bilangan / Kuantiti (Kotak Berasingan Kiri dan Kanan) -->
-                        <div class="grid grid-cols-2 gap-2 sm:gap-2.5">
-                            <!-- Kotak Kiri: Kadar Seunit -->
-                            <div class="bg-[#F3FDF7] border-2 border-[#94E3BA] rounded-3xl p-2.5 sm:p-3 flex flex-col items-center justify-between shadow-sm min-w-0">
-                                <span class="font-black text-slate-900 text-[10.5px] sm:text-xs tracking-tight uppercase whitespace-nowrap text-center mb-1.5">
-                                    KADAR SEUNIT
-                                </span>
-                                <div class="w-full h-9 flex items-center justify-center bg-white border border-[#94E3BA] rounded-full px-2 shadow-inner">
-                                    <i class="fa-solid fa-tag text-[#2D5D48] text-xs sm:text-sm mr-1.5 flex-shrink-0"></i>
-                                    <span id="kemasukan-unit-price-${r.id}" class="font-black text-slate-900 text-sm sm:text-base select-none">
-                                        RM3
-                                    </span>
-                                </div>
-                            </div>
-
-                            <!-- Kotak Kanan: Bilangan / Kuantiti -->
-                            <div class="bg-[#F3FDF7] border-2 border-[#94E3BA] rounded-3xl p-2.5 sm:p-3 flex flex-col items-center justify-between shadow-sm min-w-0">
-                                <span class="font-black text-slate-900 text-[10.5px] sm:text-xs tracking-tight uppercase whitespace-nowrap text-center mb-1.5">
-                                    KUANTITI / BILANGAN
-                                </span>
-                                <div class="w-full h-9 flex items-center justify-between bg-white border border-[#94E3BA] rounded-full overflow-hidden px-2 shadow-inner">
-                                    <input type="number" id="kemasukan-qty-${r.id}" min="1" max="500" value="1"
-                                        class="w-full text-center font-black text-slate-900 text-base sm:text-lg bg-transparent focus:outline-none cursor-pointer hide-native-spinner p-0"
-                                        placeholder="1"
-                                        title="Masukkan kuantiti"
-                                        oninput="updateKemasukanPrice(${r.id})" onchange="updateKemasukanPrice(${r.id})">
-                                    <div class="flex flex-col items-center justify-center h-full pl-1.5 border-l border-[#BBF0D2] flex-shrink-0">
-                                        <button type="button" onclick="stepKemasukanQty(${r.id}, 1)" 
-                                            class="w-5 h-3.5 flex items-center justify-center text-slate-900 hover:text-emerald-700 active:scale-90 text-[9px] font-black transition cursor-pointer select-none leading-none"
-                                            title="Tambah kuantiti">
-                                            ▲
-                                        </button>
-                                        <button type="button" onclick="stepKemasukanQty(${r.id}, -1)" 
-                                            class="w-5 h-3.5 flex items-center justify-center text-slate-900 hover:text-emerald-700 active:scale-90 text-[9px] font-black transition cursor-pointer select-none leading-none"
-                                            title="Kurangkan kuantiti">
-                                            ▼
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- 3. Pengiraan Kadar Caj -->
-                        <div class="bg-[#F3FDF7] border-2 border-[#94E3BA] rounded-3xl py-2.5 sm:py-3 px-3 sm:px-3.5 flex justify-between items-center shadow-sm">
-                            <div class="flex flex-col justify-center min-w-0 pr-2">
-                                <span class="font-black text-slate-900 text-[11px] sm:text-xs tracking-tight uppercase whitespace-nowrap">
-                                    PENGIRAAN KADAR CAJ
-                                </span>
-                                <span id="kemasukan-calc-formula-${r.id}" class="text-[10px] sm:text-[11px] font-bold text-[#2D5D48] whitespace-nowrap mt-0.5">
-                                    (RM3 × <span id="kemasukan-calc-qty-${r.id}">1</span> <span id="kemasukan-calc-unit-${r.id}">Orang</span>)
-                                </span>
-                            </div>
-                            <span class="font-black text-slate-900 text-xs sm:text-sm tracking-tight whitespace-nowrap pl-1 flex-shrink-0">
-                                RM<span id="kemasukan-subtotal-${r.id}">3.00</span>
-                            </span>
-                        </div>
-
-                        <!-- 4. Jumlah Keseluruhan -->
-                        <div class="bg-[#F3FDF7] border-2 border-[#94E3BA] rounded-3xl py-2.5 sm:py-3 px-3 sm:px-3.5 flex justify-between items-center shadow-sm">
-                            <span class="font-black text-slate-900 text-[11px] sm:text-xs tracking-tight uppercase whitespace-nowrap">
+                    <!-- Grand Total Container -->
+                    <div class="bg-[#F3FDF7] border-2 border-[#94E3BA] rounded-3xl py-2.5 sm:py-3 px-3.5 sm:px-4 flex justify-between items-center shadow-sm mb-4">
+                        <div class="flex flex-col justify-center min-w-0 pr-2">
+                            <span class="font-black text-slate-900 text-xs sm:text-sm tracking-tight uppercase whitespace-nowrap">
                                 JUMLAH KESELURUHAN
                             </span>
-                            <span class="font-black text-slate-900 text-xs sm:text-sm tracking-tight whitespace-nowrap pl-1 flex-shrink-0">
-                                RM <span id="kemasukan-total-${r.id}">3.00</span>
+                            <span id="kemasukan-summary-count-${r.id}" class="text-[10.5px] sm:text-[11px] font-bold text-[#2D5D48] whitespace-nowrap mt-0.5">
+                                (1 Pilihan Dipilih)
                             </span>
                         </div>
+                        <span class="font-black text-slate-900 text-sm sm:text-base tracking-tight whitespace-nowrap pl-1 flex-shrink-0">
+                            RM <span id="kemasukan-grand-total-${r.id}">3.00</span>
+                        </span>
                     </div>
                 </div>
 
-                <!-- 5. Tambah ke Bakul Button -->
-                <button onclick="${isAvail ? `addToCartKemasukan(${r.id})` : ''}" 
+                <!-- Tambah ke Bakul Button -->
+                <button onclick="${isAvail ? `addToCartKemasukanMulti(${r.id})` : ''}" 
                     class="w-full ${isAvail ? 'bg-[#2d6a4f] hover:bg-[#23533e] cursor-pointer' : 'bg-slate-300 cursor-not-allowed text-slate-500'} text-white font-extrabold py-3.5 px-6 rounded-2xl transition flex items-center justify-center gap-2.5 text-base sm:text-lg shadow-md mt-auto whitespace-nowrap"
                     ${!isAvail ? 'disabled' : ''}>
                     <i class="fa-solid ${isAvail ? 'fa-cart-plus' : 'fa-calendar-xmark'} text-lg"></i>
@@ -1074,161 +969,177 @@ function renderKemasukanCard(r, isAvailabilityCheck = false) {
     `;
 }
 
-function selectKemasukanBoxOption(roomId, index) {
-    const opt = KEMASUKAN_OPTIONS_DATA[index];
-    if (!opt) return;
+function scrollKemasukanToCategory(roomId, catKey) {
+    const el = document.getElementById(`kemasukan-cat-${roomId}-${catKey}`);
+    const container = document.getElementById(`kemasukan-scroll-container-${roomId}`);
+    if (el && container) {
+        container.scrollTo({ top: el.offsetTop - container.offsetTop, behavior: 'smooth' });
+    }
+}
 
-    const rateInput = document.getElementById(`kemasukan-rate-${roomId}`);
-    const labelInput = document.getElementById(`kemasukan-label-${roomId}`);
-    const unitInput = document.getElementById(`kemasukan-unit-${roomId}`);
-    const textSpan = document.getElementById(`kemasukan-selected-text-${roomId}`);
-    const unitPriceBox = document.getElementById(`kemasukan-unit-price-${roomId}`);
+function toggleKemasukanRowCheck(roomId, idx) {
+    const chk = document.getElementById(`kemasukan-chk-${roomId}-${idx}`);
+    const qtyInput = document.getElementById(`kemasukan-qty-${roomId}-${idx}`);
+    if (!chk || !qtyInput) return;
 
-    if (rateInput) rateInput.value = opt.rate;
-    if (labelInput) labelInput.value = opt.fullTitle;
-    if (unitInput) unitInput.value = opt.unit;
-    if (textSpan) textSpan.textContent = opt.fullTitle;
-    if (unitPriceBox) unitPriceBox.textContent = opt.rate === 0 ? 'PERCUMA' : `RM${opt.rate}`;
+    if (chk.checked) {
+        let q = parseInt(qtyInput.value) || 0;
+        if (q <= 0) qtyInput.value = 1;
+    } else {
+        qtyInput.value = 0;
+    }
+    updateKemasukanCalculations(roomId);
+}
 
-    for (let i = 0; i < 11; i++) {
-        const box = document.getElementById(`opt-kemasukan-${roomId}-${i}`);
-        if (!box) continue;
-        const icon = box.querySelector('i');
-        const price = box.querySelector('.opt-price');
-        if (i === index) {
-            box.className = "kemasukan-opt-btn flex flex-col items-center justify-center py-2 px-1 rounded-xl border-2 border-[#1b4332] bg-[#2d6a4f] text-white shadow-md ring-2 ring-emerald-400/60 scale-[1.02] transition cursor-pointer select-none text-center min-w-0";
-            if (icon) {
-                icon.classList.remove('text-[#2D5D48]');
-                icon.classList.add('text-emerald-200');
-            }
-            if (price) {
-                price.className = "opt-price text-[11px] font-black mt-0.5 tracking-tight text-white";
-            }
-        } else {
-            box.className = "kemasukan-opt-btn flex flex-col items-center justify-center py-2 px-1 rounded-xl border-2 border-[#94E3BA] bg-[#F3FDF7] text-slate-800 hover:border-emerald-600 hover:bg-emerald-100/60 transition cursor-pointer select-none text-center min-w-0";
-            if (icon) {
-                icon.classList.remove('text-emerald-200');
-                icon.classList.add('text-[#2D5D48]');
-            }
-            if (price) {
-                const isFree = (i === 9 || i === 10);
-                price.className = `opt-price text-[10.5px] sm:text-[11px] font-black mt-0.5 tracking-tight ${isFree ? 'text-amber-700' : 'text-emerald-800'}`;
+function stepKemasukanRowQty(roomId, idx, delta) {
+    const chk = document.getElementById(`kemasukan-chk-${roomId}-${idx}`);
+    const qtyInput = document.getElementById(`kemasukan-qty-${roomId}-${idx}`);
+    if (!qtyInput) return;
+
+    let q = parseInt(qtyInput.value) || 0;
+    q += delta;
+    if (q < 0) q = 0;
+    if (q > 500) q = 500;
+    qtyInput.value = q;
+
+    if (chk) {
+        chk.checked = (q > 0);
+    }
+    updateKemasukanCalculations(roomId);
+}
+
+function handleKemasukanQtyInput(roomId, idx) {
+    const chk = document.getElementById(`kemasukan-chk-${roomId}-${idx}`);
+    const qtyInput = document.getElementById(`kemasukan-qty-${roomId}-${idx}`);
+    if (!qtyInput) return;
+
+    let q = parseInt(qtyInput.value);
+    if (isNaN(q) || q < 0) q = 0;
+    if (q > 500) q = 500;
+    qtyInput.value = q;
+
+    if (chk) {
+        chk.checked = (q > 0);
+    }
+    updateKemasukanCalculations(roomId);
+}
+
+function updateKemasukanCalculations(roomId) {
+    let grandTotal = 0;
+    let totalItems = 0;
+
+    KEMASUKAN_ITEMS.forEach(item => {
+        const chk = document.getElementById(`kemasukan-chk-${roomId}-${item.idx}`);
+        const qtyInput = document.getElementById(`kemasukan-qty-${roomId}-${item.idx}`);
+        const priceSpan = document.getElementById(`kemasukan-price-${roomId}-${item.idx}`);
+
+        let q = qtyInput ? (parseInt(qtyInput.value) || 0) : 0;
+        if (chk && !chk.checked) {
+            q = 0;
+            if (qtyInput) qtyInput.value = 0;
+        } else if (chk && chk.checked && q <= 0) {
+            q = 1;
+            if (qtyInput) qtyInput.value = 1;
+        }
+
+        const subtotal = q * item.rate;
+        if (priceSpan) {
+            if (item.rate === 0) {
+                priceSpan.textContent = 'PERCUMA';
+            } else {
+                priceSpan.textContent = 'RM' + (q > 0 ? subtotal.toFixed(2) : '0.00');
             }
         }
-    }
 
-    updateKemasukanPrice(roomId);
+        if (q > 0) {
+            grandTotal += subtotal;
+            totalItems += q;
+        }
+    });
+
+    const totalSpan = document.getElementById(`kemasukan-grand-total-${roomId}`);
+    const countSpan = document.getElementById(`kemasukan-summary-count-${roomId}`);
+
+    if (totalSpan) totalSpan.textContent = grandTotal.toFixed(2);
+    if (countSpan) countSpan.textContent = `(${totalItems} Pilihan Dipilih)`;
 }
 
-// Alias untuk keserasian jika diperlukan
-function selectKemasukanDropdownOption(id, rate, text, unit = 'Orang') {
-    const foundIndex = KEMASUKAN_OPTIONS_DATA.findIndex(o => o.fullTitle === text || o.rate === rate);
-    if (foundIndex !== -1) {
-        selectKemasukanBoxOption(id, foundIndex);
-    }
-}
-
-function stepKemasukanQty(id, delta) {
-    const qtyInput = document.getElementById(`kemasukan-qty-${id}`);
-    if (!qtyInput) return;
-    let qty = parseInt(qtyInput.value);
-    if (isNaN(qty) || qty < 1) qty = 1;
-    qty += delta;
-    if (qty < 1) qty = 1;
-    if (qty > 500) qty = 500;
-    qtyInput.value = qty;
-    updateKemasukanPrice(id);
-}
-
-function updateKemasukanPrice(id) {
-    const rateInput = document.getElementById(`kemasukan-rate-${id}`);
-    const unitInput = document.getElementById(`kemasukan-unit-${id}`);
-    const qtyInput = document.getElementById(`kemasukan-qty-${id}`);
-    const calcQty = document.getElementById(`kemasukan-calc-qty-${id}`);
-    const calcUnit = document.getElementById(`kemasukan-calc-unit-${id}`);
-    const calcFormula = document.getElementById(`kemasukan-calc-formula-${id}`);
-    const subtotal = document.getElementById(`kemasukan-subtotal-${id}`);
-    const total = document.getElementById(`kemasukan-total-${id}`);
-
-    const rate = parseFloat(rateInput ? rateInput.value : 3) || 0;
-    const unit = unitInput ? unitInput.value : 'Orang';
-    let qty = parseInt(qtyInput ? qtyInput.value : 1);
-    if (isNaN(qty) || qty < 1) qty = 1;
-
-    const grandTotal = rate * qty;
-
-    if (calcQty) calcQty.textContent = qty;
-    if (calcUnit) calcUnit.textContent = unit;
-    if (calcFormula) {
-        calcFormula.innerHTML = rate === 0 
-            ? `(PERCUMA × <span>${qty}</span> <span>${unit}</span>)`
-            : `(RM${rate} × <span>${qty}</span> <span>${unit}</span>)`;
-    }
-    if (subtotal) subtotal.textContent = grandTotal.toFixed(2);
-    if (total) total.textContent = grandTotal.toFixed(2);
-}
-
-function addToCartKemasukan(id) {
-    const room = allRooms.find(r => r.id === id);
+function addToCartKemasukanMulti(roomId) {
+    const room = allRooms.find(r => r.id === roomId);
     if (!room) return;
 
-    const rateInput = document.getElementById(`kemasukan-rate-${id}`);
-    const labelInput = document.getElementById(`kemasukan-label-${id}`);
-    const unitInput = document.getElementById(`kemasukan-unit-${id}`);
-    const qtyInput = document.getElementById(`kemasukan-qty-${id}`);
+    let addedCount = 0;
+    let totalAddedPrice = 0;
 
-    const rate = parseFloat(rateInput ? rateInput.value : 3) || 0;
-    const label = labelInput ? labelInput.value : 'WARGA NEGARA - DEWASA RM3';
-    const unit = unitInput ? unitInput.value : 'Orang';
-    let qty = parseInt(qtyInput ? qtyInput.value : 1);
-    if (isNaN(qty) || qty < 1) qty = 1;
+    KEMASUKAN_ITEMS.forEach(item => {
+        const chk = document.getElementById(`kemasukan-chk-${roomId}-${item.idx}`);
+        const qtyInput = document.getElementById(`kemasukan-qty-${roomId}-${item.idx}`);
+        const isChecked = chk ? chk.checked : false;
+        const q = qtyInput ? (parseInt(qtyInput.value) || 0) : 0;
 
-    const totalPrice = rate * qty;
-    const cartKey = `kemasukan_${id}_${label.replace(/[^a-zA-Z0-9]/g, '_')}`;
-    const cartItemName = `TEMPAHAN CAJ KEMASUKAN: ${label} (${qty} ${unit})`;
-    const pkgTitle = `Kadar: RM${rate.toFixed(2)} x ${qty} ${unit} = RM${totalPrice.toFixed(2)}`;
+        if (isChecked && q > 0) {
+            const itemPrice = q * item.rate;
+            const cartKey = `kemasukan_${roomId}_${item.groupKey}_${item.idx}`;
+            const cartItemName = `TEMPAHAN CAJ KEMASUKAN: ${item.cartLabel} (${q} ${item.unit})`;
+            const pkgTitle = `${item.groupTitle} - ${item.rowLabel} (${q} ${item.unit} x RM${item.rate.toFixed(2)} = RM${itemPrice.toFixed(2)})`;
 
-    // Semak sekiranya pilihan tiket yang sama sudah ada di dalam bakul
-    const existingIndex = cart.findIndex(item => (item.cartKey === cartKey || item.name.startsWith(`TEMPAHAN CAJ KEMASUKAN: ${label}`)));
-    if (existingIndex !== -1) {
-        cart[existingIndex].price_per_night = totalPrice;
-        cart[existingIndex].total_price = totalPrice;
-        cart[existingIndex].name = cartItemName;
-        cart[existingIndex].packageName = pkgTitle;
-        cart[existingIndex].num_guests = qty;
-        cart[existingIndex].unit = unit;
-        updateCartUI();
-        alert(`Pilihan ${label} di dalam bakul telah dikemaskini: ${qty} ${unit} - RM${totalPrice.toFixed(2)}`);
+            const existingIndex = cart.findIndex(c => c.cartKey === cartKey || c.name.startsWith(`TEMPAHAN CAJ KEMASUKAN: ${item.cartLabel}`));
+            if (existingIndex !== -1) {
+                cart[existingIndex].price_per_night = itemPrice;
+                cart[existingIndex].total_price = itemPrice;
+                cart[existingIndex].name = cartItemName;
+                cart[existingIndex].packageName = pkgTitle;
+                cart[existingIndex].num_guests = q;
+                cart[existingIndex].unit = item.unit;
+            } else {
+                cart.push({
+                    ...room,
+                    id: roomId,
+                    room_id: roomId,
+                    cartKey: cartKey,
+                    name: cartItemName,
+                    packageName: pkgTitle,
+                    price_per_night: itemPrice,
+                    total_price: itemPrice,
+                    num_guests: q,
+                    unit: item.unit,
+                    ticketRate: item.rate
+                });
+            }
+            addedCount++;
+            totalAddedPrice += itemPrice;
+        }
+    });
+
+    if (addedCount === 0) {
+        alert('Sila tandakan dan pilih sekurang-kurangnya satu kategori tiket atau kenderaan.');
         return;
     }
 
-    const kemasukanItem = {
-        ...room,
-        id: id,
-        room_id: id,
-        cartKey: cartKey,
-        name: cartItemName,
-        packageName: pkgTitle,
-        price_per_night: totalPrice,
-        total_price: totalPrice,
-        num_guests: qty,
-        unit: unit,
-        ticketRate: rate
-    };
-
-    cart.push(kemasukanItem);
     updateCartUI();
 
-    const btn = document.querySelector(`button[onclick*="addToCartKemasukan(${id})"]`);
+    const btn = document.querySelector(`button[onclick*="addToCartKemasukanMulti(${roomId})"]`) ||
+                document.querySelector(`button[onclick*="addToCartKemasukan(${roomId})"]`);
     if (btn) {
         const original = btn.innerHTML;
-        btn.innerHTML = '<i class="fa-solid fa-check text-lg"></i> Ditambah';
+        btn.innerHTML = `<i class="fa-solid fa-check text-lg"></i> ${addedCount} Pilihan Ditambah`;
         btn.classList.add('bg-emerald-500');
         setTimeout(() => {
             btn.innerHTML = original;
             btn.classList.remove('bg-emerald-500');
         }, 2000);
     }
+}
+
+// Aliases
+function addToCartKemasukan(id) {
+    addToCartKemasukanMulti(id);
+}
+function selectKemasukanBoxOption(roomId, index) {}
+function selectKemasukanDropdownOption(id, rate, text, unit) {}
+function stepKemasukanQty(id, delta) {}
+function updateKemasukanPrice(id) {
+    updateKemasukanCalculations(id);
 }
 
 function renderRooms(rooms) {
