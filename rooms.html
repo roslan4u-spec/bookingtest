@@ -110,11 +110,12 @@
                 <option value="">Semua Pilihan</option>
                 <option value="TEMPAHAN AKTIVITI HIKING">TEMPAHAN AKTIVITI HIKING</option>
                 <option value="TEMPAHAN KABIN">TEMPAHAN KABIN</option>
-                <option value="TEMPAHAN TAPAK GAZEBO">TEMPAHAN TAPAK GAZEBO</option>
+                <option value="TEMPAHAN GAZEBO">TEMPAHAN GAZEBO</option>
                 <option value="TEMPAHAN AKTIVITI JUNGLE TREKKING">TEMPAHAN AKTIVITI JUNGLE TREKKING</option>
                 <option value="TEMPAHAN TAPAK HAMMOCK">TEMPAHAN TAPAK HAMMOCK</option>
                 <option value="TEMPAHAN TAPAK PERKHEMAHAN">TEMPAHAN TAPAK PERKHEMAHAN</option>
                 <option value="TEMPAHAN TAPAK KENDERAAN RV / CARAVAN / CAMPERVAN">TEMPAHAN TAPAK KENDERAAN RV / CARAVAN / CAMPERVAN</option>
+                <option value="TEMPAHAN CAJ KEMASUKAN PENGUNJUNG">TEMPAHAN CAJ KEMASUKAN PENGUNJUNG</option>
             </select>
         </div>
     </div>
@@ -484,6 +485,10 @@ function matchRoomType(room, filterValue) {
     if ((filter.includes('RV') || filter.includes('CARAVAN') || filter.includes('CAMPERVAN')) &&
         (type.includes('RV') || type.includes('CARAVAN') || type.includes('CAMPERVAN') || name.includes('RV') || name.includes('CARAVAN') || name.includes('CAMPERVAN'))) return true;
 
+    // Padanan Caj Kemasukan Pengunjung
+    if ((filter.includes('KEMASUKAN') || filter.includes('TIKET') || filter.includes('PENGUNJUNG')) &&
+        (type.includes('KEMASUKAN') || name.includes('KEMASUKAN') || type.includes('TIKET') || name.includes('TIKET') || type.includes('PENGUNJUNG') || name.includes('PENGUNJUNG'))) return true;
+
     // Padanan pembersihan awalan kata (strip 'TEMPAHAN', 'AKTIVITI')
     const cleanF = filter.replace(/^TEMPAHAN\s+/i, '').replace(/^AKTIVITI\s+/i, '').trim();
     const cleanT = type.replace(/^TEMPAHAN\s+/i, '').replace(/^AKTIVITI\s+/i, '').trim();
@@ -497,7 +502,11 @@ async function loadRooms(typeFilter = '') {
     const grid = document.getElementById('rooms-grid');
     try {
         const res = await fetch(`${API}/api/rooms?t=${Date.now()}`);
-        allRooms = await res.json();
+        allRooms = (await res.json()).map(r => {
+            if (r.name) r.name = r.name.replace(/TEMPAHAN TAPAK GAZEBO/gi, 'TEMPAHAN GAZEBO');
+            if (r.type) r.type = r.type.replace(/TEMPAHAN TAPAK GAZEBO/gi, 'TEMPAHAN GAZEBO');
+            return r;
+        });
         let filtered = allRooms;
         if (typeFilter) filtered = allRooms.filter(r => matchRoomType(r, typeFilter));
         document.getElementById('room-count').textContent = `${filtered.length} tempahan & aktiviti tersedia`;
@@ -819,11 +828,11 @@ function renderRooms(rooms) {
                 </div>
                 <p class="text-slate-500 text-sm mb-3 flex-grow">${r.description}</p>
                 <div class="flex items-center gap-2 text-xs text-emerald-700 bg-emerald-50 rounded-lg px-3 py-2 mb-4 border border-emerald-100">
-                    <i class="fa-solid fa-users"></i>
-                    <span>Sehingga <strong>${r.capacity} orang</strong></span>
+                    <i class="fa-solid ${(r.name && (r.name.includes('KEMASUKAN') || r.name.includes('TIKET'))) ? 'fa-ticket' : 'fa-users'}"></i>
+                    <span>${(r.name && (r.name.includes('KEMASUKAN') || r.name.includes('TIKET'))) ? 'Kemasukan: <strong>Warganegara & Bukan Warganegara</strong>' : `Sehingga <strong>${r.capacity} orang</strong>`}</span>
                 </div>
                 <div class="mb-4">
-                    <p class="text-xs text-slate-500 font-semibold mb-1.5">Kemudahan:</p>
+                    <p class="text-xs text-slate-500 font-semibold mb-1.5">${(r.name && (r.name.includes('KEMASUKAN') || r.name.includes('TIKET'))) ? 'Kadar Caj:' : 'Kemudahan:'}</p>
                     <div class="flex flex-wrap gap-1.5">
                         ${r.facilities.split(', ').slice(0,4).map(f => `<span class="bg-slate-100 text-slate-600 text-xs px-2 py-0.5 rounded-full">${f}</span>`).join('')}
                         ${r.facilities.split(', ').length > 4 ? `<span class="bg-slate-100 text-slate-500 text-xs px-2 py-0.5 rounded-full">+${r.facilities.split(', ').length - 4} lagi</span>` : ''}
@@ -907,8 +916,15 @@ function renderRoomsWithAvailability(rooms) {
                 </div>
                 <p class="text-slate-500 text-sm mb-3 flex-grow">${r.description}</p>
                 <div class="flex items-center gap-2 text-xs text-emerald-700 bg-emerald-50 rounded-lg px-3 py-2 mb-4 border border-emerald-100">
-                    <i class="fa-solid fa-users"></i>
-                    <span>Sehingga <strong>${r.capacity} orang</strong></span>
+                    <i class="fa-solid ${(r.name && (r.name.includes('KEMASUKAN') || r.name.includes('TIKET'))) ? 'fa-ticket' : 'fa-users'}"></i>
+                    <span>${(r.name && (r.name.includes('KEMASUKAN') || r.name.includes('TIKET'))) ? 'Kemasukan: <strong>Warganegara & Bukan Warganegara</strong>' : `Sehingga <strong>${r.capacity} orang</strong>`}</span>
+                </div>
+                <div class="mb-4">
+                    <p class="text-xs text-slate-500 font-semibold mb-1.5">${(r.name && (r.name.includes('KEMASUKAN') || r.name.includes('TIKET'))) ? 'Kadar Caj:' : 'Kemudahan:'}</p>
+                    <div class="flex flex-wrap gap-1.5">
+                        ${r.facilities.split(', ').slice(0,4).map(f => `<span class="bg-slate-100 text-slate-600 text-xs px-2 py-0.5 rounded-full">${f}</span>`).join('')}
+                        ${r.facilities.split(', ').length > 4 ? `<span class="bg-slate-100 text-slate-500 text-xs px-2 py-0.5 rounded-full">+${r.facilities.split(', ').length - 4} lagi</span>` : ''}
+                    </div>
                 </div>
                 <button onclick="${r.available ? `addToCart(${r.id})` : ''}" 
                     class="w-full ${r.available ? 'bg-emerald-700 hover:bg-emerald-800 cursor-pointer' : 'bg-slate-300 cursor-not-allowed'} text-white font-bold py-3 rounded-xl transition flex items-center justify-center gap-2 mt-auto"

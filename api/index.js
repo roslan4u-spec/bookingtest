@@ -128,11 +128,12 @@ const requireAdmin = (req, res, next) => {
 const MOCK_ROOMS = [
     { id: 1, name: 'TEMPAHAN AKTIVITI HIKING', type: 'TEMPAHAN AKTIVITI HIKING', capacity: 7, price_per_night: 50, description: 'Terokai alam semula jadi dengan pendakian berpandu di sekitar Taman Eko Rimba Berkelah Pahang.', facilities: 'Pemandu arah, Peralatan asas, Sijil penyertaan', image_url: 'images/hiking.jpg', is_active: 1 },
     { id: 7, name: 'TEMPAHAN KABIN', type: 'TEMPAHAN KABIN', capacity: 4, price_per_night: 150, description: 'Kabin berhawa dingin yang selesa sesuai untuk percutian keluarga.', facilities: '2 Katil Single, Aircond, Almari, Tandas, Dapur', image_url: 'images/kabin.jpg', is_active: 1 },
-    { id: 2, name: 'TEMPAHAN TAPAK GAZEBO', type: 'TEMPAHAN TAPAK GAZEBO', capacity: 8, price_per_night: 60, description: 'Pondok berehat berhampiran sungai yang sesuai untuk keluarga berkelah.', facilities: 'Bumbung teduh, Meja kayu, Tempat duduk, Tong sampah', image_url: 'images/gazebo.jpg', is_active: 1 },
+    { id: 2, name: 'TEMPAHAN GAZEBO', type: 'TEMPAHAN GAZEBO', capacity: 8, price_per_night: 60, description: 'Pondok berehat berhampiran sungai yang sesuai untuk keluarga berkelah.', facilities: 'Bumbung teduh, Meja kayu, Tempat duduk, Tong sampah', image_url: 'images/gazebo.jpg', is_active: 1 },
     { id: 3, name: 'TEMPAHAN AKTIVITI JUNGLE TREKKING', type: 'TEMPAHAN AKTIVITI JUNGLE TREKKING', capacity: 15, price_per_night: 30, description: 'Pengalaman merentas hutan sambil mempelajari spesies pokok dan tumbuhan herba.', facilities: 'Laluan bertanda, Panduan taklimat', image_url: 'images/jungle_trekking.jpg', is_active: 1 },
     { id: 4, name: 'TEMPAHAN TAPAK HAMMOCK', type: 'TEMPAHAN TAPAK HAMMOCK', capacity: 2, price_per_night: 15, description: 'Lokasi strategik di antara pepohonan untuk menggantung hammock anda.', facilities: 'Kawasan redup, Akses mudah ke sungai', image_url: 'images/hammock.jpg', is_active: 1 },
     { id: 5, name: 'TEMPAHAN TAPAK PERKHEMAHAN', type: 'TEMPAHAN TAPAK PERKHEMAHAN', capacity: 4, price_per_night: 40, description: 'Kawasan lapang khas untuk mendirikan khemah, dilengkapi kemudahan asas.', facilities: 'Tandas awam, Bekalan air paip, Kawasan unggun api', image_url: 'images/perkhemahan.jpg', is_active: 1 },
-    { id: 6, name: 'TEMPAHAN TAPAK KENDERAAN RV / CARAVAN / CAMPERVAN', type: 'TEMPAHAN TAPAK KENDERAAN RV / CARAVAN / CAMPERVAN', capacity: 6, price_per_night: 80, description: 'Ruang parkir khusus untuk kenderaan rekreasi dengan sokongan kuasa elektrik.', facilities: 'Penyambung elektrik (Plug), Bekalan air, Sisa pembuangan', image_url: 'https://images.unsplash.com/photo-1523987355523-c7b5b0dd90a7?auto=format&fit=crop&w=800&q=80', is_active: 1 }
+    { id: 6, name: 'TEMPAHAN TAPAK KENDERAAN RV / CARAVAN / CAMPERVAN', type: 'TEMPAHAN TAPAK KENDERAAN RV / CARAVAN / CAMPERVAN', capacity: 6, price_per_night: 80, description: 'Ruang parkir khusus untuk kenderaan rekreasi dengan sokongan kuasa elektrik.', facilities: 'Penyambung elektrik (Plug), Bekalan air, Sisa pembuangan', image_url: 'https://images.unsplash.com/photo-1523987355523-c7b5b0dd90a7?auto=format&fit=crop&w=800&q=80', is_active: 1 },
+    { id: 8, name: 'TEMPAHAN CAJ KEMASUKAN PENGUNJUNG', type: 'TEMPAHAN CAJ KEMASUKAN PENGUNJUNG', capacity: 10, price_per_night: 3, description: 'Caj tiket kemasukan harian pengunjung dan kenderaan ke Taman Eko Rimba Berkelah Gambang Pahang.', facilities: 'Dewasa RM3, Kanak-kanak RM1, Warga Emas RM1, Pelawat Asing RM10, Kereta RM3, Motorsikal RM1, OKU & Bawah 4 Thn Percuma', image_url: 'images/caj_kemasukan.jpg', is_active: 1 }
 ];
 
 app.get('/api/rooms', async (req, res) => {
@@ -144,6 +145,12 @@ app.get('/api/rooms', async (req, res) => {
         const fixedRows = rows.map(r => {
             if (r.description) {
                 r.description = r.description.replace(/Gunung Tapis/gi, 'Taman Eko Rimba Berkelah Pahang');
+            }
+            if (r.name) {
+                r.name = r.name.replace(/TEMPAHAN TAPAK GAZEBO/gi, 'TEMPAHAN GAZEBO');
+            }
+            if (r.type) {
+                r.type = r.type.replace(/TEMPAHAN TAPAK GAZEBO/gi, 'TEMPAHAN GAZEBO');
             }
             return r;
         });
@@ -184,7 +191,7 @@ function loadMockBookings() {
     return [
         { id: 101, booking_ref: 'MOCK9083', room_id: 1, room_name: 'TEMPAHAN AKTIVITI HIKING', guest_name: 'Peah Bin Puah', guest_phone: '0194489296', num_guests: 1, checkin_date: '2026-10-15', checkout_date: '2026-10-16', num_nights: 1, total_price: 50, status: 'Menunggu Pengesahan', created_at: new Date().toISOString() },
         { id: 102, booking_ref: 'MOCK8521', room_id: 7, room_name: 'TEMPAHAN KABIN', guest_name: 'Peah Bin Puah', guest_phone: '0194489296', num_guests: 1, checkin_date: '2026-10-15', checkout_date: '2026-10-16', num_nights: 1, total_price: 150, status: 'Menunggu Pengesahan', created_at: new Date().toISOString() },
-        { id: 103, booking_ref: 'MOCK8447', room_id: 2, room_name: 'TEMPAHAN TAPAK GAZEBO', guest_name: 'Peah Bin Puah', guest_phone: '0194489296', num_guests: 1, checkin_date: '2026-10-15', checkout_date: '2026-10-16', num_nights: 1, total_price: 60, status: 'Menunggu Pengesahan', created_at: new Date().toISOString() },
+        { id: 103, booking_ref: 'MOCK8447', room_id: 2, room_name: 'TEMPAHAN GAZEBO', guest_name: 'Peah Bin Puah', guest_phone: '0194489296', num_guests: 1, checkin_date: '2026-10-15', checkout_date: '2026-10-16', num_nights: 1, total_price: 60, status: 'Menunggu Pengesahan', created_at: new Date().toISOString() },
         { id: 104, booking_ref: 'MOCK3328', room_id: 3, room_name: 'TEMPAHAN AKTIVITI JUNGLE TREKKING', guest_name: 'Peah Bin Puah', guest_phone: '0194489296', num_guests: 1, checkin_date: '2026-10-15', checkout_date: '2026-10-16', num_nights: 1, total_price: 30, status: 'Menunggu Pengesahan', created_at: new Date().toISOString() },
         { id: 105, booking_ref: 'MOCK1908', room_id: 4, room_name: 'TEMPAHAN TAPAK HAMMOCK', guest_name: 'Peah Bin Puah', guest_phone: '0194489296', num_guests: 1, checkin_date: '2026-10-15', checkout_date: '2026-10-16', num_nights: 1, total_price: 15, status: 'Menunggu Pengesahan', created_at: new Date().toISOString() },
         { id: 106, booking_ref: 'MOCK9337', room_id: 5, room_name: 'TEMPAHAN TAPAK PERKHEMAHAN', guest_name: 'Peah Bin Puah', guest_phone: '0194489296', num_guests: 1, checkin_date: '2026-10-15', checkout_date: '2026-10-16', num_nights: 1, total_price: 40, status: 'Menunggu Pengesahan', created_at: new Date().toISOString() },
