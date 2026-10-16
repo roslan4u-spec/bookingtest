@@ -778,7 +778,8 @@ function addToCartHiking(id) {
     const totalHikingPrice = guideTotal + procTotal;
     
     const isKabin = (room.name && room.name.toUpperCase().includes('KABIN'));
-    const itemType = isKabin ? 'TEMPAHAN KABIN' : 'TEMPAHAN AKTIVITI HIKING';
+    const isGazebo = (room.name && room.name.toUpperCase().includes('GAZEBO'));
+    const itemType = isKabin ? 'TEMPAHAN KABIN' : (isGazebo ? (room.name || 'TEMPAHAN GAZEBO') : 'TEMPAHAN AKTIVITI HIKING');
     const pkgLocation = isTingkat7 ? 'TINGKAT 7' : 'TINGKAT 3';
     const pkgTitle = `CAJ PEMANDU ARAH KE ${pkgLocation} (${groups} Kumpulan x RM${pkgRate} = RM${guideTotal}) + Caj Pemprosesan (${pax} Orang x RM10 = RM${procTotal})`;
     const cartItemName = `${itemType} (${pkgLocation} - ${pax} ORANG / ${groups} KUMPULAN)`;
@@ -1246,7 +1247,8 @@ function renderRooms(rooms) {
             return renderKemasukanCard(r, false);
         }
         if ((r.name && r.name.toUpperCase().includes('HIKING')) || (r.type && r.type.toUpperCase().includes('HIKING')) ||
-            (r.name && r.name.toUpperCase().includes('KABIN')) || (r.type && r.type.toUpperCase().includes('KABIN'))) {
+            (r.name && r.name.toUpperCase().includes('KABIN')) || (r.type && r.type.toUpperCase().includes('KABIN')) ||
+            (r.name && r.name.toUpperCase().includes('GAZEBO')) || (r.type && r.type.toUpperCase().includes('GAZEBO'))) {
             return renderHikingCard(r, false);
         }
         return `
@@ -1336,7 +1338,8 @@ function renderRoomsWithAvailability(rooms) {
             return renderKemasukanCard(r, true);
         }
         if ((r.name && r.name.toUpperCase().includes('HIKING')) || (r.type && r.type.toUpperCase().includes('HIKING')) ||
-            (r.name && r.name.toUpperCase().includes('KABIN')) || (r.type && r.type.toUpperCase().includes('KABIN'))) {
+            (r.name && r.name.toUpperCase().includes('KABIN')) || (r.type && r.type.toUpperCase().includes('KABIN')) ||
+            (r.name && r.name.toUpperCase().includes('GAZEBO')) || (r.type && r.type.toUpperCase().includes('GAZEBO'))) {
             return renderHikingCard(r, true);
         }
         return `
