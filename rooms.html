@@ -781,7 +781,8 @@ function addToCartHiking(id) {
     const isGazebo = (room.name && room.name.toUpperCase().includes('GAZEBO'));
     const isJungle = (room.name && (room.name.toUpperCase().includes('JUNGLE') || room.name.toUpperCase().includes('TREKKING')));
     const isKhemah = (room.name && (room.name.toUpperCase().includes('PERKHEMAHAN') || room.name.toUpperCase().includes('KHEMAH')));
-    const itemType = isKabin ? 'TEMPAHAN KABIN' : (isGazebo ? (room.name || 'TEMPAHAN GAZEBO') : (isJungle ? (room.name || 'TEMPAHAN AKTIVITI JUNGLE TREKKING') : (isKhemah ? (room.name || 'TEMPAHAN TAPAK PERKHEMAHAN') : 'TEMPAHAN AKTIVITI HIKING')));
+    const isHammock = (room.name && room.name.toUpperCase().includes('HAMMOCK'));
+    const itemType = isKabin ? 'TEMPAHAN KABIN' : (isGazebo ? (room.name || 'TEMPAHAN GAZEBO') : (isJungle ? (room.name || 'TEMPAHAN AKTIVITI JUNGLE TREKKING') : (isKhemah ? (room.name || 'TEMPAHAN TAPAK PERKHEMAHAN') : (isHammock ? (room.name || 'TEMPAHAN TAPAK HAMMOCK') : 'TEMPAHAN AKTIVITI HIKING'))));
     const pkgLocation = isTingkat7 ? 'TINGKAT 7' : 'TINGKAT 3';
     const pkgTitle = `CAJ PEMANDU ARAH KE ${pkgLocation} (${groups} Kumpulan x RM${pkgRate} = RM${guideTotal}) + Caj Pemprosesan (${pax} Orang x RM10 = RM${procTotal})`;
     const cartItemName = `${itemType} (${pkgLocation} - ${pax} ORANG / ${groups} KUMPULAN)`;
@@ -1254,7 +1255,8 @@ function renderRooms(rooms) {
             (r.name && (r.name.toUpperCase().includes('JUNGLE') || r.name.toUpperCase().includes('TREKKING'))) ||
             (r.type && (r.type.toUpperCase().includes('JUNGLE') || r.type.toUpperCase().includes('TREKKING'))) ||
             (r.name && (r.name.toUpperCase().includes('PERKHEMAHAN') || r.name.toUpperCase().includes('KHEMAH'))) ||
-            (r.type && (r.type.toUpperCase().includes('PERKHEMAHAN') || r.type.toUpperCase().includes('KHEMAH')))) {
+            (r.type && (r.type.toUpperCase().includes('PERKHEMAHAN') || r.type.toUpperCase().includes('KHEMAH'))) ||
+            (r.name && r.name.toUpperCase().includes('HAMMOCK')) || (r.type && r.type.toUpperCase().includes('HAMMOCK'))) {
             return renderHikingCard(r, false);
         }
         return `
@@ -1349,7 +1351,8 @@ function renderRoomsWithAvailability(rooms) {
             (r.name && (r.name.toUpperCase().includes('JUNGLE') || r.name.toUpperCase().includes('TREKKING'))) ||
             (r.type && (r.type.toUpperCase().includes('JUNGLE') || r.type.toUpperCase().includes('TREKKING'))) ||
             (r.name && (r.name.toUpperCase().includes('PERKHEMAHAN') || r.name.toUpperCase().includes('KHEMAH'))) ||
-            (r.type && (r.type.toUpperCase().includes('PERKHEMAHAN') || r.type.toUpperCase().includes('KHEMAH')))) {
+            (r.type && (r.type.toUpperCase().includes('PERKHEMAHAN') || r.type.toUpperCase().includes('KHEMAH'))) ||
+            (r.name && r.name.toUpperCase().includes('HAMMOCK')) || (r.type && r.type.toUpperCase().includes('HAMMOCK'))) {
             return renderHikingCard(r, true);
         }
         return `
