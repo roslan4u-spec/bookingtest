@@ -403,12 +403,28 @@ if (process.env.NODE_ENV !== 'production' && !process.env.VERCEL) {
     const fs = require('fs');
     const rootDir = path.join(__dirname, '..');
     
-    app.get('/', (req, res) => { res.setHeader('Content-Type', 'text/html'); res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate'); res.send(fs.readFileSync(path.join(rootDir, 'index.html'))); });
-    app.get('/rooms', (req, res) => { res.setHeader('Content-Type', 'text/html'); res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate'); res.send(fs.readFileSync(path.join(rootDir, 'rooms.html'))); });
-    app.get('/admin', (req, res) => { res.setHeader('Content-Type', 'text/html'); res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate'); res.send(fs.readFileSync(path.join(rootDir, 'admin.html'))); });
+    const sendHtml = (file) => (req, res) => {
+        res.setHeader('Content-Type', 'text/html; charset=utf-8');
+        res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+        res.setHeader('Pragma', 'no-cache');
+        res.setHeader('Expires', '0');
+        res.send(fs.readFileSync(path.join(rootDir, file)));
+    };
+    app.get('/', sendHtml('index.html'));
+    app.get('/index.html', sendHtml('index.html'));
+    app.get('/rooms', sendHtml('rooms.html'));
+    app.get('/rooms.html', sendHtml('rooms.html'));
+    app.get('/admin', sendHtml('admin.html'));
+    app.get('/admin.html', sendHtml('admin.html'));
     
     // Serve all other static assets (css, js, images)
-    app.use(express.static(rootDir));
+    app.use(express.static(rootDir, {
+        setHeaders: (res, filePath) => {
+            if (filePath.endsWith('.html') || filePath.endsWith('.js') || filePath.endsWith('.css')) {
+                res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+            }
+        }
+    }));
 
     
 // 📌📌📌 UPDATE ROOM (CMS) 📌📌📌
