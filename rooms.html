@@ -779,7 +779,8 @@ function addToCartHiking(id) {
     
     const isKabin = (room.name && room.name.toUpperCase().includes('KABIN'));
     const isGazebo = (room.name && room.name.toUpperCase().includes('GAZEBO'));
-    const itemType = isKabin ? 'TEMPAHAN KABIN' : (isGazebo ? (room.name || 'TEMPAHAN GAZEBO') : 'TEMPAHAN AKTIVITI HIKING');
+    const isJungle = (room.name && (room.name.toUpperCase().includes('JUNGLE') || room.name.toUpperCase().includes('TREKKING')));
+    const itemType = isKabin ? 'TEMPAHAN KABIN' : (isGazebo ? (room.name || 'TEMPAHAN GAZEBO') : (isJungle ? (room.name || 'TEMPAHAN AKTIVITI JUNGLE TREKKING') : 'TEMPAHAN AKTIVITI HIKING'));
     const pkgLocation = isTingkat7 ? 'TINGKAT 7' : 'TINGKAT 3';
     const pkgTitle = `CAJ PEMANDU ARAH KE ${pkgLocation} (${groups} Kumpulan x RM${pkgRate} = RM${guideTotal}) + Caj Pemprosesan (${pax} Orang x RM10 = RM${procTotal})`;
     const cartItemName = `${itemType} (${pkgLocation} - ${pax} ORANG / ${groups} KUMPULAN)`;
@@ -1248,7 +1249,9 @@ function renderRooms(rooms) {
         }
         if ((r.name && r.name.toUpperCase().includes('HIKING')) || (r.type && r.type.toUpperCase().includes('HIKING')) ||
             (r.name && r.name.toUpperCase().includes('KABIN')) || (r.type && r.type.toUpperCase().includes('KABIN')) ||
-            (r.name && r.name.toUpperCase().includes('GAZEBO')) || (r.type && r.type.toUpperCase().includes('GAZEBO'))) {
+            (r.name && r.name.toUpperCase().includes('GAZEBO')) || (r.type && r.type.toUpperCase().includes('GAZEBO')) ||
+            (r.name && (r.name.toUpperCase().includes('JUNGLE') || r.name.toUpperCase().includes('TREKKING'))) ||
+            (r.type && (r.type.toUpperCase().includes('JUNGLE') || r.type.toUpperCase().includes('TREKKING')))) {
             return renderHikingCard(r, false);
         }
         return `
@@ -1339,7 +1342,9 @@ function renderRoomsWithAvailability(rooms) {
         }
         if ((r.name && r.name.toUpperCase().includes('HIKING')) || (r.type && r.type.toUpperCase().includes('HIKING')) ||
             (r.name && r.name.toUpperCase().includes('KABIN')) || (r.type && r.type.toUpperCase().includes('KABIN')) ||
-            (r.name && r.name.toUpperCase().includes('GAZEBO')) || (r.type && r.type.toUpperCase().includes('GAZEBO'))) {
+            (r.name && r.name.toUpperCase().includes('GAZEBO')) || (r.type && r.type.toUpperCase().includes('GAZEBO')) ||
+            (r.name && (r.name.toUpperCase().includes('JUNGLE') || r.name.toUpperCase().includes('TREKKING'))) ||
+            (r.type && (r.type.toUpperCase().includes('JUNGLE') || r.type.toUpperCase().includes('TREKKING')))) {
             return renderHikingCard(r, true);
         }
         return `
