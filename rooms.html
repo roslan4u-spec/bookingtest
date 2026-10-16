@@ -828,8 +828,8 @@ function addToCartHiking(id) {
 const KEMASUKAN_ITEMS = [
     // MY CAJ KEMASUKAN WARGA NEGARA
     { idx: 0, groupKey: 'wn', groupTitle: 'MY CAJ KEMASUKAN WARGA NEGARA', rowLabel: 'CAJ DEWASA', cartLabel: 'WARGA NEGARA - DEWASA', rate: 3, unit: 'Orang', defaultQty: 1 },
-    { idx: 1, groupKey: 'wn', groupTitle: 'MY CAJ KEMASUKAN WARGA NEGARA', rowLabel: 'CAJ KANAK-KANAK', cartLabel: 'WARGA NEGARA - KANAK-KANAK', rate: 1, unit: 'Orang', defaultQty: 1 },
-    { idx: 2, groupKey: 'wn', groupTitle: 'MY CAJ KEMASUKAN WARGA NEGARA', rowLabel: 'CAJ WARGA EMAS', cartLabel: 'WARGA NEGARA - WARGA EMAS', rate: 1, unit: 'Orang', defaultQty: 1 },
+    { idx: 1, groupKey: 'wn', groupTitle: 'MY CAJ KEMASUKAN WARGA NEGARA', rowLabel: 'CAJ KANAK-KANAK', cartLabel: 'WARGA NEGARA - KANAK-KANAK', rate: 1, unit: 'Orang', defaultQty: 0 },
+    { idx: 2, groupKey: 'wn', groupTitle: 'MY CAJ KEMASUKAN WARGA NEGARA', rowLabel: 'CAJ WARGA EMAS', cartLabel: 'WARGA NEGARA - WARGA EMAS', rate: 1, unit: 'Orang', defaultQty: 0 },
 
     // 🌐 CAJ KEMASUKAN BUKAN WARGA NEGARA
     { idx: 3, groupKey: 'bwn', groupTitle: '🌐 CAJ KEMASUKAN BUKAN WARGA NEGARA', rowLabel: 'CAJ DEWASA', cartLabel: 'BUKAN WARGA NEGARA - DEWASA', rate: 10, unit: 'Orang', defaultQty: 0 },
@@ -939,7 +939,7 @@ function renderKemasukanCard(r, isAvailabilityCheck = false) {
                         <button type="button" onclick="switchKemasukanCategory(${r.id}, 'wn')" id="kemasukan-tab-btn-${r.id}-wn"
                             class="kemasukan-tab-btn py-1.5 px-2 rounded-xl text-[10px] sm:text-[10.5px] font-black uppercase tracking-tight transition flex items-center justify-center gap-1 border-2 border-[#386641] bg-[#386641] text-white shadow-xs cursor-pointer select-none">
                             <span>MY Warga Negara</span>
-                            <span id="tab-badge-${r.id}-wn" class="text-[9px] bg-white text-[#386641] px-1.5 py-0.2 rounded-full font-extrabold leading-none">3</span>
+                            <span id="tab-badge-${r.id}-wn" class="text-[9px] bg-white text-[#386641] px-1.5 py-0.2 rounded-full font-extrabold leading-none">1</span>
                         </button>
                         <button type="button" onclick="switchKemasukanCategory(${r.id}, 'bwn')" id="kemasukan-tab-btn-${r.id}-bwn"
                             class="kemasukan-tab-btn py-1.5 px-2 rounded-xl text-[10px] sm:text-[10.5px] font-black uppercase tracking-tight transition flex items-center justify-center gap-1 border-2 border-[#94E3BA] bg-[#F3FDF7] text-slate-800 hover:border-[#386641] shadow-xs cursor-pointer select-none">
@@ -988,11 +988,11 @@ function renderKemasukanCard(r, isAvailabilityCheck = false) {
                                 JUMLAH KESELURUHAN
                             </span>
                             <span id="kemasukan-summary-count-${r.id}" class="text-[9.5px] sm:text-[10px] font-bold text-[#2D5D48] whitespace-nowrap mt-0.5">
-                                (3 Pilihan Dipilih)
+                                (1 Pilihan Dipilih)
                             </span>
                         </div>
                         <span class="font-black text-slate-900 text-xs sm:text-sm tracking-tight whitespace-nowrap pl-1 flex-shrink-0">
-                            RM <span id="kemasukan-grand-total-${r.id}">5.00</span>
+                            RM <span id="kemasukan-grand-total-${r.id}">3.00</span>
                         </span>
                     </div>
                 </div>
@@ -1100,7 +1100,7 @@ function handleKemasukanQtyInput(roomId, idx) {
 
 function updateKemasukanCalculations(roomId) {
     let grandTotal = 0;
-    let totalItems = 0;
+    let selectedCategoriesCount = 0;
     const groupCounts = { wn: 0, bwn: 0, kend: 0, percuma: 0 };
 
     KEMASUKAN_ITEMS.forEach(item => {
@@ -1128,9 +1128,9 @@ function updateKemasukanCalculations(roomId) {
 
         if (isChecked && q > 0) {
             grandTotal += subtotal;
-            totalItems += q;
+            selectedCategoriesCount += 1;
             if (groupCounts[item.groupKey] !== undefined) {
-                groupCounts[item.groupKey] += q;
+                groupCounts[item.groupKey] += 1;
             }
         }
     });
@@ -1153,7 +1153,7 @@ function updateKemasukanCalculations(roomId) {
     const countSpan = document.getElementById(`kemasukan-summary-count-${roomId}`);
 
     if (totalSpan) totalSpan.textContent = grandTotal.toFixed(2);
-    if (countSpan) countSpan.textContent = `(${totalItems} Pilihan Dipilih)`;
+    if (countSpan) countSpan.textContent = `(${selectedCategoriesCount} Pilihan Dipilih)`;
 }
 
 function addToCartKemasukanMulti(roomId) {
