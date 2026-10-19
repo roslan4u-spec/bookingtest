@@ -109,6 +109,7 @@ function renderHikingCard(r, isAvailabilityCheck = false) {
         </span>
     ` : '';
 
+    const isGazebo = (r.name && r.name.toUpperCase().includes('GAZEBO')) || (r.type && r.type.toUpperCase().includes('GAZEBO'));
     const isJungle = (r.name && (r.name.toUpperCase().includes('JUNGLE') || r.name.toUpperCase().includes('TREKKING')));
     const isRv = (r.name && (r.name.toUpperCase().includes('RV') || r.name.toUpperCase().includes('CARAVAN') || r.name.toUpperCase().includes('CAMPERVAN'))) || (r.type && (r.type.toUpperCase().includes('RV') || r.type.toUpperCase().includes('CARAVAN') || r.type.toUpperCase().includes('CAMPERVAN')));
     const isKabin = (r.name && r.name.toUpperCase().includes('KABIN')) || (r.type && r.type.toUpperCase().includes('KABIN'));
@@ -145,14 +146,23 @@ function renderHikingCard(r, isAvailabilityCheck = false) {
                             <button type="button" id="hiking-dropdown-btn-${r.id}" onclick="toggleHikingDropdown(${r.id})"
                                 class="w-full bg-[#F3FDF7] border-2 border-[#94E3BA] rounded-full py-2 sm:py-3 px-2.5 sm:px-3.5 flex items-center justify-between shadow-sm hover:border-[#2d6a4f] transition text-left cursor-pointer">
                                 <span id="hiking-selected-text-${r.id}" class="font-black text-slate-900 text-[9.5px] sm:text-xs tracking-tight uppercase whitespace-nowrap overflow-visible">
-                                    CAJ PEMANDU ARAH KE TINGKAT 3 RM150
+                                    ${isGazebo ? 'TEMPAHAN GAZEBO RM60' : 'CAJ PEMANDU ARAH KE TINGKAT 3 RM150'}
                                 </span>
                                 <span id="hiking-dropdown-arrow-${r.id}" class="text-slate-900 text-xs font-black pl-1 flex-shrink-0 transition-transform duration-200">▽</span>
                             </button>
 
-                            <!-- Floating Dropdown Menu (2 Baris Tetap: Baris 1 & Baris 2) -->
+                            <!-- Floating Dropdown Menu -->
                             <div id="hiking-dropdown-menu-${r.id}" 
                                 class="hidden absolute left-0 right-0 top-full mt-1.5 z-30 bg-white border-2 border-[#94E3BA] rounded-2xl shadow-xl overflow-hidden divide-y divide-emerald-100">
+                                ${isGazebo ? `
+                                <!-- Pilihan Tunggal Gazebo: TEMPAHAN GAZEBO RM60 -->
+                                <div onclick="selectHikingDropdownOption(${r.id}, 60, 'TEMPAHAN GAZEBO RM60')"
+                                    class="py-2.5 sm:py-3 px-3 sm:px-4 hover:bg-[#F3FDF7] cursor-pointer transition">
+                                    <span class="font-black text-slate-900 text-[9.5px] sm:text-xs tracking-tight uppercase whitespace-nowrap block">
+                                        TEMPAHAN GAZEBO RM60
+                                    </span>
+                                </div>
+                                ` : `
                                 <!-- Baris 1: Tingkat 3 RM150 -->
                                 <div onclick="selectHikingDropdownOption(${r.id}, 150, 'CAJ PEMANDU ARAH KE TINGKAT 3 RM150')"
                                     class="py-2.5 sm:py-3 px-3 sm:px-4 hover:bg-[#F3FDF7] cursor-pointer transition">
@@ -168,12 +178,17 @@ function renderHikingCard(r, isAvailabilityCheck = false) {
                                         CAJ PEMANDU ARAH KE TINGKAT 7 RM300
                                     </span>
                                 </div>
+                                `}
                             </div>
 
                             <!-- Hidden select for form & cart compatibility -->
                             <select id="hiking-pkg-${r.id}" class="hidden">
+                                ${isGazebo ? `
+                                <option value="60" selected>TEMPAHAN GAZEBO RM60</option>
+                                ` : `
                                 <option value="150" selected>CAJ PEMANDU ARAH KE TINGKAT 3 RM150</option>
                                 <option value="300">CAJ PEMANDU ARAH KE TINGKAT 7 RM300</option>
+                                `}
                             </select>
                         </div>
                         ` : `
@@ -296,7 +311,7 @@ function renderHikingCard(r, isAvailabilityCheck = false) {
                                 JUMLAH KESELURUHAN
                             </span>
                             <span class="font-black text-slate-900 text-xs sm:text-sm tracking-tight whitespace-nowrap pl-1 flex-shrink-0">
-                                RM <span id="hiking-total-${r.id}">${isKhemah ? 70 : (isHammock ? 25 : (isKabin ? 150 : (isRv ? 80 : ((isNoGuide ? (parseFloat(r.price_per_night) || 150) : 150) + 10))))}</span>
+                                RM <span id="hiking-total-${r.id}">${isKhemah ? 70 : (isHammock ? 25 : (isKabin ? 150 : (isRv ? 80 : ((isNoGuide ? (parseFloat(r.price_per_night) || 150) : (isGazebo ? 60 : 150)) + 10))))}</span>
                             </span>
                         </div>
                     </div>
@@ -462,6 +477,7 @@ function updateHikingPrice(id, source) {
     const isKabin = room && ((room.name && room.name.toUpperCase().includes('KABIN')) || (room.type && room.type.toUpperCase().includes('KABIN')));
     const isHammock = room && ((room.name && room.name.toUpperCase().includes('HAMMOCK')) || (room.type && room.type.toUpperCase().includes('HAMMOCK')));
     const isRv = room && ((room.name && (room.name.toUpperCase().includes('RV') || room.name.toUpperCase().includes('CARAVAN') || room.name.toUpperCase().includes('CAMPERVAN'))) || (room.type && (room.type.toUpperCase().includes('RV') || room.type.toUpperCase().includes('CARAVAN') || room.type.toUpperCase().includes('CAMPERVAN'))));
+    const isGazebo = room && ((room.name && room.name.toUpperCase().includes('GAZEBO')) || (room.type && room.type.toUpperCase().includes('GAZEBO')));
     const isKhemah = room && ((room.name && (room.name.toUpperCase().includes('PERKHEMAHAN') || room.name.toUpperCase().includes('KHEMAH'))) || (room.type && (room.type.toUpperCase().includes('PERKHEMAHAN') || room.type.toUpperCase().includes('KHEMAH'))));
     const isNoGuide = isKabin || isHammock || isRv || isKhemah;
     const isNoProc = false;
@@ -486,7 +502,7 @@ function updateHikingPrice(id, source) {
         }
     }
 
-    const fallbackRate = (isHammock || isKhemah || isKabin || isRv) ? 0 : 150;
+    const fallbackRate = (isHammock || isKhemah || isKabin || isRv) ? 0 : (isGazebo ? 60 : 150);
     const pkgRate = parseFloat(pkgSelect ? pkgSelect.value : ((isKhemah || isHammock || isKabin || isRv) ? 0 : (room ? room.price_per_night : fallbackRate))) || fallbackRate;
     
     const guideTotal = isNoGuide ? ((isKhemah || isHammock || isKabin || isRv) ? 0 : pkgRate) : (groups * pkgRate);
@@ -545,7 +561,7 @@ function addToCartHiking(id) {
     const isNoGuide = isKabin || isHammock || isRv || isKhemah;
     const isNoProc = false;
 
-    const fallbackRate = (isHammock || isKhemah || isKabin || isRv) ? 0 : 150;
+    const fallbackRate = (isHammock || isKhemah || isKabin || isRv) ? 0 : (isGazebo ? 60 : 150);
     const pkgRate = pkgSelect ? (parseFloat(pkgSelect.value) || fallbackRate) : ((isKhemah || isHammock || isKabin || isRv) ? 0 : (room ? (parseFloat(room.price_per_night) || fallbackRate) : fallbackRate));
     const isTingkat7 = pkgRate === 300;
 
@@ -579,8 +595,12 @@ function addToCartHiking(id) {
         itemType = 'TEMPAHAN TAPAK PERKHEMAHAN';
         cartItemName = `TEMPAHAN TAPAK PERKHEMAHAN (${groups} TAPAK - ${pax} ORANG)`;
         pkgTitle = `CAJ TAPAK PERKEMAHAN (RM70 x ${groups} = RM${procTotal}) - ${pax} Orang`;
+    } else if (isGazebo) {
+        itemType = 'TEMPAHAN GAZEBO';
+        cartItemName = `TEMPAHAN GAZEBO (${pax} ORANG)`;
+        pkgTitle = `TEMPAHAN GAZEBO (RM${pkgRate.toFixed(2)}) + Caj Pemprosesan (${pax} Orang x RM10 = RM${procTotal})`;
     } else {
-        itemType = isGazebo ? (room.name || 'TEMPAHAN GAZEBO') : (isJungle ? (room.name || 'TEMPAHAN AKTIVITI JUNGLE TREKKING') : 'TEMPAHAN AKTIVITI HIKING');
+        itemType = isJungle ? (room.name || 'TEMPAHAN AKTIVITI JUNGLE TREKKING') : 'TEMPAHAN AKTIVITI HIKING';
         const pkgLocation = isTingkat7 ? 'TINGKAT 7' : 'TINGKAT 3';
         pkgTitle = `CAJ PEMANDU ARAH KE ${pkgLocation} (${groups} Kumpulan x RM${pkgRate} = RM${guideTotal}) + Caj Pemprosesan (${pax} Orang x RM10 = RM${procTotal})`;
         cartItemName = `${itemType} (${pkgLocation} - ${pax} ORANG / ${groups} KUMPULAN)`;
