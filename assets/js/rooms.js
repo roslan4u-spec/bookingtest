@@ -250,7 +250,7 @@ function renderHikingCard(r, isAvailabilityCheck = false) {
                         <div class="bg-[#F3FDF7] border-2 border-[#94E3BA] rounded-3xl py-2.5 sm:py-3 px-3 sm:px-3.5 flex justify-between items-center shadow-sm">
                             <div class="flex flex-col justify-center min-w-0 pr-2">
                                 <span id="hiking-proc-label-${r.id}" class="font-black text-slate-900 text-[10px] sm:text-xs tracking-tight uppercase whitespace-nowrap">
-                                    ${isKhemah ? 'CAJ (1) SATU TAPAK PERKEMAHAN' : 'CAJ PEMPROSESAN SEORANG'}
+                                    ${isKhemah ? 'CAJ TAPAK PERKEMAHAN' : 'CAJ PEMPROSESAN SEORANG'}
                                 </span>
                                 <span id="hiking-proc-calc-${r.id}" class="text-[10px] sm:text-[11px] font-bold text-[#2D5D48] whitespace-nowrap mt-0.5">
                                     ${isKhemah ? `(RM70 × <span id="hiking-proc-pax-${r.id}">1</span> Tapak)` : `(RM10 × <span id="hiking-proc-pax-${r.id}">1</span>)`}
@@ -417,8 +417,7 @@ function updateHikingPrice(id, source) {
     if (procSpan) procSpan.textContent = procTotal;
     if (procPaxSpan) procPaxSpan.textContent = isKhemah ? groups : pax;
     if (procLabel && isKhemah) {
-        const perkataan = getMalayNumberWord(groups);
-        procLabel.textContent = `CAJ (${groups})${perkataan} TAPAK PERKEMAHAN`;
+        procLabel.textContent = 'CAJ TAPAK PERKEMAHAN';
     }
     if (procCalcSpan) {
         if (isNoProc) {
@@ -490,7 +489,7 @@ function addToCartHiking(id) {
     } else if (isKhemah) {
         itemType = 'TEMPAHAN TAPAK PERKHEMAHAN';
         cartItemName = `TEMPAHAN TAPAK PERKHEMAHAN (${groups} TAPAK - ${pax} ORANG)`;
-        pkgTitle = `CAJ (${groups}) TAPAK PERKEMAHAN (RM70 x ${groups} = RM${procTotal}) - ${pax} Orang`;
+        pkgTitle = `CAJ TAPAK PERKEMAHAN (RM70 x ${groups} = RM${procTotal}) - ${pax} Orang`;
     } else {
         itemType = isGazebo ? (room.name || 'TEMPAHAN GAZEBO') : (isJungle ? (room.name || 'TEMPAHAN AKTIVITI JUNGLE TREKKING') : 'TEMPAHAN AKTIVITI HIKING');
         const pkgLocation = isTingkat7 ? 'TINGKAT 7' : 'TINGKAT 3';
