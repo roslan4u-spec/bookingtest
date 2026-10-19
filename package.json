@@ -1,12 +1,15 @@
 {
+  "name": "taman-eko-rimba-berkelah",
+  "version": "1.0.0",
+  "description": "Laman Web & Sistem Tempahan Taman Eko Rimba Berkelah Pahang",
+  "scripts": {
+    "start": "node api/index.js",
+    "dev": "node api/index.js"
+  },
   "dependencies": {
     "cors": "^2.8.6",
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
-    "pg": "^8.23.0",
-    "sqlite3": "^6.0.1"
-  },
-  "allowScripts": {
-    "sqlite3@6.0.1": true
+    "pg": "^8.23.0"
   }
 }

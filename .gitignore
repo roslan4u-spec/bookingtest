@@ -3,3 +3,4 @@ node_modules/
 terb_booking.db
 terb_booking.db-journal
 .DS_Store
+_archive_temp/

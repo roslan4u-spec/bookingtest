@@ -18,7 +18,7 @@ app.use(express.urlencoded({ extended: true }));
 // ──────────────────────────────────────────────
 const pool = new Pool({
     connectionString: process.env.DATABASE_URL,
-    ssl: process.env.DATABASE_URL && process.env.DATABASE_URL.includes('supabase') 
+    ssl: process.env.DATABASE_URL && (process.env.DATABASE_URL.includes('supabase') || process.env.DATABASE_URL.includes('neon') || process.env.DATABASE_URL.includes('sslmode=require') || process.env.DATABASE_URL.includes('render') || process.env.DATABASE_URL.includes('postgres.database.azure.com'))
         ? { rejectUnauthorized: false } 
         : false
 });
@@ -396,38 +396,8 @@ app.patch('/api/bookings/:ref/status', requireAdmin, async (req, res) => {
 
 
 // ──────────────────────────────────────────────
-// Serve page routes (HANYA UNTUK LOCALHOST)
-// Di Vercel, HTML & CSS disajikan secara automatik oleh Vercel Edge Network
+// CMS: UPDATE ROOM
 // ──────────────────────────────────────────────
-if (process.env.NODE_ENV !== 'production' && !process.env.VERCEL) {
-    const fs = require('fs');
-    const rootDir = path.join(__dirname, '..');
-    
-    const sendHtml = (file) => (req, res) => {
-        res.setHeader('Content-Type', 'text/html; charset=utf-8');
-        res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
-        res.setHeader('Pragma', 'no-cache');
-        res.setHeader('Expires', '0');
-        res.send(fs.readFileSync(path.join(rootDir, file)));
-    };
-    app.get('/', sendHtml('index.html'));
-    app.get('/index.html', sendHtml('index.html'));
-    app.get('/rooms', sendHtml('rooms.html'));
-    app.get('/rooms.html', sendHtml('rooms.html'));
-    app.get('/admin', sendHtml('admin.html'));
-    app.get('/admin.html', sendHtml('admin.html'));
-    
-    // Serve all other static assets (css, js, images)
-    app.use(express.static(rootDir, {
-        setHeaders: (res, filePath) => {
-            if (filePath.endsWith('.html') || filePath.endsWith('.js') || filePath.endsWith('.css')) {
-                res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
-            }
-        }
-    }));
-
-    
-// 📌📌📌 UPDATE ROOM (CMS) 📌📌📌
 app.put('/api/rooms/:id', async (req, res) => {
     try {
         const id = parseInt(req.params.id);
@@ -441,10 +411,13 @@ app.put('/api/rooms/:id', async (req, res) => {
             const filename = `room_${id}_${Date.now()}.${ext}`;
             const filepath = require('path').join(__dirname, '..', 'images', filename);
             
-            // Remove data:image/...;base64, prefix if it exists
-            const base64Data = image_base64.replace(/^data:image\/\w+;base64,/, "");
-            require('fs').writeFileSync(filepath, base64Data, 'base64');
-            imageUrl = `images/${filename}`;
+            try {
+                const base64Data = image_base64.replace(/^data:image\/\w+;base64,/, "");
+                require('fs').writeFileSync(filepath, base64Data, 'base64');
+                imageUrl = `images/${filename}`;
+            } catch (fsErr) {
+                console.warn('Filesystem write skipped (Serverless environment):', fsErr.message);
+            }
         }
 
         // Update in memory mock data
@@ -483,7 +456,40 @@ app.put('/api/rooms/:id', async (req, res) => {
     }
 });
 
-app.listen(PORT, () => {
+// ──────────────────────────────────────────────
+// Serve page routes (HANYA UNTUK LOCALHOST)
+// Di Vercel, HTML & CSS disajikan secara automatik oleh Vercel Edge Network
+// ──────────────────────────────────────────────
+if (process.env.NODE_ENV !== 'production' && !process.env.VERCEL) {
+    const fs = require('fs');
+    const rootDir = path.join(__dirname, '..');
+    
+    const sendHtml = (file) => (req, res) => {
+        res.setHeader('Content-Type', 'text/html; charset=utf-8');
+        res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+        res.setHeader('Pragma', 'no-cache');
+        res.setHeader('Expires', '0');
+        res.send(fs.readFileSync(path.join(rootDir, file)));
+    };
+    app.get('/', sendHtml('index.html'));
+    app.get('/index.html', sendHtml('index.html'));
+    app.get('/rooms', sendHtml('rooms.html'));
+    app.get('/rooms.html', sendHtml('rooms.html'));
+    app.get('/admin', sendHtml('admin.html'));
+    app.get('/admin.html', sendHtml('admin.html'));
+    app.get('/aktiviti', sendHtml('aktiviti.html'));
+    app.get('/aktiviti.html', sendHtml('aktiviti.html'));
+    
+    // Serve all other static assets (css, js, images)
+    app.use(express.static(rootDir, {
+        setHeaders: (res, filePath) => {
+            if (filePath.endsWith('.html') || filePath.endsWith('.js') || filePath.endsWith('.css')) {
+                res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+            }
+        }
+    }));
+
+    app.listen(PORT, () => {
         console.log(`\n🌿 Taman Eko Rimba Berkelah Pahang Server berjalan di: http://localhost:${PORT}/`);
         console.log(`📋 Halaman Tempahan  : http://localhost:${PORT}/rooms`);
         console.log(`🔧 Panel Admin       : http://localhost:${PORT}/admin`);
