@@ -106,7 +106,7 @@ function renderHikingCard(r, isAvailabilityCheck = false) {
     } else if (isRv) {
         titleClass = "text-base sm:text-lg lg:text-xl font-black text-slate-900 text-center mb-4 tracking-tight uppercase leading-snug px-1";
     } else {
-        titleClass = "text-base sm:text-lg lg:text-xl font-black text-slate-900 text-center mb-4 tracking-tight uppercase whitespace-nowrap";
+        titleClass = "text-base sm:text-lg lg:text-xl font-black text-slate-900 text-center mb-4 tracking-tight uppercase leading-snug px-1";
     }
 
     return `
@@ -123,11 +123,11 @@ function renderHikingCard(r, isAvailabilityCheck = false) {
                         <!-- 1. Caj Pemandu Arah Dropdown (Satu Baris Ayat, Tanpa Wrap, Fit Penuh) -->
                         <div class="relative">
                             <button type="button" id="hiking-dropdown-btn-${r.id}" onclick="toggleHikingDropdown(${r.id})"
-                                class="w-full bg-[#F3FDF7] border-2 border-[#94E3BA] rounded-full py-2.5 sm:py-3 px-3 sm:px-3.5 flex items-center justify-between shadow-sm hover:border-[#2d6a4f] transition text-left cursor-pointer">
-                                <span id="hiking-selected-text-${r.id}" class="font-black text-slate-900 text-[11px] sm:text-xs tracking-tight uppercase whitespace-nowrap overflow-visible">
+                                class="w-full bg-[#F3FDF7] border-2 border-[#94E3BA] rounded-full py-2 sm:py-3 px-2.5 sm:px-3.5 flex items-center justify-between shadow-sm hover:border-[#2d6a4f] transition text-left cursor-pointer">
+                                <span id="hiking-selected-text-${r.id}" class="font-black text-slate-900 text-[9.5px] sm:text-xs tracking-tight uppercase whitespace-nowrap overflow-visible">
                                     CAJ PEMANDU ARAH KE TINGKAT 3 RM150
                                 </span>
-                                <span id="hiking-dropdown-arrow-${r.id}" class="text-slate-900 text-xs font-black pl-1.5 flex-shrink-0 transition-transform duration-200">▽</span>
+                                <span id="hiking-dropdown-arrow-${r.id}" class="text-slate-900 text-xs font-black pl-1 flex-shrink-0 transition-transform duration-200">▽</span>
                             </button>
 
                             <!-- Floating Dropdown Menu (2 Baris Tetap: Baris 1 & Baris 2) -->
@@ -136,7 +136,7 @@ function renderHikingCard(r, isAvailabilityCheck = false) {
                                 <!-- Baris 1: Tingkat 3 RM150 -->
                                 <div onclick="selectHikingDropdownOption(${r.id}, 150, 'CAJ PEMANDU ARAH KE TINGKAT 3 RM150')"
                                     class="py-2.5 sm:py-3 px-3 sm:px-4 hover:bg-[#F3FDF7] cursor-pointer transition">
-                                    <span class="font-black text-slate-900 text-[11px] sm:text-xs tracking-tight uppercase whitespace-nowrap block">
+                                    <span class="font-black text-slate-900 text-[9.5px] sm:text-xs tracking-tight uppercase whitespace-nowrap block">
                                         CAJ PEMANDU ARAH KE TINGKAT 3 RM150
                                     </span>
                                 </div>
@@ -144,7 +144,7 @@ function renderHikingCard(r, isAvailabilityCheck = false) {
                                 <!-- Baris 2: Tingkat 7 RM300 -->
                                 <div onclick="selectHikingDropdownOption(${r.id}, 300, 'CAJ PEMANDU ARAH KE TINGKAT 7 RM300')"
                                     class="py-2.5 sm:py-3 px-3 sm:px-4 hover:bg-[#F3FDF7] cursor-pointer transition">
-                                    <span class="font-black text-slate-900 text-[11px] sm:text-xs tracking-tight uppercase whitespace-nowrap block">
+                                    <span class="font-black text-slate-900 text-[9.5px] sm:text-xs tracking-tight uppercase whitespace-nowrap block">
                                         CAJ PEMANDU ARAH KE TINGKAT 7 RM300
                                     </span>
                                 </div>
@@ -975,9 +975,54 @@ function showAvailMsg(msg, type) {
     el.classList.remove('hidden');
 }
 
-// ──── OPEN BOOKING MODAL ────
+// ──── OPEN BOOKING MODAL & CART ────
 let checkinPicker;
 let cart = [];
+let isCartMinimized = false;
+
+function hideDrawerUI() {
+    const container = document.getElementById('cart-container');
+    if (container) {
+        container.classList.add('translate-y-[calc(100%+3rem)]', 'pointer-events-none');
+        container.classList.remove('translate-y-0');
+    }
+}
+
+function showDrawerUI() {
+    const container = document.getElementById('cart-container');
+    if (container) {
+        container.classList.remove('translate-y-[calc(100%+3rem)]', 'pointer-events-none');
+        container.classList.add('translate-y-0');
+    }
+}
+
+function toggleCartDrawer(show) {
+    const reopenBtn = document.getElementById('cart-floating-reopen');
+
+    if (show === undefined) {
+        isCartMinimized = !isCartMinimized;
+    } else {
+        isCartMinimized = !show;
+    }
+
+    if (cart.length === 0) {
+        hideDrawerUI();
+        if (reopenBtn) reopenBtn.classList.add('hidden');
+        return;
+    }
+
+    if (isCartMinimized) {
+        hideDrawerUI();
+        if (reopenBtn) {
+            reopenBtn.classList.remove('hidden');
+            reopenBtn.classList.add('scale-105');
+            setTimeout(() => reopenBtn.classList.remove('scale-105'), 200);
+        }
+    } else {
+        showDrawerUI();
+        if (reopenBtn) reopenBtn.classList.add('hidden');
+    }
+}
 
 function addToCart(id) {
     const room = allRooms.find(r => r.id === id);
@@ -1012,36 +1057,63 @@ function removeFromCart(keyOrId) {
 
 function clearCart() {
     cart = [];
+    isCartMinimized = false;
     updateCartUI();
 }
 
 function updateCartUI() {
     const container = document.getElementById('cart-container');
     const itemsDiv = document.getElementById('cart-items');
+    const reopenBtn = document.getElementById('cart-floating-reopen');
     
     if (cart.length === 0) {
-        container.classList.add('translate-y-full');
+        hideDrawerUI();
+        if (reopenBtn) reopenBtn.classList.add('hidden');
+        isCartMinimized = false;
         return;
     }
     
-    container.classList.remove('translate-y-full');
-    document.getElementById('cart-count').textContent = cart.length;
+    const countEl = document.getElementById('cart-count');
+    const reopenCountEl = document.getElementById('reopen-cart-count');
+    if (countEl) countEl.textContent = cart.length;
+    if (reopenCountEl) reopenCountEl.textContent = cart.length;
     
     let total = 0;
-    itemsDiv.innerHTML = cart.map(item => {
-        total += parseFloat(item.price_per_night);
-        return `
-            <div class="flex justify-between items-center bg-slate-50 p-2 rounded-lg border border-slate-100">
-                <span class="font-semibold text-slate-700 truncate mr-2">${item.name}</span>
-                <div class="flex items-center gap-3">
-                    <span class="font-bold text-emerald-800">RM${parseFloat(item.price_per_night).toFixed(2)}</span>
-                    <button onclick="removeFromCart('${item.cartKey || item.id}')" class="text-slate-400 hover:text-rose-500 transition"><i class="fa-solid fa-trash-can"></i></button>
+    if (itemsDiv) {
+        itemsDiv.innerHTML = cart.map(item => {
+            total += parseFloat(item.price_per_night);
+            return `
+                <div class="flex justify-between items-center bg-slate-50 p-2 rounded-lg border border-slate-100">
+                    <span class="font-semibold text-slate-700 truncate mr-2">${item.name}</span>
+                    <div class="flex items-center gap-3">
+                        <span class="font-bold text-emerald-800">RM${parseFloat(item.price_per_night).toFixed(2)}</span>
+                        <button onclick="removeFromCart('${item.cartKey || item.id}')" class="text-slate-400 hover:text-rose-500 transition" title="Padam item ini"><i class="fa-solid fa-trash-can"></i></button>
+                    </div>
                 </div>
-            </div>
-        `;
-    }).join('');
+            `;
+        }).join('');
+    } else {
+        total = cart.reduce((acc, item) => acc + parseFloat(item.price_per_night), 0);
+    }
     
-    document.getElementById('cart-total').textContent = total.toFixed(2);
+    const formattedTotal = total.toFixed(2);
+    const totalEl = document.getElementById('cart-total');
+    const reopenTotalEl = document.getElementById('reopen-cart-total');
+    if (totalEl) totalEl.textContent = formattedTotal;
+    if (reopenTotalEl) reopenTotalEl.textContent = formattedTotal;
+
+    // Apply visibility based on isCartMinimized
+    if (isCartMinimized) {
+        hideDrawerUI();
+        if (reopenBtn) {
+            reopenBtn.classList.remove('hidden');
+            reopenBtn.classList.add('scale-105');
+            setTimeout(() => reopenBtn.classList.remove('scale-105'), 200);
+        }
+    } else {
+        showDrawerUI();
+        if (reopenBtn) reopenBtn.classList.add('hidden');
+    }
 }
 
 async function openCheckout() {
@@ -1259,3 +1331,17 @@ if (filterSelect && initFilter) {
     }
 }
 loadRooms(initFilter);
+
+// Visual verification helper for testing cart drawer states via URL query params
+if (urlParams.has('test_cart')) {
+    setTimeout(() => {
+        cart = [
+            { id: 8, room_id: 8, cartKey: 'kemasukan_test_1', name: 'TEMPAHAN CAJ KEMASUKAN: WARGA NEGARA - DEWASA (3 Orang)', price_per_night: 9.00 },
+            { id: 8, room_id: 8, cartKey: 'kemasukan_test_2', name: 'TEMPAHAN CAJ KEMASUKAN: WARGA NEGARA - KANAK-KANAK (1 Orang)', price_per_night: 1.00 }
+        ];
+        if (urlParams.has('test_minimized')) {
+            isCartMinimized = true;
+        }
+        updateCartUI();
+    }, 500);
+}
