@@ -4,112 +4,759 @@
     <meta charset="UTF-8">
     <meta name="google" content="notranslate">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aktiviti – Taman Eko Rimba Berkelah Pahang</title>
+    <title>Senarai Aktiviti & Rekreasi – Taman Eko Rimba Berkelah Pahang</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <link rel="stylesheet" href="styles.css">
     <style>
-        .room-card { transition: transform 0.2s ease, box-shadow 0.2s ease; }
-        .room-card:hover { transform: translateY(-4px); box-shadow: 0 20px 40px rgba(0,0,0,0.12); }
-        .room-card.selected { ring: 3px; ring-color: #059669; }
-        .flatpickr-day.unavailable { background: #fee2e2 !important; color: #dc2626 !important; text-decoration: line-through; cursor: not-allowed !important; }
-        .flatpickr-day.unavailable:hover { background: #fca5a5 !important; }
-        #booking-modal { backdrop-filter: blur(4px); }
-        .status-badge { display: inline-flex; align-items: center; gap: 4px; padding: 2px 10px; border-radius: 9999px; font-size: 0.75rem; font-weight: 700; }
-        .step-indicator.active { background: #065f46; color: white; }
-        .step-indicator { background: #e5e7eb; color: #6b7280; transition: all 0.3s; }
-        .step-connector.active { background: #059669; }
-        .step-connector { background: #e5e7eb; transition: all 0.3s; }
+        .activity-card {
+            transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .activity-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 35px -10px rgba(16, 85, 54, 0.18), 0 10px 15px -3px rgba(0, 0, 0, 0.08);
+        }
+        .filter-pill.active {
+            background-color: #2d6a4f;
+            color: #ffffff;
+            border-color: #2d6a4f;
+            box-shadow: 0 4px 10px rgba(45, 106, 79, 0.25);
+        }
     </style>
 </head>
-<body class="bg-slate-50 text-slate-800 font-sans antialiased">
+<body class="bg-slate-50 text-slate-800 font-sans antialiased flex flex-col min-h-screen">
 
-<!-- Top Bar -->
-<div class="bg-emerald-900 text-emerald-100 text-xs py-2 px-4 flex justify-between items-center">
-    <span class="hidden md:inline"><i class="fa-solid fa-tree text-emerald-400 mr-2"></i>Taman Eko Rimba Berkelah Pahang</span>
-    <a href="https://wa.me/60194489296" target="_blank" class="hover:text-amber-300 transition flex items-center gap-1.5 font-bold ml-auto">
-        <i class="fa-brands fa-whatsapp text-emerald-400"></i> 019-4489296
-    </a>
-</div>
-
-<!-- Navigation -->
-<header class="bg-white shadow-md sticky top-0 z-40">
-    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between items-center h-20">
-            <a href="index.html" class="flex items-center gap-3">
-                <img src="images/logo.png" alt="Logo Taman Eko Rimba Berkelah Pahang" class="w-12 h-12 object-contain drop-shadow-md">
-                <div>
-                    <span class="block text-xl font-extrabold text-emerald-950 tracking-wider">Taman Eko Rimba Berkelah Pahang</span>
-                    <span class="block text-xs font-semibold text-emerald-600 uppercase tracking-widest">Hutan Lipur Berkelah</span>
-                </div>
-            </a>
-            <nav class="hidden lg:flex space-x-1 font-medium text-sm">
-                <a href="index.html" class="px-3 py-2 text-slate-700 hover:text-emerald-700 hover:bg-emerald-50 rounded-lg transition">UTAMA</a>
-                <a href="index.html#direction" class="px-3 py-2 text-slate-700 hover:text-emerald-700 hover:bg-emerald-50 rounded-lg transition">PANDUAN JALAN</a>
-                
-                <a href="rooms.html" class="px-3 py-2 text-slate-700 hover:text-emerald-700 hover:bg-emerald-50 rounded-lg transition">TEMPAHAN</a>
-                <a href="aktiviti.html" class="px-3 py-2 text-emerald-800 bg-emerald-100/70 font-bold rounded-lg shadow-sm border border-emerald-200">AKTIVITI</a>
-                  <a href="index.html#prohibited-rules" class="px-3 py-2 text-slate-700 hover:text-emerald-700 hover:bg-emerald-50 rounded-lg transition">TERMA & SYARAT</a>
-                <a href="index.html#contact" class="px-3 py-2 text-slate-700 hover:text-emerald-700 hover:bg-emerald-50 rounded-lg transition">HUBUNGI KAMI</a>
-            </nav>
-            <button id="mobile-menu-btn" class="lg:hidden p-2 text-slate-700">
-                <i class="fa-solid fa-bars text-2xl"></i>
-            </button>
+    <!-- Top Announcement Bar -->
+    <div class="bg-emerald-900 text-emerald-100 text-xs sm:text-sm py-2 px-4 shadow-inner flex justify-between items-center max-w-full overflow-hidden">
+        <div class="container mx-auto flex justify-between items-center">
+            <span class="hidden md:inline">
+                <i class="fa-solid fa-tree text-emerald-400 mr-2"></i>Selamat Datang ke Taman Eko Rimba Berkelah Pahang
+            </span>
+            <div class="flex items-center space-x-4 mx-auto md:mx-0">
+                <span class="text-amber-400 font-bold tracking-wider uppercase bg-emerald-800/50 px-3 py-0.5 rounded-full border border-emerald-700/50 text-xs">
+                    Hutan Lipur Berkelah
+                </span>
+                <a href="https://wa.me/60194489296" target="_blank" class="hover:text-amber-300 transition flex items-center gap-1.5 font-bold">
+                    <i class="fa-brands fa-whatsapp text-emerald-400 text-base"></i> <span>019-4489296</span>
+                </a>
+            </div>
         </div>
     </div>
-    <div id="mobile-menu" class="hidden lg:hidden bg-white border-t border-slate-100 px-4 py-4 space-y-1 shadow-lg">
-        <a href="index.html" class="block px-3 py-2 text-slate-700 hover:bg-emerald-50 hover:text-emerald-800 rounded-md">UTAMA</a>
-        <a href="index.html#direction" class="block px-3 py-2 text-slate-700 hover:bg-emerald-50 hover:text-emerald-800 rounded-md">PANDUAN JALAN</a>
-        <a href="rooms.html" class="block px-3 py-2 text-slate-700 hover:bg-emerald-50 hover:text-emerald-800 rounded-md">TEMPAHAN</a>
-        <a href="aktiviti.html" class="block px-3 py-2 font-bold text-emerald-800 bg-emerald-50 rounded-md">AKTIVITI</a>
-        <a href="index.html#prohibited-rules" class="block px-3 py-2 text-slate-700 hover:bg-emerald-50 hover:text-emerald-800 rounded-md">TERMA & SYARAT</a>
-        <a href="index.html#contact" class="block px-3 py-2 text-slate-700 hover:bg-emerald-50 hover:text-emerald-800 rounded-md">HUBUNGI KAMI</a>
-    </div>
-  </header>
 
-<!-- Hero -->
-<section class="relative bg-emerald-900 text-white py-14 overflow-hidden">
-    <div class="absolute inset-0 opacity-25 bg-cover bg-center" style="background-image:url('https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=1600&q=80')"></div>
-    <div class="absolute inset-0 bg-gradient-to-r from-emerald-950/90 via-emerald-900/80 to-transparent"></div>
-    <div class="container mx-auto px-4 relative z-10">
-        <span class="inline-block px-3 py-1 bg-amber-400/20 text-amber-300 rounded-full text-xs font-semibold uppercase tracking-wider mb-4 border border-amber-400/30">
-            <i class="fa-solid fa-bed mr-1"></i> Penginapan di Tengah Hutan
-        </span>
-        <h1 class="text-4xl sm:text-5xl font-extrabold mb-3">Aktiviti</h1>
-            <div class="mt-6 flex flex-col gap-3 text-lg sm:text-xl font-bold text-emerald-100 mb-6">
-                <div class="flex items-center gap-3"><i class="fa-solid fa-person-hiking text-amber-400"></i> TEMPAHAN AKTIVITI HIKING</div>
-                  <div class="flex items-center gap-3"><i class="fa-solid fa-house-chimney text-amber-400"></i> TEMPAHAN KABIN</div>
-                <div class="flex items-center gap-3"><i class="fa-solid fa-tent text-amber-400"></i> TEMPAHAN GAZEBO</div>
-                <div class="flex items-center gap-3"><i class="fa-solid fa-shoe-prints text-amber-400"></i> TEMPAHAN AKTIVITI JUNGLE TREKKING</div>
-                <div class="flex items-center gap-3"><i class="fa-solid fa-bed text-amber-400"></i> TEMPAHAN TAPAK HAMMOCK</div>
-                <div class="flex items-center gap-3"><i class="fa-solid fa-campground text-amber-400"></i> TEMPAHAN TAPAK PERKHEMAHAN</div>
-                <div class="flex items-center gap-3"><i class="fa-solid fa-caravan text-amber-400"></i> TEMPAHAN TAPAK KENDERAAN RV / CARAVAN / CAMPERVAN</div>
-                <div class="flex items-center gap-3"><i class="fa-solid fa-ticket text-amber-400"></i> TEMPAHAN CAJ KEMASUKAN PENGUNJUNG</div>
+    <!-- Navigation Header -->
+    <header class="bg-white shadow-md sticky top-0 z-40 transition-all">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Brand Logo & Title -->
+                <a href="index.html" class="flex items-center gap-3">
+                    <img src="images/logo.png" alt="Logo Taman Eko Rimba Berkelah Pahang" class="w-12 h-12 object-contain drop-shadow-md">
+                    <div>
+                        <span class="block text-xl font-extrabold text-emerald-950 tracking-wider">Taman Eko Rimba Berkelah Pahang</span>
+                        <span class="block text-xs font-semibold text-emerald-600 uppercase tracking-widest">Hutan Lipur Berkelah</span>
+                    </div>
+                </a>
+
+                <!-- Desktop Navigation Links -->
+                <nav class="hidden lg:flex space-x-1 font-medium text-sm">
+                    <a href="index.html" class="px-3 py-2 text-slate-700 hover:text-emerald-700 hover:bg-emerald-50 rounded-lg transition">UTAMA</a>
+                    <a href="index.html#direction" class="px-3 py-2 text-slate-700 hover:text-emerald-700 hover:bg-emerald-50 rounded-lg transition">PANDUAN JALAN</a>
+                    <a href="rooms.html" class="px-3 py-2 text-slate-700 hover:text-emerald-700 hover:bg-emerald-50 rounded-lg transition">TEMPAHAN</a>
+                    <a href="aktiviti.html" class="px-3 py-2 text-emerald-900 bg-emerald-100/80 font-bold rounded-lg shadow-xs border border-emerald-300">AKTIVITI</a>
+                    <a href="index.html#prohibited-rules" class="px-3 py-2 text-slate-700 hover:text-emerald-700 hover:bg-emerald-50 rounded-lg transition">TERMA & SYARAT</a>
+                    <a href="index.html#contact" class="px-3 py-2 text-slate-700 hover:text-emerald-700 hover:bg-emerald-50 rounded-lg transition">HUBUNGI KAMI</a>
+                </nav>
+
+                <!-- Mobile Menu Button -->
+                <button id="mobile-menu-btn" class="lg:hidden p-2 text-slate-700 hover:text-emerald-800 focus:outline-none" aria-label="Buka Menu">
+                    <i class="fa-solid fa-bars text-2xl"></i>
+                </button>
             </div>
-          <p class="text-emerald-100 text-lg max-w-2xl leading-relaxed mb-6">
-              Pilih aktiviti/penginapan terbaik di kawasan air terjun, sungai, bukit, atau di dalam rimba Taman Eko Rimba Berkelah Pahang. Tempah sekarang untuk pengalaman yang tidak akan dilupakan!
-          </p>
-        <a href="rooms.html" class="bg-amber-500 hover:bg-amber-600 text-emerald-950 font-bold px-6 py-3 rounded-lg shadow-lg transition flex items-center gap-2 inline-flex">
-            <i class="fa-solid fa-magnifying-glass"></i> Lihat Ketersediaan Tempahan & Aktiviti
-        </a>
-    </div>
-</section>
+        </div>
 
-<!-- Footer -->
-<footer class="bg-slate-950 text-slate-400 py-8 mt-12 border-t border-slate-800">
-    <div class="container mx-auto px-4 text-center text-sm flex flex-col items-center">
-        <p class="mb-2"><span class="text-white font-bold">Taman Eko Rimba Berkelah Pahang</span> – Mukim Luit, Pahang</p>
-        <p class="mb-6">WhatsApp: <a href="https://wa.me/60194489296" class="text-emerald-400 hover:text-emerald-300">019-4489296</a></p>
-        
-        <a href="admin.html" class="bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white px-5 py-2.5 rounded-lg transition flex items-center gap-2 text-sm font-semibold border border-slate-700 mb-6">
-            <i class="fa-solid fa-lock"></i> Log Masuk Admin
-        </a>
-        
-        <p class="text-xs text-slate-600">&copy; 2026 Taman Eko Rimba Berkelah Pahang. All rights reserved.</p>
-    </div>
-</footer>
+        <!-- Mobile Drawer Menu -->
+        <div id="mobile-menu" class="hidden lg:hidden bg-white border-t border-slate-100 px-4 py-4 space-y-1 shadow-lg">
+            <a href="index.html" class="block px-3 py-2 text-slate-700 hover:bg-emerald-50 hover:text-emerald-800 rounded-md">UTAMA</a>
+            <a href="index.html#direction" class="block px-3 py-2 text-slate-700 hover:bg-emerald-50 hover:text-emerald-800 rounded-md">PANDUAN JALAN</a>
+            <a href="rooms.html" class="block px-3 py-2 text-slate-700 hover:bg-emerald-50 hover:text-emerald-800 rounded-md">TEMPAHAN</a>
+            <a href="aktiviti.html" class="block px-3 py-2 font-bold text-emerald-900 bg-emerald-50 rounded-md">AKTIVITI</a>
+            <a href="index.html#prohibited-rules" class="block px-3 py-2 text-slate-700 hover:bg-emerald-50 hover:text-emerald-800 rounded-md">TERMA & SYARAT</a>
+            <a href="index.html#contact" class="block px-3 py-2 text-slate-700 hover:bg-emerald-50 hover:text-emerald-800 rounded-md">HUBUNGI KAMI</a>
+        </div>
+    </header>
 
-<script src="script.js"></script>
-  </body>
+    <!-- Hero Header Banner -->
+    <section class="relative bg-emerald-950 text-white py-14 sm:py-20 overflow-hidden">
+        <div class="absolute inset-0 bg-cover bg-center opacity-30" style="background-image:url('images/hiking.jpg');"></div>
+        <div class="absolute inset-0 bg-gradient-to-r from-emerald-950 via-emerald-900/90 to-emerald-950/80"></div>
+        
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center max-w-4xl">
+            <span class="inline-flex items-center gap-1.5 px-3.5 py-1 bg-amber-400/20 text-amber-300 rounded-full text-xs font-black uppercase tracking-wider mb-4 border border-amber-400/30">
+                <i class="fa-solid fa-compass"></i> Panduan Eko-Pelancongan & Rekreasi Rimba
+            </span>
+            <h1 class="text-3xl sm:text-5xl font-black text-white tracking-tight mb-4 leading-tight">
+                Aktiviti Menarik & Sewaan Tapak
+            </h1>
+            <p class="text-emerald-100 text-sm sm:text-lg leading-relaxed max-w-2xl mx-auto mb-8 font-light">
+                Nikmati keindahan semula jadi Air Terjun 7 Tingkat Berkelah, pendakian hutan rimba terpelihara, tapak perkhemahan tepi sungai yang damai, serta kabin rehat keluarga di Taman Eko Rimba Berkelah Pahang.
+            </p>
+
+            <!-- Quick Stats Badges -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 max-w-3xl mx-auto">
+                <div class="bg-white/10 backdrop-blur-md rounded-2xl p-3 border border-white/15">
+                    <i class="fa-solid fa-water text-cyan-300 text-xl mb-1"></i>
+                    <p class="text-xs font-bold text-white uppercase">Air Terjun</p>
+                    <p class="text-[11px] text-emerald-200">7 Tingkat Alami</p>
+                </div>
+                <div class="bg-white/10 backdrop-blur-md rounded-2xl p-3 border border-white/15">
+                    <i class="fa-solid fa-person-hiking text-amber-300 text-xl mb-1"></i>
+                    <p class="text-xs font-bold text-white uppercase">Guide Berpengalaman</p>
+                    <p class="text-[11px] text-emerald-200">1 Guide / 7 Pax</p>
+                </div>
+                <div class="bg-white/10 backdrop-blur-md rounded-2xl p-3 border border-white/15">
+                    <i class="fa-solid fa-campground text-emerald-300 text-xl mb-1"></i>
+                    <p class="text-xs font-bold text-white uppercase">8 Pilihan Aktiviti</p>
+                    <p class="text-[11px] text-emerald-200">Kabin, Khemah, RV</p>
+                </div>
+                <div class="bg-white/10 backdrop-blur-md rounded-2xl p-3 border border-white/15">
+                    <i class="fa-solid fa-shield-heart text-rose-300 text-xl mb-1"></i>
+                    <p class="text-xs font-bold text-white uppercase">SOP Keselamatan</p>
+                    <p class="text-[11px] text-emerald-200">Renjer & Taklimat PPE</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="flex-grow container mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14">
+
+        <!-- Filter Pills Bar -->
+        <div class="flex flex-wrap items-center justify-center gap-2 mb-10">
+            <button onclick="filterActivities('all')" id="btn-filter-all" class="filter-pill active px-4 py-2 rounded-full text-xs sm:text-sm font-extrabold border border-slate-300 bg-white text-slate-700 transition cursor-pointer">
+                Semua Aktiviti (8)
+            </button>
+            <button onclick="filterActivities('pendakian')" id="btn-filter-pendakian" class="filter-pill px-4 py-2 rounded-full text-xs sm:text-sm font-extrabold border border-slate-300 bg-white text-slate-700 transition cursor-pointer">
+                🥾 Hiking & Jungle Trekking
+            </button>
+            <button onclick="filterActivities('penginapan')" id="btn-filter-penginapan" class="filter-pill px-4 py-2 rounded-full text-xs sm:text-sm font-extrabold border border-slate-300 bg-white text-slate-700 transition cursor-pointer">
+                🏡 Kabin & Perkhemahan
+            </button>
+            <button onclick="filterActivities('santai')" id="btn-filter-santai" class="filter-pill px-4 py-2 rounded-full text-xs sm:text-sm font-extrabold border border-slate-300 bg-white text-slate-700 transition cursor-pointer">
+                🌊 Gazebo & Hammock
+            </button>
+            <button onclick="filterActivities('tiket')" id="btn-filter-tiket" class="filter-pill px-4 py-2 rounded-full text-xs sm:text-sm font-extrabold border border-slate-300 bg-white text-slate-700 transition cursor-pointer">
+                🎟️ Tiket Kemasukan
+            </button>
+        </div>
+
+        <!-- Activity Cards Grid (8 Cards) -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8" id="activity-grid">
+
+            <!-- 1. TEMPAHAN AKTIVITI HIKING -->
+            <div class="activity-card bg-white rounded-3xl overflow-hidden border border-slate-200 shadow-md flex flex-col" data-cat="pendakian">
+                <div class="relative w-full aspect-[4/3] bg-slate-100 overflow-hidden">
+                    <img src="images/hiking.jpg" alt="Hiking Air Terjun Berkelah" class="w-full h-full object-cover">
+                    <span class="absolute top-3 left-3 bg-emerald-600 text-white text-[11px] font-black px-3 py-1 rounded-full shadow-md uppercase tracking-wide">
+                        <i class="fa-solid fa-fire mr-1 text-amber-300"></i> Paling Popular
+                    </span>
+                    <span class="absolute bottom-3 right-3 bg-slate-900/80 backdrop-blur-sm text-white text-[11px] font-bold px-2.5 py-1 rounded-lg">
+                        Maks 7 Pax / Guide
+                    </span>
+                </div>
+                <div class="p-5 sm:p-6 flex flex-col flex-grow justify-between">
+                    <div>
+                        <div class="flex items-center justify-between gap-2 mb-2">
+                            <span class="text-xs font-bold text-emerald-700 uppercase tracking-wider">Aktiviti Pendakian</span>
+                            <span class="text-xs font-black text-slate-900 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">Dari RM150</span>
+                        </div>
+                        <h2 class="text-lg font-black text-slate-900 mb-2 leading-snug uppercase">
+                            TEMPAHAN AKTIVITI HIKING
+                        </h2>
+                        <p class="text-xs sm:text-sm text-slate-600 mb-4 leading-relaxed">
+                            Ekspedisi pendakian berpandu ke Air Terjun Berkelah yang mempesonakan (Tingkat 3 atau Tingkat 7). Wajib ditempah 3 hari sebelum tarikh pendakian.
+                        </p>
+
+                        <!-- Highlights List -->
+                        <div class="bg-[#F3FDF7] border border-[#94E3BA] rounded-2xl p-3 mb-5 space-y-1.5 text-xs text-slate-800">
+                            <div class="flex items-center gap-2">
+                                <i class="fa-solid fa-person-walking text-emerald-600 w-4"></i>
+                                <span>Pemandu arah bertauliah (1 kumpulan maks 7 pax)</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <i class="fa-solid fa-clock text-emerald-600 w-4"></i>
+                                <span>Slot Pagi (9:30 AM - 1:00 PM) & Petang (2:00 PM - 5:30 PM)</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <i class="fa-solid fa-shield text-emerald-600 w-4"></i>
+                                <span>Termasuk taklimat keselamatan (PPE) & sijil digital</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="grid grid-cols-2 gap-2 pt-2 border-t border-slate-100 mt-auto">
+                        <a href="rooms.html?filter=TEMPAHAN+AKTIVITI+HIKING" class="bg-[#2d6a4f] hover:bg-[#23533e] text-white font-extrabold py-2.5 px-3 rounded-xl transition text-center text-xs sm:text-sm shadow-sm flex items-center justify-center gap-1.5">
+                            <i class="fa-solid fa-calendar-check"></i> Tempah
+                        </a>
+                        <a href="https://wa.me/60194489296?text=Salam%20Taman%20Eko%20Rimba%20Berkelah,%20saya%20ingin%20bertanya%20tentang%20TEMPAHAN%20AKTIVITI%20HIKING" target="_blank" class="bg-emerald-50 hover:bg-emerald-100 text-emerald-900 border border-emerald-300 font-extrabold py-2.5 px-3 rounded-xl transition text-center text-xs sm:text-sm flex items-center justify-center gap-1.5">
+                            <i class="fa-brands fa-whatsapp text-emerald-600"></i> WhatsApp
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. TEMPAHAN AKTIVITI JUNGLE TREKKING -->
+            <div class="activity-card bg-white rounded-3xl overflow-hidden border border-slate-200 shadow-md flex flex-col" data-cat="pendakian">
+                <div class="relative w-full aspect-[4/3] bg-slate-100 overflow-hidden">
+                    <img src="images/jungle_trekking.jpg" alt="Jungle Trekking Rimba Berkelah" class="w-full h-full object-cover">
+                    <span class="absolute top-3 left-3 bg-emerald-700 text-white text-[11px] font-black px-3 py-1 rounded-full shadow-md uppercase tracking-wide">
+                        <i class="fa-solid fa-leaf mr-1 text-emerald-300"></i> Pendidikan Alam
+                    </span>
+                    <span class="absolute bottom-3 right-3 bg-slate-900/80 backdrop-blur-sm text-white text-[11px] font-bold px-2.5 py-1 rounded-lg">
+                        Maks 15 Pax / Sesi
+                    </span>
+                </div>
+                <div class="p-5 sm:p-6 flex flex-col flex-grow justify-between">
+                    <div>
+                        <div class="flex items-center justify-between gap-2 mb-2">
+                            <span class="text-xs font-bold text-emerald-700 uppercase tracking-wider">Aktiviti Rimba</span>
+                            <span class="text-xs font-black text-slate-900 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">Dari RM150</span>
+                        </div>
+                        <h2 class="text-lg font-black text-slate-900 mb-2 leading-snug uppercase">
+                            TEMPAHAN AKTIVITI JUNGLE TREKKING
+                        </h2>
+                        <p class="text-xs sm:text-sm text-slate-600 mb-4 leading-relaxed">
+                            Pengalaman merentas denai Hutan Dipterokarp Bukit sambil mengenali pelbagai spesies pokok bernilai tinggi, herba tradisional, dan hidupan liar.
+                        </p>
+
+                        <!-- Highlights List -->
+                        <div class="bg-[#F3FDF7] border border-[#94E3BA] rounded-2xl p-3 mb-5 space-y-1.5 text-xs text-slate-800">
+                            <div class="flex items-center gap-2">
+                                <i class="fa-solid fa-tree text-emerald-600 w-4"></i>
+                                <span>Penerangan spesies pokok & herba hutan asli</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <i class="fa-solid fa-route text-emerald-600 w-4"></i>
+                                <span>Laluan bertanda selamat dengan pemandu renjer</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <i class="fa-solid fa-users text-emerald-600 w-4"></i>
+                                <span>Sesuai untuk kumpulan pelajar, NGO & keluarga</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="grid grid-cols-2 gap-2 pt-2 border-t border-slate-100 mt-auto">
+                        <a href="rooms.html?filter=TEMPAHAN+AKTIVITI+JUNGLE+TREKKING" class="bg-[#2d6a4f] hover:bg-[#23533e] text-white font-extrabold py-2.5 px-3 rounded-xl transition text-center text-xs sm:text-sm shadow-sm flex items-center justify-center gap-1.5">
+                            <i class="fa-solid fa-calendar-check"></i> Tempah
+                        </a>
+                        <a href="https://wa.me/60194489296?text=Salam%20Taman%20Eko%20Rimba%20Berkelah,%20saya%20ingin%20bertanya%20tentang%20TEMPAHAN%20AKTIVITI%20JUNGLE%20TREKKING" target="_blank" class="bg-emerald-50 hover:bg-emerald-100 text-emerald-900 border border-emerald-300 font-extrabold py-2.5 px-3 rounded-xl transition text-center text-xs sm:text-sm flex items-center justify-center gap-1.5">
+                            <i class="fa-brands fa-whatsapp text-emerald-600"></i> WhatsApp
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. TEMPAHAN KABIN -->
+            <div class="activity-card bg-white rounded-3xl overflow-hidden border border-slate-200 shadow-md flex flex-col" data-cat="penginapan">
+                <div class="relative w-full aspect-[4/3] bg-slate-100 overflow-hidden">
+                    <img src="images/kabin.jpg" alt="Sewa Kabin Berkelah" class="w-full h-full object-cover">
+                    <span class="absolute top-3 left-3 bg-amber-600 text-white text-[11px] font-black px-3 py-1 rounded-full shadow-md uppercase tracking-wide">
+                        <i class="fa-solid fa-snowflake mr-1"></i> Berhawa Dingin
+                    </span>
+                    <span class="absolute bottom-3 right-3 bg-slate-900/80 backdrop-blur-sm text-white text-[11px] font-bold px-2.5 py-1 rounded-lg">
+                        Kapasiti: 4 Tetamu
+                    </span>
+                </div>
+                <div class="p-5 sm:p-6 flex flex-col flex-grow justify-between">
+                    <div>
+                        <div class="flex items-center justify-between gap-2 mb-2">
+                            <span class="text-xs font-bold text-amber-700 uppercase tracking-wider">Penginapan Selesa</span>
+                            <span class="text-xs font-black text-slate-900 bg-amber-50 px-2 py-0.5 rounded border border-amber-200">RM150 / mlm</span>
+                        </div>
+                        <h2 class="text-lg font-black text-slate-900 mb-2 leading-snug uppercase">
+                            TEMPAHAN KABIN
+                        </h2>
+                        <p class="text-xs sm:text-sm text-slate-600 mb-4 leading-relaxed">
+                            Kabin rehat berhawa dingin (Aircond) yang selesa dan privasi, terletak di kawasan redup rimba. Sesuai untuk penginapan keluarga kecil atau pasangan.
+                        </p>
+
+                        <!-- Highlights List -->
+                        <div class="bg-[#F3FDF7] border border-[#94E3BA] rounded-2xl p-3 mb-5 space-y-1.5 text-xs text-slate-800">
+                            <div class="flex items-center gap-2">
+                                <i class="fa-solid fa-bed text-emerald-600 w-4"></i>
+                                <span>2 Katil Single selesa & almari pakaian</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <i class="fa-solid fa-snowflake text-emerald-600 w-4"></i>
+                                <span>Pendingin hawa (Aircond) & kipas</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <i class="fa-solid fa-bath text-emerald-600 w-4"></i>
+                                <span>Tandas, dapur kecil & beranda santai</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="grid grid-cols-2 gap-2 pt-2 border-t border-slate-100 mt-auto">
+                        <a href="rooms.html?filter=TEMPAHAN+KABIN" class="bg-[#2d6a4f] hover:bg-[#23533e] text-white font-extrabold py-2.5 px-3 rounded-xl transition text-center text-xs sm:text-sm shadow-sm flex items-center justify-center gap-1.5">
+                            <i class="fa-solid fa-calendar-check"></i> Tempah
+                        </a>
+                        <a href="https://wa.me/60194489296?text=Salam%20Taman%20Eko%20Rimba%20Berkelah,%20saya%20ingin%20bertanya%20tentang%20TEMPAHAN%20KABIN" target="_blank" class="bg-emerald-50 hover:bg-emerald-100 text-emerald-900 border border-emerald-300 font-extrabold py-2.5 px-3 rounded-xl transition text-center text-xs sm:text-sm flex items-center justify-center gap-1.5">
+                            <i class="fa-brands fa-whatsapp text-emerald-600"></i> WhatsApp
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4. TEMPAHAN GAZEBO -->
+            <div class="activity-card bg-white rounded-3xl overflow-hidden border border-slate-200 shadow-md flex flex-col" data-cat="santai">
+                <div class="relative w-full aspect-[4/3] bg-slate-100 overflow-hidden">
+                    <img src="images/gazebo.jpg" alt="Sewaan Gazebo Berkelah" class="w-full h-full object-cover">
+                    <span class="absolute top-3 left-3 bg-teal-600 text-white text-[11px] font-black px-3 py-1 rounded-full shadow-md uppercase tracking-wide">
+                        <i class="fa-solid fa-umbrella-beach mr-1"></i> Tepi Sungai
+                    </span>
+                    <span class="absolute bottom-3 right-3 bg-slate-900/80 backdrop-blur-sm text-white text-[11px] font-bold px-2.5 py-1 rounded-lg">
+                        Kapasiti: 8 Orang
+                    </span>
+                </div>
+                <div class="p-5 sm:p-6 flex flex-col flex-grow justify-between">
+                    <div>
+                        <div class="flex items-center justify-between gap-2 mb-2">
+                            <span class="text-xs font-bold text-teal-700 uppercase tracking-wider">Santai Harian</span>
+                            <span class="text-xs font-black text-slate-900 bg-teal-50 px-2 py-0.5 rounded border border-teal-200">RM60 / hari</span>
+                        </div>
+                        <h2 class="text-lg font-black text-slate-900 mb-2 leading-snug uppercase">
+                            TEMPAHAN GAZEBO
+                        </h2>
+                        <p class="text-xs sm:text-sm text-slate-600 mb-4 leading-relaxed">
+                            Pondok kayu berbumbung redup terletak berdekatan aliran sungai. Sangat popular untuk perjumpaan keluarga, makan tengah hari santai, dan aktiviti riadah.
+                        </p>
+
+                        <!-- Highlights List -->
+                        <div class="bg-[#F3FDF7] border border-[#94E3BA] rounded-2xl p-3 mb-5 space-y-1.5 text-xs text-slate-800">
+                            <div class="flex items-center gap-2">
+                                <i class="fa-solid fa-house-chimney text-emerald-600 w-4"></i>
+                                <span>Bumbung teduh cuaca panas & hujan</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <i class="fa-solid fa-chair text-emerald-600 w-4"></i>
+                                <span>Meja & kerusi kayu kukuh untuk 8 orang</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <i class="fa-solid fa-water text-emerald-600 w-4"></i>
+                                <span>Pemandangan & akses terus ke tebing sungai</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="grid grid-cols-2 gap-2 pt-2 border-t border-slate-100 mt-auto">
+                        <a href="rooms.html?filter=TEMPAHAN+GAZEBO" class="bg-[#2d6a4f] hover:bg-[#23533e] text-white font-extrabold py-2.5 px-3 rounded-xl transition text-center text-xs sm:text-sm shadow-sm flex items-center justify-center gap-1.5">
+                            <i class="fa-solid fa-calendar-check"></i> Tempah
+                        </a>
+                        <a href="https://wa.me/60194489296?text=Salam%20Taman%20Eko%20Rimba%20Berkelah,%20saya%20ingin%20bertanya%20tentang%20TEMPAHAN%20GAZEBO" target="_blank" class="bg-emerald-50 hover:bg-emerald-100 text-emerald-900 border border-emerald-300 font-extrabold py-2.5 px-3 rounded-xl transition text-center text-xs sm:text-sm flex items-center justify-center gap-1.5">
+                            <i class="fa-brands fa-whatsapp text-emerald-600"></i> WhatsApp
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 5. TEMPAHAN TAPAK PERKHEMAHAN -->
+            <div class="activity-card bg-white rounded-3xl overflow-hidden border border-slate-200 shadow-md flex flex-col" data-cat="penginapan">
+                <div class="relative w-full aspect-[4/3] bg-slate-100 overflow-hidden">
+                    <img src="images/perkhemahan.jpg" alt="Tapak Perkhemahan Berkelah" class="w-full h-full object-cover">
+                    <span class="absolute top-3 left-3 bg-emerald-800 text-white text-[11px] font-black px-3 py-1 rounded-full shadow-md uppercase tracking-wide">
+                        <i class="fa-solid fa-campground mr-1"></i> Camping Alami
+                    </span>
+                    <span class="absolute bottom-3 right-3 bg-slate-900/80 backdrop-blur-sm text-white text-[11px] font-bold px-2.5 py-1 rounded-lg">
+                        Kapasiti: 4 Pax / Khemah
+                    </span>
+                </div>
+                <div class="p-5 sm:p-6 flex flex-col flex-grow justify-between">
+                    <div>
+                        <div class="flex items-center justify-between gap-2 mb-2">
+                            <span class="text-xs font-bold text-emerald-800 uppercase tracking-wider">Bermalam di Hutan</span>
+                            <span class="text-xs font-black text-slate-900 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">RM40 / mlm</span>
+                        </div>
+                        <h2 class="text-lg font-black text-slate-900 mb-2 leading-snug uppercase">
+                            TEMPAHAN TAPAK PERKHEMAHAN
+                        </h2>
+                        <p class="text-xs sm:text-sm text-slate-600 mb-4 leading-relaxed">
+                            Tapak khas mendirikan khemah di kawasan rata berumput di tepi sungai. Rasai ketenangan malam rimba dengan deruan air terjun di bawah langit berbintang.
+                        </p>
+
+                        <!-- Highlights List -->
+                        <div class="bg-[#F3FDF7] border border-[#94E3BA] rounded-2xl p-3 mb-5 space-y-1.5 text-xs text-slate-800">
+                            <div class="flex items-center gap-2">
+                                <i class="fa-solid fa-location-dot text-emerald-600 w-4"></i>
+                                <span>Kawasan tapak rata berdekatan punca air paip</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <i class="fa-solid fa-restroom text-emerald-600 w-4"></i>
+                                <span>Akses dekat ke tandas awam & bilik persalinan</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <i class="fa-solid fa-fire text-emerald-600 w-4"></i>
+                                <span>Zon unggun api terkawal & memasak dibenarkan</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="grid grid-cols-2 gap-2 pt-2 border-t border-slate-100 mt-auto">
+                        <a href="rooms.html?filter=TEMPAHAN+TAPAK+PERKHEMAHAN" class="bg-[#2d6a4f] hover:bg-[#23533e] text-white font-extrabold py-2.5 px-3 rounded-xl transition text-center text-xs sm:text-sm shadow-sm flex items-center justify-center gap-1.5">
+                            <i class="fa-solid fa-calendar-check"></i> Tempah
+                        </a>
+                        <a href="https://wa.me/60194489296?text=Salam%20Taman%20Eko%20Rimba%20Berkelah,%20saya%20ingin%20bertanya%20tentang%20TEMPAHAN%20TAPAK%20PERKHEMAHAN" target="_blank" class="bg-emerald-50 hover:bg-emerald-100 text-emerald-900 border border-emerald-300 font-extrabold py-2.5 px-3 rounded-xl transition text-center text-xs sm:text-sm flex items-center justify-center gap-1.5">
+                            <i class="fa-brands fa-whatsapp text-emerald-600"></i> WhatsApp
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 6. TEMPAHAN TAPAK HAMMOCK -->
+            <div class="activity-card bg-white rounded-3xl overflow-hidden border border-slate-200 shadow-md flex flex-col" data-cat="santai">
+                <div class="relative w-full aspect-[4/3] bg-slate-100 overflow-hidden">
+                    <img src="images/hammock.jpg" alt="Tapak Hammock Berkelah" class="w-full h-full object-cover">
+                    <span class="absolute top-3 left-3 bg-lime-700 text-white text-[11px] font-black px-3 py-1 rounded-full shadow-md uppercase tracking-wide">
+                        <i class="fa-solid fa-sun mr-1"></i> Zon Healing
+                    </span>
+                    <span class="absolute bottom-3 right-3 bg-slate-900/80 backdrop-blur-sm text-white text-[11px] font-bold px-2.5 py-1 rounded-lg">
+                        Kapasiti: 2 Orang
+                    </span>
+                </div>
+                <div class="p-5 sm:p-6 flex flex-col flex-grow justify-between">
+                    <div>
+                        <div class="flex items-center justify-between gap-2 mb-2">
+                            <span class="text-xs font-bold text-lime-800 uppercase tracking-wider">Santai Pepohonan</span>
+                            <span class="text-xs font-black text-slate-900 bg-lime-50 px-2 py-0.5 rounded border border-lime-200">RM15 / tapak</span>
+                        </div>
+                        <h2 class="text-lg font-black text-slate-900 mb-2 leading-snug uppercase">
+                            TEMPAHAN TAPAK HAMMOCK
+                        </h2>
+                        <p class="text-xs sm:text-sm text-slate-600 mb-4 leading-relaxed">
+                            Zon pohon rimba rimbun dengan jarak pokok yang sempurna untuk menggantung buaian (hammock). Sesuai untuk istirahat santai, membaca buku, dan terapi alam.
+                        </p>
+
+                        <!-- Highlights List -->
+                        <div class="bg-[#F3FDF7] border border-[#94E3BA] rounded-2xl p-3 mb-5 space-y-1.5 text-xs text-slate-800">
+                            <div class="flex items-center gap-2">
+                                <i class="fa-solid fa-tree text-emerald-600 w-4"></i>
+                                <span>Pepohonan rimbun 100% teduh tanpa terik matahari</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <i class="fa-solid fa-wind text-emerald-600 w-4"></i>
+                                <span>Angin sejuk sungai yang sangat nyaman</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <i class="fa-solid fa-bed text-emerald-600 w-4"></i>
+                                <span>Bawa hammock sendiri atau sewa di kaunter</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="grid grid-cols-2 gap-2 pt-2 border-t border-slate-100 mt-auto">
+                        <a href="rooms.html?filter=TEMPAHAN+TAPAK+HAMMOCK" class="bg-[#2d6a4f] hover:bg-[#23533e] text-white font-extrabold py-2.5 px-3 rounded-xl transition text-center text-xs sm:text-sm shadow-sm flex items-center justify-center gap-1.5">
+                            <i class="fa-solid fa-calendar-check"></i> Tempah
+                        </a>
+                        <a href="https://wa.me/60194489296?text=Salam%20Taman%20Eko%20Rimba%20Berkelah,%20saya%20ingin%20bertanya%20tentang%20TEMPAHAN%20TAPAK%20HAMMOCK" target="_blank" class="bg-emerald-50 hover:bg-emerald-100 text-emerald-900 border border-emerald-300 font-extrabold py-2.5 px-3 rounded-xl transition text-center text-xs sm:text-sm flex items-center justify-center gap-1.5">
+                            <i class="fa-brands fa-whatsapp text-emerald-600"></i> WhatsApp
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 7. TEMPAHAN TAPAK KENDERAAN RV / CARAVAN / CAMPERVAN -->
+            <div class="activity-card bg-white rounded-3xl overflow-hidden border border-slate-200 shadow-md flex flex-col" data-cat="penginapan">
+                <div class="relative w-full aspect-[4/3] bg-slate-100 overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1523987355523-c7b5b0dd90a7?auto=format&fit=crop&w=800&q=80" alt="Tapak RV Campervan Berkelah" class="w-full h-full object-cover">
+                    <span class="absolute top-3 left-3 bg-indigo-700 text-white text-[11px] font-black px-3 py-1 rounded-full shadow-md uppercase tracking-wide">
+                        <i class="fa-solid fa-caravan mr-1"></i> Overlanding & RV
+                    </span>
+                    <span class="absolute bottom-3 right-3 bg-slate-900/80 backdrop-blur-sm text-white text-[11px] font-bold px-2.5 py-1 rounded-lg">
+                        Kapasiti: 6 Tetamu
+                    </span>
+                </div>
+                <div class="p-5 sm:p-6 flex flex-col flex-grow justify-between">
+                    <div>
+                        <div class="flex items-center justify-between gap-2 mb-2">
+                            <span class="text-xs font-bold text-indigo-700 uppercase tracking-wider">Kemudahan Kenderaan</span>
+                            <span class="text-xs font-black text-slate-900 bg-indigo-50 px-2 py-0.5 rounded border border-indigo-200">RM80 / mlm</span>
+                        </div>
+                        <h2 class="text-lg font-black text-slate-900 mb-2 leading-snug uppercase">
+                            TEMPAHAN TAPAK KENDERAAN RV / CARAVAN / CAMPERVAN
+                        </h2>
+                        <p class="text-xs sm:text-sm text-slate-600 mb-4 leading-relaxed">
+                            Tapak parkir khusus berturap rata untuk kenderaan campervan, caravan, atau kenderaan 4x4 khemah bumbung (rooftop tent) di pinggir sungai.
+                        </p>
+
+                        <!-- Highlights List -->
+                        <div class="bg-[#F3FDF7] border border-[#94E3BA] rounded-2xl p-3 mb-5 space-y-1.5 text-xs text-slate-800">
+                            <div class="flex items-center gap-2">
+                                <i class="fa-solid fa-plug text-emerald-600 w-4"></i>
+                                <span>Penyambung kuasa elektrik 240V (Plug point)</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <i class="fa-solid fa-faucet-drip text-emerald-600 w-4"></i>
+                                <span>Punca air paip bersih untuk mengisi tangki</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <i class="fa-solid fa-trash-can text-emerald-600 w-4"></i>
+                                <span>Zon pembuangan sisa kemas dan teratur</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="grid grid-cols-2 gap-2 pt-2 border-t border-slate-100 mt-auto">
+                        <a href="rooms.html?filter=TEMPAHAN+TAPAK+KENDERAAN+RV+/+CARAVAN+/+CAMPERVAN" class="bg-[#2d6a4f] hover:bg-[#23533e] text-white font-extrabold py-2.5 px-3 rounded-xl transition text-center text-xs sm:text-sm shadow-sm flex items-center justify-center gap-1.5">
+                            <i class="fa-solid fa-calendar-check"></i> Tempah
+                        </a>
+                        <a href="https://wa.me/60194489296?text=Salam%20Taman%20Eko%20Rimba%20Berkelah,%20saya%20ingin%20bertanya%20tentang%20TEMPAHAN%20TAPAK%20RV%20CARAVAN" target="_blank" class="bg-emerald-50 hover:bg-emerald-100 text-emerald-900 border border-emerald-300 font-extrabold py-2.5 px-3 rounded-xl transition text-center text-xs sm:text-sm flex items-center justify-center gap-1.5">
+                            <i class="fa-brands fa-whatsapp text-emerald-600"></i> WhatsApp
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 8. TEMPAHAN CAJ KEMASUKAN PENGUNJUNG -->
+            <div class="activity-card bg-white rounded-3xl overflow-hidden border border-slate-200 shadow-md flex flex-col" data-cat="tiket">
+                <div class="relative w-full aspect-[4/3] bg-slate-100 overflow-hidden">
+                    <img src="images/caj_kemasukan.jpg" alt="Poster Rasmi Kadar Caj Kemasukan" class="w-full h-full object-cover">
+                    <span class="absolute top-3 left-3 bg-emerald-900 text-white text-[11px] font-black px-3 py-1 rounded-full shadow-md uppercase tracking-wide">
+                        <i class="fa-solid fa-ticket mr-1 text-amber-300"></i> Pas Harian Rasmi
+                    </span>
+                    <span class="absolute bottom-3 right-3 bg-slate-900/80 backdrop-blur-sm text-white text-[11px] font-bold px-2.5 py-1 rounded-lg">
+                        11 Kategori Tiket
+                    </span>
+                </div>
+                <div class="p-5 sm:p-6 flex flex-col flex-grow justify-between">
+                    <div>
+                        <div class="flex items-center justify-between gap-2 mb-2">
+                            <span class="text-xs font-bold text-emerald-900 uppercase tracking-wider">Tiket Masuk Harian</span>
+                            <span class="text-xs font-black text-slate-900 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">RM1 - RM10</span>
+                        </div>
+                        <h2 class="text-lg font-black text-slate-900 mb-2 leading-snug uppercase">
+                            TEMPAHAN CAJ KEMASUKAN PENGUNJUNG
+                        </h2>
+                        <p class="text-xs sm:text-sm text-slate-600 mb-4 leading-relaxed">
+                            Kadar tiket kemasukan rasmi Jabatan Perhutanan Negeri Pahang untuk pengunjung tempatan, antarabangsa, kenderaan persendirian, dan bas/lori.
+                        </p>
+
+                        <!-- Highlights List -->
+                        <div class="bg-[#F3FDF7] border border-[#94E3BA] rounded-2xl p-3 mb-5 space-y-1.5 text-xs text-slate-800">
+                            <div class="flex items-center justify-between">
+                                <span>🇲🇾 Warganegara (Dewasa / Kanak-kanak):</span>
+                                <strong class="text-emerald-900">RM3 / RM1</strong>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span>🌐 Pelawat Asing (Dewasa / Kanak-kanak):</span>
+                                <strong class="text-emerald-900">RM10 / RM5</strong>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span>🚗 Kenderaan (Kereta / Motorsikal):</span>
+                                <strong class="text-emerald-900">RM3 / RM1</strong>
+                            </div>
+                            <div class="flex items-center justify-between text-emerald-800 font-bold border-t border-emerald-200 pt-1 mt-1">
+                                <span>✨ OKU & Kanak-kanak bawah 4 tahun:</span>
+                                <span class="bg-emerald-600 text-white px-2 py-0.2 rounded text-[10px]">PERCUMA</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="grid grid-cols-2 gap-2 pt-2 border-t border-slate-100 mt-auto">
+                        <a href="rooms.html?filter=TEMPAHAN+CAJ+KEMASUKAN+PENGUNJUNG" class="bg-[#2d6a4f] hover:bg-[#23533e] text-white font-extrabold py-2.5 px-3 rounded-xl transition text-center text-xs sm:text-sm shadow-sm flex items-center justify-center gap-1.5">
+                            <i class="fa-solid fa-ticket"></i> Tempah Tiket
+                        </a>
+                        <a href="https://wa.me/60194489296?text=Salam%20Taman%20Eko%20Rimba%20Berkelah,%20saya%20ingin%20bertanya%20tentang%20TIKET%20KEMASUKAN%20PENGUNJUNG" target="_blank" class="bg-emerald-50 hover:bg-emerald-100 text-emerald-900 border border-emerald-300 font-extrabold py-2.5 px-3 rounded-xl transition text-center text-xs sm:text-sm flex items-center justify-center gap-1.5">
+                            <i class="fa-brands fa-whatsapp text-emerald-600"></i> WhatsApp
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- ─────────────────────────────────────────── -->
+        <!-- Aktiviti Rekreasi Tambahan & Kemudahan Awam -->
+        <!-- ─────────────────────────────────────────── -->
+        <section class="mt-16 bg-white rounded-3xl p-6 sm:p-10 border border-slate-200 shadow-sm">
+            <div class="text-center max-w-3xl mx-auto mb-10">
+                <span class="inline-block px-3 py-1 bg-emerald-100 text-emerald-800 rounded-full text-xs font-bold uppercase tracking-wider mb-2">
+                    Aktiviti Santai Percuma & Kaunter
+                </span>
+                <h3 class="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight mb-3">
+                    Aktiviti Riadah & Kemudahan Tepi Sungai
+                </h3>
+                <p class="text-slate-600 text-sm sm:text-base">
+                    Selain daripada aktiviti berpandu dan tapak sewaan, pelawat juga boleh menikmati pelbagai aktiviti riadah air dan kemudahan awam percuma di tapak rekreasi.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Mandi Sungai -->
+                <div class="bg-slate-50 border border-slate-200/80 rounded-2xl p-5 text-center flex flex-col items-center">
+                    <div class="w-12 h-12 bg-cyan-100 text-cyan-700 rounded-2xl flex items-center justify-center text-xl mb-3">
+                        <i class="fa-solid fa-water"></i>
+                    </div>
+                    <h4 class="font-extrabold text-slate-900 mb-1 text-base">Mandi-Manda Sungai</h4>
+                    <p class="text-xs text-slate-600 leading-relaxed">
+                        Kolam semula jadi air terjun yang jernih dan sejuk. Kawasan cetek selamat untuk kanak-kanak dengan pemantauan ibu bapa.
+                    </p>
+                </div>
+
+                <!-- Tiub Hanyutan -->
+                <div class="bg-slate-50 border border-slate-200/80 rounded-2xl p-5 text-center flex flex-col items-center">
+                    <div class="w-12 h-12 bg-amber-100 text-amber-700 rounded-2xl flex items-center justify-center text-xl mb-3">
+                        <i class="fa-solid fa-life-ring"></i>
+                    </div>
+                    <h4 class="font-extrabold text-slate-900 mb-1 text-base">Tiub Hanyutan Getah</h4>
+                    <p class="text-xs text-slate-600 leading-relaxed">
+                        Aktiviti berhanyut santai mengikut arus sungai menggunakan tiub getah. Boleh disewa terus di kaunter pendaftaran.
+                    </p>
+                </div>
+
+                <!-- BBQ Tepi Sungai -->
+                <div class="bg-slate-50 border border-slate-200/80 rounded-2xl p-5 text-center flex flex-col items-center">
+                    <div class="w-12 h-12 bg-rose-100 text-rose-700 rounded-2xl flex items-center justify-center text-xl mb-3">
+                        <i class="fa-solid fa-fire-burner"></i>
+                    </div>
+                    <h4 class="font-extrabold text-slate-900 mb-1 text-base">Sesi BBQ Tepi Sungai</h4>
+                    <p class="text-xs text-slate-600 leading-relaxed">
+                        Nikmati hidangan panggang panas bersama keluarga di tapak BBQ yang disediakan. Sila bawa arang dan peralatan sendiri.
+                    </p>
+                </div>
+
+                <!-- Fotografi & Flora -->
+                <div class="bg-slate-50 border border-slate-200/80 rounded-2xl p-5 text-center flex flex-col items-center">
+                    <div class="w-12 h-12 bg-emerald-100 text-emerald-700 rounded-2xl flex items-center justify-center text-xl mb-3">
+                        <i class="fa-solid fa-camera"></i>
+                    </div>
+                    <h4 class="font-extrabold text-slate-900 mb-1 text-base">Fotografi Alam Semula Jadi</h4>
+                    <p class="text-xs text-slate-600 leading-relaxed">
+                        Pemandangan batuan granit air terjun 7 tingkat dan flora hutan bukit yang sangat menakjubkan untuk diabadikan dalam gambar.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ─────────────────────────────────────────── -->
+        <!-- Panduan Keselamatan & SOP Renjer Hutan -->
+        <!-- ─────────────────────────────────────────── -->
+        <section class="mt-12 bg-gradient-to-r from-emerald-900 to-emerald-950 text-white rounded-3xl p-6 sm:p-10 shadow-xl">
+            <div class="max-w-4xl mx-auto">
+                <div class="flex items-center gap-3 text-amber-300 font-extrabold uppercase tracking-wider mb-2 text-xs sm:text-sm">
+                    <i class="fa-solid fa-shield-halved text-base"></i> Peringatan Keselamatan & Etika Alam Semula Jadi
+                </div>
+                <h3 class="text-2xl sm:text-3xl font-black mb-6">
+                    Panduan Keselamatan Pengunjung di Hutan Simpan Berkelah
+                </h3>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs sm:text-sm">
+                    <div class="flex items-start gap-3 bg-white/10 backdrop-blur-sm p-4 rounded-2xl border border-white/10">
+                        <i class="fa-solid fa-cloud-showers-heavy text-amber-300 text-lg mt-0.5"></i>
+                        <div>
+                            <strong class="text-white block mb-0.5">Fenomena Kepala Air:</strong>
+                            <p class="text-emerald-100 font-light">Segera naik ke darat jika air sungai bertukar keruh secara mendadak, timbul buih tebal, atau kedengaran deruan kuat dari hulu air terjun.</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start gap-3 bg-white/10 backdrop-blur-sm p-4 rounded-2xl border border-white/10">
+                        <i class="fa-solid fa-shoe-prints text-amber-300 text-lg mt-0.5"></i>
+                        <div>
+                            <strong class="text-white block mb-0.5">Pakaian & Kasut Sesuai:</strong>
+                            <p class="text-emerald-100 font-light">Gunakan kasut bertapak getah grip kuat (kasut getah/hiking) kerana batu sungai dan laluan mendaki licin dan berlumut.</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start gap-3 bg-white/10 backdrop-blur-sm p-4 rounded-2xl border border-white/10">
+                        <i class="fa-solid fa-trash text-amber-300 text-lg mt-0.5"></i>
+                        <div>
+                            <strong class="text-white block mb-0.5">Bawa Balik Sampah Anda:</strong>
+                            <p class="text-emerald-100 font-light">Amalkan konsep "Leave No Trace". Jangan tinggalkan sebarang plastik, tin, atau sisa makanan demi memelihara ekosistem hidupan liar.</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start gap-3 bg-white/10 backdrop-blur-sm p-4 rounded-2xl border border-white/10">
+                        <i class="fa-solid fa-vest text-amber-300 text-lg mt-0.5"></i>
+                        <div>
+                            <strong class="text-white block mb-0.5">Patuhi Arahan Renjer & Guide:</strong>
+                            <p class="text-emerald-100 font-light">Dilarang meneruskan pendakian melebihi zon yang dibenarkan tanpa iringan pemandu arah rasmi bertauliah.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ─────────────────────────────────────────── -->
+        <!-- Call to Action (CTA) Banner -->
+        <!-- ─────────────────────────────────────────── -->
+        <div class="mt-14 bg-gradient-to-r from-amber-500 to-amber-600 rounded-3xl p-8 sm:p-12 text-emerald-950 text-center shadow-lg">
+            <h3 class="text-2xl sm:text-4xl font-black mb-3">
+                Sedia Untuk Meneroka Air Terjun Berkelah?
+            </h3>
+            <p class="text-emerald-950/80 text-sm sm:text-base max-w-2xl mx-auto mb-6 font-medium">
+                Pilih tarikh cuti hujung minggu atau cuti umum anda dan mulakan tempahan aktiviti anda secara atas talian sekarang.
+            </p>
+            <div class="flex flex-wrap items-center justify-center gap-3">
+                <a href="rooms.html" class="bg-emerald-950 hover:bg-emerald-900 text-white font-extrabold px-6 py-3.5 rounded-2xl shadow-md transition flex items-center gap-2 text-sm sm:text-base">
+                    <i class="fa-solid fa-calendar-days text-amber-400"></i> Halaman Tempahan & Ketersediaan
+                </a>
+                <a href="https://wa.me/60194489296" target="_blank" class="bg-white hover:bg-emerald-50 text-emerald-950 font-extrabold px-6 py-3.5 rounded-2xl shadow-md transition flex items-center gap-2 text-sm sm:text-base">
+                    <i class="fa-brands fa-whatsapp text-emerald-600 text-lg"></i> Hubungi Kaunter WhatsApp
+                </a>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-950 text-slate-400 py-10 mt-16 border-t border-slate-800">
+        <div class="container mx-auto px-4 text-center text-sm flex flex-col items-center max-w-3xl">
+            <div class="flex items-center gap-2 mb-3">
+                <img src="images/logo.png" alt="Logo TERB" class="w-8 h-8 object-contain">
+                <span class="text-white font-extrabold text-base tracking-wide">Taman Eko Rimba Berkelah Pahang</span>
+            </div>
+            <p class="text-xs text-slate-400 mb-2">Kompartmen 363, Hutan Simpan Berkelah, Mukim Luit, 26030 Gambang / Kuantan, Pahang.</p>
+            <p class="text-xs text-slate-400 mb-6">Pertanyaan & Tempahan WhatsApp: <a href="https://wa.me/60194489296" target="_blank" class="text-emerald-400 hover:text-emerald-300 font-bold">019-4489296</a></p>
+            
+            <a href="admin.html" class="bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white px-5 py-2.5 rounded-xl transition flex items-center gap-2 text-xs font-semibold border border-slate-700 mb-6">
+                <i class="fa-solid fa-lock text-amber-400"></i> Log Masuk Panel Admin
+            </a>
+            
+            <p class="text-xs text-slate-600">&copy; 2026 Taman Eko Rimba Berkelah Pahang. Hak Cipta Terpelihara.</p>
+        </div>
+    </footer>
+
+    <!-- Interactive Filter Script -->
+    <script>
+        // Mobile Drawer Toggle
+        document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+            document.getElementById('mobile-menu').classList.toggle('hidden');
+        });
+
+        // Filter Pills Handler
+        function filterActivities(category) {
+            // Update active pill styling
+            document.querySelectorAll('.filter-pill').forEach(btn => btn.classList.remove('active'));
+            const activeBtn = document.getElementById('btn-filter-' + category);
+            if (activeBtn) activeBtn.classList.add('active');
+
+            // Show / hide cards based on data-cat
+            const cards = document.querySelectorAll('.activity-card');
+            cards.forEach(card => {
+                const cat = card.getAttribute('data-cat');
+                if (category === 'all' || cat === category) {
+                    card.classList.remove('hidden');
+                } else {
+                    card.classList.add('hidden');
+                }
+            });
+        }
+    </script>
+</body>
 </html>

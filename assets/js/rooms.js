@@ -1234,5 +1234,17 @@ document.getElementById('mobile-menu-btn').addEventListener('click', () => {
     document.getElementById('mobile-menu').classList.toggle('hidden');
 });
 
-// Init
-loadRooms();
+// Init with URL query parameter support
+const urlParams = new URLSearchParams(window.location.search);
+const initFilter = urlParams.get('filter') || urlParams.get('type') || '';
+const filterSelect = document.getElementById('filter-type');
+if (filterSelect && initFilter) {
+    // If exact value matches option, select it
+    for (let opt of filterSelect.options) {
+        if (opt.value.toUpperCase() === initFilter.toUpperCase()) {
+            filterSelect.value = opt.value;
+            break;
+        }
+    }
+}
+loadRooms(initFilter);
