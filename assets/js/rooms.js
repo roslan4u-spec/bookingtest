@@ -181,19 +181,41 @@ function renderHikingCard(r, isAvailabilityCheck = false) {
                         <input type="hidden" id="hiking-pkg-${r.id}" value="${isKhemah ? 0 : (parseFloat(r.price_per_night) || (isHammock ? 15 : (isRv ? 80 : 150)))}">
                         `}
 
-                        <!-- 2. Jumlah Kumpulan & Jumlah Peserta (Kotak Berasingan Kiri dan Kanan) -->
+                        <!-- 2. Jumlah Kumpulan / Jumlah Tapak & Jumlah Peserta (Kotak Berasingan Kiri dan Kanan) -->
                         <div class="grid grid-cols-2 gap-2 sm:gap-2.5">
-                            <!-- Kotak Kiri: Jumlah Kumpulan -->
+                            <!-- Kotak Kiri: Jumlah Kumpulan atau Jumlah Tapak -->
                             <div class="bg-[#F3FDF7] border-2 border-[#94E3BA] rounded-3xl p-2.5 sm:p-3 flex flex-col items-center justify-between shadow-sm min-w-0">
                                 <span class="font-black text-slate-900 text-[10.5px] sm:text-xs tracking-tight uppercase whitespace-nowrap text-center mb-1.5">
-                                    JUMLAH KUMPULAN
+                                    ${isKhemah ? 'JUMLAH TAPAK' : 'JUMLAH KUMPULAN'}
                                 </span>
+                                ${isKhemah ? `
+                                <div class="w-full h-9 flex items-center justify-between bg-white border border-[#94E3BA] rounded-full overflow-hidden px-2 shadow-inner">
+                                    <input type="number" id="hiking-groups-${r.id}" min="1" max="50" value="1"
+                                        class="w-full text-center font-black text-slate-900 text-base sm:text-lg bg-transparent focus:outline-none cursor-pointer hide-native-spinner p-0"
+                                        placeholder="1"
+                                        title="Masukkan bilangan tapak perkhemahan"
+                                        oninput="updateHikingPrice(${r.id}, 'groups_changed')" onchange="updateHikingPrice(${r.id}, 'groups_changed')">
+                                    <div class="flex flex-col items-center justify-center h-full pl-1.5 border-l border-[#BBF0D2] flex-shrink-0">
+                                        <button type="button" onclick="stepHikingGroups(${r.id}, 1)" 
+                                            class="w-5 h-3.5 flex items-center justify-center text-slate-900 hover:text-emerald-700 active:scale-90 text-[9px] font-black transition cursor-pointer select-none leading-none"
+                                            title="Tambah tapak">
+                                            ▲
+                                        </button>
+                                        <button type="button" onclick="stepHikingGroups(${r.id}, -1)" 
+                                            class="w-5 h-3.5 flex items-center justify-center text-slate-900 hover:text-emerald-700 active:scale-90 text-[9px] font-black transition cursor-pointer select-none leading-none"
+                                            title="Kurangkan tapak">
+                                            ▼
+                                        </button>
+                                    </div>
+                                </div>
+                                ` : `
                                 <div class="w-full h-9 flex items-center justify-center bg-white border border-[#94E3BA] rounded-full px-2 shadow-inner">
                                     <i class="fa-solid fa-users text-[#2D5D48] text-xs sm:text-sm mr-1.5 flex-shrink-0"></i>
                                     <input type="text" id="hiking-groups-${r.id}" value="1" readonly
                                         class="w-10 text-center font-black text-slate-900 text-base sm:text-lg bg-transparent focus:outline-none cursor-default select-none p-0"
                                         title="Auto-dikira: 1 Kumpulan bagi setiap 7 peserta">
                                 </div>
+                                `}
                             </div>
 
                             <!-- Kotak Kanan: Jumlah Peserta -->
@@ -227,7 +249,7 @@ function renderHikingCard(r, isAvailabilityCheck = false) {
                         <!-- 3. Caj Pemprosesan Seorang / Caj Tapak Perkhemahan -->
                         <div class="bg-[#F3FDF7] border-2 border-[#94E3BA] rounded-3xl py-2.5 sm:py-3 px-3 sm:px-3.5 flex justify-between items-center shadow-sm">
                             <div class="flex flex-col justify-center min-w-0 pr-2">
-                                <span class="font-black text-slate-900 text-[10px] sm:text-xs tracking-tight uppercase whitespace-nowrap">
+                                <span id="hiking-proc-label-${r.id}" class="font-black text-slate-900 text-[10px] sm:text-xs tracking-tight uppercase whitespace-nowrap">
                                     ${isKhemah ? 'CAJ (1) SATU TAPAK PERKEMAHAN' : 'CAJ PEMPROSESAN SEORANG'}
                                 </span>
                                 <span id="hiking-proc-calc-${r.id}" class="text-[10px] sm:text-[11px] font-bold text-[#2D5D48] whitespace-nowrap mt-0.5">
@@ -310,6 +332,13 @@ document.addEventListener('click', function(e) {
     }
 });
 
+function getMalayNumberWord(num) {
+    const words = ['', 'SATU', 'DUA', 'TIGA', 'EMPAT', 'LIMA', 'ENAM', 'TUJUH', 'LAPAN', 'SEMBILAN', 'SEPULUH', 
+                   'SEBELAS', 'DUA BELAS', 'TIGA BELAS', 'EMPAT BELAS', 'LIMA BELAS', 'ENAM BELAS', 'TUJUH BELAS', 'LAPAN BELAS', 'SEMBILAN BELAS', 'DUA PULUH'];
+    if (words[num]) return ' ' + words[num];
+    return '';
+}
+
 function stepHikingPax(id, delta) {
     const paxInput = document.getElementById(`hiking-pax-${id}`);
     if (!paxInput) return;
@@ -322,13 +351,26 @@ function stepHikingPax(id, delta) {
     updateHikingPrice(id);
 }
 
-function updateHikingPrice(id) {
+function stepHikingGroups(id, delta) {
+    const groupsInput = document.getElementById(`hiking-groups-${id}`);
+    if (!groupsInput) return;
+    let groups = parseInt(groupsInput.value);
+    if (isNaN(groups) || groups < 1) groups = 1;
+    groups += delta;
+    if (groups < 1) groups = 1;
+    if (groups > 50) groups = 50;
+    groupsInput.value = groups;
+    updateHikingPrice(id, 'groups_changed');
+}
+
+function updateHikingPrice(id, source) {
     const pkgSelect = document.getElementById(`hiking-pkg-${id}`);
     const paxInput = document.getElementById(`hiking-pax-${id}`);
     const groupsInput = document.getElementById(`hiking-groups-${id}`);
     const procSpan = document.getElementById(`hiking-proc-${id}`);
     const procCalcSpan = document.getElementById(`hiking-proc-calc-${id}`);
     const procPaxSpan = document.getElementById(`hiking-proc-pax-${id}`);
+    const procLabel = document.getElementById(`hiking-proc-label-${id}`);
     const totalSpan = document.getElementById(`hiking-total-${id}`);
     const room = allRooms.find(r => r.id === id);
     const isKabin = room && ((room.name && room.name.toUpperCase().includes('KABIN')) || (room.type && room.type.toUpperCase().includes('KABIN')));
@@ -341,30 +383,60 @@ function updateHikingPrice(id) {
     let pax = parseInt(paxInput ? paxInput.value : 1);
     if (isNaN(pax) || pax < 1) pax = 1;
 
+    let groups = 1;
+    if (isKhemah) {
+        let currentGroups = parseInt(groupsInput ? groupsInput.value : 1);
+        if (isNaN(currentGroups) || currentGroups < 1) currentGroups = 1;
+        
+        // Jika perubahan dari pax, dan pax melebihi kapasiti tapak semasa (cth > currentGroups * 4), auto tambah tapak
+        if (source !== 'groups_changed' && pax > currentGroups * 4) {
+            currentGroups = Math.max(currentGroups, Math.ceil(pax / 4));
+        }
+        groups = currentGroups;
+        if (groupsInput) groupsInput.value = groups;
+    } else if (isKabin || isHammock || isRv) {
+        groups = 1;
+        if (groupsInput) {
+            if ('value' in groupsInput) groupsInput.value = groups;
+            groupsInput.textContent = groups;
+        }
+    } else {
+        // Hiking / Jungle Trekking biasa (1 kumpulan bagi setiap 7 peserta)
+        groups = Math.ceil(pax / 7);
+        if (groupsInput) {
+            if ('value' in groupsInput) groupsInput.value = groups;
+            groupsInput.textContent = groups;
+        }
+    }
+
     const fallbackRate = isHammock ? 15 : (isKhemah ? 0 : (isRv ? 80 : (isKabin ? 150 : 150)));
     const pkgRate = parseFloat(pkgSelect ? pkgSelect.value : (isKhemah ? 0 : (room ? room.price_per_night : fallbackRate))) || fallbackRate;
-    // Maks 7 orang bagi 1 kumpulan hiking; Kabin, Hammock, RV adalah 1 tapak tetap; Khemah 1 tapak / 4 peserta
-    const groups = isKabin || isHammock || isRv ? 1 : (isKhemah ? Math.max(1, Math.ceil(pax / 4)) : Math.ceil(pax / 7));
-    const guideTotal = isNoGuide ? pkgRate : (groups * pkgRate);
+    
+    const guideTotal = isNoGuide ? (isKhemah ? 0 : pkgRate) : (groups * pkgRate);
     const procTotal = isNoProc ? 0 : (isKhemah ? (groups * 70) : (pax * 10));
     const grandTotal = guideTotal + procTotal;
 
     // Caj Pemprosesan bertambah secara auto mengikut jumlah peserta / tapak perkhemahan
     if (procSpan) procSpan.textContent = procTotal;
     if (procPaxSpan) procPaxSpan.textContent = isKhemah ? groups : pax;
+    if (procLabel && isKhemah) {
+        const perkataan = getMalayNumberWord(groups);
+        procLabel.textContent = `CAJ (${groups})${perkataan} TAPAK PERKEMAHAN`;
+    }
     if (procCalcSpan) {
         if (isNoProc) {
             procCalcSpan.classList.add('hidden');
         } else {
             procCalcSpan.classList.remove('hidden');
+            if (isKhemah) {
+                procCalcSpan.innerHTML = `(RM70 × <span id="hiking-proc-pax-${id}">${groups}</span> Tapak)`;
+            } else {
+                procCalcSpan.innerHTML = `(RM10 × <span id="hiking-proc-pax-${id}">${pax}</span>)`;
+            }
         }
     }
 
     if (totalSpan) totalSpan.textContent = grandTotal;
-    if (groupsInput) {
-        if ('value' in groupsInput) groupsInput.value = groups;
-        groupsInput.textContent = groups;
-    }
 }
 
 function addToCartHiking(id) {
@@ -373,6 +445,7 @@ function addToCartHiking(id) {
     
     const pkgSelect = document.getElementById(`hiking-pkg-${id}`);
     const paxInput = document.getElementById(`hiking-pax-${id}`);
+    const groupsInput = document.getElementById(`hiking-groups-${id}`);
     let pax = parseInt(paxInput ? paxInput.value : 1);
     if (isNaN(pax) || pax < 1) pax = 1;
     
@@ -390,8 +463,17 @@ function addToCartHiking(id) {
     const pkgRate = pkgSelect ? (parseFloat(pkgSelect.value) || fallbackRate) : (isKhemah ? 0 : (room ? (parseFloat(room.price_per_night) || fallbackRate) : fallbackRate));
     const isTingkat7 = pkgRate === 300;
 
-    const groups = isKabin || isHammock || isRv ? 1 : (isKhemah ? Math.max(1, Math.ceil(pax / 4)) : Math.ceil(pax / 7));
-    const guideTotal = isNoGuide ? pkgRate : (groups * pkgRate);
+    let groups = 1;
+    if (isKhemah) {
+        groups = parseInt(groupsInput ? groupsInput.value : 1);
+        if (isNaN(groups) || groups < 1) groups = 1;
+    } else if (isKabin || isHammock || isRv) {
+        groups = 1;
+    } else {
+        groups = Math.ceil(pax / 7);
+    }
+
+    const guideTotal = isNoGuide ? (isKhemah ? 0 : pkgRate) : (groups * pkgRate);
     const procTotal = isNoProc ? 0 : (isKhemah ? (groups * 70) : (pax * 10));
     const totalHikingPrice = guideTotal + procTotal;
     
