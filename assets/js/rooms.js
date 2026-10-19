@@ -196,14 +196,28 @@ function renderHikingCard(r, isAvailabilityCheck = false) {
                                         title="Masukkan bilangan tapak perkhemahan"
                                         oninput="updateHikingPrice(${r.id}, 'groups_changed')" onchange="updateHikingPrice(${r.id}, 'groups_changed')">
                                     <div class="flex flex-col items-center justify-center h-full pl-1.5 border-l border-[#BBF0D2] flex-shrink-0">
-                                        <button type="button" onclick="stepHikingGroups(${r.id}, 1)" 
+                                        <button type="button" 
+                                            onpointerdown="startHoldStep('groups', ${r.id}, 1, event)"
+                                            onpointerup="stopHoldStep()"
+                                            onpointerleave="stopHoldStep()"
+                                            onpointercancel="stopHoldStep()"
+                                            onclick="handleClickStep('groups', ${r.id}, 1, event)"
+                                            oncontextmenu="event.preventDefault(); return false;"
+                                            style="touch-action: manipulation; user-select: none; -webkit-user-select: none;"
                                             class="w-5 h-3.5 flex items-center justify-center text-slate-900 hover:text-emerald-700 active:scale-90 text-[9px] font-black transition cursor-pointer select-none leading-none"
-                                            title="Tambah tapak">
+                                            title="Tambah tapak (tekan lebih 3 saat untuk terus mengira)">
                                             ▲
                                         </button>
-                                        <button type="button" onclick="stepHikingGroups(${r.id}, -1)" 
+                                        <button type="button" 
+                                            onpointerdown="startHoldStep('groups', ${r.id}, -1, event)"
+                                            onpointerup="stopHoldStep()"
+                                            onpointerleave="stopHoldStep()"
+                                            onpointercancel="stopHoldStep()"
+                                            onclick="handleClickStep('groups', ${r.id}, -1, event)"
+                                            oncontextmenu="event.preventDefault(); return false;"
+                                            style="touch-action: manipulation; user-select: none; -webkit-user-select: none;"
                                             class="w-5 h-3.5 flex items-center justify-center text-slate-900 hover:text-emerald-700 active:scale-90 text-[9px] font-black transition cursor-pointer select-none leading-none"
-                                            title="Kurangkan tapak">
+                                            title="Kurangkan tapak (tekan lebih 3 saat untuk terus mengira)">
                                             ▼
                                         </button>
                                     </div>
@@ -230,14 +244,28 @@ function renderHikingCard(r, isAvailabilityCheck = false) {
                                         title="Masukkan bilangan peserta"
                                         oninput="updateHikingPrice(${r.id})" onchange="updateHikingPrice(${r.id})">
                                     <div class="flex flex-col items-center justify-center h-full pl-1.5 border-l border-[#BBF0D2] flex-shrink-0">
-                                        <button type="button" onclick="stepHikingPax(${r.id}, 1)" 
+                                        <button type="button" 
+                                            onpointerdown="startHoldStep('pax', ${r.id}, 1, event)"
+                                            onpointerup="stopHoldStep()"
+                                            onpointerleave="stopHoldStep()"
+                                            onpointercancel="stopHoldStep()"
+                                            onclick="handleClickStep('pax', ${r.id}, 1, event)"
+                                            oncontextmenu="event.preventDefault(); return false;"
+                                            style="touch-action: manipulation; user-select: none; -webkit-user-select: none;"
                                             class="w-5 h-3.5 flex items-center justify-center text-slate-900 hover:text-emerald-700 active:scale-90 text-[9px] font-black transition cursor-pointer select-none leading-none"
-                                            title="Tambah peserta">
+                                            title="Tambah peserta (tekan lebih 3 saat untuk terus mengira)">
                                             ▲
                                         </button>
-                                        <button type="button" onclick="stepHikingPax(${r.id}, -1)" 
+                                        <button type="button" 
+                                            onpointerdown="startHoldStep('pax', ${r.id}, -1, event)"
+                                            onpointerup="stopHoldStep()"
+                                            onpointerleave="stopHoldStep()"
+                                            onpointercancel="stopHoldStep()"
+                                            onclick="handleClickStep('pax', ${r.id}, -1, event)"
+                                            oncontextmenu="event.preventDefault(); return false;"
+                                            style="touch-action: manipulation; user-select: none; -webkit-user-select: none;"
                                             class="w-5 h-3.5 flex items-center justify-center text-slate-900 hover:text-emerald-700 active:scale-90 text-[9px] font-black transition cursor-pointer select-none leading-none"
-                                            title="Kurangkan peserta">
+                                            title="Kurangkan peserta (tekan lebih 3 saat untuk terus mengira)">
                                             ▼
                                         </button>
                                     </div>
@@ -361,6 +389,64 @@ function stepHikingGroups(id, delta) {
     if (groups > 50) groups = 50;
     groupsInput.value = groups;
     updateHikingPrice(id, 'groups_changed');
+}
+
+let holdStepTimer = null;
+let holdStepInterval = null;
+let isPointerActive = false;
+
+function startHoldStep(type, id, delta, event) {
+    if (event && event.pointerType) {
+        isPointerActive = true;
+    }
+    stopHoldStep();
+
+    const doStep = () => {
+        if (type === 'groups') {
+            stepHikingGroups(id, delta);
+        } else if (type === 'pax') {
+            stepHikingPax(id, delta);
+        }
+    };
+
+    // Langkah pertama sebaik sahaja butang mula ditekan
+    doStep();
+
+    // Jika ditekan lebih dari 3 saat (3000ms), nombor akan terus mengira secara automatik sehingga butang dilepaskan
+    holdStepTimer = setTimeout(() => {
+        holdStepInterval = setInterval(doStep, 100);
+    }, 3000);
+}
+
+function stopHoldStep() {
+    if (holdStepTimer) {
+        clearTimeout(holdStepTimer);
+        holdStepTimer = null;
+    }
+    if (holdStepInterval) {
+        clearInterval(holdStepInterval);
+        holdStepInterval = null;
+    }
+    setTimeout(() => {
+        isPointerActive = false;
+    }, 100);
+}
+
+function handleClickStep(type, id, delta, event) {
+    if (isPointerActive) {
+        if (event) event.preventDefault();
+        return;
+    }
+    if (type === 'groups') {
+        stepHikingGroups(id, delta);
+    } else if (type === 'pax') {
+        stepHikingPax(id, delta);
+    }
+}
+
+if (typeof window !== 'undefined') {
+    window.addEventListener('pointerup', stopHoldStep);
+    window.addEventListener('pointercancel', stopHoldStep);
 }
 
 function updateHikingPrice(id, source) {
