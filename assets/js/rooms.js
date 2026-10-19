@@ -99,8 +99,10 @@ function renderHikingCard(r, isAvailabilityCheck = false) {
     const isRv = (r.name && (r.name.toUpperCase().includes('RV') || r.name.toUpperCase().includes('CARAVAN') || r.name.toUpperCase().includes('CAMPERVAN')));
 
     let titleClass;
+    let displayName = r.name;
     if (isJungle) {
-        titleClass = "text-[12.5px] min-[400px]:text-[13.5px] sm:text-[15.5px] lg:text-[17.5px] font-black text-slate-900 text-center mb-4 tracking-tight uppercase whitespace-nowrap px-0.5";
+        titleClass = "text-base sm:text-lg lg:text-xl font-black text-slate-900 text-center mb-4 tracking-tight uppercase leading-snug px-1";
+        displayName = "TEMPAHAN AKTIVITI<br>JUNGLE TREKKING";
     } else if (isRv) {
         titleClass = "text-base sm:text-lg lg:text-xl font-black text-slate-900 text-center mb-4 tracking-tight uppercase leading-snug px-1";
     } else {
@@ -115,7 +117,7 @@ function renderHikingCard(r, isAvailabilityCheck = false) {
             </div>
             <div class="p-4 sm:p-5 flex flex-col flex-grow justify-between bg-white">
                 <div>
-                    <h3 class="${titleClass}">${r.name}</h3>
+                    <h3 class="${titleClass}">${displayName}</h3>
 
                     <div class="space-y-2.5 sm:space-y-3 mb-6">
                         <!-- 1. Caj Pemandu Arah Dropdown (Satu Baris Ayat, Tanpa Wrap, Fit Penuh) -->
