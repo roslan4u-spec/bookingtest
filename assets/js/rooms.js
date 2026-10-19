@@ -96,9 +96,16 @@ function renderHikingCard(r, isAvailabilityCheck = false) {
     ` : '';
 
     const isJungle = (r.name && (r.name.toUpperCase().includes('JUNGLE') || r.name.toUpperCase().includes('TREKKING')));
-    const titleClass = isJungle
-        ? "text-[12.5px] min-[400px]:text-[13.5px] sm:text-[15.5px] lg:text-[17.5px] font-black text-slate-900 text-center mb-4 tracking-tight uppercase whitespace-nowrap px-0.5"
-        : "text-base sm:text-lg lg:text-xl font-black text-slate-900 text-center mb-4 tracking-tight uppercase whitespace-nowrap";
+    const isRv = (r.name && (r.name.toUpperCase().includes('RV') || r.name.toUpperCase().includes('CARAVAN') || r.name.toUpperCase().includes('CAMPERVAN')));
+
+    let titleClass;
+    if (isJungle) {
+        titleClass = "text-[12.5px] min-[400px]:text-[13.5px] sm:text-[15.5px] lg:text-[17.5px] font-black text-slate-900 text-center mb-4 tracking-tight uppercase whitespace-nowrap px-0.5";
+    } else if (isRv) {
+        titleClass = "text-base sm:text-lg lg:text-xl font-black text-slate-900 text-center mb-4 tracking-tight uppercase leading-snug px-1";
+    } else {
+        titleClass = "text-base sm:text-lg lg:text-xl font-black text-slate-900 text-center mb-4 tracking-tight uppercase whitespace-nowrap";
+    }
 
     return `
         <div class="room-card bg-white rounded-2xl shadow-lg overflow-hidden border ${isAvailabilityCheck && !r.available ? 'border-rose-200 opacity-70' : 'border-slate-100'} flex flex-col">
