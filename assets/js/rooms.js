@@ -497,8 +497,10 @@ function renderKemasukanCard(r, isAvailabilityCheck = false) {
             </div>
             <div class="px-3 py-3.5 sm:px-4 sm:py-4 flex flex-col flex-grow justify-between bg-white">
                 <div>
-                    <!-- Tajuk Kad Kemas Tanpa Overflow -->
-                    <h3 class="text-sm sm:text-base font-black text-slate-900 text-center mb-2 tracking-tight uppercase leading-snug px-1">${r.name}</h3>
+                    <!-- Tajuk Kad Standard dengan Wrap Penuh -->
+                    <h3 class="text-base sm:text-lg lg:text-xl font-black text-slate-900 text-center mb-3 sm:mb-4 tracking-tight uppercase leading-snug px-1">
+                        TEMPAHAN CAJ KEMASUKAN<br>PENGUNJUNG
+                    </h3>
 
                     <!-- Senarai Penuh Kadar Caj Mengikut Kategori (Header Badge) -->
                     <div class="bg-emerald-50 border border-emerald-200/90 rounded-2xl py-1.5 px-3 text-center mb-2 shadow-xs">
