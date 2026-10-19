@@ -385,13 +385,10 @@ function updateHikingPrice(id, source) {
 
     let groups = 1;
     if (isKhemah) {
+        // Untuk tapak perkhemahan, bilangan tapak ditentukan sepenuhnya oleh kotak JUMLAH TAPAK.
+        // Kotak JUMLAH PESERTA hanya menunjukkan jumlah peserta dan tidak mempengaruhi mana-mana bahagian lain (tapak atau harga).
         let currentGroups = parseInt(groupsInput ? groupsInput.value : 1);
         if (isNaN(currentGroups) || currentGroups < 1) currentGroups = 1;
-        
-        // Jika perubahan dari pax, dan pax melebihi kapasiti tapak semasa (cth > currentGroups * 4), auto tambah tapak
-        if (source !== 'groups_changed' && pax > currentGroups * 4) {
-            currentGroups = Math.max(currentGroups, Math.ceil(pax / 4));
-        }
         groups = currentGroups;
         if (groupsInput) groupsInput.value = groups;
     } else if (isKabin || isHammock || isRv) {
