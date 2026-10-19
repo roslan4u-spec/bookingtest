@@ -72,7 +72,7 @@ const FALLBACK_ROOMS = [
     { id: 2, name: 'TEMPAHAN GAZEBO', type: 'TEMPAHAN GAZEBO', capacity: 8, price_per_night: 60, description: 'Pondok berehat berhampiran sungai yang sesuai untuk keluarga berkelah.', facilities: 'Bumbung teduh, Meja kayu, Tempat duduk, Tong sampah', image_url: 'images/gazebo.jpg', is_active: 1 },
     { id: 7, name: 'TEMPAHAN KABIN', type: 'TEMPAHAN KABIN', capacity: 4, price_per_night: 150, description: 'Kabin berhawa dingin yang selesa sesuai untuk percutian keluarga.', facilities: '2 Katil Single, Aircond, Almari, Tandas, Dapur', image_url: 'images/kabin.jpg', is_active: 1 },
     { id: 4, name: 'TEMPAHAN TAPAK HAMMOCK', type: 'TEMPAHAN TAPAK HAMMOCK', capacity: 2, price_per_night: 15, description: 'Lokasi strategik di antara pepohonan untuk menggantung hammock anda.', facilities: 'Kawasan redup, Akses mudah ke sungai', image_url: 'images/hammock.jpg', is_active: 1 },
-    { id: 5, name: 'TEMPAHAN TAPAK PERKHEMAHAN', type: 'TEMPAHAN TAPAK PERKHEMAHAN', capacity: 4, price_per_night: 40, description: 'Kawasan lapang khas untuk mendirikan khemah, dilengkapi kemudahan asas.', facilities: 'Tandas awam, Bekalan air paip, Kawasan unggun api', image_url: 'images/perkhemahan.jpg', is_active: 1 },
+    { id: 5, name: 'TEMPAHAN TAPAK PERKHEMAHAN', type: 'TEMPAHAN TAPAK PERKHEMAHAN', capacity: 4, price_per_night: 70, description: 'Kawasan lapang khas untuk mendirikan khemah, dilengkapi kemudahan asas.', facilities: 'Tandas awam, Bekalan air paip, Kawasan unggun api', image_url: 'images/perkhemahan.jpg', is_active: 1 },
     { id: 6, name: 'TEMPAHAN TAPAK KENDERAAN RV / CARAVAN / CAMPERVAN', type: 'TEMPAHAN TAPAK KENDERAAN RV / CARAVAN / CAMPERVAN', capacity: 6, price_per_night: 80, description: 'Ruang parkir khusus untuk kenderaan rekreasi dengan sokongan kuasa elektrik.', facilities: 'Penyambung elektrik (Plug), Bekalan air, Sisa pembuangan', image_url: 'https://images.unsplash.com/photo-1523987355523-c7b5b0dd90a7?auto=format&fit=crop&w=800&q=80', is_active: 1 },
     { id: 8, name: 'TEMPAHAN CAJ KEMASUKAN PENGUNJUNG', type: 'TEMPAHAN CAJ KEMASUKAN PENGUNJUNG', capacity: 10, price_per_night: 3, description: 'Caj tiket kemasukan harian pengunjung dan kenderaan ke Taman Eko Rimba Berkelah Gambang Pahang.', facilities: 'Dewasa RM3, Kanak-kanak RM1, Warga Emas RM1, Pelawat Asing RM10, Kereta RM3, Motorsikal RM1, OKU & Bawah 4 Thn Percuma', image_url: 'images/caj_kemasukan.jpg', is_active: 1 }
 ];
@@ -178,7 +178,7 @@ function renderHikingCard(r, isAvailabilityCheck = false) {
                         </div>
                         ` : `
                         <!-- Hidden input for Kabin, Hammock, Perkhemahan & RV base rate without showing guide fee dropdown -->
-                        <input type="hidden" id="hiking-pkg-${r.id}" value="${parseFloat(r.price_per_night) || (isHammock ? 15 : (isKhemah ? 40 : (isRv ? 80 : 150)))}">
+                        <input type="hidden" id="hiking-pkg-${r.id}" value="${isKhemah ? 0 : (parseFloat(r.price_per_night) || (isHammock ? 15 : (isRv ? 80 : 150)))}">
                         `}
 
                         <!-- 2. Jumlah Kumpulan & Jumlah Peserta (Kotak Berasingan Kiri dan Kanan) -->
@@ -224,18 +224,18 @@ function renderHikingCard(r, isAvailabilityCheck = false) {
                         </div>
 
                         ${!isNoProc ? `
-                        <!-- 3. Caj Pemprosesan Seorang -->
+                        <!-- 3. Caj Pemprosesan Seorang / Caj Tapak Perkhemahan -->
                         <div class="bg-[#F3FDF7] border-2 border-[#94E3BA] rounded-3xl py-2.5 sm:py-3 px-3 sm:px-3.5 flex justify-between items-center shadow-sm">
                             <div class="flex flex-col justify-center min-w-0 pr-2">
-                                <span class="font-black text-slate-900 text-[11px] sm:text-xs tracking-tight uppercase whitespace-nowrap">
-                                    CAJ PEMPROSESAN SEORANG
+                                <span class="font-black text-slate-900 text-[10px] sm:text-xs tracking-tight uppercase whitespace-nowrap">
+                                    ${isKhemah ? 'CAJ (1) SATU TAPAK PERKEMAHAN (RM70)' : 'CAJ PEMPROSESAN SEORANG'}
                                 </span>
                                 <span id="hiking-proc-calc-${r.id}" class="text-[10px] sm:text-[11px] font-bold text-[#2D5D48] whitespace-nowrap mt-0.5">
-                                    (RM10 × <span id="hiking-proc-pax-${r.id}">1</span>)
+                                    ${isKhemah ? `(RM70 × <span id="hiking-proc-pax-${r.id}">1</span> Tapak)` : `(RM10 × <span id="hiking-proc-pax-${r.id}">1</span>)`}
                                 </span>
                             </div>
                             <span class="font-black text-slate-900 text-xs sm:text-sm tracking-tight whitespace-nowrap pl-1 flex-shrink-0">
-                                RM<span id="hiking-proc-${r.id}">10</span>
+                                RM<span id="hiking-proc-${r.id}">${isKhemah ? '70' : '10'}</span>
                             </span>
                         </div>
                         ` : ''}
@@ -246,7 +246,7 @@ function renderHikingCard(r, isAvailabilityCheck = false) {
                                 JUMLAH KESELURUHAN
                             </span>
                             <span class="font-black text-slate-900 text-xs sm:text-sm tracking-tight whitespace-nowrap pl-1 flex-shrink-0">
-                                RM <span id="hiking-total-${r.id}">${(isNoGuide ? (parseFloat(r.price_per_night) || (isHammock ? 15 : (isKhemah ? 40 : (isRv ? 80 : 150)))) : 150) + (isNoProc ? 0 : 10)}</span>
+                                RM <span id="hiking-total-${r.id}">${isKhemah ? 70 : ((isNoGuide ? (parseFloat(r.price_per_night) || (isHammock ? 15 : (isRv ? 80 : 150))) : 150) + (isNoProc ? 0 : 10))}</span>
                             </span>
                         </div>
                     </div>
@@ -341,17 +341,17 @@ function updateHikingPrice(id) {
     let pax = parseInt(paxInput ? paxInput.value : 1);
     if (isNaN(pax) || pax < 1) pax = 1;
 
-    const fallbackRate = isHammock ? 15 : (isKhemah ? 40 : (isRv ? 80 : (isKabin ? 150 : 150)));
-    const pkgRate = parseFloat(pkgSelect ? pkgSelect.value : (room ? room.price_per_night : fallbackRate)) || fallbackRate;
-    // Maks 7 orang bagi 1 kumpulan hiking; Kabin, Hammock, RV & Khemah adalah 1 kumpulan tapak tetap
-    const groups = isNoGuide ? 1 : Math.ceil(pax / 7);
+    const fallbackRate = isHammock ? 15 : (isKhemah ? 0 : (isRv ? 80 : (isKabin ? 150 : 150)));
+    const pkgRate = parseFloat(pkgSelect ? pkgSelect.value : (isKhemah ? 0 : (room ? room.price_per_night : fallbackRate))) || fallbackRate;
+    // Maks 7 orang bagi 1 kumpulan hiking; Kabin, Hammock, RV adalah 1 tapak tetap; Khemah 1 tapak / 4 peserta
+    const groups = isKabin || isHammock || isRv ? 1 : (isKhemah ? Math.max(1, Math.ceil(pax / 4)) : Math.ceil(pax / 7));
     const guideTotal = isNoGuide ? pkgRate : (groups * pkgRate);
-    const procTotal = isNoProc ? 0 : (pax * 10);
+    const procTotal = isNoProc ? 0 : (isKhemah ? (groups * 70) : (pax * 10));
     const grandTotal = guideTotal + procTotal;
 
-    // Caj Pemprosesan bertambah secara auto mengikut jumlah peserta (cth: RM10 x 10 peserta = RM100)
+    // Caj Pemprosesan bertambah secara auto mengikut jumlah peserta / tapak perkhemahan
     if (procSpan) procSpan.textContent = procTotal;
-    if (procPaxSpan) procPaxSpan.textContent = pax;
+    if (procPaxSpan) procPaxSpan.textContent = isKhemah ? groups : pax;
     if (procCalcSpan) {
         if (isNoProc) {
             procCalcSpan.classList.add('hidden');
@@ -386,13 +386,13 @@ function addToCartHiking(id) {
     const isNoGuide = isKabin || isHammock || isRv || isKhemah;
     const isNoProc = isKabin || isHammock;
 
-    const fallbackRate = isHammock ? 15 : (isKhemah ? 40 : (isRv ? 80 : 150));
-    const pkgRate = pkgSelect ? (parseFloat(pkgSelect.value) || fallbackRate) : (room ? (parseFloat(room.price_per_night) || fallbackRate) : fallbackRate);
+    const fallbackRate = isHammock ? 15 : (isKhemah ? 0 : (isRv ? 80 : 150));
+    const pkgRate = pkgSelect ? (parseFloat(pkgSelect.value) || fallbackRate) : (isKhemah ? 0 : (room ? (parseFloat(room.price_per_night) || fallbackRate) : fallbackRate));
     const isTingkat7 = pkgRate === 300;
 
-    const groups = isNoGuide ? 1 : Math.ceil(pax / 7);
+    const groups = isKabin || isHammock || isRv ? 1 : (isKhemah ? Math.max(1, Math.ceil(pax / 4)) : Math.ceil(pax / 7));
     const guideTotal = isNoGuide ? pkgRate : (groups * pkgRate);
-    const procTotal = isNoProc ? 0 : (pax * 10);
+    const procTotal = isNoProc ? 0 : (isKhemah ? (groups * 70) : (pax * 10));
     const totalHikingPrice = guideTotal + procTotal;
     
     let cartItemName, pkgTitle, itemType;
@@ -410,8 +410,8 @@ function addToCartHiking(id) {
         pkgTitle = `SEWAAN TAPAK RV / CARAVAN (RM${pkgRate.toFixed(2)}) + Caj Pemprosesan (${pax} Orang x RM10 = RM${procTotal})`;
     } else if (isKhemah) {
         itemType = 'TEMPAHAN TAPAK PERKHEMAHAN';
-        cartItemName = `TEMPAHAN TAPAK PERKHEMAHAN (${pax} ORANG)`;
-        pkgTitle = `SEWAAN TAPAK PERKHEMAHAN (RM${pkgRate.toFixed(2)}) + Caj Pemprosesan (${pax} Orang x RM10 = RM${procTotal})`;
+        cartItemName = `TEMPAHAN TAPAK PERKHEMAHAN (${groups} TAPAK - ${pax} ORANG)`;
+        pkgTitle = `CAJ (${groups}) TAPAK PERKEMAHAN (RM70 x ${groups} = RM${procTotal}) - ${pax} Orang`;
     } else {
         itemType = isGazebo ? (room.name || 'TEMPAHAN GAZEBO') : (isJungle ? (room.name || 'TEMPAHAN AKTIVITI JUNGLE TREKKING') : 'TEMPAHAN AKTIVITI HIKING');
         const pkgLocation = isTingkat7 ? 'TINGKAT 7' : 'TINGKAT 3';
