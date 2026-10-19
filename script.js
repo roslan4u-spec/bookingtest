@@ -241,12 +241,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Remove active class from all buttons
             tabButtons.forEach(btn => {
-                btn.classList.remove('active');
+                btn.classList.remove('active', 'bg-emerald-800', 'text-white', 'shadow-md');
                 btn.classList.add('text-slate-600', 'hover:bg-emerald-50');
             });
 
             // Add active class to clicked button
-            button.classList.add('active');
+            button.classList.add('active', 'bg-emerald-800', 'text-white', 'shadow-md');
             button.classList.remove('text-slate-600', 'hover:bg-emerald-50');
 
             // Hide all tab contents
@@ -256,7 +256,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
             // Show selected tab content
-            const activeContent = document.getElementById(`tab-${targetTab}`);
+            const activeContent = document.getElementById(`tab-${targetTab}`) || document.getElementById(targetTab);
             if (activeContent) {
                 activeContent.classList.remove('hidden');
                 activeContent.classList.add('block');
