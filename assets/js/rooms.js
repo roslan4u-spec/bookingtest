@@ -228,7 +228,7 @@ function renderHikingCard(r, isAvailabilityCheck = false) {
                         <div class="bg-[#F3FDF7] border-2 border-[#94E3BA] rounded-3xl py-2.5 sm:py-3 px-3 sm:px-3.5 flex justify-between items-center shadow-sm">
                             <div class="flex flex-col justify-center min-w-0 pr-2">
                                 <span class="font-black text-slate-900 text-[10px] sm:text-xs tracking-tight uppercase whitespace-nowrap">
-                                    ${isKhemah ? 'CAJ (1) SATU TAPAK PERKEMAHAN (RM70)' : 'CAJ PEMPROSESAN SEORANG'}
+                                    ${isKhemah ? 'CAJ (1) SATU TAPAK PERKEMAHAN' : 'CAJ PEMPROSESAN SEORANG'}
                                 </span>
                                 <span id="hiking-proc-calc-${r.id}" class="text-[10px] sm:text-[11px] font-bold text-[#2D5D48] whitespace-nowrap mt-0.5">
                                     ${isKhemah ? `(RM70 × <span id="hiking-proc-pax-${r.id}">1</span> Tapak)` : `(RM10 × <span id="hiking-proc-pax-${r.id}">1</span>)`}
