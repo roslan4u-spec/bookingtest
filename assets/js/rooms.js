@@ -205,6 +205,7 @@ function renderHikingCard(r, isAvailabilityCheck = false) {
                             </div>
                         </div>
 
+                        ${!isKabin ? `
                         <!-- 3. Caj Pemprosesan Seorang -->
                         <div class="bg-[#F3FDF7] border-2 border-[#94E3BA] rounded-3xl py-2.5 sm:py-3 px-3 sm:px-3.5 flex justify-between items-center shadow-sm">
                             <div class="flex flex-col justify-center min-w-0 pr-2">
@@ -219,6 +220,7 @@ function renderHikingCard(r, isAvailabilityCheck = false) {
                                 RM<span id="hiking-proc-${r.id}">10</span>
                             </span>
                         </div>
+                        ` : ''}
 
                         <!-- 4. Jumlah Keseluruhan -->
                         <div class="bg-[#F3FDF7] border-2 border-[#94E3BA] rounded-3xl py-2.5 sm:py-3 px-3 sm:px-3.5 flex justify-between items-center shadow-sm">
@@ -226,7 +228,7 @@ function renderHikingCard(r, isAvailabilityCheck = false) {
                                 JUMLAH KESELURUHAN
                             </span>
                             <span class="font-black text-slate-900 text-xs sm:text-sm tracking-tight whitespace-nowrap pl-1 flex-shrink-0">
-                                RM <span id="hiking-total-${r.id}">160</span>
+                                RM <span id="hiking-total-${r.id}">${isKabin ? (parseFloat(r.price_per_night) || 150) : 160}</span>
                             </span>
                         </div>
                     </div>
@@ -320,13 +322,19 @@ function updateHikingPrice(id) {
     // Maks 7 orang bagi 1 kumpulan hiking; Kabin adalah 1 kumpulan tetap
     const groups = isKabin ? 1 : Math.ceil(pax / 7);
     const guideTotal = isKabin ? pkgRate : (groups * pkgRate);
-    const procTotal = pax * 10;
+    const procTotal = isKabin ? 0 : (pax * 10);
     const grandTotal = guideTotal + procTotal;
 
     // Caj Pemprosesan bertambah secara auto mengikut jumlah peserta (cth: RM10 x 10 peserta = RM100)
     if (procSpan) procSpan.textContent = procTotal;
     if (procPaxSpan) procPaxSpan.textContent = pax;
-    if (procCalcSpan) procCalcSpan.classList.remove('hidden');
+    if (procCalcSpan) {
+        if (isKabin) {
+            procCalcSpan.classList.add('hidden');
+        } else {
+            procCalcSpan.classList.remove('hidden');
+        }
+    }
 
     totalSpan.textContent = grandTotal;
     if (groupsInput) {
@@ -356,14 +364,14 @@ function addToCartHiking(id) {
 
     const groups = isKabin ? 1 : Math.ceil(pax / 7);
     const guideTotal = isKabin ? pkgRate : (groups * pkgRate);
-    const procTotal = pax * 10;
+    const procTotal = isKabin ? 0 : (pax * 10);
     const totalHikingPrice = guideTotal + procTotal;
     
     let cartItemName, pkgTitle, itemType;
     if (isKabin) {
         itemType = 'TEMPAHAN KABIN';
         cartItemName = `TEMPAHAN KABIN (${pax} ORANG)`;
-        pkgTitle = `SEWAAN KABIN (RM${pkgRate.toFixed(2)}) + Caj Pemprosesan (${pax} Orang x RM10 = RM${procTotal.toFixed(2)})`;
+        pkgTitle = `SEWAAN KABIN (RM${pkgRate.toFixed(2)}) - ${pax} Orang`;
     } else {
         itemType = isGazebo ? (room.name || 'TEMPAHAN GAZEBO') : (isJungle ? (room.name || 'TEMPAHAN AKTIVITI JUNGLE TREKKING') : (isKhemah ? (room.name || 'TEMPAHAN TAPAK PERKHEMAHAN') : (isHammock ? (room.name || 'TEMPAHAN TAPAK HAMMOCK') : (isRv ? (room.name || 'TEMPAHAN TAPAK KENDERAAN RV / CARAVAN / CAMPERVAN') : 'TEMPAHAN AKTIVITI HIKING'))));
         const pkgLocation = isTingkat7 ? 'TINGKAT 7' : 'TINGKAT 3';
