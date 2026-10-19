@@ -113,7 +113,8 @@ function renderHikingCard(r, isAvailabilityCheck = false) {
     const isRv = (r.name && (r.name.toUpperCase().includes('RV') || r.name.toUpperCase().includes('CARAVAN') || r.name.toUpperCase().includes('CAMPERVAN'))) || (r.type && (r.type.toUpperCase().includes('RV') || r.type.toUpperCase().includes('CARAVAN') || r.type.toUpperCase().includes('CAMPERVAN')));
     const isKabin = (r.name && r.name.toUpperCase().includes('KABIN')) || (r.type && r.type.toUpperCase().includes('KABIN'));
     const isHammock = (r.name && r.name.toUpperCase().includes('HAMMOCK')) || (r.type && r.type.toUpperCase().includes('HAMMOCK'));
-    const isNoGuide = isKabin || isHammock || isRv;
+    const isKhemah = (r.name && (r.name.toUpperCase().includes('PERKHEMAHAN') || r.name.toUpperCase().includes('KHEMAH'))) || (r.type && (r.type.toUpperCase().includes('PERKHEMAHAN') || r.type.toUpperCase().includes('KHEMAH')));
+    const isNoGuide = isKabin || isHammock || isRv || isKhemah;
     const isNoProc = isKabin || isHammock;
 
     let titleClass;
@@ -176,8 +177,8 @@ function renderHikingCard(r, isAvailabilityCheck = false) {
                             </select>
                         </div>
                         ` : `
-                        <!-- Hidden input for Kabin, Hammock & RV base rate without showing guide fee dropdown -->
-                        <input type="hidden" id="hiking-pkg-${r.id}" value="${parseFloat(r.price_per_night) || (isHammock ? 15 : (isRv ? 80 : 150))}">
+                        <!-- Hidden input for Kabin, Hammock, Perkhemahan & RV base rate without showing guide fee dropdown -->
+                        <input type="hidden" id="hiking-pkg-${r.id}" value="${parseFloat(r.price_per_night) || (isHammock ? 15 : (isKhemah ? 40 : (isRv ? 80 : 150)))}">
                         `}
 
                         <!-- 2. Jumlah Kumpulan & Jumlah Peserta (Kotak Berasingan Kiri dan Kanan) -->
@@ -245,7 +246,7 @@ function renderHikingCard(r, isAvailabilityCheck = false) {
                                 JUMLAH KESELURUHAN
                             </span>
                             <span class="font-black text-slate-900 text-xs sm:text-sm tracking-tight whitespace-nowrap pl-1 flex-shrink-0">
-                                RM <span id="hiking-total-${r.id}">${(isNoGuide ? (parseFloat(r.price_per_night) || (isHammock ? 15 : (isRv ? 80 : 150))) : 150) + (isNoProc ? 0 : 10)}</span>
+                                RM <span id="hiking-total-${r.id}">${(isNoGuide ? (parseFloat(r.price_per_night) || (isHammock ? 15 : (isKhemah ? 40 : (isRv ? 80 : 150)))) : 150) + (isNoProc ? 0 : 10)}</span>
                             </span>
                         </div>
                     </div>
@@ -333,15 +334,16 @@ function updateHikingPrice(id) {
     const isKabin = room && ((room.name && room.name.toUpperCase().includes('KABIN')) || (room.type && room.type.toUpperCase().includes('KABIN')));
     const isHammock = room && ((room.name && room.name.toUpperCase().includes('HAMMOCK')) || (room.type && room.type.toUpperCase().includes('HAMMOCK')));
     const isRv = room && ((room.name && (room.name.toUpperCase().includes('RV') || room.name.toUpperCase().includes('CARAVAN') || room.name.toUpperCase().includes('CAMPERVAN'))) || (room.type && (room.type.toUpperCase().includes('RV') || room.type.toUpperCase().includes('CARAVAN') || room.type.toUpperCase().includes('CAMPERVAN'))));
-    const isNoGuide = isKabin || isHammock || isRv;
+    const isKhemah = room && ((room.name && (room.name.toUpperCase().includes('PERKHEMAHAN') || room.name.toUpperCase().includes('KHEMAH'))) || (room.type && (room.type.toUpperCase().includes('PERKHEMAHAN') || room.type.toUpperCase().includes('KHEMAH'))));
+    const isNoGuide = isKabin || isHammock || isRv || isKhemah;
     const isNoProc = isKabin || isHammock;
 
     let pax = parseInt(paxInput ? paxInput.value : 1);
     if (isNaN(pax) || pax < 1) pax = 1;
 
-    const fallbackRate = isHammock ? 15 : (isRv ? 80 : (isKabin ? 150 : 150));
+    const fallbackRate = isHammock ? 15 : (isKhemah ? 40 : (isRv ? 80 : (isKabin ? 150 : 150)));
     const pkgRate = parseFloat(pkgSelect ? pkgSelect.value : (room ? room.price_per_night : fallbackRate)) || fallbackRate;
-    // Maks 7 orang bagi 1 kumpulan hiking; Kabin, Hammock & RV adalah 1 kumpulan tapak tetap
+    // Maks 7 orang bagi 1 kumpulan hiking; Kabin, Hammock, RV & Khemah adalah 1 kumpulan tapak tetap
     const groups = isNoGuide ? 1 : Math.ceil(pax / 7);
     const guideTotal = isNoGuide ? pkgRate : (groups * pkgRate);
     const procTotal = isNoProc ? 0 : (pax * 10);
@@ -377,14 +379,14 @@ function addToCartHiking(id) {
     const isKabin = (room.name && room.name.toUpperCase().includes('KABIN')) || (room.type && room.type.toUpperCase().includes('KABIN'));
     const isGazebo = (room.name && room.name.toUpperCase().includes('GAZEBO'));
     const isJungle = (room.name && (room.name.toUpperCase().includes('JUNGLE') || room.name.toUpperCase().includes('TREKKING')));
-    const isKhemah = (room.name && (room.name.toUpperCase().includes('PERKHEMAHAN') || room.name.toUpperCase().includes('KHEMAH')));
+    const isKhemah = (room.name && (room.name.toUpperCase().includes('PERKHEMAHAN') || room.name.toUpperCase().includes('KHEMAH'))) || (room.type && (room.type.toUpperCase().includes('PERKHEMAHAN') || room.type.toUpperCase().includes('KHEMAH')));
     const isHammock = (room.name && room.name.toUpperCase().includes('HAMMOCK')) || (room.type && room.type.toUpperCase().includes('HAMMOCK'));
     const isRv = (room.name && (room.name.toUpperCase().includes('RV') || room.name.toUpperCase().includes('CARAVAN') || room.name.toUpperCase().includes('CAMPERVAN'))) || (room.type && (room.type.toUpperCase().includes('RV') || room.type.toUpperCase().includes('CARAVAN') || room.type.toUpperCase().includes('CAMPERVAN')));
 
-    const isNoGuide = isKabin || isHammock || isRv;
+    const isNoGuide = isKabin || isHammock || isRv || isKhemah;
     const isNoProc = isKabin || isHammock;
 
-    const fallbackRate = isHammock ? 15 : (isRv ? 80 : 150);
+    const fallbackRate = isHammock ? 15 : (isKhemah ? 40 : (isRv ? 80 : 150));
     const pkgRate = pkgSelect ? (parseFloat(pkgSelect.value) || fallbackRate) : (room ? (parseFloat(room.price_per_night) || fallbackRate) : fallbackRate);
     const isTingkat7 = pkgRate === 300;
 
@@ -406,8 +408,12 @@ function addToCartHiking(id) {
         itemType = 'TEMPAHAN TAPAK KENDERAAN RV / CARAVAN / CAMPERVAN';
         cartItemName = `TEMPAHAN TAPAK KENDERAAN RV / CARAVAN / CAMPERVAN (${pax} ORANG)`;
         pkgTitle = `SEWAAN TAPAK RV / CARAVAN (RM${pkgRate.toFixed(2)}) + Caj Pemprosesan (${pax} Orang x RM10 = RM${procTotal})`;
+    } else if (isKhemah) {
+        itemType = 'TEMPAHAN TAPAK PERKHEMAHAN';
+        cartItemName = `TEMPAHAN TAPAK PERKHEMAHAN (${pax} ORANG)`;
+        pkgTitle = `SEWAAN TAPAK PERKHEMAHAN (RM${pkgRate.toFixed(2)}) + Caj Pemprosesan (${pax} Orang x RM10 = RM${procTotal})`;
     } else {
-        itemType = isGazebo ? (room.name || 'TEMPAHAN GAZEBO') : (isJungle ? (room.name || 'TEMPAHAN AKTIVITI JUNGLE TREKKING') : (isKhemah ? (room.name || 'TEMPAHAN TAPAK PERKHEMAHAN') : 'TEMPAHAN AKTIVITI HIKING'));
+        itemType = isGazebo ? (room.name || 'TEMPAHAN GAZEBO') : (isJungle ? (room.name || 'TEMPAHAN AKTIVITI JUNGLE TREKKING') : 'TEMPAHAN AKTIVITI HIKING');
         const pkgLocation = isTingkat7 ? 'TINGKAT 7' : 'TINGKAT 3';
         pkgTitle = `CAJ PEMANDU ARAH KE ${pkgLocation} (${groups} Kumpulan x RM${pkgRate} = RM${guideTotal}) + Caj Pemprosesan (${pax} Orang x RM10 = RM${procTotal})`;
         cartItemName = `${itemType} (${pkgLocation} - ${pax} ORANG / ${groups} KUMPULAN)`;
