@@ -97,6 +97,7 @@ function renderHikingCard(r, isAvailabilityCheck = false) {
 
     const isJungle = (r.name && (r.name.toUpperCase().includes('JUNGLE') || r.name.toUpperCase().includes('TREKKING')));
     const isRv = (r.name && (r.name.toUpperCase().includes('RV') || r.name.toUpperCase().includes('CARAVAN') || r.name.toUpperCase().includes('CAMPERVAN')));
+    const isKabin = (r.name && r.name.toUpperCase().includes('KABIN')) || (r.type && r.type.toUpperCase().includes('KABIN'));
 
     let titleClass;
     let displayName = r.name;
@@ -120,7 +121,8 @@ function renderHikingCard(r, isAvailabilityCheck = false) {
                     <h3 class="${titleClass}">${displayName}</h3>
 
                     <div class="space-y-2.5 sm:space-y-3 mb-6">
-                        <!-- 1. Caj Pemandu Arah Dropdown (Satu Baris Ayat, Tanpa Wrap, Fit Penuh) -->
+                        ${!isKabin ? `
+                        <!-- 1. Caj Pemandu Arah Dropdown (Hanya untuk aktiviti luar/hiking yang memerlukan pemandu arah) -->
                         <div class="relative">
                             <button type="button" id="hiking-dropdown-btn-${r.id}" onclick="toggleHikingDropdown(${r.id})"
                                 class="w-full bg-[#F3FDF7] border-2 border-[#94E3BA] rounded-full py-2 sm:py-3 px-2.5 sm:px-3.5 flex items-center justify-between shadow-sm hover:border-[#2d6a4f] transition text-left cursor-pointer">
@@ -156,6 +158,10 @@ function renderHikingCard(r, isAvailabilityCheck = false) {
                                 <option value="300">CAJ PEMANDU ARAH KE TINGKAT 7 RM300</option>
                             </select>
                         </div>
+                        ` : `
+                        <!-- Hidden input for Kabin base rate without showing guide fee dropdown -->
+                        <input type="hidden" id="hiking-pkg-${r.id}" value="${parseFloat(r.price_per_night) || 150}">
+                        `}
 
                         <!-- 2. Jumlah Kumpulan & Jumlah Peserta (Kotak Berasingan Kiri dan Kanan) -->
                         <div class="grid grid-cols-2 gap-2 sm:gap-2.5">
@@ -304,16 +310,16 @@ function updateHikingPrice(id) {
     const procCalcSpan = document.getElementById(`hiking-proc-calc-${id}`);
     const procPaxSpan = document.getElementById(`hiking-proc-pax-${id}`);
     const totalSpan = document.getElementById(`hiking-total-${id}`);
-    if (!pkgSelect || !totalSpan) return;
+    const room = allRooms.find(r => r.id === id);
+    const isKabin = room && ((room.name && room.name.toUpperCase().includes('KABIN')) || (room.type && room.type.toUpperCase().includes('KABIN')));
 
     let pax = parseInt(paxInput ? paxInput.value : 1);
     if (isNaN(pax) || pax < 1) pax = 1;
 
     const pkgRate = parseFloat(pkgSelect.value) || 150;
-    // Maks 7 orang bagi 1 kumpulan; lebih dari 7 bertambah secara automatik:
-    // 1-7 orang = 1 kumpulan, 8-14 = 2 kumpulan, 15-21 = 3 kumpulan, dan seterusnya.
-    const groups = Math.ceil(pax / 7);
-    const guideTotal = groups * pkgRate;
+    // Maks 7 orang bagi 1 kumpulan hiking; Kabin adalah 1 kumpulan tetap
+    const groups = isKabin ? 1 : Math.ceil(pax / 7);
+    const guideTotal = isKabin ? pkgRate : (groups * pkgRate);
     const procTotal = pax * 10;
     const grandTotal = guideTotal + procTotal;
 
@@ -340,21 +346,30 @@ function addToCartHiking(id) {
     
     const pkgRate = pkgSelect ? (parseFloat(pkgSelect.value) || 150) : 150;
     const isTingkat7 = pkgRate === 300;
-    const groups = Math.ceil(pax / 7);
-    const guideTotal = groups * pkgRate;
-    const procTotal = pax * 10;
-    const totalHikingPrice = guideTotal + procTotal;
     
-    const isKabin = (room.name && room.name.toUpperCase().includes('KABIN'));
+    const isKabin = (room.name && room.name.toUpperCase().includes('KABIN')) || (room.type && room.type.toUpperCase().includes('KABIN'));
     const isGazebo = (room.name && room.name.toUpperCase().includes('GAZEBO'));
     const isJungle = (room.name && (room.name.toUpperCase().includes('JUNGLE') || room.name.toUpperCase().includes('TREKKING')));
     const isKhemah = (room.name && (room.name.toUpperCase().includes('PERKHEMAHAN') || room.name.toUpperCase().includes('KHEMAH')));
     const isHammock = (room.name && room.name.toUpperCase().includes('HAMMOCK'));
     const isRv = (room.name && (room.name.toUpperCase().includes('RV') || room.name.toUpperCase().includes('CARAVAN') || room.name.toUpperCase().includes('CAMPERVAN')));
-    const itemType = isKabin ? 'TEMPAHAN KABIN' : (isGazebo ? (room.name || 'TEMPAHAN GAZEBO') : (isJungle ? (room.name || 'TEMPAHAN AKTIVITI JUNGLE TREKKING') : (isKhemah ? (room.name || 'TEMPAHAN TAPAK PERKHEMAHAN') : (isHammock ? (room.name || 'TEMPAHAN TAPAK HAMMOCK') : (isRv ? (room.name || 'TEMPAHAN TAPAK KENDERAAN RV / CARAVAN / CAMPERVAN') : 'TEMPAHAN AKTIVITI HIKING')))));
-    const pkgLocation = isTingkat7 ? 'TINGKAT 7' : 'TINGKAT 3';
-    const pkgTitle = `CAJ PEMANDU ARAH KE ${pkgLocation} (${groups} Kumpulan x RM${pkgRate} = RM${guideTotal}) + Caj Pemprosesan (${pax} Orang x RM10 = RM${procTotal})`;
-    const cartItemName = `${itemType} (${pkgLocation} - ${pax} ORANG / ${groups} KUMPULAN)`;
+
+    const groups = isKabin ? 1 : Math.ceil(pax / 7);
+    const guideTotal = isKabin ? pkgRate : (groups * pkgRate);
+    const procTotal = pax * 10;
+    const totalHikingPrice = guideTotal + procTotal;
+    
+    let cartItemName, pkgTitle, itemType;
+    if (isKabin) {
+        itemType = 'TEMPAHAN KABIN';
+        cartItemName = `TEMPAHAN KABIN (${pax} ORANG)`;
+        pkgTitle = `SEWAAN KABIN (RM${pkgRate.toFixed(2)}) + Caj Pemprosesan (${pax} Orang x RM10 = RM${procTotal.toFixed(2)})`;
+    } else {
+        itemType = isGazebo ? (room.name || 'TEMPAHAN GAZEBO') : (isJungle ? (room.name || 'TEMPAHAN AKTIVITI JUNGLE TREKKING') : (isKhemah ? (room.name || 'TEMPAHAN TAPAK PERKHEMAHAN') : (isHammock ? (room.name || 'TEMPAHAN TAPAK HAMMOCK') : (isRv ? (room.name || 'TEMPAHAN TAPAK KENDERAAN RV / CARAVAN / CAMPERVAN') : 'TEMPAHAN AKTIVITI HIKING'))));
+        const pkgLocation = isTingkat7 ? 'TINGKAT 7' : 'TINGKAT 3';
+        pkgTitle = `CAJ PEMANDU ARAH KE ${pkgLocation} (${groups} Kumpulan x RM${pkgRate} = RM${guideTotal}) + Caj Pemprosesan (${pax} Orang x RM10 = RM${procTotal})`;
+        cartItemName = `${itemType} (${pkgLocation} - ${pax} ORANG / ${groups} KUMPULAN)`;
+    }
     
     // Semak sekiranya item sudah ada dalam bakul
     const existingIndex = cart.findIndex(item => item.id === id);
