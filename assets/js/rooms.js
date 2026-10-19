@@ -97,7 +97,7 @@ function renderHikingCard(r, isAvailabilityCheck = false) {
 
     const isJungle = (r.name && (r.name.toUpperCase().includes('JUNGLE') || r.name.toUpperCase().includes('TREKKING')));
     const titleClass = isJungle
-        ? "text-[12px] sm:text-[13px] lg:text-[14px] font-black text-slate-900 text-center mb-4 tracking-tight uppercase whitespace-nowrap px-1"
+        ? "text-[12.5px] min-[400px]:text-[13.5px] sm:text-[15.5px] lg:text-[17.5px] font-black text-slate-900 text-center mb-4 tracking-tight uppercase whitespace-nowrap px-0.5"
         : "text-base sm:text-lg lg:text-xl font-black text-slate-900 text-center mb-4 tracking-tight uppercase whitespace-nowrap";
 
     return `

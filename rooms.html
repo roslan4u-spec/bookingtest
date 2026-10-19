@@ -49,7 +49,7 @@
         }
     </style>
 </head>
-<body class="bg-slate-50 text-slate-800 font-sans antialiased pb-40">
+<body class="bg-slate-50 text-slate-800 font-sans antialiased pb-40 overflow-x-hidden">
 
 <!-- Top Bar -->
 <div class="bg-emerald-900 text-emerald-100 text-xs py-2 px-4 flex justify-between items-center">
@@ -63,11 +63,11 @@
 <header class="bg-white shadow-md sticky top-0 z-40">
     <div class="container mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between items-center h-20">
-            <a href="index.html" class="flex items-center gap-3">
-                <img src="images/logo.png" alt="Logo Taman Eko Rimba Berkelah Pahang" class="w-12 h-12 object-contain drop-shadow-md">
-                <div>
-                    <span class="block text-xl font-extrabold text-emerald-950 tracking-wider">Taman Eko Rimba Berkelah Pahang</span>
-                    <span class="block text-xs font-semibold text-emerald-600 uppercase tracking-widest">Hutan Lipur Berkelah</span>
+            <a href="index.html" class="flex items-center gap-2.5 sm:gap-3 min-w-0">
+                <img src="images/logo.png" alt="Logo Taman Eko Rimba Berkelah Pahang" class="w-10 h-10 sm:w-12 sm:h-12 object-contain drop-shadow-md flex-shrink-0">
+                <div class="min-w-0">
+                    <span class="block text-sm sm:text-base md:text-xl font-extrabold text-emerald-950 tracking-tight sm:tracking-wider truncate sm:overflow-visible">Taman Eko Rimba Berkelah Pahang</span>
+                    <span class="block text-[10px] sm:text-xs font-semibold text-emerald-600 uppercase tracking-wider sm:tracking-widest">Hutan Lipur Berkelah</span>
                 </div>
             </a>
             <nav class="hidden lg:flex space-x-1 font-medium text-sm">
@@ -96,34 +96,36 @@
 
 <!-- Quick Check Availability Bar -->
 <div class="bg-white shadow-md border-b border-slate-200 sticky top-20 z-30">
-    <div class="container mx-auto px-4 py-3 flex flex-wrap items-center gap-3">
-        <div class="flex items-center gap-2 text-emerald-800 font-bold text-sm">
+    <div class="container mx-auto px-4 py-2.5 sm:py-3 flex flex-wrap items-center justify-between gap-2 sm:gap-3">
+        <div class="flex items-center gap-1.5 text-emerald-800 font-bold text-xs sm:text-sm">
             <i class="fa-solid fa-calendar-check text-emerald-600"></i>
             <span>Semak Tarikh:</span>
         </div>
-        <input type="text" id="filter-checkin" placeholder="Tarikh Masuk" class="border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 cursor-pointer" readonly>
-        <span class="text-slate-400">→</span>
-        <input type="text" id="filter-checkout" placeholder="Tarikh Keluar" class="border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 cursor-pointer" readonly>
-        <button id="btn-check-avail" class="bg-emerald-700 hover:bg-emerald-800 text-white font-bold px-4 py-2 rounded-lg text-sm transition flex items-center gap-2">
-            <i class="fa-solid fa-search"></i> Semak
-        </button>
-        <button id="btn-clear-filter" class="text-slate-500 hover:text-slate-700 text-sm underline hidden">Kosongkan</button>
-        <div id="avail-msg" class="text-sm font-semibold hidden"></div>
+        <div class="flex items-center gap-1.5 flex-wrap sm:flex-nowrap flex-grow sm:flex-grow-0 max-w-full">
+            <input type="text" id="filter-checkin" placeholder="Tarikh Masuk" class="w-24 sm:w-32 border border-slate-300 rounded-lg px-2 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 cursor-pointer text-center" readonly>
+            <span class="text-slate-400 text-xs">→</span>
+            <input type="text" id="filter-checkout" placeholder="Tarikh Keluar" class="w-24 sm:w-32 border border-slate-300 rounded-lg px-2 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 cursor-pointer text-center" readonly>
+            <button id="btn-check-avail" class="bg-emerald-700 hover:bg-emerald-800 text-white font-bold px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg text-xs sm:text-sm transition flex items-center gap-1 whitespace-nowrap">
+                <i class="fa-solid fa-search"></i> Semak
+            </button>
+            <button id="btn-clear-filter" class="text-slate-500 hover:text-slate-700 text-xs underline hidden whitespace-nowrap">Kosongkan</button>
+        </div>
+        <div id="avail-msg" class="text-xs sm:text-sm font-semibold hidden w-full sm:w-auto"></div>
     </div>
 </div>
 
 <!-- Room Listing -->
-<main class="container mx-auto px-4 sm:px-6 lg:px-8 py-10" id="room-list">
+<main class="container mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10" id="room-list">
 
     <!-- Filter Bar -->
-    <div class="flex flex-wrap items-center justify-between gap-4 mb-8">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4 mb-6 sm:mb-8">
         <div>
-            <h2 class="text-2xl font-extrabold text-emerald-950">Senarai Pilihan Tempahan & Aktiviti</h2>
-            <p class="text-slate-500 text-sm mt-1" id="room-count">Memuatkan senarai tempahan & aktiviti...</p>
+            <h2 class="text-xl sm:text-2xl font-extrabold text-emerald-950">Senarai Pilihan Tempahan & Aktiviti</h2>
+            <p class="text-slate-500 text-xs sm:text-sm mt-1" id="room-count">Memuatkan senarai tempahan & aktiviti...</p>
         </div>
-        <div class="flex items-center gap-2">
-            <label class="text-sm text-slate-600 font-medium">Jenis:</label>
-            <select id="filter-type" class="border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 bg-white">
+        <div class="flex items-center gap-2 max-w-full">
+            <label class="text-xs sm:text-sm text-slate-600 font-medium whitespace-nowrap">Jenis:</label>
+            <select id="filter-type" class="w-full sm:w-auto max-w-[280px] sm:max-w-xs border border-slate-300 rounded-lg px-2.5 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 bg-white">
                 <option value="">Semua Pilihan</option>
                 <option value="TEMPAHAN AKTIVITI HIKING">TEMPAHAN AKTIVITI HIKING</option>
                 <option value="TEMPAHAN KABIN">TEMPAHAN KABIN</option>
