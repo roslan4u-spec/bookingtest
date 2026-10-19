@@ -71,7 +71,7 @@ const FALLBACK_ROOMS = [
     { id: 3, name: 'TEMPAHAN AKTIVITI JUNGLE TREKKING', type: 'TEMPAHAN AKTIVITI JUNGLE TREKKING', capacity: 15, price_per_night: 30, description: 'Pengalaman merentas hutan sambil mempelajari spesies pokok dan tumbuhan herba.', facilities: 'Laluan bertanda, Panduan taklimat', image_url: 'images/jungle_trekking.jpg', is_active: 1 },
     { id: 2, name: 'TEMPAHAN GAZEBO', type: 'TEMPAHAN GAZEBO', capacity: 8, price_per_night: 60, description: 'Pondok berehat berhampiran sungai yang sesuai untuk keluarga berkelah.', facilities: 'Bumbung teduh, Meja kayu, Tempat duduk, Tong sampah', image_url: 'images/gazebo.jpg', is_active: 1 },
     { id: 7, name: 'TEMPAHAN KABIN', type: 'TEMPAHAN KABIN', capacity: 4, price_per_night: 150, description: 'Kabin berhawa dingin yang selesa sesuai untuk percutian keluarga.', facilities: '2 Katil Single, Aircond, Almari, Tandas, Dapur', image_url: 'images/kabin.jpg', is_active: 1 },
-    { id: 4, name: 'TEMPAHAN TAPAK HAMMOCK', type: 'TEMPAHAN TAPAK HAMMOCK', capacity: 2, price_per_night: 15, description: 'Lokasi strategik di antara pepohonan untuk menggantung hammock anda.', facilities: 'Kawasan redup, Akses mudah ke sungai', image_url: 'images/hammock.jpg', is_active: 1 },
+    { id: 4, name: 'TEMPAHAN TAPAK HAMMOCK', type: 'TEMPAHAN TAPAK HAMMOCK', capacity: 2, price_per_night: 25, description: 'Lokasi strategik di antara pepohonan untuk menggantung hammock anda.', facilities: 'Kawasan redup, Akses mudah ke sungai', image_url: 'images/hammock.jpg', is_active: 1 },
     { id: 5, name: 'TEMPAHAN TAPAK PERKHEMAHAN', type: 'TEMPAHAN TAPAK PERKHEMAHAN', capacity: 4, price_per_night: 70, description: 'Kawasan lapang khas untuk mendirikan khemah, dilengkapi kemudahan asas.', facilities: 'Tandas awam, Bekalan air paip, Kawasan unggun api', image_url: 'images/perkhemahan.jpg', is_active: 1 },
     { id: 6, name: 'TEMPAHAN TAPAK KENDERAAN RV / CARAVAN / CAMPERVAN', type: 'TEMPAHAN TAPAK KENDERAAN RV / CARAVAN / CAMPERVAN', capacity: 6, price_per_night: 80, description: 'Ruang parkir khusus untuk kenderaan rekreasi dengan sokongan kuasa elektrik.', facilities: 'Penyambung elektrik (Plug), Bekalan air, Sisa pembuangan', image_url: 'https://images.unsplash.com/photo-1523987355523-c7b5b0dd90a7?auto=format&fit=crop&w=800&q=80', is_active: 1 },
     { id: 8, name: 'TEMPAHAN CAJ KEMASUKAN PENGUNJUNG', type: 'TEMPAHAN CAJ KEMASUKAN PENGUNJUNG', capacity: 10, price_per_night: 3, description: 'Caj tiket kemasukan harian pengunjung dan kenderaan ke Taman Eko Rimba Berkelah Gambang Pahang.', facilities: 'Dewasa RM3, Kanak-kanak RM1, Warga Emas RM1, Pelawat Asing RM10, Kereta RM3, Motorsikal RM1, OKU & Bawah 4 Thn Percuma', image_url: 'images/caj_kemasukan.jpg', is_active: 1 }
@@ -281,11 +281,11 @@ function renderHikingCard(r, isAvailabilityCheck = false) {
                                     ${isKhemah ? 'CAJ TAPAK PERKEMAHAN' : (isHammock ? 'CAJ TAPAK HAMMOCK' : 'CAJ PEMPROSESAN SEORANG')}
                                 </span>
                                 <span id="hiking-proc-calc-${r.id}" class="text-[10px] sm:text-[11px] font-bold text-[#2D5D48] whitespace-nowrap mt-0.5">
-                                    ${isKhemah ? `(RM70 × <span id="hiking-proc-pax-${r.id}">1</span> Tapak)` : (isHammock ? `(RM15 × <span id="hiking-proc-pax-${r.id}">1</span> Tapak)` : `(RM10 × <span id="hiking-proc-pax-${r.id}">1</span>)`)}
+                                    ${isKhemah ? `(RM70 × <span id="hiking-proc-pax-${r.id}">1</span> Tapak)` : (isHammock ? `(RM25 × <span id="hiking-proc-pax-${r.id}">1</span> Tapak)` : `(RM10 × <span id="hiking-proc-pax-${r.id}">1</span>)`)}
                                 </span>
                             </div>
                             <span class="font-black text-slate-900 text-xs sm:text-sm tracking-tight whitespace-nowrap pl-1 flex-shrink-0">
-                                RM<span id="hiking-proc-${r.id}">${isKhemah ? '70' : (isHammock ? '15' : '10')}</span>
+                                RM<span id="hiking-proc-${r.id}">${isKhemah ? '70' : (isHammock ? '25' : '10')}</span>
                             </span>
                         </div>
                         ` : ''}
@@ -296,7 +296,7 @@ function renderHikingCard(r, isAvailabilityCheck = false) {
                                 JUMLAH KESELURUHAN
                             </span>
                             <span class="font-black text-slate-900 text-xs sm:text-sm tracking-tight whitespace-nowrap pl-1 flex-shrink-0">
-                                RM <span id="hiking-total-${r.id}">${isKhemah ? 70 : (isHammock ? 15 : ((isNoGuide ? (parseFloat(r.price_per_night) || (isRv ? 80 : 150)) : 150) + (isNoProc ? 0 : 10)))}</span>
+                                RM <span id="hiking-total-${r.id}">${isKhemah ? 70 : (isHammock ? 25 : ((isNoGuide ? (parseFloat(r.price_per_night) || (isRv ? 80 : 150)) : 150) + (isNoProc ? 0 : 10)))}</span>
                             </span>
                         </div>
                     </div>
@@ -496,7 +496,7 @@ function updateHikingPrice(id, source) {
     const pkgRate = parseFloat(pkgSelect ? pkgSelect.value : ((isKhemah || isHammock) ? 0 : (room ? room.price_per_night : fallbackRate))) || fallbackRate;
     
     const guideTotal = isNoGuide ? ((isKhemah || isHammock) ? 0 : pkgRate) : (groups * pkgRate);
-    const tapakRate = isHammock ? 15 : 70;
+    const tapakRate = isHammock ? 25 : 70;
     const procTotal = isNoProc ? 0 : ((isKhemah || isHammock) ? (groups * tapakRate) : (pax * 10));
     const grandTotal = guideTotal + procTotal;
 
@@ -515,7 +515,7 @@ function updateHikingPrice(id, source) {
             if (isKhemah) {
                 procCalcSpan.innerHTML = `(RM70 × <span id="hiking-proc-pax-${id}">${groups}</span> Tapak)`;
             } else if (isHammock) {
-                procCalcSpan.innerHTML = `(RM15 × <span id="hiking-proc-pax-${id}">${groups}</span> Tapak)`;
+                procCalcSpan.innerHTML = `(RM25 × <span id="hiking-proc-pax-${id}">${groups}</span> Tapak)`;
             } else {
                 procCalcSpan.innerHTML = `(RM10 × <span id="hiking-proc-pax-${id}">${pax}</span>)`;
             }
@@ -560,7 +560,7 @@ function addToCartHiking(id) {
     }
 
     const guideTotal = isNoGuide ? ((isKhemah || isHammock) ? 0 : pkgRate) : (groups * pkgRate);
-    const tapakRate = isHammock ? 15 : 70;
+    const tapakRate = isHammock ? 25 : 70;
     const procTotal = isNoProc ? 0 : ((isKhemah || isHammock) ? (groups * tapakRate) : (pax * 10));
     const totalHikingPrice = guideTotal + procTotal;
     
@@ -572,7 +572,7 @@ function addToCartHiking(id) {
     } else if (isHammock) {
         itemType = 'TEMPAHAN TAPAK HAMMOCK';
         cartItemName = `TEMPAHAN TAPAK HAMMOCK (${groups} TAPAK - ${pax} ORANG)`;
-        pkgTitle = `CAJ TAPAK HAMMOCK (RM15 x ${groups} = RM${procTotal}) - ${pax} Orang`;
+        pkgTitle = `CAJ TAPAK HAMMOCK (RM25 x ${groups} = RM${procTotal}) - ${pax} Orang`;
     } else if (isRv) {
         itemType = 'TEMPAHAN TAPAK KENDERAAN RV / CARAVAN / CAMPERVAN';
         cartItemName = `TEMPAHAN TAPAK KENDERAAN RV / CARAVAN / CAMPERVAN (${pax} ORANG)`;
