@@ -52,11 +52,25 @@ function matchRoomType(room, filterValue) {
     return cleanT.includes(cleanF) || cleanN.includes(cleanF) || cleanF.includes(cleanT) || cleanF.includes(cleanN);
 }
 
+// ──── PENETAPAN SUSUNAN KAD TEMPAHAN (RANK) ────
+function getRoomSortRank(r) {
+    const text = ((r.name || '') + ' ' + (r.type || '')).toUpperCase();
+    if (text.includes('HIKING')) return 1;
+    if (text.includes('JUNGLE') || text.includes('TREKKING') || text.includes('TRACKING') || text.includes('JUGGLE')) return 2;
+    if (text.includes('GAZEBO')) return 3;
+    if (text.includes('KABIN')) return 4;
+    if (text.includes('HAMMOCK')) return 5;
+    if (text.includes('PERKHEMAHAN') || text.includes('KHEMAH')) return 6;
+    if (text.includes('RV') || text.includes('CARAVAN') || text.includes('CAMPERVAN')) return 7;
+    if (text.includes('KEMASUKAN') || text.includes('TIKET') || text.includes('PENGUNJUNG')) return 8;
+    return 99;
+}
+
 const FALLBACK_ROOMS = [
     { id: 1, name: 'TEMPAHAN AKTIVITI HIKING', type: 'TEMPAHAN AKTIVITI HIKING', capacity: 7, price_per_night: 50, description: 'Terokai alam semula jadi dengan pendakian berpandu di sekitar Taman Eko Rimba Berkelah Pahang.', facilities: 'Pemandu arah, Peralatan asas, Sijil penyertaan', image_url: 'images/hiking.jpg', is_active: 1 },
-    { id: 7, name: 'TEMPAHAN KABIN', type: 'TEMPAHAN KABIN', capacity: 4, price_per_night: 150, description: 'Kabin berhawa dingin yang selesa sesuai untuk percutian keluarga.', facilities: '2 Katil Single, Aircond, Almari, Tandas, Dapur', image_url: 'images/kabin.jpg', is_active: 1 },
-    { id: 2, name: 'TEMPAHAN GAZEBO', type: 'TEMPAHAN GAZEBO', capacity: 8, price_per_night: 60, description: 'Pondok berehat berhampiran sungai yang sesuai untuk keluarga berkelah.', facilities: 'Bumbung teduh, Meja kayu, Tempat duduk, Tong sampah', image_url: 'images/gazebo.jpg', is_active: 1 },
     { id: 3, name: 'TEMPAHAN AKTIVITI JUNGLE TREKKING', type: 'TEMPAHAN AKTIVITI JUNGLE TREKKING', capacity: 15, price_per_night: 30, description: 'Pengalaman merentas hutan sambil mempelajari spesies pokok dan tumbuhan herba.', facilities: 'Laluan bertanda, Panduan taklimat', image_url: 'images/jungle_trekking.jpg', is_active: 1 },
+    { id: 2, name: 'TEMPAHAN GAZEBO', type: 'TEMPAHAN GAZEBO', capacity: 8, price_per_night: 60, description: 'Pondok berehat berhampiran sungai yang sesuai untuk keluarga berkelah.', facilities: 'Bumbung teduh, Meja kayu, Tempat duduk, Tong sampah', image_url: 'images/gazebo.jpg', is_active: 1 },
+    { id: 7, name: 'TEMPAHAN KABIN', type: 'TEMPAHAN KABIN', capacity: 4, price_per_night: 150, description: 'Kabin berhawa dingin yang selesa sesuai untuk percutian keluarga.', facilities: '2 Katil Single, Aircond, Almari, Tandas, Dapur', image_url: 'images/kabin.jpg', is_active: 1 },
     { id: 4, name: 'TEMPAHAN TAPAK HAMMOCK', type: 'TEMPAHAN TAPAK HAMMOCK', capacity: 2, price_per_night: 15, description: 'Lokasi strategik di antara pepohonan untuk menggantung hammock anda.', facilities: 'Kawasan redup, Akses mudah ke sungai', image_url: 'images/hammock.jpg', is_active: 1 },
     { id: 5, name: 'TEMPAHAN TAPAK PERKHEMAHAN', type: 'TEMPAHAN TAPAK PERKHEMAHAN', capacity: 4, price_per_night: 40, description: 'Kawasan lapang khas untuk mendirikan khemah, dilengkapi kemudahan asas.', facilities: 'Tandas awam, Bekalan air paip, Kawasan unggun api', image_url: 'images/perkhemahan.jpg', is_active: 1 },
     { id: 6, name: 'TEMPAHAN TAPAK KENDERAAN RV / CARAVAN / CAMPERVAN', type: 'TEMPAHAN TAPAK KENDERAAN RV / CARAVAN / CAMPERVAN', capacity: 6, price_per_night: 80, description: 'Ruang parkir khusus untuk kenderaan rekreasi dengan sokongan kuasa elektrik.', facilities: 'Penyambung elektrik (Plug), Bekalan air, Sisa pembuangan', image_url: 'https://images.unsplash.com/photo-1523987355523-c7b5b0dd90a7?auto=format&fit=crop&w=800&q=80', is_active: 1 },
@@ -75,10 +89,10 @@ async function loadRooms(typeFilter = '') {
             if (r.name) r.name = r.name.replace(/TEMPAHAN TAPAK GAZEBO/gi, 'TEMPAHAN GAZEBO');
             if (r.type) r.type = r.type.replace(/TEMPAHAN TAPAK GAZEBO/gi, 'TEMPAHAN GAZEBO');
             return r;
-        });
+        }).sort((a, b) => getRoomSortRank(a) - getRoomSortRank(b));
     } catch (e) {
         console.warn('API /api/rooms tidak dapat dihubungi atau mod pelayan statik aktif. Menggunakan data tempatan (fallback):', e);
-        allRooms = FALLBACK_ROOMS;
+        allRooms = [...FALLBACK_ROOMS].sort((a, b) => getRoomSortRank(a) - getRoomSortRank(b));
     }
     let filtered = allRooms;
     if (typeFilter) filtered = allRooms.filter(r => matchRoomType(r, typeFilter));
@@ -929,6 +943,7 @@ async function loadRoomsWithAvailability(checkin, checkout) {
         const isConflict = bookings.some(b => !(b.checkout_date <= checkin || b.checkin_date >= checkout));
         return { ...r, available: !isConflict };
     }));
+    checks.sort((a, b) => getRoomSortRank(a) - getRoomSortRank(b));
     const avail = checks.filter(r => r.available).length;
     showAvailMsg(`${avail} daripada ${checks.length} tempahan & aktiviti tersedia untuk tarikh yang dipilih.`, avail > 0 ? 'success' : 'error');
     renderRoomsWithAvailability(checks);
