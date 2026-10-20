@@ -489,12 +489,21 @@ if (process.env.NODE_ENV !== 'production' && !process.env.VERCEL) {
         }
     }));
 
-    app.listen(PORT, () => {
+    const server = app.listen(PORT, () => {
         console.log(`\n🌿 Taman Eko Rimba Berkelah Pahang Server berjalan di: http://localhost:${PORT}/`);
-        console.log(`📋 Halaman Tempahan  : http://localhost:${PORT}/rooms`);
+        console.log(`📋 Halaman Tempahan  : http://localhost:${PORT}/rooms.html`);
         console.log(`🔧 Panel Admin       : http://localhost:${PORT}/admin`);
         console.log(`📡 API Tempahan & Aktiviti         : http://localhost:${PORT}/api/rooms`);
         console.log(`📡 API Tempahan      : http://localhost:${PORT}/api/bookings\n`);
+    });
+
+    server.on('error', (err) => {
+        if (err.code === 'EADDRINUSE') {
+            console.log(`\nℹ️  Pelayan (Server) sudah pun aktif berjalan di port ${PORT}.`);
+            console.log(`👉 Buka pelayar web (browser) anda di: http://localhost:${PORT}/rooms.html\n`);
+        } else {
+            console.error('❌ Ralat pelayan:', err);
+        }
     });
 }
 
