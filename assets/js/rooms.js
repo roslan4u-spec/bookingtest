@@ -408,14 +408,32 @@ function stepHikingGroups(id, delta) {
 
 let holdStepTimer = null;
 let holdStepInterval = null;
-let lastPointerActionTime = 0;
+let isHoldingRepeat = false;
+
+function handleClickStep(type, id, delta, event) {
+    if (event) {
+        event.preventDefault();
+    }
+    // Jika butang telah ditekan lama (> 3 saat) dan sedang dalam mod kiraan berterusan,
+    // sekat klik pelepasan supaya tidak menambah langkah tambahan selepas dilepaskan.
+    if (isHoldingRepeat) {
+        isHoldingRepeat = false;
+        return;
+    }
+    // Satu klik biasa = Tepat satu kali perubahan (1 klik = 1 nombor)
+    if (type === 'groups') {
+        stepHikingGroups(id, delta);
+    } else if (type === 'pax') {
+        stepHikingPax(id, delta);
+    }
+}
 
 function startHoldStep(type, id, delta, event) {
     if (event && event.button !== undefined && event.button !== 0) {
         return;
     }
-    lastPointerActionTime = Date.now();
     stopHoldStep();
+    isHoldingRepeat = false;
 
     const doStep = () => {
         if (type === 'groups') {
@@ -425,17 +443,16 @@ function startHoldStep(type, id, delta, event) {
         }
     };
 
-    // Langkah pertama sebaik sahaja butang mula ditekan (1 klik = 1 perubahan)
-    doStep();
-
-    // Jika ditekan lebih dari 3 saat (3000ms), nombor akan terus mengira secara automatik sehingga butang dilepaskan
+    // Jika ditekan berterusan lebih dari 3 saat (3000ms),
+    // sistem akan terus mengira secara automatik pada kelajuan 100ms sehingga butang dilepaskan
     holdStepTimer = setTimeout(() => {
+        isHoldingRepeat = true;
+        doStep();
         holdStepInterval = setInterval(doStep, 100);
     }, 3000);
 }
 
 function stopHoldStep() {
-    lastPointerActionTime = Date.now();
     if (holdStepTimer) {
         clearTimeout(holdStepTimer);
         holdStepTimer = null;
@@ -444,23 +461,11 @@ function stopHoldStep() {
         clearInterval(holdStepInterval);
         holdStepInterval = null;
     }
-}
-
-function handleClickStep(type, id, delta, event) {
-    if (event) {
-        event.preventDefault();
-    }
-    // Jika event click ini menyusuli sentuhan tetikus/skrin sentuh (pointerdown),
-    // langkah nombor telah pun dibuat pada peringkat pointerdown.
-    // Sekat supaya tidak bertambah 2 kali untuk 1 klik.
-    if (Date.now() - lastPointerActionTime < 600) {
-        return;
-    }
-    // Hanya dilaksanakan jika ditekan melalui papan kekunci (Space / Enter)
-    if (type === 'groups') {
-        stepHikingGroups(id, delta);
-    } else if (type === 'pax') {
-        stepHikingPax(id, delta);
+    if (isHoldingRepeat) {
+        // Kekalkan bendera selama 300ms untuk menyerap event click yang dicetuskan oleh pelayar sebaik butang dilepaskan
+        setTimeout(() => {
+            isHoldingRepeat = false;
+        }, 300);
     }
 }
 
