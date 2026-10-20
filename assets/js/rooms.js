@@ -201,7 +201,7 @@ function renderHikingCard(r, isAvailabilityCheck = false) {
                             <!-- Kotak Kiri: Jumlah Kumpulan / Tapak / Kabin -->
                             <div class="bg-[#F3FDF7] border-2 border-[#94E3BA] rounded-3xl p-2.5 sm:p-3 flex flex-col items-center justify-between shadow-sm min-w-0">
                                 <span class="font-black text-slate-900 text-[10.5px] sm:text-xs tracking-tight uppercase whitespace-nowrap text-center mb-1.5">
-                                    ${(isKhemah || isHammock || isRv) ? 'JUMLAH TAPAK' : (isKabin ? 'JUMLAH KABIN' : 'JUMLAH KUMPULAN')}
+                                    ${(isKhemah || isHammock || isRv) ? 'JUMLAH TAPAK' : (isKabin ? 'JUMLAH KABIN' : (isGazebo ? 'JUMLAH GAZEBO' : 'JUMLAH KUMPULAN'))}
                                 </span>
                                 ${(isKhemah || isHammock || isKabin || isRv) ? `
                                 <div class="w-full h-9 flex items-center justify-between bg-white border border-[#94E3BA] rounded-full overflow-hidden px-2 shadow-inner">
@@ -239,10 +239,10 @@ function renderHikingCard(r, isAvailabilityCheck = false) {
                                 </div>
                                 ` : `
                                 <div class="w-full h-9 flex items-center justify-center bg-white border border-[#94E3BA] rounded-full px-2 shadow-inner">
-                                    <i class="fa-solid fa-users text-[#2D5D48] text-xs sm:text-sm mr-1.5 flex-shrink-0"></i>
+                                    <i class="fa-solid ${isGazebo ? 'fa-campground' : 'fa-users'} text-[#2D5D48] text-xs sm:text-sm mr-1.5 flex-shrink-0"></i>
                                     <input type="text" id="hiking-groups-${r.id}" value="1" readonly
                                         class="w-10 text-center font-black text-slate-900 text-base sm:text-lg bg-transparent focus:outline-none cursor-default select-none p-0"
-                                        title="Auto-dikira: 1 Kumpulan bagi setiap 7 peserta">
+                                        title="${isGazebo ? '1 Unit Gazebo' : 'Auto-dikira: 1 Kumpulan bagi setiap 7 peserta'}">
                                 </div>
                                 `}
                             </div>
@@ -503,6 +503,13 @@ function updateHikingPrice(id, source) {
         if (isNaN(currentGroups) || currentGroups < 1) currentGroups = 1;
         groups = currentGroups;
         if (groupsInput) groupsInput.value = groups;
+    } else if (isGazebo) {
+        // Gazebo: 1 Gazebo (tetap 1 unit Gazebo)
+        groups = 1;
+        if (groupsInput) {
+            if ('value' in groupsInput) groupsInput.value = groups;
+            groupsInput.textContent = groups;
+        }
     } else {
         // Hiking / Jungle Trekking biasa (1 kumpulan bagi setiap 7 peserta)
         groups = Math.ceil(pax / 7);
