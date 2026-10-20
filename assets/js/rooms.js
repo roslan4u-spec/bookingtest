@@ -220,7 +220,7 @@ function renderHikingCard(r, isAvailabilityCheck = false) {
                                             oncontextmenu="event.preventDefault(); return false;"
                                             style="touch-action: manipulation; user-select: none; -webkit-user-select: none;"
                                             class="w-5 h-3.5 flex items-center justify-center text-slate-900 hover:text-emerald-700 active:scale-90 text-[9px] font-black transition cursor-pointer select-none leading-none"
-                                            title="Tambah ${isKabin ? 'kabin' : 'tapak'} (tekan lebih 3 saat untuk terus mengira)">
+                                            title="Tambah ${isKabin ? 'kabin' : 'tapak'} (tekan 2 saat untuk terus mengira)">
                                             ▲
                                         </button>
                                         <button type="button" 
@@ -232,7 +232,7 @@ function renderHikingCard(r, isAvailabilityCheck = false) {
                                             oncontextmenu="event.preventDefault(); return false;"
                                             style="touch-action: manipulation; user-select: none; -webkit-user-select: none;"
                                             class="w-5 h-3.5 flex items-center justify-center text-slate-900 hover:text-emerald-700 active:scale-90 text-[9px] font-black transition cursor-pointer select-none leading-none"
-                                            title="Kurangkan ${isKabin ? 'kabin' : 'tapak'} (tekan lebih 3 saat untuk terus mengira)">
+                                            title="Kurangkan ${isKabin ? 'kabin' : 'tapak'} (tekan 2 saat untuk terus mengira)">
                                             ▼
                                         </button>
                                     </div>
@@ -268,7 +268,7 @@ function renderHikingCard(r, isAvailabilityCheck = false) {
                                             oncontextmenu="event.preventDefault(); return false;"
                                             style="touch-action: manipulation; user-select: none; -webkit-user-select: none;"
                                             class="w-5 h-3.5 flex items-center justify-center text-slate-900 hover:text-emerald-700 active:scale-90 text-[9px] font-black transition cursor-pointer select-none leading-none"
-                                            title="Tambah peserta (tekan lebih 3 saat untuk terus mengira)">
+                                            title="Tambah peserta (tekan 2 saat untuk terus mengira)">
                                             ▲
                                         </button>
                                         <button type="button" 
@@ -280,7 +280,7 @@ function renderHikingCard(r, isAvailabilityCheck = false) {
                                             oncontextmenu="event.preventDefault(); return false;"
                                             style="touch-action: manipulation; user-select: none; -webkit-user-select: none;"
                                             class="w-5 h-3.5 flex items-center justify-center text-slate-900 hover:text-emerald-700 active:scale-90 text-[9px] font-black transition cursor-pointer select-none leading-none"
-                                            title="Kurangkan peserta (tekan lebih 3 saat untuk terus mengira)">
+                                            title="Kurangkan peserta (tekan 2 saat untuk terus mengira)">
                                             ▼
                                         </button>
                                     </div>
@@ -414,7 +414,7 @@ function handleClickStep(type, id, delta, event) {
     if (event) {
         event.preventDefault();
     }
-    // Jika butang telah ditekan lama (> 3 saat) dan sedang dalam mod kiraan berterusan,
+    // Jika butang telah ditekan lama (>= 2 saat) dan sedang dalam mod kiraan berterusan,
     // sekat klik pelepasan supaya tidak menambah langkah tambahan selepas dilepaskan.
     if (isHoldingRepeat) {
         isHoldingRepeat = false;
@@ -443,13 +443,13 @@ function startHoldStep(type, id, delta, event) {
         }
     };
 
-    // Jika ditekan berterusan lebih dari 3 saat (3000ms),
+    // Jika ditekan berterusan selama 2 saat (2000ms),
     // sistem akan terus mengira secara automatik pada kelajuan 100ms sehingga butang dilepaskan
     holdStepTimer = setTimeout(() => {
         isHoldingRepeat = true;
         doStep();
         holdStepInterval = setInterval(doStep, 100);
-    }, 3000);
+    }, 2000);
 }
 
 function stopHoldStep() {
