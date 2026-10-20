@@ -408,12 +408,13 @@ function stepHikingGroups(id, delta) {
 
 let holdStepTimer = null;
 let holdStepInterval = null;
-let isPointerActive = false;
+let lastPointerActionTime = 0;
 
 function startHoldStep(type, id, delta, event) {
-    if (event && event.pointerType) {
-        isPointerActive = true;
+    if (event && event.button !== undefined && event.button !== 0) {
+        return;
     }
+    lastPointerActionTime = Date.now();
     stopHoldStep();
 
     const doStep = () => {
@@ -424,7 +425,7 @@ function startHoldStep(type, id, delta, event) {
         }
     };
 
-    // Langkah pertama sebaik sahaja butang mula ditekan
+    // Langkah pertama sebaik sahaja butang mula ditekan (1 klik = 1 perubahan)
     doStep();
 
     // Jika ditekan lebih dari 3 saat (3000ms), nombor akan terus mengira secara automatik sehingga butang dilepaskan
@@ -434,6 +435,7 @@ function startHoldStep(type, id, delta, event) {
 }
 
 function stopHoldStep() {
+    lastPointerActionTime = Date.now();
     if (holdStepTimer) {
         clearTimeout(holdStepTimer);
         holdStepTimer = null;
@@ -442,16 +444,19 @@ function stopHoldStep() {
         clearInterval(holdStepInterval);
         holdStepInterval = null;
     }
-    setTimeout(() => {
-        isPointerActive = false;
-    }, 100);
 }
 
 function handleClickStep(type, id, delta, event) {
-    if (isPointerActive) {
-        if (event) event.preventDefault();
+    if (event) {
+        event.preventDefault();
+    }
+    // Jika event click ini menyusuli sentuhan tetikus/skrin sentuh (pointerdown),
+    // langkah nombor telah pun dibuat pada peringkat pointerdown.
+    // Sekat supaya tidak bertambah 2 kali untuk 1 klik.
+    if (Date.now() - lastPointerActionTime < 600) {
         return;
     }
+    // Hanya dilaksanakan jika ditekan melalui papan kekunci (Space / Enter)
     if (type === 'groups') {
         stepHikingGroups(id, delta);
     } else if (type === 'pax') {
