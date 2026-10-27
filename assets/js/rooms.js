@@ -1247,7 +1247,7 @@ function showAvailMsg(msg, type) {
 }
 
 // ──── OPEN BOOKING MODAL & CART ────
-let checkinPicker;
+let checkinPicker, checkoutPicker;
 let cart = [];
 let isCartMinimized = false;
 let lastSubmittedCart = [];
@@ -1389,6 +1389,111 @@ function updateCartUI() {
     }
 }
 
+
+// ──── HELPER FUNCTIONS: BAHAGIAN B (SCHEDULE & GUESTS) ────
+function handleDurationTypeChange(type) {
+    const boxNights = document.getElementById('box-nights-wrapper');
+    const labelDay = document.getElementById('label-duration-daytrip');
+    const labelNight = document.getElementById('label-duration-overnight');
+    const nightsInput = document.getElementById('f-nights');
+    const checkinEl = document.getElementById('f-checkin');
+    const checkoutEl = document.getElementById('f-checkout');
+
+    if (type === 'daytrip') {
+        if (boxNights) boxNights.classList.add('hidden');
+        if (labelDay) {
+            labelDay.classList.add('border-emerald-500', 'border-2');
+            labelDay.classList.remove('border-slate-200');
+        }
+        if (labelNight) {
+            labelNight.classList.remove('border-emerald-500', 'border-2');
+            labelNight.classList.add('border-slate-200');
+        }
+        if (nightsInput) nightsInput.value = 0;
+        if (checkinEl && checkinEl.value && checkoutEl) {
+            checkoutEl.value = checkinEl.value;
+            if (checkoutPicker) checkoutPicker.setDate(checkinEl.value);
+        }
+    } else {
+        if (boxNights) boxNights.classList.remove('hidden');
+        if (labelNight) {
+            labelNight.classList.add('border-emerald-500', 'border-2');
+            labelNight.classList.remove('border-slate-200');
+        }
+        if (labelDay) {
+            labelDay.classList.remove('border-emerald-500', 'border-2');
+            labelDay.classList.add('border-slate-200');
+        }
+        if (nightsInput && (parseInt(nightsInput.value) <= 0 || isNaN(parseInt(nightsInput.value)))) {
+            nightsInput.value = 1;
+        }
+        updateCheckoutFromNights();
+    }
+}
+
+function stepNights(delta) {
+    const input = document.getElementById('f-nights');
+    if (!input) return;
+    let n = parseInt(input.value) || 1;
+    n += delta;
+    if (n < 1) n = 1;
+    if (n > 30) n = 30;
+    input.value = n;
+    updateCheckoutFromNights();
+}
+
+function handleNightsChange() {
+    const input = document.getElementById('f-nights');
+    if (!input) return;
+    let n = parseInt(input.value) || 1;
+    if (n < 1) n = 1;
+    if (n > 30) n = 30;
+    input.value = n;
+    updateCheckoutFromNights();
+}
+
+function updateCheckoutFromNights() {
+    const checkinVal = document.getElementById('f-checkin')?.value;
+    const checkoutEl = document.getElementById('f-checkout');
+    const nights = parseInt(document.getElementById('f-nights')?.value) || 1;
+    if (checkinVal && checkoutEl) {
+        const d = new Date(checkinVal);
+        d.setDate(d.getDate() + nights);
+        const yyyy = d.getFullYear();
+        const mm = String(d.getMonth() + 1).padStart(2, '0');
+        const dd = String(d.getDate()).padStart(2, '0');
+        const nextDateStr = `${yyyy}-${mm}-${dd}`;
+        checkoutEl.value = nextDateStr;
+        if (checkoutPicker) {
+            checkoutPicker.setDate(nextDateStr);
+        }
+    }
+}
+
+function stepGuestCategory(cat, delta) {
+    const input = document.getElementById(`f-guests-${cat}`);
+    if (!input) return;
+    let val = parseInt(input.value) || 0;
+    val += delta;
+    if (val < 0) val = 0;
+    if (val > 200) val = 200;
+    input.value = val;
+    calculateTotalGuestsModal();
+}
+
+function calculateTotalGuestsModal() {
+    const adult = parseInt(document.getElementById('f-guests-adult')?.value) || 0;
+    const teen = parseInt(document.getElementById('f-guests-teen')?.value) || 0;
+    const kid = parseInt(document.getElementById('f-guests-kid')?.value) || 0;
+    const seniorEarly = parseInt(document.getElementById('f-guests-senior-early')?.value) || 0;
+    const seniorLate = parseInt(document.getElementById('f-guests-senior-late')?.value) || 0;
+    
+    const total = adult + teen + kid + seniorEarly + seniorLate;
+    const badge = document.getElementById('f-guests-total-badge');
+    if (badge) badge.textContent = total;
+    return total;
+}
+
 async function openCheckout() {
     if (cart.length === 0) return;
     
@@ -1396,7 +1501,26 @@ async function openCheckout() {
     document.getElementById('booking-form').reset();
     document.getElementById('booking-modal').classList.remove('hidden');
     
-    // Populate Bahagian C summary
+    // Set default duration & guests in Bahagian B
+    const dayRadio = document.querySelector('input[name="f-duration-type"][value="Harian (Day Trip)"]');
+    if (dayRadio) dayRadio.checked = true;
+    handleDurationTypeChange('daytrip');
+
+    // Default guests
+    const totalCartGuests = cart.reduce((max, i) => Math.max(max, parseInt(i.num_guests) || 1), 1);
+    const adultInput = document.getElementById('f-guests-adult');
+    if (adultInput) adultInput.value = totalCartGuests || 1;
+    const teenInput = document.getElementById('f-guests-teen');
+    if (teenInput) teenInput.value = 0;
+    const kidInput = document.getElementById('f-guests-kid');
+    if (kidInput) kidInput.value = 0;
+    const seInput = document.getElementById('f-guests-senior-early');
+    if (seInput) seInput.value = 0;
+    const slInput = document.getElementById('f-guests-senior-late');
+    if (slInput) slInput.value = 0;
+    calculateTotalGuestsModal();
+
+    // Populate Bahagian D summary
     let modalTotal = 0;
     document.getElementById('modal-cart-summary').innerHTML = cart.map(item => {
         modalTotal += parseFloat(item.price_per_night);
@@ -1404,8 +1528,8 @@ async function openCheckout() {
     }).join('');
     document.getElementById('modal-cart-total').textContent = modalTotal.toFixed(2);
 
-
     if(checkinPicker) checkinPicker.destroy();
+    if(checkoutPicker) checkoutPicker.destroy();
     
     // Fetch conflicts for ALL items in cart
     let allConflicts = [];
@@ -1425,8 +1549,45 @@ async function openCheckout() {
     checkinPicker = flatpickr("#f-checkin", {
         minDate: "today",
         disable: allConflicts,
+        dateFormat: "Y-m-d",
         onChange: function(selectedDates, dateStr, instance) {
-            // No longer directly setting checkout here because we handle it in submit
+            if (checkoutPicker) {
+                checkoutPicker.set('minDate', dateStr);
+            }
+            const durationType = document.querySelector('input[name="f-duration-type"]:checked')?.value || 'Harian (Day Trip)';
+            if (durationType.includes('Day Trip') || durationType.includes('Harian')) {
+                const checkoutEl = document.getElementById('f-checkout');
+                if (checkoutEl) checkoutEl.value = dateStr;
+                if (checkoutPicker) checkoutPicker.setDate(dateStr);
+            } else {
+                updateCheckoutFromNights();
+            }
+        }
+    });
+
+    checkoutPicker = flatpickr("#f-checkout", {
+        minDate: "today",
+        disable: allConflicts,
+        dateFormat: "Y-m-d",
+        onChange: function(selectedDates, dateStr, instance) {
+            const checkinVal = document.getElementById('f-checkin').value;
+            if (checkinVal && selectedDates.length > 0) {
+                const d1 = new Date(checkinVal);
+                const d2 = selectedDates[0];
+                const diffTime = d2.getTime() - d1.getTime();
+                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                if (diffDays > 0) {
+                    const nightRadio = document.querySelector('input[name="f-duration-type"][value="Bermalam (Overnight)"]');
+                    if (nightRadio) nightRadio.checked = true;
+                    handleDurationTypeChange('overnight');
+                    const nightsInput = document.getElementById('f-nights');
+                    if (nightsInput) nightsInput.value = diffDays;
+                } else {
+                    const dayRadio = document.querySelector('input[name="f-duration-type"][value="Harian (Day Trip)"]');
+                    if (dayRadio) dayRadio.checked = true;
+                    handleDurationTypeChange('daytrip');
+                }
+            }
         }
     });
 }
@@ -1448,9 +1609,17 @@ document.getElementById('booking-form').addEventListener('submit', async (e) => 
     const groupName = document.getElementById('f-groupname').value;
     
     const checkinVal = document.getElementById('f-checkin').value;
-    const checkoutDateObj = new Date(checkinVal);
-    checkoutDateObj.setDate(checkoutDateObj.getDate() + 1);
-    const checkoutStr = checkoutDateObj.toISOString().split('T')[0];
+    const checkoutVal = document.getElementById('f-checkout').value || checkinVal;
+    const durationType = document.querySelector('input[name="f-duration-type"]:checked')?.value || 'Harian (Day Trip)';
+    const numNights = durationType.includes('Bermalam') ? (parseInt(document.getElementById('f-nights')?.value) || 1) : 0;
+
+    const gAdult = parseInt(document.getElementById('f-guests-adult')?.value) || 0;
+    const gTeen = parseInt(document.getElementById('f-guests-teen')?.value) || 0;
+    const gKid = parseInt(document.getElementById('f-guests-kid')?.value) || 0;
+    const gSeniorEarly = parseInt(document.getElementById('f-guests-senior-early')?.value) || 0;
+    const gSeniorLate = parseInt(document.getElementById('f-guests-senior-late')?.value) || 0;
+    const totalGuests = gAdult + gTeen + gKid + gSeniorEarly + gSeniorLate || 1;
+    const checkoutStr = checkoutVal;
     
     let allSuccess = true;
     let errorMsg = '';
@@ -1467,8 +1636,8 @@ document.getElementById('booking-form').addEventListener('submit', async (e) => 
             checkout_date: checkoutStr,
             guest_name: document.getElementById('f-name').value,
             guest_phone: document.getElementById('f-phone').value,
-            num_guests: parseInt(item.num_guests) || 1, 
-            special_requests: `Kategori: ${kategori} (${groupName}) | ${item.packageName ? `Pakej: ${item.packageName} | ` : ''}${item.groups ? `Jumlah Kumpulan: ${item.groups} | ` : ''}${item.num_guests ? `Bilangan: ${item.num_guests} ${item.unit || 'orang'} | ` : ''}Sesi: ${document.getElementById('f-session').value} | IC: ${document.getElementById('f-ic').value} | Umur: ${document.getElementById('f-age').value} | Jantina: ${genderNode ? genderNode.value : ''} | Emel: ${document.getElementById('f-email').value} | Alamat: ${document.getElementById('f-address').value} | Waris: ${document.getElementById('f-emg-name').value} (${document.getElementById('f-emg-relation').value} - ${document.getElementById('f-emg-phone').value}) | Kesihatan: ${document.getElementById('f-health').value}`
+            num_guests: totalGuests, 
+            special_requests: `Kategori: ${kategori} (${groupName}) | Tempoh: ${durationType}${numNights > 0 ? ` (${numNights} Malam)` : ''} | Pecahan Tetamu: Dewasa ${gAdult}, Remaja ${gTeen}, Bayi/Kanak-kanak ${gKid}, Warga Emas (60-65) ${gSeniorEarly}, Warga Emas (66+) ${gSeniorLate} (Jumlah: ${totalGuests} Orang) | ${item.packageName ? `Pakej: ${item.packageName} | ` : ''}${item.groups ? `Jumlah Kumpulan: ${item.groups} | ` : ''}${item.num_guests ? `Bilangan: ${item.num_guests} ${item.unit || 'orang'} | ` : ''}Sesi: ${document.getElementById('f-session').value} | IC: ${document.getElementById('f-ic').value} | Umur: ${document.getElementById('f-age').value} | Jantina: ${genderNode ? genderNode.value : ''} | Emel: ${document.getElementById('f-email').value} | Alamat: ${document.getElementById('f-address').value} | Waris: ${document.getElementById('f-emg-name').value} (${document.getElementById('f-emg-relation').value} - ${document.getElementById('f-emg-phone').value}) | Kesihatan: ${document.getElementById('f-health').value}`
         };
 
         try {
@@ -1503,8 +1672,8 @@ document.getElementById('booking-form').addEventListener('submit', async (e) => 
         document.getElementById('success-ref').textContent = bookedRefs.join(', ');
         document.getElementById('success-room').textContent = bookedNames.join(', ');
         document.getElementById('success-checkin').textContent = checkinVal;
-        document.getElementById('success-checkout').textContent = '-';
-        document.getElementById('success-nights').textContent = cart.some(i => i.num_guests && i.num_guests > 1) ? cart.map(i => (i.num_guests || 1) + ' ' + (i.unit || 'Orang') + (i.groups ? ` (${i.groups} Kumpulan)` : '')).join(', ') : '1 Individu';
+        document.getElementById('success-checkout').textContent = checkoutVal;
+        document.getElementById('success-nights').textContent = `${numNights > 0 ? `${numNights} Malam` : 'Harian (Day Trip)'} - ${totalGuests} Tetamu`;
         
         let totalCartPrice = cart.reduce((sum, item) => sum + parseFloat(item.price_per_night), 0);
         document.getElementById('success-total').textContent = 'RM' + totalCartPrice.toFixed(2);
@@ -1516,7 +1685,10 @@ Aktiviti: ${bookedNames.join(', ')}
 Nama: ${document.getElementById('f-name').value}
 Kumpulan: ${kategori} (${groupName})
 Sesi: ${document.getElementById('f-session').value}
-Tarikh: ${checkinVal}
+Tempoh: ${durationType}${numNights > 0 ? ` (${numNights} Malam)` : ''}
+Tarikh Masuk: ${checkinVal}
+Tarikh Keluar: ${checkoutVal}
+Bilangan Tetamu: ${totalGuests} Orang (Dewasa: ${gAdult}, Remaja: ${gTeen}, Kanak-kanak: ${gKid}, Warga Emas: ${gSeniorEarly + gSeniorLate})
 Jumlah Harga: RM${totalCartPrice.toFixed(2)}
 Bank Pilihan (FPX): ${document.getElementById('f-bank').value}
 Sila sahkan pendaftaran dan status bayaran saya. Terima kasih.`;

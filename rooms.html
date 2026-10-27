@@ -272,27 +272,6 @@
                         - Jika memilih Sertai Kumpulan Lain / Join Group: Sila taip perkataan <strong>JOIN GROUP</strong> di ruangan ini.
                     </p>
                 </div>
-
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-sm font-bold text-slate-700 mb-2">
-                            3. Tarikh Aktiviti <span class="text-rose-500">*</span>
-                        </label>
-                        <input type="text" id="f-checkin" placeholder="Pilih tarikh" class="w-full border border-slate-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 cursor-pointer" readonly required>
-                        <!-- Hide checkout since hiking is a day trip mostly, but keep it hidden to avoid breaking API -->
-                        <input type="hidden" id="f-checkout">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-bold text-slate-700 mb-2">
-                            4. Pilihan Sesi Waktu Mendaki <span class="text-rose-500">*</span>
-                        </label>
-                        <select id="f-session" class="w-full border border-slate-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500" required>
-                            <option value="">-- Pilih Sesi --</option>
-                            <option value="Sesi Pagi: 9:30 AM - 1:00 PM">Sesi Pagi: 9:30 AM (pagi) - 1:00 PM (tengah hari)</option>
-                            <option value="Sesi Petang: 2:00 PM - 5:30 PM">Sesi Petang: 2:00 PM (petang) - 5:30 PM (petang)</option>
-                        </select>
-                    </div>
-                </div>
             </div>
 
             <!-- BAHAGIAN A -->
@@ -302,59 +281,266 @@
                 </h3>
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
                     <div class="sm:col-span-2">
-                        <label class="block text-sm font-bold text-slate-700 mb-2">5. Nama Penuh (Mengikut Kad Pengenalan / Pasport) <span class="text-rose-500">*</span></label>
+                        <label class="block text-sm font-bold text-slate-700 mb-2">3. Nama Penuh (Mengikut Kad Pengenalan / Pasport) <span class="text-rose-500">*</span></label>
                         <textarea id="f-name" rows="2" class="w-full border border-slate-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500" required></textarea>
                     </div>
                     <div>
-                        <label class="block text-sm font-bold text-slate-700 mb-2">6. Nombor Kad Pengenalan / Nombor Pasport <span class="text-rose-500">*</span></label>
+                        <label class="block text-sm font-bold text-slate-700 mb-2">4. Nombor Kad Pengenalan / Nombor Pasport <span class="text-rose-500">*</span></label>
                         <input type="text" id="f-ic" class="w-full border border-slate-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500" required>
                     </div>
                     <div>
-                        <label class="block text-sm font-bold text-slate-700 mb-2">7. Jantina <span class="text-rose-500">*</span></label>
+                        <label class="block text-sm font-bold text-slate-700 mb-2">5. Jantina <span class="text-rose-500">*</span></label>
                         <div class="flex gap-4 mt-2">
                             <label class="flex items-center gap-2"><input type="radio" name="f-gender" value="Lelaki" required class="w-4 h-4 text-emerald-600"> Lelaki</label>
                             <label class="flex items-center gap-2"><input type="radio" name="f-gender" value="Perempuan" required class="w-4 h-4 text-emerald-600"> Perempuan</label>
                         </div>
                     </div>
                     <div>
-                        <label class="block text-sm font-bold text-slate-700 mb-2">8. Umur <span class="text-rose-500">*</span></label>
+                        <label class="block text-sm font-bold text-slate-700 mb-2">6. Umur <span class="text-rose-500">*</span></label>
                         <input type="number" id="f-age" min="1" class="w-full border border-slate-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500" required>
                     </div>
                     <div>
-                        <label class="block text-sm font-bold text-slate-700 mb-2">9. Nombor Telefon Bimbit (WhatsApp) <span class="text-rose-500">*</span></label>
+                        <label class="block text-sm font-bold text-slate-700 mb-2">7. Nombor Telefon Bimbit (WhatsApp) <span class="text-rose-500">*</span></label>
                         <input type="tel" id="f-phone" placeholder="01X-XXXXXXXX" class="w-full border border-slate-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500" required>
                     </div>
                     <div class="sm:col-span-2">
-                        <label class="block text-sm font-bold text-slate-700 mb-2">10. Alamat Emel <span class="text-rose-500">*</span></label>
+                        <label class="block text-sm font-bold text-slate-700 mb-2">8. Alamat Emel <span class="text-rose-500">*</span></label>
                         <input type="email" id="f-email" placeholder="contoh@email.com" class="w-full border border-slate-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500" required>
                     </div>
                     <div class="sm:col-span-2">
-                        <label class="block text-sm font-bold text-slate-700 mb-2">11. Alamat Kediaman Semasa <span class="text-rose-500">*</span></label>
+                        <label class="block text-sm font-bold text-slate-700 mb-2">9. Alamat Kediaman Semasa <span class="text-rose-500">*</span></label>
                         <textarea id="f-address" rows="2" class="w-full border border-slate-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500" required></textarea>
                     </div>
                     <div>
-                        <label class="block text-sm font-bold text-slate-700 mb-2">12. Nama Waris / Kontak Kecemasan <span class="text-rose-500">*</span></label>
+                        <label class="block text-sm font-bold text-slate-700 mb-2">10. Nama Waris / Kontak Kecemasan <span class="text-rose-500">*</span></label>
                         <input type="text" id="f-emg-name" class="w-full border border-slate-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500" required>
                     </div>
                     <div>
-                        <label class="block text-sm font-bold text-slate-700 mb-2">13. Hubungan dengan Waris <span class="text-rose-500">*</span></label>
+                        <label class="block text-sm font-bold text-slate-700 mb-2">11. Hubungan dengan Waris <span class="text-rose-500">*</span></label>
                         <input type="text" id="f-emg-relation" placeholder="Ibu / Bapa / Suami / Isteri dll" class="w-full border border-slate-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500" required>
                     </div>
                     <div>
-                        <label class="block text-sm font-bold text-slate-700 mb-2">14. Nombor Telefon Waris / Kecemasan <span class="text-rose-500">*</span></label>
+                        <label class="block text-sm font-bold text-slate-700 mb-2">12. Nombor Telefon Waris / Kecemasan <span class="text-rose-500">*</span></label>
                         <input type="tel" id="f-emg-phone" class="w-full border border-slate-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500" required>
                     </div>
                     <div class="sm:col-span-2">
-                        <label class="block text-sm font-bold text-slate-700 mb-2">15. Sejarah Kesihatan / Penyakit Kronik <span class="text-rose-500">*</span></label>
+                        <label class="block text-sm font-bold text-slate-700 mb-2">13. Sejarah Kesihatan / Penyakit Kronik <span class="text-rose-500">*</span></label>
                         <input type="text" id="f-health" placeholder="Contoh: Asma, Darah Tinggi, atau tulis TIADA" class="w-full border border-slate-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500" required>
                     </div>
                 </div>
             </div>
 
-            <!-- BAHAGIAN B -->
+            
+            <!-- BAHAGIAN B: MAKLUMAT TARIKH, MASA & TETAMU (SCHEDULE & GUESTS) -->
+            <div class="border-t border-slate-200 pt-6">
+                <h3 class="text-lg font-bold text-emerald-800 mb-4 bg-emerald-50 py-2.5 px-4 rounded-xl uppercase tracking-wide flex items-center justify-between">
+                    <span>BAHAGIAN B: MAKLUMAT TARIKH, MASA & TETAMU (SCHEDULE & GUESTS)</span>
+                    <i class="fa-solid fa-calendar-days text-emerald-700"></i>
+                </h3>
+
+                <!-- 1 & 2: Tarikh Daftar Masuk / Mula & Tarikh Daftar Keluar / Selesai -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-5">
+                    <div>
+                        <label class="block text-sm font-bold text-slate-700 mb-2">
+                            1. Tarikh Daftar Masuk / Mula <span class="text-rose-500">*</span>
+                        </label>
+                        <div class="relative">
+                            <input type="text" id="f-checkin" placeholder="Pilih tarikh masuk (DD/MM/YYYY)" class="w-full border border-slate-300 rounded-xl px-4 py-3 pl-11 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 cursor-pointer bg-white" readonly required>
+                            <i class="fa-solid fa-calendar-check absolute left-4 top-3.5 text-emerald-600 text-base pointer-events-none"></i>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-slate-700 mb-2">
+                            2. Tarikh Daftar Keluar / Selesai <span class="text-rose-500">*</span>
+                        </label>
+                        <div class="relative">
+                            <input type="text" id="f-checkout" placeholder="Pilih tarikh keluar (DD/MM/YYYY)" class="w-full border border-slate-300 rounded-xl px-4 py-3 pl-11 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 cursor-pointer bg-white" readonly required>
+                            <i class="fa-solid fa-calendar-xmark absolute left-4 top-3.5 text-slate-400 text-base pointer-events-none"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pilihan Sesi Waktu (Masa) -->
+                <div class="mb-5">
+                    <label class="block text-sm font-bold text-slate-700 mb-2">
+                        Pilihan Sesi Waktu Aktiviti (Masa) <span class="text-rose-500">*</span>
+                    </label>
+                    <select id="f-session" class="w-full border border-slate-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500" required>
+                        <option value="">-- Sila Pilih Sesi Waktu --</option>
+                        <option value="Sesi Pagi: 9:30 AM - 1:00 PM">Sesi Pagi: 9:30 AM (pagi) - 1:00 PM (tengah hari)</option>
+                        <option value="Sesi Petang: 2:00 PM - 5:30 PM">Sesi Petang: 2:00 PM (petang) - 5:30 PM (petang)</option>
+                        <option value="Sepanjang Hari / Bermalam">Sepanjang Hari / Pakej Bermalam</option>
+                    </select>
+                </div>
+
+                <!-- Jenis Tempoh: Harian (Day Trip) / Bermalam (Overnight) -->
+                <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 sm:p-5 mb-5">
+                    <label class="block text-sm font-bold text-slate-800 mb-3">
+                        Jenis Tempoh <span class="text-rose-500">*</span>
+                    </label>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <!-- 1. Harian (Day Trip) -->
+                        <label id="label-duration-daytrip" class="flex items-center gap-3 p-3.5 bg-white rounded-xl border-2 border-emerald-500 shadow-sm cursor-pointer transition hover:bg-emerald-50/40">
+                            <input type="radio" name="f-duration-type" value="Harian (Day Trip)" checked class="w-4 h-4 text-emerald-600 focus:ring-emerald-500 cursor-pointer" onchange="handleDurationTypeChange('daytrip')">
+                            <div class="flex-1">
+                                <span class="font-extrabold text-slate-800 text-sm block">1. Harian (Day Trip)</span>
+                                <span class="text-xs text-slate-500">Aktiviti harian / balik hari (tanpa bermalam)</span>
+                            </div>
+                            <i class="fa-solid fa-sun text-amber-500 text-xl"></i>
+                        </label>
+
+                        <!-- 2. Bermalam (Overnight) -->
+                        <label id="label-duration-overnight" class="flex items-center gap-3 p-3.5 bg-white rounded-xl border border-slate-200 shadow-sm cursor-pointer transition hover:bg-emerald-50/40">
+                            <input type="radio" name="f-duration-type" value="Bermalam (Overnight)" class="w-4 h-4 text-emerald-600 focus:ring-emerald-500 cursor-pointer" onchange="handleDurationTypeChange('overnight')">
+                            <div class="flex-1">
+                                <span class="font-extrabold text-slate-800 text-sm block">2. Bermalam (Overnight)</span>
+                                <span class="text-xs text-slate-500">Khemah, Kabin, Tapak RV & bermalam</span>
+                            </div>
+                            <i class="fa-solid fa-moon text-indigo-500 text-xl"></i>
+                        </label>
+                    </div>
+
+                    <!-- Bilangan Malam -->
+                    <div id="box-nights-wrapper" class="mt-4 pt-3.5 border-t border-slate-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 hidden">
+                        <span class="text-sm font-bold text-slate-700 flex items-center gap-2">
+                            <i class="fa-solid fa-bed text-emerald-600"></i> Bilangan Malam:
+                        </span>
+                        <div class="flex items-center gap-3">
+                            <div class="flex items-center bg-white border border-slate-300 rounded-xl overflow-hidden shadow-sm">
+                                <button type="button" onclick="stepNights(-1)" class="w-9 h-9 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold transition flex items-center justify-center cursor-pointer">
+                                    <i class="fa-solid fa-minus text-xs"></i>
+                                </button>
+                                <input type="number" id="f-nights" value="1" min="1" max="30" class="w-14 text-center font-extrabold text-slate-900 focus:outline-none text-base" onchange="handleNightsChange()">
+                                <button type="button" onclick="stepNights(1)" class="w-9 h-9 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold transition flex items-center justify-center cursor-pointer">
+                                    <i class="fa-solid fa-plus text-xs"></i>
+                                </button>
+                            </div>
+                            <span class="text-sm font-bold text-slate-700">Malam</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Jumlah Bilangan Tetamu -->
+                <div class="bg-white border border-slate-200 rounded-2xl p-4 sm:p-5 shadow-sm">
+                    <div class="flex items-center justify-between border-b border-slate-200 pb-3 mb-4">
+                        <div>
+                            <h4 class="font-bold text-slate-900 text-sm sm:text-base">Jumlah Bilangan Tetamu:</h4>
+                            <p class="text-xs text-slate-500">Nyatakan pecahan bilangan tetamu mengikut kumpulan umur.</p>
+                        </div>
+                        <div class="bg-emerald-100 text-emerald-900 text-xs sm:text-sm font-black px-3.5 py-1.5 rounded-full border border-emerald-300 flex items-center gap-1.5 whitespace-nowrap shadow-sm">
+                            <i class="fa-solid fa-users text-emerald-700"></i>
+                            <span>Jumlah: <span id="f-guests-total-badge">1</span> Orang</span>
+                        </div>
+                    </div>
+
+                    <div class="space-y-3">
+                        <!-- 1. Dewasa (18-59 tahun) -->
+                        <div class="flex items-center justify-between p-3 rounded-xl bg-slate-50 border border-slate-100 hover:border-emerald-200 transition">
+                            <div class="flex-1 pr-2">
+                                <span class="font-bold text-slate-800 text-sm block">1. Dewasa (18–59 tahun)</span>
+                                <span class="text-xs text-slate-500">Peserta dewasa</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <div class="flex items-center bg-white border border-slate-300 rounded-xl overflow-hidden shadow-sm">
+                                    <button type="button" onclick="stepGuestCategory('adult', -1)" class="w-8 h-8 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold transition flex items-center justify-center cursor-pointer">
+                                        <i class="fa-solid fa-minus text-xs"></i>
+                                    </button>
+                                    <input type="number" id="f-guests-adult" value="1" min="0" max="200" class="w-12 text-center font-extrabold text-slate-900 focus:outline-none text-sm" onchange="calculateTotalGuestsModal()">
+                                    <button type="button" onclick="stepGuestCategory('adult', 1)" class="w-8 h-8 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold transition flex items-center justify-center cursor-pointer">
+                                        <i class="fa-solid fa-plus text-xs"></i>
+                                    </button>
+                                </div>
+                                <span class="text-xs font-semibold text-slate-600 w-10">Orang</span>
+                            </div>
+                        </div>
+
+                        <!-- 2. Kanak-kanak remaja (10–17 tahun) -->
+                        <div class="flex items-center justify-between p-3 rounded-xl bg-slate-50 border border-slate-100 hover:border-emerald-200 transition">
+                            <div class="flex-1 pr-2">
+                                <span class="font-bold text-slate-800 text-sm block">2. Kanak-kanak remaja (10–17 tahun)</span>
+                                <span class="text-xs text-slate-500">Peserta remaja</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <div class="flex items-center bg-white border border-slate-300 rounded-xl overflow-hidden shadow-sm">
+                                    <button type="button" onclick="stepGuestCategory('teen', -1)" class="w-8 h-8 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold transition flex items-center justify-center cursor-pointer">
+                                        <i class="fa-solid fa-minus text-xs"></i>
+                                    </button>
+                                    <input type="number" id="f-guests-teen" value="0" min="0" max="200" class="w-12 text-center font-extrabold text-slate-900 focus:outline-none text-sm" onchange="calculateTotalGuestsModal()">
+                                    <button type="button" onclick="stepGuestCategory('teen', 1)" class="w-8 h-8 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold transition flex items-center justify-center cursor-pointer">
+                                        <i class="fa-solid fa-plus text-xs"></i>
+                                    </button>
+                                </div>
+                                <span class="text-xs font-semibold text-slate-600 w-10">Orang</span>
+                            </div>
+                        </div>
+
+                        <!-- 3. Bayi/kanak-kanak (Bawah 10 tahun) -->
+                        <div class="flex items-center justify-between p-3 rounded-xl bg-slate-50 border border-slate-100 hover:border-emerald-200 transition">
+                            <div class="flex-1 pr-2">
+                                <span class="font-bold text-slate-800 text-sm block">3. Bayi / kanak-kanak (Bawah 10 tahun)</span>
+                                <span class="text-xs text-slate-500">Kanak-kanak / bayi</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <div class="flex items-center bg-white border border-slate-300 rounded-xl overflow-hidden shadow-sm">
+                                    <button type="button" onclick="stepGuestCategory('kid', -1)" class="w-8 h-8 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold transition flex items-center justify-center cursor-pointer">
+                                        <i class="fa-solid fa-minus text-xs"></i>
+                                    </button>
+                                    <input type="number" id="f-guests-kid" value="0" min="0" max="200" class="w-12 text-center font-extrabold text-slate-900 focus:outline-none text-sm" onchange="calculateTotalGuestsModal()">
+                                    <button type="button" onclick="stepGuestCategory('kid', 1)" class="w-8 h-8 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold transition flex items-center justify-center cursor-pointer">
+                                        <i class="fa-solid fa-plus text-xs"></i>
+                                    </button>
+                                </div>
+                                <span class="text-xs font-semibold text-slate-600 w-10">Orang</span>
+                            </div>
+                        </div>
+
+                        <!-- 4. Warga emas awal (60-65 tahun) -->
+                        <div class="flex items-center justify-between p-3 rounded-xl bg-slate-50 border border-slate-100 hover:border-emerald-200 transition">
+                            <div class="flex-1 pr-2">
+                                <span class="font-bold text-slate-800 text-sm block">4. Warga emas awal (60–65 tahun)</span>
+                                <span class="text-xs text-slate-500">Warga emas awal</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <div class="flex items-center bg-white border border-slate-300 rounded-xl overflow-hidden shadow-sm">
+                                    <button type="button" onclick="stepGuestCategory('senior-early', -1)" class="w-8 h-8 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold transition flex items-center justify-center cursor-pointer">
+                                        <i class="fa-solid fa-minus text-xs"></i>
+                                    </button>
+                                    <input type="number" id="f-guests-senior-early" value="0" min="0" max="200" class="w-12 text-center font-extrabold text-slate-900 focus:outline-none text-sm" onchange="calculateTotalGuestsModal()">
+                                    <button type="button" onclick="stepGuestCategory('senior-early', 1)" class="w-8 h-8 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold transition flex items-center justify-center cursor-pointer">
+                                        <i class="fa-solid fa-plus text-xs"></i>
+                                    </button>
+                                </div>
+                                <span class="text-xs font-semibold text-slate-600 w-10">Orang</span>
+                            </div>
+                        </div>
+
+                        <!-- 5. Warga emas lanjut (66 tahun ke atas) -->
+                        <div class="flex items-center justify-between p-3 rounded-xl bg-slate-50 border border-slate-100 hover:border-emerald-200 transition">
+                            <div class="flex-1 pr-2">
+                                <span class="font-bold text-slate-800 text-sm block">5. Warga emas lanjut (66 tahun ke atas)</span>
+                                <span class="text-xs text-slate-500">Warga emas lanjut</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <div class="flex items-center bg-white border border-slate-300 rounded-xl overflow-hidden shadow-sm">
+                                    <button type="button" onclick="stepGuestCategory('senior-late', -1)" class="w-8 h-8 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold transition flex items-center justify-center cursor-pointer">
+                                        <i class="fa-solid fa-minus text-xs"></i>
+                                    </button>
+                                    <input type="number" id="f-guests-senior-late" value="0" min="0" max="200" class="w-12 text-center font-extrabold text-slate-900 focus:outline-none text-sm" onchange="calculateTotalGuestsModal()">
+                                    <button type="button" onclick="stepGuestCategory('senior-late', 1)" class="w-8 h-8 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold transition flex items-center justify-center cursor-pointer">
+                                        <i class="fa-solid fa-plus text-xs"></i>
+                                    </button>
+                                </div>
+                                <span class="text-xs font-semibold text-slate-600 w-10">Orang</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- BAHAGIAN C: PERAKUAN & PENGESAHAN PESERTA -->
             <div class="border-t border-slate-200 pt-6">
                 <h3 class="text-lg font-bold text-emerald-800 mb-4 bg-emerald-50 py-2 px-4 rounded-lg uppercase tracking-wide">
-                    BAHAGIAN B: PERAKUAN & PENGESAHAN PESERTA
+                    BAHAGIAN C: PERAKUAN & PENGESAHAN PESERTA
                 </h3>
 
                 
@@ -385,10 +571,10 @@
             </div>
 
             
-            <!-- BAHAGIAN C -->
+            <!-- BAHAGIAN D: RINGKASAN TEMPAHAN & PEMBAYARAN FPX -->
             <div class="border-t border-slate-200 pt-6">
                 <h3 class="text-lg font-bold text-emerald-800 mb-4 bg-emerald-50 py-2 px-4 rounded-lg uppercase tracking-wide">
-                    BAHAGIAN C: RINGKASAN TEMPAHAN & PEMBAYARAN FPX
+                    BAHAGIAN D: RINGKASAN TEMPAHAN & PEMBAYARAN FPX
                 </h3>
                 
                 <!-- Ringkasan Kadar Bayaran -->
@@ -510,6 +696,6 @@
 </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-<script src="assets/js/rooms.js?v=1793070000000"></script>
+<script src="assets/js/rooms.js?v=1793072000000"></script>
 </body>
 </html>
