@@ -69,7 +69,7 @@ function getRoomSortRank(r) {
 const FALLBACK_ROOMS = [
     { id: 1, name: 'TEMPAHAN AKTIVITI HIKING', type: 'TEMPAHAN AKTIVITI HIKING', capacity: 7, price_per_night: 50, description: 'Terokai alam semula jadi dengan pendakian berpandu di sekitar Taman Eko Rimba Berkelah Pahang.', facilities: 'Pemandu arah, Peralatan asas, Sijil penyertaan', image_url: 'images/hiking.jpg', is_active: 1 },
     { id: 3, name: 'TEMPAHAN AKTIVITI JUNGLE TREKKING', type: 'TEMPAHAN AKTIVITI JUNGLE TREKKING', capacity: 15, price_per_night: 30, description: 'Pengalaman merentas hutan sambil mempelajari spesies pokok dan tumbuhan herba.', facilities: 'Laluan bertanda, Panduan taklimat', image_url: 'images/jungle_trekking.jpg', is_active: 1 },
-    { id: 2, name: 'TEMPAHAN GAZEBO', type: 'TEMPAHAN GAZEBO', capacity: 8, price_per_night: 60, description: 'Pondok berehat berhampiran sungai yang sesuai untuk keluarga berkelah.', facilities: 'Bumbung teduh, Meja kayu, Tempat duduk, Tong sampah', image_url: 'images/gazebo.jpg', is_active: 1 },
+    { id: 2, name: 'TEMPAHAN GAZEBO', type: 'TEMPAHAN GAZEBO', capacity: 8, price_per_night: 35, description: 'Pondok berehat berhampiran sungai yang sesuai untuk keluarga berkelah.', facilities: 'Bumbung teduh, Meja kayu, Tempat duduk, Tong sampah', image_url: 'images/gazebo.jpg', is_active: 1 },
     { id: 7, name: 'TEMPAHAN KABIN', type: 'TEMPAHAN KABIN', capacity: 4, price_per_night: 150, description: 'Kabin berhawa dingin yang selesa sesuai untuk percutian keluarga.', facilities: '2 Katil Single, Aircond, Almari, Tandas, Dapur', image_url: 'images/kabin.jpg', is_active: 1 },
     { id: 4, name: 'TEMPAHAN TAPAK HAMMOCK', type: 'TEMPAHAN TAPAK HAMMOCK', capacity: 2, price_per_night: 25, description: 'Lokasi strategik di antara pepohonan untuk menggantung hammock anda.', facilities: 'Kawasan redup, Akses mudah ke sungai', image_url: 'images/hammock.jpg', is_active: 1 },
     { id: 5, name: 'TEMPAHAN TAPAK PERKHEMAHAN', type: 'TEMPAHAN TAPAK PERKHEMAHAN', capacity: 4, price_per_night: 70, description: 'Kawasan lapang khas untuk mendirikan khemah, dilengkapi kemudahan asas.', facilities: 'Tandas awam, Bekalan air paip, Kawasan unggun api', image_url: 'images/perkhemahan.jpg', is_active: 1 },
@@ -115,7 +115,7 @@ function renderHikingCard(r, isAvailabilityCheck = false) {
     const isKabin = (r.name && r.name.toUpperCase().includes('KABIN')) || (r.type && r.type.toUpperCase().includes('KABIN'));
     const isHammock = (r.name && r.name.toUpperCase().includes('HAMMOCK')) || (r.type && r.type.toUpperCase().includes('HAMMOCK'));
     const isKhemah = (r.name && (r.name.toUpperCase().includes('PERKHEMAHAN') || r.name.toUpperCase().includes('KHEMAH'))) || (r.type && (r.type.toUpperCase().includes('PERKHEMAHAN') || r.type.toUpperCase().includes('KHEMAH')));
-    const isNoGuide = isKabin || isHammock || isRv || isKhemah;
+    const isNoGuide = isKabin || isHammock || isRv || isKhemah || isGazebo;
     const isNoProc = false;
 
     let titleClass;
@@ -193,7 +193,7 @@ function renderHikingCard(r, isAvailabilityCheck = false) {
                         </div>
                         ` : `
                         <!-- Hidden input for Kabin, Hammock, Perkhemahan & RV base rate without showing guide fee dropdown -->
-                        <input type="hidden" id="hiking-pkg-${r.id}" value="${(isKhemah || isHammock || isKabin || isRv) ? 0 : (parseFloat(r.price_per_night) || 150)}">
+                        <input type="hidden" id="hiking-pkg-${r.id}" value="${(isKhemah || isHammock || isKabin || isRv || isGazebo) ? 0 : (parseFloat(r.price_per_night) || 150)}">
                         `}
 
                         <!-- 2. Jumlah Kumpulan / Jumlah Tapak / Jumlah Kabin & Jumlah Peserta -->
@@ -203,12 +203,12 @@ function renderHikingCard(r, isAvailabilityCheck = false) {
                                 <span class="font-black text-slate-900 text-[10.5px] sm:text-xs tracking-tight uppercase whitespace-nowrap text-center mb-1.5">
                                     ${(isKhemah || isHammock || isRv) ? 'JUMLAH TAPAK' : (isKabin ? 'JUMLAH KABIN' : (isGazebo ? 'JUMLAH GAZEBO' : 'JUMLAH KUMPULAN'))}
                                 </span>
-                                ${(isKhemah || isHammock || isKabin || isRv) ? `
+                                ${(isKhemah || isHammock || isKabin || isRv || isGazebo) ? `
                                 <div class="w-full h-9 flex items-center justify-between bg-white border border-[#94E3BA] rounded-full overflow-hidden px-2 shadow-inner">
                                     <input type="number" id="hiking-groups-${r.id}" min="1" max="50" value="1"
                                         class="w-full text-center font-black text-slate-900 text-base sm:text-lg bg-transparent focus:outline-none cursor-pointer hide-native-spinner p-0"
                                         placeholder="1"
-                                        title="Masukkan bilangan ${isKabin ? 'kabin' : 'tapak'}"
+                                        title="Masukkan bilangan ${isKabin ? 'kabin' : (isGazebo ? 'gazebo' : 'tapak')}"
                                         oninput="updateHikingPrice(${r.id}, 'groups_changed')" onchange="updateHikingPrice(${r.id}, 'groups_changed')">
                                     <div class="flex flex-col items-center justify-center h-full pl-1.5 border-l border-[#BBF0D2] flex-shrink-0">
                                         <button type="button" 
@@ -220,7 +220,7 @@ function renderHikingCard(r, isAvailabilityCheck = false) {
                                             oncontextmenu="event.preventDefault(); return false;"
                                             style="touch-action: manipulation; user-select: none; -webkit-user-select: none;"
                                             class="w-5 h-3.5 flex items-center justify-center text-slate-900 hover:text-emerald-700 active:scale-90 text-[9px] font-black transition cursor-pointer select-none leading-none"
-                                            title="Tambah ${isKabin ? 'kabin' : 'tapak'} (tekan 2 saat untuk terus mengira)">
+                                            title="Tambah ${isKabin ? 'kabin' : (isGazebo ? 'gazebo' : 'tapak')} (tekan 2 saat untuk terus mengira)">
                                             ▲
                                         </button>
                                         <button type="button" 
@@ -232,7 +232,7 @@ function renderHikingCard(r, isAvailabilityCheck = false) {
                                             oncontextmenu="event.preventDefault(); return false;"
                                             style="touch-action: manipulation; user-select: none; -webkit-user-select: none;"
                                             class="w-5 h-3.5 flex items-center justify-center text-slate-900 hover:text-emerald-700 active:scale-90 text-[9px] font-black transition cursor-pointer select-none leading-none"
-                                            title="Kurangkan ${isKabin ? 'kabin' : 'tapak'} (tekan 2 saat untuk terus mengira)">
+                                            title="Kurangkan ${isKabin ? 'kabin' : (isGazebo ? 'gazebo' : 'tapak')} (tekan 2 saat untuk terus mengira)">
                                             ▼
                                         </button>
                                     </div>
@@ -293,14 +293,14 @@ function renderHikingCard(r, isAvailabilityCheck = false) {
                         <div class="bg-[#F3FDF7] border-2 border-[#94E3BA] rounded-3xl py-2.5 sm:py-3 px-3 sm:px-3.5 flex justify-between items-center shadow-sm">
                             <div class="flex flex-col justify-center min-w-0 pr-2">
                                 <span id="hiking-proc-label-${r.id}" class="font-black text-slate-900 text-[10px] sm:text-xs tracking-tight uppercase whitespace-nowrap">
-                                    ${isKhemah ? 'CAJ TAPAK PERKEMAHAN' : (isHammock ? 'CAJ TAPAK HAMMOCK' : (isKabin ? 'CAJ KABIN' : (isRv ? 'CAJ TAPAK KENDERAAN RV' : 'CAJ PEMPROSESAN SEORANG')))}
+                                    ${isKhemah ? 'CAJ TAPAK PERKEMAHAN' : (isHammock ? 'CAJ TAPAK HAMMOCK' : (isKabin ? 'CAJ KABIN' : (isRv ? 'CAJ TAPAK KENDERAAN RV' : (isGazebo ? 'CAJ GAZEBO' : 'CAJ PEMPROSESAN SEORANG'))))}
                                 </span>
                                 <span id="hiking-proc-calc-${r.id}" class="text-[10px] sm:text-[11px] font-bold text-[#2D5D48] whitespace-nowrap mt-0.5">
-                                    ${isKhemah ? `(RM70 × <span id="hiking-proc-pax-${r.id}">1</span> Tapak)` : (isHammock ? `(RM25 × <span id="hiking-proc-pax-${r.id}">1</span> Tapak)` : (isKabin ? `(RM150 × <span id="hiking-proc-pax-${r.id}">1</span> Kabin)` : (isRv ? `(RM80 × <span id="hiking-proc-pax-${r.id}">1</span> Tapak)` : `(RM10 × <span id="hiking-proc-pax-${r.id}">1</span>)`)))}
+                                    ${isKhemah ? `(RM70 × <span id="hiking-proc-pax-${r.id}">1</span> Tapak)` : (isHammock ? `(RM25 × <span id="hiking-proc-pax-${r.id}">1</span> Tapak)` : (isKabin ? `(RM150 × <span id="hiking-proc-pax-${r.id}">1</span> Kabin)` : (isRv ? `(RM80 × <span id="hiking-proc-pax-${r.id}">1</span> Tapak)` : (isGazebo ? `(RM35 × <span id="hiking-proc-pax-${r.id}">1</span>)` : `(RM10 × <span id="hiking-proc-pax-${r.id}">1</span>)`))))}
                                 </span>
                             </div>
                             <span class="font-black text-slate-900 text-xs sm:text-sm tracking-tight whitespace-nowrap pl-1 flex-shrink-0">
-                                RM<span id="hiking-proc-${r.id}">${isKhemah ? '70' : (isHammock ? '25' : (isKabin ? '150' : (isRv ? '80' : '10')))}</span>
+                                RM<span id="hiking-proc-${r.id}">${isKhemah ? '70' : (isHammock ? '25' : (isKabin ? '150' : (isRv ? '80' : (isGazebo ? '35' : '10'))))}</span>
                             </span>
                         </div>
                         ` : ''}
@@ -311,7 +311,7 @@ function renderHikingCard(r, isAvailabilityCheck = false) {
                                 JUMLAH KESELURUHAN
                             </span>
                             <span class="font-black text-slate-900 text-xs sm:text-sm tracking-tight whitespace-nowrap pl-1 flex-shrink-0">
-                                RM <span id="hiking-total-${r.id}">${isKhemah ? 70 : (isHammock ? 25 : (isKabin ? 150 : (isRv ? 80 : ((isNoGuide ? (parseFloat(r.price_per_night) || 150) : (isGazebo ? 60 : 150)) + 10))))}</span>
+                                RM <span id="hiking-total-${r.id}">${isKhemah ? 70 : (isHammock ? 25 : (isKabin ? 150 : (isRv ? 80 : (isGazebo ? 35 : ((isNoGuide ? (parseFloat(r.price_per_night) || 150) : 150) + 10)))))}</span>
                             </span>
                         </div>
                     </div>
@@ -489,14 +489,14 @@ function updateHikingPrice(id, source) {
     const isRv = room && ((room.name && (room.name.toUpperCase().includes('RV') || room.name.toUpperCase().includes('CARAVAN') || room.name.toUpperCase().includes('CAMPERVAN'))) || (room.type && (room.type.toUpperCase().includes('RV') || room.type.toUpperCase().includes('CARAVAN') || room.type.toUpperCase().includes('CAMPERVAN'))));
     const isGazebo = room && ((room.name && room.name.toUpperCase().includes('GAZEBO')) || (room.type && room.type.toUpperCase().includes('GAZEBO')));
     const isKhemah = room && ((room.name && (room.name.toUpperCase().includes('PERKHEMAHAN') || room.name.toUpperCase().includes('KHEMAH'))) || (room.type && (room.type.toUpperCase().includes('PERKHEMAHAN') || room.type.toUpperCase().includes('KHEMAH'))));
-    const isNoGuide = isKabin || isHammock || isRv || isKhemah;
+    const isNoGuide = isKabin || isHammock || isRv || isKhemah || isGazebo;
     const isNoProc = false;
 
     let pax = parseInt(paxInput ? paxInput.value : 1);
     if (isNaN(pax) || pax < 1) pax = 1;
 
     let groups = 1;
-    if (isKhemah || isHammock || isKabin || isRv) {
+    if (isKhemah || isHammock || isKabin || isRv || isGazebo) {
         // Untuk tapak perkhemahan, hammock, kabin & tapak kenderaan RV, bilangan unit ditentukan sepenuhnya oleh kotak JUMLAH TAPAK / JUMLAH KABIN.
         // Kotak JUMLAH PESERTA hanya menunjukkan jumlah peserta dan tidak mempengaruhi mana-mana bahagian lain (tapak/kabin atau harga).
         let currentGroups = parseInt(groupsInput ? groupsInput.value : 1);
@@ -519,22 +519,23 @@ function updateHikingPrice(id, source) {
         }
     }
 
-    const fallbackRate = (isHammock || isKhemah || isKabin || isRv) ? 0 : (isGazebo ? 60 : 150);
-    const pkgRate = parseFloat(pkgSelect ? pkgSelect.value : ((isKhemah || isHammock || isKabin || isRv) ? 0 : (room ? room.price_per_night : fallbackRate))) || fallbackRate;
+    const fallbackRate = (isHammock || isKhemah || isKabin || isRv || isGazebo) ? 0 : 150;
+    const pkgRate = parseFloat(pkgSelect ? pkgSelect.value : ((isKhemah || isHammock || isKabin || isRv || isGazebo) ? 0 : (room ? room.price_per_night : fallbackRate))) || fallbackRate;
     
-    const guideTotal = isNoGuide ? ((isKhemah || isHammock || isKabin || isRv) ? 0 : pkgRate) : (groups * pkgRate);
-    const unitRate = isHammock ? 25 : (isKabin ? 150 : (isRv ? 80 : 70));
-    const procTotal = isNoProc ? 0 : ((isKhemah || isHammock || isKabin || isRv) ? (groups * unitRate) : (pax * 10));
+    const guideTotal = isNoGuide ? ((isKhemah || isHammock || isKabin || isRv || isGazebo) ? 0 : pkgRate) : (groups * pkgRate);
+    const unitRate = isHammock ? 25 : (isKabin ? 150 : (isRv ? 80 : (isGazebo ? 35 : 70)));
+    const procTotal = isNoProc ? 0 : ((isKhemah || isHammock || isKabin || isRv || isGazebo) ? (groups * unitRate) : (pax * 10));
     const grandTotal = guideTotal + procTotal;
 
     // Caj bertambah secara auto mengikut bilangan unit tapak / kabin / peserta
     if (procSpan) procSpan.textContent = procTotal;
-    if (procPaxSpan) procPaxSpan.textContent = (isKhemah || isHammock || isKabin || isRv) ? groups : pax;
+    if (procPaxSpan) procPaxSpan.textContent = (isKhemah || isHammock || isKabin || isRv || isGazebo) ? groups : pax;
     if (procLabel) {
         if (isKhemah) procLabel.textContent = 'CAJ TAPAK PERKEMAHAN';
         else if (isHammock) procLabel.textContent = 'CAJ TAPAK HAMMOCK';
         else if (isKabin) procLabel.textContent = 'CAJ KABIN';
         else if (isRv) procLabel.textContent = 'CAJ TAPAK KENDERAAN RV';
+        else if (isGazebo) procLabel.textContent = 'CAJ GAZEBO';
     }
     if (procCalcSpan) {
         if (isNoProc) {
@@ -549,6 +550,8 @@ function updateHikingPrice(id, source) {
                 procCalcSpan.innerHTML = `(RM150 × <span id="hiking-proc-pax-${id}">${groups}</span> Kabin)`;
             } else if (isRv) {
                 procCalcSpan.innerHTML = `(RM80 × <span id="hiking-proc-pax-${id}">${groups}</span> Tapak)`;
+            } else if (isGazebo) {
+                procCalcSpan.innerHTML = `(RM35 × <span id="hiking-proc-pax-${id}">${groups}</span>)`;
             } else {
                 procCalcSpan.innerHTML = `(RM10 × <span id="hiking-proc-pax-${id}">${pax}</span>)`;
             }
@@ -575,24 +578,24 @@ function addToCartHiking(id) {
     const isHammock = (room.name && room.name.toUpperCase().includes('HAMMOCK')) || (room.type && room.type.toUpperCase().includes('HAMMOCK'));
     const isRv = (room.name && (room.name.toUpperCase().includes('RV') || room.name.toUpperCase().includes('CARAVAN') || room.name.toUpperCase().includes('CAMPERVAN'))) || (room.type && (room.type.toUpperCase().includes('RV') || room.type.toUpperCase().includes('CARAVAN') || room.type.toUpperCase().includes('CAMPERVAN')));
 
-    const isNoGuide = isKabin || isHammock || isRv || isKhemah;
+    const isNoGuide = isKabin || isHammock || isRv || isKhemah || isGazebo;
     const isNoProc = false;
 
-    const fallbackRate = (isHammock || isKhemah || isKabin || isRv) ? 0 : (isGazebo ? 60 : 150);
-    const pkgRate = pkgSelect ? (parseFloat(pkgSelect.value) || fallbackRate) : ((isKhemah || isHammock || isKabin || isRv) ? 0 : (room ? (parseFloat(room.price_per_night) || fallbackRate) : fallbackRate));
+    const fallbackRate = (isHammock || isKhemah || isKabin || isRv || isGazebo) ? 0 : 150;
+    const pkgRate = pkgSelect ? (parseFloat(pkgSelect.value) || fallbackRate) : ((isKhemah || isHammock || isKabin || isRv || isGazebo) ? 0 : (room ? (parseFloat(room.price_per_night) || fallbackRate) : fallbackRate));
     const isTingkat7 = pkgRate === 300;
 
     let groups = 1;
-    if (isKhemah || isHammock || isKabin || isRv) {
+    if (isKhemah || isHammock || isKabin || isRv || isGazebo) {
         groups = parseInt(groupsInput ? groupsInput.value : 1);
         if (isNaN(groups) || groups < 1) groups = 1;
     } else {
         groups = Math.ceil(pax / 7);
     }
 
-    const guideTotal = isNoGuide ? ((isKhemah || isHammock || isKabin || isRv) ? 0 : pkgRate) : (groups * pkgRate);
-    const unitRate = isHammock ? 25 : (isKabin ? 150 : (isRv ? 80 : 70));
-    const procTotal = isNoProc ? 0 : ((isKhemah || isHammock || isKabin || isRv) ? (groups * unitRate) : (pax * 10));
+    const guideTotal = isNoGuide ? ((isKhemah || isHammock || isKabin || isRv || isGazebo) ? 0 : pkgRate) : (groups * pkgRate);
+    const unitRate = isHammock ? 25 : (isKabin ? 150 : (isRv ? 80 : (isGazebo ? 35 : 70)));
+    const procTotal = isNoProc ? 0 : ((isKhemah || isHammock || isKabin || isRv || isGazebo) ? (groups * unitRate) : (pax * 10));
     const totalHikingPrice = guideTotal + procTotal;
     
     let cartItemName, pkgTitle, itemType;
@@ -614,8 +617,8 @@ function addToCartHiking(id) {
         pkgTitle = `CAJ TAPAK PERKEMAHAN (RM70 x ${groups} = RM${procTotal}) - ${pax} Orang`;
     } else if (isGazebo) {
         itemType = 'TEMPAHAN GAZEBO';
-        cartItemName = `TEMPAHAN GAZEBO (${pax} ORANG)`;
-        pkgTitle = `TEMPAHAN GAZEBO (RM${pkgRate.toFixed(2)}) + Caj Pemprosesan (${pax} Orang x RM10 = RM${procTotal})`;
+        cartItemName = `TEMPAHAN GAZEBO (${groups} GAZEBO - ${pax} ORANG)`;
+        pkgTitle = `CAJ GAZEBO (RM35 x ${groups} = RM${procTotal}) - ${pax} Orang`;
     } else {
         itemType = isJungle ? (room.name || 'TEMPAHAN AKTIVITI JUNGLE TREKKING') : 'TEMPAHAN AKTIVITI HIKING';
         const pkgLocation = isTingkat7 ? 'TINGKAT 7' : 'TINGKAT 3';
@@ -1247,6 +1250,8 @@ function showAvailMsg(msg, type) {
 let checkinPicker;
 let cart = [];
 let isCartMinimized = false;
+let lastSubmittedCart = [];
+let lastSubmittedRefs = [];
 
 function hideDrawerUI() {
     const container = document.getElementById('cart-container');
@@ -1519,6 +1524,10 @@ Sila sahkan pendaftaran dan status bayaran saya. Terima kasih.`;
         document.getElementById('btn-wa-confirm').href = `https://wa.me/60194489296?text=${encodeURIComponent(waMsg)}`;
         document.getElementById('success-modal').classList.remove('hidden');
         
+        // Simpan salinan tempahan dan rujukan sebelum dikosongkan sekiranya pelanggan ingin membatalkan/edit semula
+        lastSubmittedCart = JSON.parse(JSON.stringify(cart));
+        lastSubmittedRefs = [...bookedRefs];
+
         clearCart(); // Clear the cart after success
     } else {
         alert('Ralat pada aktiviti ' + bookedNames.length + 1 + ': ' + errorMsg);
@@ -1527,6 +1536,88 @@ Sila sahkan pendaftaran dan status bayaran saya. Terima kasih.`;
     btn.disabled = false;
     btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Hantar Borang / Submit';
 });
+
+// ──── EDIT / CANCEL & RESTORE BOOKING (BACK TO NORMAL) ────
+async function editSubmittedBooking() {
+    const btn = document.getElementById('btn-edit-booking');
+    const originalContent = btn ? btn.innerHTML : '';
+    if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin text-lg"></i> <span>Membatalkan & Memulihkan Tempahan...</span>';
+    }
+
+    // 1. Batalkan tempahan yang baru dibuat di pelayan API (status: Dibatalkan)
+    if (lastSubmittedRefs && lastSubmittedRefs.length > 0) {
+        for (const ref of lastSubmittedRefs) {
+            try {
+                await fetch(`/api/bookings/${encodeURIComponent(ref)}/cancel`, { method: 'PATCH' });
+            } catch (err) {
+                console.warn('Gagal membatalkan rujukan tempahan:', ref, err);
+            }
+        }
+    }
+
+    // 2. Pulihkan semula item tempahan ke dalam bakul (cart)
+    if (lastSubmittedCart && lastSubmittedCart.length > 0) {
+        cart = JSON.parse(JSON.stringify(lastSubmittedCart));
+    }
+
+    // 3. Tutup Modal Kejayaan
+    const successModal = document.getElementById('success-modal');
+    if (successModal) {
+        successModal.classList.add('hidden');
+    }
+
+    // 4. Buka semula Drawer Bakul Tempahan (Kembali ke keadaan asal / Normal)
+    isCartMinimized = false;
+    updateCartUI();
+    showDrawerUI();
+
+    // 5. Tatal skrin ke paparan bakul tempahan
+    const cartContainer = document.getElementById('cart-container');
+    if (cartContainer) {
+        cartContainer.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    // 6. Paparkan Notifikasi Mesra Pengguna
+    showCartEditNotification();
+
+    // 7. Kembalikan butang kepada keadaan asal
+    lastSubmittedRefs = [];
+    if (btn) {
+        btn.disabled = false;
+        btn.innerHTML = originalContent;
+    }
+}
+
+function showCartEditNotification() {
+    let toast = document.getElementById('cart-edit-toast');
+    if (!toast) {
+        toast = document.createElement('div');
+        toast.id = 'cart-edit-toast';
+        toast.className = 'fixed top-5 left-1/2 -translate-x-1/2 z-50 bg-slate-900/95 backdrop-blur text-white px-5 py-3.5 rounded-2xl shadow-2xl flex items-center gap-3.5 border border-amber-400 text-sm font-semibold transition-all duration-300 max-w-lg w-[92%]';
+        document.body.appendChild(toast);
+    }
+    toast.innerHTML = `
+        <div class="w-9 h-9 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center flex-shrink-0 text-base">
+            <i class="fa-solid fa-pen-to-square"></i>
+        </div>
+        <div class="flex-1 text-left">
+            <p class="font-extrabold text-amber-300 text-xs tracking-wider uppercase">Tempahan Dibatalkan & Sedia Diedit</p>
+            <p class="text-xs text-slate-200 mt-0.5 leading-snug">Semua pilihan telah dipulihkan ke bakul. Anda boleh <strong>membuang item (ikon tong sampah)</strong> atau <strong>menambah aktiviti baharu</strong> sekarang.</p>
+        </div>
+        <button onclick="this.parentElement.remove()" class="text-slate-400 hover:text-white text-base px-1.5 cursor-pointer" title="Tutup">&times;</button>
+    `;
+    toast.style.opacity = '1';
+    toast.style.transform = 'translate(-50%, 0)';
+    setTimeout(() => {
+        if (toast && toast.parentElement) {
+            toast.style.opacity = '0';
+            toast.style.transform = 'translate(-50%, -20px)';
+            setTimeout(() => toast.remove(), 400);
+        }
+    }, 6000);
+}
 
 // ──── BOOKING LOOKUP ────
 document.getElementById('btn-lookup').addEventListener('click', async () => {

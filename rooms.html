@@ -354,17 +354,10 @@
             <!-- BAHAGIAN B -->
             <div class="border-t border-slate-200 pt-6">
                 <h3 class="text-lg font-bold text-emerald-800 mb-4 bg-emerald-50 py-2 px-4 rounded-lg uppercase tracking-wide">
-                    BAHAGIAN B: MAKLUMAN KADAR BAYARAN & PERAKUAN PESERTA
+                    BAHAGIAN B: PERAKUAN & PENGESAHAN PESERTA
                 </h3>
+
                 
-                <div class="bg-slate-50 border border-slate-200 rounded-xl p-5 mb-5 space-y-2 text-sm text-slate-700">
-                    <p class="font-bold text-slate-900 border-b pb-2 mb-3">Ringkasan Kadar Bayaran:</p>
-                    <ul class="list-disc list-inside space-y-1.5 ml-1">
-                        <li><strong>Kadar Pemandu Arah:</strong> RM150.00 bagi setiap satu trip (perjalanan) kumpulan (1 hingga 7 orang).</li>
-                        <li><strong>Yuran Pemprosesan:</strong> RM10.00 bagi setiap individu / peserta.</li>
-                    </ul>
-                    <p class="mt-3 text-xs italic text-slate-500">* Pakej merangkumi jurupandu arah berpengalaman serta taklimat PPE (Personal Protective Equipment – Peralatan Perlindungan Diri).</p>
-                </div>
 
                 <div class="space-y-4 text-sm text-slate-700 font-medium">
                     <p class="font-bold text-slate-900">Kotak Perakuan & Pengesahan Peserta (Wajib Ditandakan Semua):</p>
@@ -398,6 +391,16 @@
                     BAHAGIAN C: RINGKASAN TEMPAHAN & PEMBAYARAN FPX
                 </h3>
                 
+                <!-- Ringkasan Kadar Bayaran -->
+                <div class="bg-slate-50 border border-slate-200 rounded-xl p-5 mb-5 space-y-2 text-sm text-slate-700">
+                    <p class="font-bold text-slate-900 border-b pb-2 mb-3">Ringkasan Kadar Bayaran:</p>
+                    <ul class="list-disc list-inside space-y-1.5 ml-1">
+                        <li><strong>Kadar Pemandu Arah:</strong> RM150.00 bagi setiap satu trip (perjalanan) kumpulan (1 hingga 7 orang).</li>
+                        <li><strong>Yuran Pemprosesan:</strong> RM10.00 bagi setiap individu / peserta.</li>
+                    </ul>
+                    <p class="mt-3 text-xs italic text-slate-500">* Pakej merangkumi jurupandu arah berpengalaman serta taklimat PPE (Personal Protective Equipment – Peralatan Perlindungan Diri).</p>
+                </div>
+
                 <!-- Dynamic Cart Summary -->
                 <div class="bg-slate-50 border border-slate-200 rounded-xl p-5 mb-5">
                     <p class="font-bold text-slate-900 border-b pb-2 mb-3">Senarai Aktiviti Pilihan Anda:</p>
@@ -468,6 +471,19 @@
             <div class="flex justify-between text-base font-bold"><span class="text-slate-700">Jumlah Bayaran:</span><span class="text-emerald-800">RM<span id="success-total"></span></span></div>
         </div>
 
+        <!-- Butang Edit / Batal & Ubah Semula Tempahan -->
+        <div class="mb-4">
+            <button type="button" id="btn-edit-booking" onclick="editSubmittedBooking()" class="w-full bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 active:scale-[0.99] text-white font-extrabold py-3.5 px-4 rounded-2xl transition flex items-center justify-center gap-2.5 shadow-md hover:shadow-lg cursor-pointer text-sm sm:text-base border border-amber-400">
+                <i class="fa-solid fa-pen-to-square text-lg"></i>
+                <span>Ubah / Edit Tempahan (Tambah atau Buang)</span>
+            </button>
+            <p class="text-[11px] text-slate-500 mt-1.5 italic text-center">
+                *Klik butang ini jika anda berubah fikiran untuk membatalkan pendaftaran semasa & kembali memilih atau membuang aktiviti.
+            </p>
+
+
+        </div>
+
         <div class="flex gap-3">
             <a id="btn-wa-confirm" href="#" target="_blank" class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-xl transition flex items-center justify-center gap-2">
                 <i class="fa-brands fa-whatsapp text-xl"></i> Hubungi via WhatsApp
@@ -494,6 +510,6 @@
 </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-<script src="assets/js/rooms.js?v=1792484406001"></script>
+<script src="assets/js/rooms.js?v=1793070000000"></script>
 </body>
 </html>
